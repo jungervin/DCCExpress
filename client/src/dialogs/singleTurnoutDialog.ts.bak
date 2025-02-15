@@ -1,0 +1,122 @@
+import { drawRectangle } from "../helpers/graphics";
+import { BitElement } from "../components/bitElement";
+import { TurnoutRightElement } from "../editor/turnout";
+import { Dialog, DialogResult } from "./dialog";
+
+console.log(BitElement); 
+
+export class singleTurnoutDialog extends Dialog {
+  state1Canvas: HTMLCanvasElement | undefined;
+  turnout1: TurnoutRightElement | undefined;
+  state2Canvas: HTMLCanvasElement | undefined;
+  turnout2: TurnoutRightElement | undefined;
+  address1closeValue: BitElement | undefined;
+  address1openValue: BitElement | undefined;
+  constructor() {
+    super();
+  }
+
+  get identity(): string {
+    return 'doubleTurnoutDialog';
+  }
+
+  init() {
+    super.init('doubleTurnoutDialog', 460, 600);
+    this.btnOk = this.querySelector('#btnDialogOk');
+    this.btnCancel = this.querySelector('#btnDialogCancel');
+    this.btnOk.onclick = (e: MouseEvent) => {
+      this.close(DialogResult.ok);
+    }
+    this.btnCancel.onclick = (e: MouseEvent) => {
+      this.close(DialogResult.cancel);
+    }
+
+    this.state1Canvas = this.querySelector('#state1Canvas') as HTMLCanvasElement
+    this.state1Canvas.style.cursor = "pointer"
+    var ctx1 = this.state1Canvas.getContext('2d')!;
+    drawRectangle(ctx1, 0, 0, 79, 79)
+    ctx1.translate(10, 10)
+    ctx1.scale(1.5, 1.5)
+    this.turnout1 = new TurnoutRightElement("", 0, ctx1, 0, 0, "")
+    this.turnout1.showAddress = false
+    //this.turnout1.isClosed = true
+    this.state1Canvas.onclick = (e:MouseEvent) => {
+      alert("OK")
+    }
+
+    this.state2Canvas = this.querySelector('#state2Canvas') as HTMLCanvasElement
+    this.state2Canvas.style.cursor = "pointer"
+    var ctx2 = this.state2Canvas.getContext('2d')!;
+    drawRectangle(ctx2, 0, 0, 79, 79)
+    ctx2.translate(10, 10)
+    ctx2.scale(1.5, 1.5)
+    this.turnout2 = new TurnoutRightElement("", 0, ctx2, 0, 0, "")
+    this.turnout2.showAddress = false
+
+    this.address1closeValue = this.querySelector("#address1Value1") as BitElement
+    this.address1openValue = this.querySelector("#address1Value2") as BitElement
+
+    
+  }
+
+
+
+  //private _address1: number = 0;
+  public get address1(): number {
+    return parseInt((this.querySelector('#Address1') as HTMLInputElement).value)
+  }
+  public set address1(v: number) {
+    (this.querySelector('#Address1') as HTMLInputElement).value = v.toString();
+  }
+
+  //private _gridSizeY: number = 0;
+  public get address2(): number {
+    return parseInt((this.querySelector('#Address2') as HTMLInputElement).value)
+  }
+  public set address2(v: number) {
+    (this.querySelector('#Address2') as HTMLInputElement).value = v.toString();
+  }
+
+  get template(): string {
+    return `
+<div class="dialog">    
+<h1>Properties</h1>    
+<form>
+
+  <div class="form-group row">
+    <label for="Address1" class="col-sm-3 col-form-label">Address 1</label>
+    <div class="col-sm-9">
+      <input type="text" class="form-control" id="Address1">
+    </div>
+  </div>
+    
+  <div class="form-group row inline">
+    <div class="col-sm-3 d-flex align-items-center gap-2">
+      <canvas width="80" height="80" id="state1Canvas"></canvas>
+    </div>
+    <div class="col-sm-4 d-flex align-items-center gap-2">
+      <bit-element id="address1Value1"></bit-element>
+    </div>
+  </div>
+
+  <div class="form-group row inline">
+    <div class="col-sm-3 d-flex align-items-center gap-2">
+      <canvas width="80" height="80" id="state2Canvas"></canvas>
+    </div>
+    <div class="col-sm-4 d-flex align-items-center gap-2">
+      <bit-element id="address1Value2"></bit-element>
+    </div>
+  </div>
+  
+  <div class="form-group row">
+    <div class="offset-4 col-8">
+      <button id="btnDialogCancel" class="btn btn-primary">CANCEL</button>
+      <button id="btnDialogOk" class="btn btn-primary">OK</button>
+    </div>
+  </div>
+</form>        
+</div>
+        `
+  }
+}
+customElements.define('single-turnout-dialog', singleTurnoutDialog);

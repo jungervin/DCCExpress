@@ -1,0 +1,85 @@
+
+// export enum DialogResult {
+//   cancel,
+//   ok
+// }
+// export class Dialog extends HTMLElement {
+//   x: number = 0;
+//   y: number = 0;
+//   w: number = 600;
+//   h: number = 600;
+//   dialogResult: DialogResult = DialogResult.cancel
+//   btnOk?: any
+//   btnCancel?: any
+//   private escapeListener?: (e: KeyboardEvent) => void;
+//   callback?: (sender: Dialog, result: DialogResult) => void;
+//   dialogTitle: string = "NA";
+//   constructor() {
+//     super();
+//     this.innerHTML = this.template
+//   }
+
+//   get identity(): string {
+//     throw new Error('Az identity nincs megadva!');
+//   }
+//   get template(): string {
+//     throw new Error('A template nincs megadva!');
+//   }
+
+//   init(title: string, w: number, h: number) {
+//     this.id = this.identity;
+//     this.dialogTitle = title;
+//     this.w = w;
+//     this.h = h;
+//     this.style.zIndex = '10000'
+
+//     const bodyRect = document.body.getBoundingClientRect();
+//     this.x = (bodyRect.width - this.w) / 2;
+//     this.y = (bodyRect.height - this.h) / 2;
+
+//     this.style.position = 'absolute';
+//     this.style.left = `${this.x}px`;
+//     this.style.top = `${this.y}px`;
+//     this.style.width = `${this.w}px`;
+//     this.style.height = `${this.h}px`;
+//   }
+
+//   open(callback: (sender: Dialog, result: DialogResult) => void) {
+
+//     document.getElementById("dialog-overlay")?.classList.remove('hidden')
+
+//     document.body.appendChild(this);
+//     this.callback = callback
+//     this.escapeListener = (e: KeyboardEvent) => {
+//       if (e.key == 'Escape') {
+//         this.close(DialogResult.cancel);
+//       }
+//       else if (e.key == 'Enter') {
+//         this.close(DialogResult.ok);
+//       }
+//     };
+//     window.addEventListener('keydown', this.escapeListener);
+//   }
+
+//   close(result: DialogResult) {
+//     document.getElementById("dialog-overlay")?.classList.add('hidden')
+
+//     const element = document.getElementById(this.id);
+//     if (element) {
+//       element.remove();
+//     } else {
+//       console.warn(`Elem nem található: ${this.id}`);
+//     }
+
+//     if (this.escapeListener) {
+//       window.removeEventListener('keydown', this.escapeListener);
+//       this.escapeListener = undefined;
+//     }
+//     if (this.callback) {
+//       this.callback(this, result)
+//     }
+//   }
+// }
+
+// customElements.define('custom-dialog', Dialog);
+

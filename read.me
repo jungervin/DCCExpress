@@ -1,0 +1,44 @@
+:~/dev/DCCExpress/server$ node /home/junge/dev/DCCExpress/dist/server/js/server/src/index.js 
+
+junge@debiandev:~/dev/DCCExpress/dist$ pkg . -t node18-win
+
+
+Debug config
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch ts-node",
+            "runtimeArgs": ["--loader", "ts-node/esm"], // ESM támogatáshoz
+            "program": "${workspaceFolder}/DCCExpress/dist/server/js/server/src/index.js",
+            "cwd": "${workspaceFolder}/DCCExpress/dist",
+            "sourceMaps": true,
+            "skipFiles": ["<node_internals>/**"],
+            "outFiles": ["${workspaceFolder}/**/*.ts"]
+        }
+    ]
+}
+
+Oké, egy blokknak meg kell adni az irányát és csak az iránya szerint kell megkeresni
+a következő - vagy az előző - blokkot.
+Tehát egy blokk megkapja a signált, akkor a blokk és a mozdony irányától függően kell
+felvenni a előző blokkból a mozdony címét, és abból az előző blokkból törölni kell a 
+mozdonyt!
+
+
+
+# Node-Red pár gondolat:
+    A nodered egy vizuális programozó eszköz
+
+
+- CommandCenter (abstract)
+    - Z21CommandCenter
+    - DCCExCommandCenter
+    - DccExSerialCommandCenter
+
+
+- CommandCenters
+    
+

@@ -1,0 +1,85 @@
+[
+  {
+    "id": "24cafcc7-0741-4ce7-9015-4b5794dc9662",
+    "name": "BOBÓ",
+    "address": 18,
+    "imageUrl": "/uploads/1738397309175-11w5cd9LEynn8fsxdEZym-kDshveDzWB7mdmgutgP.png",
+    "speedMode": "128",
+    "functions": [
+      {
+        "id": 0,
+        "name": "Lámpa",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 1,
+        "name": "Motor",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 2,
+        "name": "Kürt",
+        "momentary": true,
+        "isOn": false
+      },
+      {
+        "id": 3,
+        "name": "R Kürt",
+        "momentary": true,
+        "isOn": false
+      },
+      {
+        "id": 4,
+        "name": "Valami",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 5,
+        "name": "F6",
+        "momentary": false,
+        "isOn": false
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "name": "2182",
+    "address": 11,
+    "imageUrl": "/uploads/1738397370188-csorgo.png",
+    "speedMode": "128",
+    "functions": [
+      {
+        "id": 0,
+        "name": "Világítás",
+        "momentary": false
+      },
+      {
+        "id": 1,
+        "name": "Motor",
+        "momentary": false
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "name": "Csörgő 2162",
+    "address": 10,
+    "imageUrl": "/uploads/1738397428414-csorgo.png",
+    "speedMode": "128",
+    "functions": [
+      {
+        "id": 0,
+        "name": "Világítás",
+        "momentary": false
+      },
+      {
+        "id": 1,
+        "name": "Motor",
+        "momentary": false
+      }
+    ]
+  }
+]
