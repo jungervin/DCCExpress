@@ -5,7 +5,7 @@ import { CommandCenter } from "./commandcenter"
 // import dgram from "dgram";
 import { broadcastAll } from "./ws";
 import { commandCenters } from "./commandcenters";
-import { log, arrayToHex, bufferToHex, logError } from './utility'
+import { log, arrayToHex, bufferToHex, logError, Mutex } from './utility'
 import { UDPClient } from "./udpClient";
 import { RemoteInfo } from "dgram";
 
@@ -13,6 +13,9 @@ const cLAN_X_TURNOUT_INFO0x43 = 0x43
 const cLAN_SYSTEMSTATE_DATACHANGED0x84 = 0x84
 
 export class Z21CommandCenter extends CommandCenter {
+
+    private mutex = new Mutex();
+
     trackPower(on: boolean): void {
         if (on) {
             this.LAN_X_SET_TRACK_POWER_ON()
@@ -398,8 +401,10 @@ export class Z21CommandCenter extends CommandCenter {
         this.LAN_RMBUS_GETDATA()
     }
 
-    put(data: any) {
+    async put(data: any) {
+        await this.mutex.lock()
         this.buffer.push(data)
+        this.mutex.unlock()
     }
 
 
@@ -425,6 +430,43 @@ export class Z21CommandCenter extends CommandCenter {
         // }
     }
 
+
+    async processBuffer() {
+        await this.mutex.lock()
+
+        if (this.buffer.length > 0) {
+            log('Z21 Task Üzenet start');
+            var data: any[] = []
+            while (this.buffer.length > 0 && data.length < 1024) {
+                const row = this.buffer.shift()
+                log('Z21 SendMessageTask: ' + arrayToHex(row))
+
+                data = data.concat(row)
+            }
+
+            this.udpClient.send(Buffer.from(data), (err, bytes) => {
+                if (err) {
+                    logError("Z21 Hiba az üzenet küldésekor:", err);
+                } else {
+                    log('Z21 Task Üzenet elküldve:', bytes);
+                }
+            })
+
+            this.lastMessageReceivedTime = performance.now()
+        }
+
+        if (performance.now() - this.lastMessageReceivedTime > 55000) {
+            this.LAN_GET_SERIAL_NUMBER()
+            //this.LAN_LOGOFF()
+            //this.LAN_SYSTEMSTATE_GETDATA()
+            //this.LAN_SET_BROADCASTFLAGS()
+            // for (const [k, v] of Object.entries(this.locos)) {
+            //     this.LAN_X_GET_LOCO_INFO(v)
+            // }
+        }
+
+        this.mutex.unlock()
+    }
     start(): void {
         log("Z21 start()")
         if (!this.taskId) {
@@ -444,38 +486,8 @@ export class Z21CommandCenter extends CommandCenter {
 
 
             this.taskId = setInterval(() => {
-
-                if (this.buffer.length > 0) {
-                    log('Z21 Task Üzenet start');
-                    var data: any[] = []
-                    while (this.buffer.length > 0 && data.length < 1024) {
-                        const row = this.buffer.shift()
-                        log('Z21 SendMessageTask: ' + arrayToHex(row))
-
-                        data = data.concat(row)
-                    }
-
-                    this.udpClient.send(Buffer.from(data), (err, bytes) => {
-                        if (err) {
-                            logError("Z21 Hiba az üzenet küldésekor:", err);
-                        } else {
-                            log('Z21 Task Üzenet elküldve:', bytes);
-                        }
-                    })
-
-                    this.lastMessageReceivedTime = performance.now()
-                }
-
-                if (performance.now() - this.lastMessageReceivedTime > 55000) {
-                    this.LAN_GET_SERIAL_NUMBER()
-                    //this.LAN_LOGOFF()
-                    //this.LAN_SYSTEMSTATE_GETDATA()
-                    //this.LAN_SET_BROADCASTFLAGS()
-                    // for (const [k, v] of Object.entries(this.locos)) {
-                    //     this.LAN_X_GET_LOCO_INFO(v)
-                    // }
-                }
-            }, 150)
+                this.processBuffer()
+            }, 50)
 
         } else {
             log("Z21 Task already started!")

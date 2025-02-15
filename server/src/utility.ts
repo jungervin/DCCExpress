@@ -51,4 +51,22 @@ export function bufferToHex(buffer: Buffer): string {
     }
   }
   
-  
+  export class Mutex {
+    private promise: Promise<void> | null = null;
+    private resolve: (() => void) | null = null;
+
+    async lock() {
+        while (this.promise) {
+            await this.promise; // Várunk, amíg a lock felszabadul
+        }
+        this.promise = new Promise(resolve => this.resolve = resolve);
+    }
+
+    unlock() {
+        if (this.resolve) {
+            this.resolve();
+            this.promise = null;
+            this.resolve = null;
+        }
+    }
+}

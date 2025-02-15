@@ -1,5 +1,14 @@
 "use strict";
 // import { CommandCenter } from "./commandcenter"
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Z21CommandCenter = void 0;
 const dcc_1 = require("../../common/src/dcc");
@@ -24,6 +33,7 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
     }
     constructor(name, ip, port) {
         super(name);
+        this.mutex = new utility_1.Mutex();
         this.ip = "";
         this.port = 21105;
         this.lastMessageReceivedTime = 0;
@@ -343,7 +353,11 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
         this.LAN_RMBUS_GETDATA();
     }
     put(data) {
-        this.buffer.push(data);
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.mutex.lock();
+            this.buffer.push(data);
+            this.mutex.unlock();
+        });
     }
     getLoco(address) {
         this.LAN_X_GET_LOCO_INFO(address);
@@ -364,6 +378,39 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
         //     broadcastAll({ type: ApiCommands.locoInfo, data: v} as iData )
         // }
     }
+    processBuffer() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.mutex.lock();
+            if (this.buffer.length > 0) {
+                (0, utility_1.log)('Z21 Task Üzenet start');
+                var data = [];
+                while (this.buffer.length > 0 && data.length < 1024) {
+                    const row = this.buffer.shift();
+                    (0, utility_1.log)('Z21 SendMessageTask: ' + (0, utility_1.arrayToHex)(row));
+                    data = data.concat(row);
+                }
+                this.udpClient.send(Buffer.from(data), (err, bytes) => {
+                    if (err) {
+                        (0, utility_1.logError)("Z21 Hiba az üzenet küldésekor:", err);
+                    }
+                    else {
+                        (0, utility_1.log)('Z21 Task Üzenet elküldve:', bytes);
+                    }
+                });
+                this.lastMessageReceivedTime = performance.now();
+            }
+            if (performance.now() - this.lastMessageReceivedTime > 55000) {
+                this.LAN_GET_SERIAL_NUMBER();
+                //this.LAN_LOGOFF()
+                //this.LAN_SYSTEMSTATE_GETDATA()
+                //this.LAN_SET_BROADCASTFLAGS()
+                // for (const [k, v] of Object.entries(this.locos)) {
+                //     this.LAN_X_GET_LOCO_INFO(v)
+                // }
+            }
+            this.mutex.unlock();
+        });
+    }
     start() {
         (0, utility_1.log)("Z21 start()");
         if (!this.taskId) {
@@ -381,34 +428,8 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
                 (0, utility_1.log)("Z21 Start()", error);
             }
             this.taskId = setInterval(() => {
-                if (this.buffer.length > 0) {
-                    (0, utility_1.log)('Z21 Task Üzenet start');
-                    var data = [];
-                    while (this.buffer.length > 0 && data.length < 1024) {
-                        const row = this.buffer.shift();
-                        (0, utility_1.log)('Z21 SendMessageTask: ' + (0, utility_1.arrayToHex)(row));
-                        data = data.concat(row);
-                    }
-                    this.udpClient.send(Buffer.from(data), (err, bytes) => {
-                        if (err) {
-                            (0, utility_1.logError)("Z21 Hiba az üzenet küldésekor:", err);
-                        }
-                        else {
-                            (0, utility_1.log)('Z21 Task Üzenet elküldve:', bytes);
-                        }
-                    });
-                    this.lastMessageReceivedTime = performance.now();
-                }
-                if (performance.now() - this.lastMessageReceivedTime > 55000) {
-                    this.LAN_GET_SERIAL_NUMBER();
-                    //this.LAN_LOGOFF()
-                    //this.LAN_SYSTEMSTATE_GETDATA()
-                    //this.LAN_SET_BROADCASTFLAGS()
-                    // for (const [k, v] of Object.entries(this.locos)) {
-                    //     this.LAN_X_GET_LOCO_INFO(v)
-                    // }
-                }
-            }, 150);
+                this.processBuffer();
+            }, 50);
         }
         else {
             (0, utility_1.log)("Z21 Task already started!");
