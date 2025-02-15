@@ -42,7 +42,7 @@ DCCExpress is in early alpha and actively evolving.
 Contributions, feedback, and testing are welcome! If you're interested in helping, please check out the issues section.
 
 ## 📜 License
-
+GPL-3.0 license
 
 
 ## 📸 Screenshots
