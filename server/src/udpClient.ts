@@ -1,5 +1,6 @@
 import dgram from "dgram";
 import { log, logError } from "./utility";
+import { Buffer } from 'node:buffer';
 
 export class UDPClient {
     name: string = "udp client"
@@ -14,7 +15,7 @@ export class UDPClient {
         this.ip = ip;
         this.port = port;
         this.client = dgram.createSocket('udp4')
-        this.client.bind(21105)
+        //this.client.bind(21105)
         this.client.on("listening", () => {
             log(`UDPClient listening: ${this.client.address().address}:${this.client.address().port}`);
             log('Receive Buffer Size:', this.client.getRecvBufferSize());

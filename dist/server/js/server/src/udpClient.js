@@ -15,7 +15,7 @@ class UDPClient {
         this.ip = ip;
         this.port = port;
         this.client = dgram_1.default.createSocket('udp4');
-        this.client.bind(21105);
+        //this.client.bind(21105)
         this.client.on("listening", () => {
             (0, utility_1.log)(`UDPClient listening: ${this.client.address().address}:${this.client.address().port}`);
             (0, utility_1.log)('Receive Buffer Size:', this.client.getRecvBufferSize());

@@ -1,15 +1,15 @@
 {
   "dispatcher": {
-    "active": false,
+    "active": true,
     "interval": 500
   },
   "settings": {
-    "scale": 1.2542039061488834,
-    "origX": -229,
-    "origY": -88,
+    "scale": 1.2683847549282812,
+    "origX": -277,
+    "origY": 80,
     "gridSizeX": 40,
     "gridSizeY": 40,
-    "showAddress": false,
+    "showAddress": true,
     "locoPanelVisible": true,
     "propertyPanelVisible": false
   },
@@ -1417,6 +1417,425 @@
           "x": 15,
           "y": 5,
           "name": "button119"
+        },
+        {
+          "uuid": "65853d63-b189-4201-8537-9221aca9b230",
+          "type": "corner",
+          "name": "corner119",
+          "x": 32,
+          "y": -1,
+          "angle": 0,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "65626488-fe5e-4cdc-83df-7b2a2e4306bf",
+          "type": "corner",
+          "name": "corner120",
+          "x": 19,
+          "y": -1,
+          "angle": 270,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "5890322e-c171-4dac-967a-9f42da1e3d2f",
+          "type": "corner",
+          "name": "corner121",
+          "x": 19,
+          "y": 3,
+          "angle": 180,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "848bca8f-0bef-45f6-a9f9-ee812c780452",
+          "type": "corner",
+          "name": "corner122",
+          "x": 32,
+          "y": 3,
+          "angle": 90,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "a81c0fb5-fdff-4a05-a804-e0ae553084da",
+          "type": "turnoutLeft",
+          "name": "turnoutleft123",
+          "x": 22,
+          "y": 3,
+          "address": 20,
+          "angle": 0,
+          "t1ClosedValue": true,
+          "t1OpenValue": false,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "35e48bc5-bd0f-424c-80fe-90abc21bd2c9",
+          "type": "turnoutRight",
+          "name": "turnoutRight124",
+          "x": 29,
+          "y": 3,
+          "address": 10,
+          "angle": 180,
+          "t1ClosedValue": true,
+          "t1OpenValue": false,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "965e98be-5e34-4064-a1d1-98ad5ae8da9f",
+          "type": "track",
+          "name": "track125",
+          "x": 20,
+          "y": -1,
+          "angle": 0,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "a14c0179-5f30-4f95-b82a-73b0a196d6fb",
+          "type": "track",
+          "name": "track126",
+          "x": 21,
+          "y": -1,
+          "angle": 0,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "7b189dbc-7c82-43d9-8ade-76dc91ac5a26",
+          "type": "track",
+          "name": "track128",
+          "x": 23,
+          "y": -1,
+          "angle": 0,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "5f8fb431-01ea-4ecd-a6e1-d20d2ab3ea06",
+          "type": "track",
+          "name": "track129",
+          "x": 24,
+          "y": -1,
+          "angle": 0,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "5e48f17f-04dd-4fde-a313-dc190e72b468",
+          "type": "track",
+          "name": "track130",
+          "x": 25,
+          "y": -1,
+          "angle": 0,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "cdaad3c3-7ba3-443e-bb7b-539a6a6a5dc0",
+          "type": "track",
+          "name": "track131",
+          "x": 26,
+          "y": -1,
+          "angle": 0,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "fa3356c7-859c-422d-8ecc-27f1355aa6bd",
+          "type": "track",
+          "name": "track132",
+          "x": 27,
+          "y": -1,
+          "angle": 0,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "63494733-d3d3-4648-8144-8cf72a065c91",
+          "type": "track",
+          "name": "track133",
+          "x": 28,
+          "y": -1,
+          "angle": 0,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "d6c536f7-4b54-4f6e-b395-bcc082c72060",
+          "type": "track",
+          "name": "track134",
+          "x": 29,
+          "y": -1,
+          "angle": 0,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "50762565-1206-4e63-93e9-c16bc96e91eb",
+          "type": "track",
+          "name": "track135",
+          "x": 30,
+          "y": -1,
+          "angle": 0,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "8bfdfb86-b74e-4963-a961-4e4f4470a4dd",
+          "type": "track",
+          "name": "track136",
+          "x": 31,
+          "y": -1,
+          "angle": 0,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "a672065a-2af0-4697-a750-191bcddeaa16",
+          "type": "track",
+          "name": "track137",
+          "x": 32,
+          "y": 0,
+          "angle": 90,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "f729fe16-ce18-4da3-ae50-00cbc9784043",
+          "type": "track",
+          "name": "track138",
+          "x": 32,
+          "y": 1,
+          "angle": 90,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "506919e7-1647-4333-bc3d-18c7e87a55b4",
+          "type": "track",
+          "name": "track139",
+          "x": 32,
+          "y": 2,
+          "angle": 90,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "d011a8fd-c18c-4246-b88c-de87b44a9ea1",
+          "type": "track",
+          "name": "track140",
+          "x": 31,
+          "y": 3,
+          "angle": 180,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "2c038705-d8a4-48ad-b0d9-7855711f857f",
+          "type": "track",
+          "name": "track142",
+          "x": 28,
+          "y": 3,
+          "angle": 180,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "d0074905-cd51-4bc8-96f3-7aa20d40c224",
+          "type": "track",
+          "name": "track143",
+          "x": 27,
+          "y": 3,
+          "angle": 180,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "2c4a81f2-a262-4a0b-9e1b-3b9dc6cd95c6",
+          "type": "track",
+          "name": "track144",
+          "x": 26,
+          "y": 3,
+          "angle": 180,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "f5217abb-ad35-4f29-8142-6bcf416381b5",
+          "type": "track",
+          "name": "track145",
+          "x": 25,
+          "y": 3,
+          "angle": 180,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "41ba7291-905c-4eb8-92d4-caad58fd1eb1",
+          "type": "track",
+          "name": "track146",
+          "x": 24,
+          "y": 3,
+          "angle": 180,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "7a6555fa-b271-4dce-a3da-ab30eb9a1561",
+          "type": "track",
+          "name": "track147",
+          "x": 23,
+          "y": 3,
+          "angle": 180,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "593626d8-aaee-4ef4-a716-b5874e760ff6",
+          "type": "track",
+          "name": "track149",
+          "x": 20,
+          "y": 3,
+          "angle": 180,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "5a3a827c-9ae5-4036-9483-476d890adbf9",
+          "type": "track",
+          "name": "track150",
+          "x": 19,
+          "y": 2,
+          "angle": 270,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "2227cc05-5b73-4992-9a77-97126065c942",
+          "type": "track",
+          "name": "track151",
+          "x": 19,
+          "y": 1,
+          "angle": 270,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "5153180a-d38e-4829-a72d-862ae6080187",
+          "type": "track",
+          "name": "track152",
+          "x": 19,
+          "y": 0,
+          "angle": 270,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "d47dd1d6-2549-438f-85ce-165badbda714",
+          "type": "track",
+          "name": "track153",
+          "x": 24,
+          "y": 2,
+          "angle": 0,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "a6b2acf0-5f68-4217-99bd-f9dec779c53b",
+          "type": "track",
+          "name": "track154",
+          "x": 25,
+          "y": 2,
+          "angle": 0,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "4177ed1d-f6fe-44eb-9274-51e9d0acb798",
+          "type": "track",
+          "name": "track155",
+          "x": 26,
+          "y": 2,
+          "angle": 0,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "8e3a8f71-38f6-44b3-9708-d24857ea548f",
+          "type": "track",
+          "name": "track156",
+          "x": 27,
+          "y": 2,
+          "angle": 0,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "1525fcbf-b5bd-4f84-8be9-89581ede37fb",
+          "type": "curve",
+          "name": "curve157",
+          "x": 23,
+          "y": 2,
+          "angle": 135,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "08dbd8fc-2437-425a-bc9d-7bd0a65f80d8",
+          "type": "curve",
+          "name": "curve158",
+          "x": 28,
+          "y": 2,
+          "angle": 180,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "8a1363b6-ba4c-429f-aa05-3d4dc13eaa7d",
+          "type": "signal3",
+          "address": 55,
+          "name": "turnoutleft158",
+          "x": 30,
+          "y": 3,
+          "angle": 0,
+          "addressLength": 5,
+          "isExtendedDecoder": false,
+          "valueGreen": 0,
+          "valueRed": 0,
+          "valueYellow": 0,
+          "rbusAddress": 0,
+          "aspect": 1
+        },
+        {
+          "uuid": "7eb9737b-df64-4d52-86aa-8665c09e5d0a",
+          "type": "signal3",
+          "address": 50,
+          "name": "turnoutleft158",
+          "x": 21,
+          "y": 3,
+          "angle": 180,
+          "addressLength": 5,
+          "isExtendedDecoder": false,
+          "valueGreen": 0,
+          "valueRed": 0,
+          "valueYellow": 0,
+          "rbusAddress": 0,
+          "aspect": 1
+        },
+        {
+          "uuid": "e7edf21b-9b8f-4cd1-b0e3-a65ae426a617",
+          "type": "turnoutRight",
+          "name": "turnoutRight158",
+          "x": 22,
+          "y": -1,
+          "address": 14,
+          "angle": 0,
+          "t1ClosedValue": true,
+          "t1OpenValue": false,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "487a66dd-563d-4ec1-b412-fe77c862cd56",
+          "type": "curve",
+          "name": "curve159",
+          "x": 23,
+          "y": 0,
+          "angle": 0,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "fe0bd988-fd11-42b6-9954-279b39f86f47",
+          "type": "track",
+          "name": "track160",
+          "x": 24,
+          "y": 0,
+          "angle": 0,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "f4614531-4ba4-4f06-9b22-e87c63a94bef",
+          "type": "track",
+          "name": "track161",
+          "x": 25,
+          "y": 0,
+          "angle": 0,
+          "rbusAddress": 0
+        },
+        {
+          "uuid": "5967a323-1a7d-4740-9663-c18d0c5f7a8b",
+          "type": "trackEnd",
+          "name": "trackEnd162",
+          "x": 26,
+          "y": 0,
+          "angle": 0,
+          "rbusAddress": 0
         }
       ]
     }

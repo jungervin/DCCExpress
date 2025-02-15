@@ -8,12 +8,12 @@ console.log(ApiCommands)
 console.log(LocoControlPanel)
 
 export class LocoApp {
-    cp: LocoControlPanel | undefined;
+    cp: LocoControlPanel ;
     constructor() {
 
         wsClient.onConnected = () => {
 
-   
+            this.cp.init()
             //wsClient.send({ type: ApiCommands.getCommandCenters, data: "" })
             //wsClient.send({ type: ApiCommands.configLoad, data: "" })
 
@@ -30,7 +30,7 @@ export class LocoApp {
                 //     break;
 
                 case ApiCommands.locoInfo:
-                    this.cp!.processMessage(msg.data as iLoco)
+                    this.cp.processMessage(msg.data as iLoco)
                     break;
                 
                     

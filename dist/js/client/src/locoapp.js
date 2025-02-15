@@ -7,6 +7,7 @@ define(["require", "exports", "../../common/src/dcc", "./helpers/ws", "./compone
     class LocoApp {
         constructor() {
             ws_1.wsClient.onConnected = () => {
+                this.cp.init();
                 //wsClient.send({ type: ApiCommands.getCommandCenters, data: "" })
                 //wsClient.send({ type: ApiCommands.configLoad, data: "" })
             };

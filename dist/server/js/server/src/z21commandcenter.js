@@ -41,13 +41,6 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
             programmingModeActive: false,
             //cc: z21
         };
-        // this.udpClient.on("listening", () => {
-        //     const address = this.udpClient.address();
-        //     console.log(`Szerver fut: ${address.address}:${address.port}`);
-        //     console.log('Receive Buffer Size:', this.udpClient.getRecvBufferSize());
-        //     console.log('Send Buffer Size:', this.udpClient.getSendBufferSize());
-        // });
-        //        this.udpClient.on("message", (payload: any, rinfo) => {
         this.udpClient = new udpClient_1.UDPClient(this.name, this.ip, this.port, (buffer, rinfo) => {
             const length = buffer.readUInt16LE(0);
             var i = 0;
@@ -58,9 +51,9 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
                 this.parse(data);
             }
             if (i != rinfo.size) {
-                console.log("Z21 on message: eltérő méretek!");
-                console.log("rinfo.size:", rinfo.size);
-                console.log("payload:", i);
+                (0, utility_1.logError)("Z21 on message: eltérő méretek!");
+                (0, utility_1.logError)("rinfo.size:", rinfo.size);
+                (0, utility_1.logError)("payload:", i);
                 (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.alert, data: "Z21 on message: eltérő méretek!" });
             }
         });
@@ -135,16 +128,6 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
                 var loco = { address: address, speed: speed, direction: direction, funcMap: f };
                 (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.locoInfo, data: loco });
                 (0, utility_1.log)("BROADCAST Z21 LOCO INFO:", loco);
-                // TODO:
-                // 
-                // locos[address] = loco
-                // broadcastAll({ type: ApiCommands.locoInfo, data: loco } as iData)
-                // console.log("addr:    ", address)
-                // console.log("direction: ", direction)
-                // console.log("speed: ", speed)
-                // for (var i = 0; i <= 28; i++) {
-                //     console.log("f" + i, (f & (1 << i)) > 0x00 ? 'on' : '')
-                // }
             }
             //========================================
             // LAN_X_STATUS_CHANGED 
@@ -187,7 +170,7 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
                 // }
                 var rbus = { group: group, bytes: bytes.slice(5, 15) };
                 (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.rbusInfo, data: rbus });
-                console.log('LAN_RMBUS_DATACHANGED');
+                (0, utility_1.log)('LAN_RMBUS_DATACHANGED');
             }
         }
         else if (len == 0x14 && header == cLAN_SYSTEMSTATE_DATACHANGED0x84) {
@@ -214,10 +197,10 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
         }
         else if (len == 0x08 && header == 0x10) {
             const snr = data.readUInt32LE(4);
-            console.log('Z21 SERIAL NUMBER:', snr);
+            (0, utility_1.log)('Z21 SERIAL NUMBER:', snr);
         }
         else {
-            console.log(`Válasz érkezett a z21-től: ${data.toString("hex")}`);
+            (0, utility_1.log)(`Válasz érkezett a z21-től: ${data.toString("hex")}`);
         }
     }
     LAN_X_SET_TRACK_POWER_OFF() {
@@ -373,7 +356,7 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
         //this.getLoco(address)
     }
     clientConnected() {
-        // console.log("clientConnected() => broadcast")
+        // log("clientConnected() => broadcast")
         // for( const [k,v] of Object.entries(this.turnouts)) {
         //     broadcastAll({ type: ApiCommands.turnoutInfo, data: v} as iData )
         // }
@@ -404,7 +387,6 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
                     while (this.buffer.length > 0 && data.length < 1024) {
                         const row = this.buffer.shift();
                         (0, utility_1.log)('Z21 SendMessageTask: ' + (0, utility_1.arrayToHex)(row));
-                        //console.log(` Z21 Task Üzenet elküldve: ${data}`);
                         data = data.concat(row);
                     }
                     this.udpClient.send(Buffer.from(data), (err, bytes) => {
@@ -412,14 +394,12 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
                             (0, utility_1.logError)("Z21 Hiba az üzenet küldésekor:", err);
                         }
                         else {
-                            //console.log(` Z21 Task Üzenet elküldve: ${data}`);
-                            //console.log(` Z21 Task Üzenet elküldve: ${bufferToHex(data)}`);
                             (0, utility_1.log)('Z21 Task Üzenet elküldve:', bytes);
                         }
                     });
                     this.lastMessageReceivedTime = performance.now();
                 }
-                if (performance.now() - this.lastMessageReceivedTime > 50000) {
+                if (performance.now() - this.lastMessageReceivedTime > 55000) {
                     this.LAN_GET_SERIAL_NUMBER();
                     //this.LAN_LOGOFF()
                     //this.LAN_SYSTEMSTATE_GETDATA()
@@ -428,7 +408,7 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
                     //     this.LAN_X_GET_LOCO_INFO(v)
                     // }
                 }
-            }, 10);
+            }, 150);
         }
         else {
             (0, utility_1.log)("Z21 Task already started!");
