@@ -21,7 +21,7 @@ _(Installation instructions will be added as the project progresses.)_
 For now, you can **clone the repository** and install dependencies:
 
 ```sh
-git clone https://github.com/jungervin/DCCExpress.git
+git clone https://github.com/jungervin/DCCExpress.git 
 cd DCCExpress
 npm install
 cd dist
