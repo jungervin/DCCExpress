@@ -12,7 +12,7 @@ DCCExpress is a **web-based railway model layout editor and control system**. It
 - ✅ **Current support:** 🟢 **Roco Z21 Command Center**       
 - ⏳ **Upcoming support:** 🔜 **DCC-EX integration**
 
-# 🛂🚦Automation & Scripting
+# 🚂🛂🚦Automation & Scripting
 The dispatcher.js file allows users to write control automation scripts for managing railway operations. This enables advanced behaviors like automated signal switching, turnout control, and event-based operations.
 
 ## 💻 Installation & Setup
