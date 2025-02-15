@@ -14,6 +14,10 @@ DCCExpress is a **web-based railway model layout editor and control system**. It
 
 # 🚂🛂🚦Automation & Scripting
 The dispatcher.js file allows users to write control automation scripts for managing railway operations. This enables advanced behaviors like automated signal switching, turnout control, and event-based operations.
+```sh
+DCCExpress/dist/dispatcher.js
+```
+
 
 ## 💻 Installation & 🚀Setup & 🚂Run 
 _(Installation instructions will be added as the project progresses.)_
