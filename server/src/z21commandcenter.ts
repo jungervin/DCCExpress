@@ -451,7 +451,7 @@ export class Z21CommandCenter extends CommandCenter {
                     while (this.buffer.length > 0 && data.length < 1024) {
                         const row = this.buffer.shift()
                         log('Z21 SendMessageTask: ' + arrayToHex(row))
-                        
+
                         data = data.concat(row)
                     }
 
