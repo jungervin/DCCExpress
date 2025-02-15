@@ -1,4 +1,45 @@
-# DCCExpress
+# DCCExpress - Railway Model Control System
+
+⚠️ **Early Alpha Version - Under Development** ⚠️
+
+DCCExpress is a **web-based railway model layout editor and control system**. It allows users to **design and manage railway tracks** interactively, including placing **turnouts, signals, and occupancy sensors** on a digital layout.
+
+## 🚂 Features (Planned & Current)
+- ✅ **Web-based editor** for designing railway tracks
+- ✅ **Interactive placement** of turnouts, signals, and sensors
+- ✅ **Real-time track control** through a digital command center
+- ✅ **Current support:** 🟢 **Roco Z21 Command Center**
+- ⏳ **Upcoming support:** 🔜 **DCC-EX integration**
+
+## 💻 Installation & Setup
+_(Installation instructions will be added as the project progresses.)_
+
+For now, you can **clone the repository** and install dependencies:
+
+```sh
+git clone https://github.com/yourusername/DCCExpress.git
+cd DCCExpress
+npm install
+npm start
+```
+
+
+## 📅 Development Status
+DCCExpress is in early alpha and actively evolving.
+🚧 Expect frequent changes, breaking updates, and experimental features.
+
+## 📌 Roadmap
+ DCC-EX compatibility
+ Advanced track planning tools
+ Multi-user collaboration
+ Improved UI and interaction
+
+## 🤝 Contributing
+Contributions, feedback, and testing are welcome! If you're interested in helping, please check out the issues section.
+
+## 📜 License
+
+
 
 
 ![Main](web/DCCExpreesImages/DCCExpress1.png)
