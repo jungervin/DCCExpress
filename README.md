@@ -20,7 +20,7 @@ For now, you can **clone the repository** and install dependencies:
 git clone https://github.com/yourusername/DCCExpress.git
 cd DCCExpress
 npm install
-npm start
+:~/dev/DCCExpress/dist$ node server/js/server/src/index.js
 ```
 
 
