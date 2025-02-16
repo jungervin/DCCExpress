@@ -4,9 +4,9 @@
     "interval": 500
   },
   "settings": {
-    "scale": 1.243237920786479,
-    "origX": -286,
-    "origY": -90,
+    "scale": 1.0605981687795876,
+    "origX": -92,
+    "origY": 56,
     "gridSizeX": 40,
     "gridSizeY": 40,
     "showAddress": false,

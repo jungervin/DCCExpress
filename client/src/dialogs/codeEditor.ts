@@ -9,11 +9,15 @@ export class CodeEditor extends Dialog {
     btnCancel: Button;
     interval: InputNumber;
     constructor() {
-        super(900, window.innerHeight - 160, "Editor")
+        super(900, window.innerHeight - 200, "Dispatcher.js Preview")
 
         this.textarea = new TextArea("Code")
-        this.textarea.value = Dispatcher.scriptContent
-        this.textarea.setHeight(520)
+        if(Dispatcher.scriptContent) {
+            this.textarea.value = Dispatcher.scriptContent
+        } else {
+            this.textarea.value = "Click on the Dispatcher icon to load the srcipt"
+        }
+        this.textarea.setHeight(580)
         this.addBody(this.textarea)
 
         this.interval = new InputNumber()

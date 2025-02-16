@@ -4,10 +4,15 @@ define(["require", "exports", "../editor/dispatcher", "../controls/dialog", "../
     exports.CodeEditor = void 0;
     class CodeEditor extends dialog_1.Dialog {
         constructor() {
-            super(900, window.innerHeight - 160, "Editor");
+            super(900, window.innerHeight - 200, "Dispatcher.js Preview");
             this.textarea = new dialog_1.TextArea("Code");
-            this.textarea.value = dispatcher_1.Dispatcher.scriptContent;
-            this.textarea.setHeight(520);
+            if (dispatcher_1.Dispatcher.scriptContent) {
+                this.textarea.value = dispatcher_1.Dispatcher.scriptContent;
+            }
+            else {
+                this.textarea.value = "Click on the Dispatcher icon to load the srcipt";
+            }
+            this.textarea.setHeight(580);
             this.addBody(this.textarea);
             this.interval = new dialog_1.InputNumber();
             this.interval.minValue = 100;
