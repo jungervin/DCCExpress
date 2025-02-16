@@ -26,7 +26,7 @@ In the menu, reload the script by clicking on the **Dispatcher** icon.)
 4. **Run the server** by launching `DCCExpress.exe`.  
 5. **Open your browser** and go to `127.0.0.1:3000`. 🚀
 
-## 💻 Installation & 🚀Setup & 🚂Run 
+## 💻 Installation & 🚂Setup & 🚀Run 
 
 _(Installation instructions will be added as the project progresses.)_
 
