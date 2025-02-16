@@ -394,7 +394,7 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
                 //btn.className = 'fnbutton'
                 btn.fn = i;
                 btn.function = undefined;
-                btn.onmousedown = (e) => {
+                btn.onpointerdown = (e) => {
                     var _a, _b, _c;
                     if (this.currentLoco) {
                         if (btn.function) {
@@ -414,7 +414,7 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
                         }
                     }
                 };
-                btn.onmouseup = (e) => {
+                btn.onpointerup = (e) => {
                     var _a;
                     if (btn.function && btn.function.momentary && this.currentLoco) {
                         var f = { id: btn.fn, address: (_a = this.currentLoco) === null || _a === void 0 ? void 0 : _a.address, isOn: false };

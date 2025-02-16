@@ -1,5 +1,5 @@
 import { wsClient } from "../helpers/ws";
-import { ApiCommands, iData, iLoco, iLocoFunction, iLocomotive as iLocomotive, iSetLocoFunction, iSetPower, Z21Directions } from "../../../common/src/dcc";
+import { ApiCommands, iData, iLoco, iLocoFunction, iLocomotive as iLocomotive, iPowerInfo, iSetLocoFunction, iSetPower, Z21Directions } from "../../../common/src/dcc";
 
 
 interface FunctionButton extends HTMLButtonElement {
@@ -413,7 +413,7 @@ export class LocoControlPanel extends HTMLElement {
             //btn.className = 'fnbutton'
             btn.fn = i
             btn.function = undefined;
-            btn.onmousedown = (e) => {
+            btn.onpointerdown = (e) => {
                 if (this.currentLoco) {
                     if (btn.function) {
                         if (btn.function.momentary) {
@@ -431,20 +431,20 @@ export class LocoControlPanel extends HTMLElement {
                     }
                 }
             }
-            btn.onmouseup = (e) => {
+            btn.onpointerup = (e) => {
                 if (btn.function && btn.function.momentary && this.currentLoco) {
                     var f: iSetLocoFunction = { id: btn.fn, address: this.currentLoco?.address, isOn: false }
                     wsClient.send({ type: ApiCommands.setLocoFunction, data: f } as iData)
                 }
             }
+
             btn.innerHTML = `F${i}`
             this.fnButtons.appendChild(btn)
 
-
         }
-
-
     }
+
+  
 
     init() {
         this.fetchLocomotives()

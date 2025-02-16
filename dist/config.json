@@ -5,23 +5,41 @@
   },
   "settings": {
     "scale": 1.0605981687795876,
-    "origX": -92,
-    "origY": 56,
+    "origX": -509,
+    "origY": -51,
     "gridSizeX": 40,
     "gridSizeY": 40,
     "showAddress": false,
     "locoPanelVisible": true,
-    "propertyPanelVisible": true
+    "propertyPanelVisible": false
   },
   "pages": [
     {
       "name": "page1",
       "elems": [
         {
+          "uuid": "02322788-7690-4d34-a716-97118a479664",
+          "type": "label2",
+          "name": "label165",
+          "x": 41,
+          "y": 9,
+          "angle": 0,
+          "text": "P2"
+        },
+        {
+          "uuid": "47c0b777-6e82-4f6c-8af7-627968861436",
+          "type": "label2",
+          "name": "label166",
+          "x": 41,
+          "y": 8,
+          "angle": 0,
+          "text": "P1"
+        },
+        {
           "uuid": "9c204f7b-c942-4b1f-a3bd-f2c3a19cac05",
           "type": "routeSwitch",
           "name": "routeSwitch112",
-          "x": 32,
+          "x": 30,
           "y": 14,
           "turnouts": [
             {
@@ -86,15 +104,6 @@
           "rbusAddress": 15
         },
         {
-          "uuid": "d433862d-97a9-480c-9988-500840739259",
-          "type": "track",
-          "name": "track4",
-          "x": 18,
-          "y": 7,
-          "angle": 0,
-          "rbusAddress": 18
-        },
-        {
           "uuid": "d4598bd1-7e88-43ce-b2b2-335e85c3f75f",
           "type": "track",
           "name": "track5",
@@ -102,15 +111,6 @@
           "y": 7,
           "angle": 0,
           "rbusAddress": 18
-        },
-        {
-          "uuid": "cc381652-47f8-44f6-a051-c18b00c94113",
-          "type": "track",
-          "name": "track8",
-          "x": 18,
-          "y": 8,
-          "angle": 0,
-          "rbusAddress": 17
         },
         {
           "uuid": "b2769593-1e3f-429b-9f39-8df742932437",
@@ -131,15 +131,6 @@
           "rbusAddress": 17
         },
         {
-          "uuid": "5d3873e4-9c7f-4c69-b40d-83c507d0b92c",
-          "type": "track",
-          "name": "track12",
-          "x": 18,
-          "y": 9,
-          "angle": 0,
-          "rbusAddress": 16
-        },
-        {
           "uuid": "71db140c-4c1f-4767-8c3c-0e9f22937645",
           "type": "track",
           "name": "track13",
@@ -156,15 +147,6 @@
           "y": 9,
           "angle": 0,
           "rbusAddress": 16
-        },
-        {
-          "uuid": "7409affd-40ed-46b3-b172-9ca51f304b4a",
-          "type": "track",
-          "name": "track16",
-          "x": 18,
-          "y": 10,
-          "angle": 0,
-          "rbusAddress": 15
         },
         {
           "uuid": "65462367-8178-4e0c-9bbf-20779a068478",
@@ -261,24 +243,6 @@
           "y": 9,
           "angle": 0,
           "rbusAddress": 13
-        },
-        {
-          "uuid": "32d1828d-2506-4dad-892f-4887071085fa",
-          "type": "track",
-          "name": "track34",
-          "x": 28,
-          "y": 9,
-          "angle": 0,
-          "rbusAddress": 13
-        },
-        {
-          "uuid": "cbf3f579-c577-44a2-9d07-5fb16e531cd2",
-          "type": "track",
-          "name": "track35",
-          "x": 28,
-          "y": 8,
-          "angle": 0,
-          "rbusAddress": 14
         },
         {
           "uuid": "36914bdf-d395-4ebc-99cc-9edc730e163c",
@@ -416,24 +380,6 @@
           "rbusAddress": 24
         },
         {
-          "uuid": "09ae6ce5-fd5f-4e17-8e54-d52380e31c1d",
-          "type": "track",
-          "name": "track57",
-          "x": 41,
-          "y": 9,
-          "angle": 0,
-          "rbusAddress": 23
-        },
-        {
-          "uuid": "55ce12b9-ffe8-40b6-8ac4-62df8b388136",
-          "type": "track",
-          "name": "track58",
-          "x": 40,
-          "y": 9,
-          "angle": 0,
-          "rbusAddress": 23
-        },
-        {
           "uuid": "f1d9bbdd-4c78-4a1d-99c2-65d889a41a73",
           "type": "track",
           "name": "track59",
@@ -501,15 +447,6 @@
           "type": "track",
           "name": "track71",
           "x": 39,
-          "y": 8,
-          "angle": 0,
-          "rbusAddress": 22
-        },
-        {
-          "uuid": "c0d3a47f-485d-436f-bfeb-143fafd97c9a",
-          "type": "track",
-          "name": "track72",
-          "x": 41,
           "y": 8,
           "angle": 0,
           "rbusAddress": 22
@@ -1219,7 +1156,7 @@
           "uuid": "e32f580b-0e52-470d-86fa-3f879e0f0992",
           "type": "routeSwitch",
           "name": "routeSwitch113",
-          "x": 32,
+          "x": 30,
           "y": 15,
           "turnouts": [
             {
@@ -1278,19 +1215,19 @@
           "uuid": "8357135e-d401-4e3a-9225-8e753cc9379f",
           "type": "label2",
           "name": "label115",
-          "x": 34,
+          "x": 31,
           "y": 15,
           "angle": 0,
-          "text": "LABEL2"
+          "text": "P4 == P2 == P3"
         },
         {
           "uuid": "6c8a8394-e4b9-4292-a01d-19b203eaff7c",
           "type": "label2",
           "name": "label116",
-          "x": 34,
+          "x": 31,
           "y": 14,
           "angle": 0,
-          "text": "LABEL3"
+          "text": "P4 == P1 == P3"
         },
         {
           "uuid": "fa4ed1cb-59b5-49f3-89c8-04c35c63648d",
@@ -1798,6 +1735,159 @@
           "y": 0,
           "angle": 0,
           "rbusAddress": 0
+        },
+        {
+          "uuid": "c6f6f04b-4889-46a1-a739-a211f37ccf4d",
+          "type": "label2",
+          "name": "label163",
+          "x": 41,
+          "y": 11,
+          "angle": 0,
+          "text": "P4"
+        },
+        {
+          "uuid": "b69f9519-a412-4f05-9990-0596de68bf03",
+          "type": "label2",
+          "name": "label164",
+          "x": 41,
+          "y": 10,
+          "angle": 0,
+          "text": "P3"
+        },
+        {
+          "uuid": "87df78af-a885-4cca-b9f1-c59d8f3b4995",
+          "type": "label2",
+          "name": "label167",
+          "x": 18,
+          "y": 7,
+          "angle": 0,
+          "text": "P1"
+        },
+        {
+          "uuid": "d4ea402b-e9fd-46af-bcc6-ac7541c62254",
+          "type": "label2",
+          "name": "label168",
+          "x": 18,
+          "y": 8,
+          "angle": 0,
+          "text": "P2"
+        },
+        {
+          "uuid": "d95a6eb8-d055-47ea-ab7f-2048b5fc958e",
+          "type": "label2",
+          "name": "label169",
+          "x": 18,
+          "y": 9,
+          "angle": 0,
+          "text": "P3"
+        },
+        {
+          "uuid": "76ea2a5e-c65e-4a8c-a1be-040be0ac344e",
+          "type": "label2",
+          "name": "label170",
+          "x": 18,
+          "y": 10,
+          "angle": 0,
+          "text": "P4"
+        },
+        {
+          "uuid": "92ff2e27-43e3-4c29-a6c3-153255b6a869",
+          "type": "label2",
+          "name": "label171",
+          "x": 29,
+          "y": 8,
+          "angle": 0,
+          "text": "P1"
+        },
+        {
+          "uuid": "537c4f0e-7e1f-442f-a90a-efb7da6a6b40",
+          "type": "label2",
+          "name": "label172",
+          "x": 29,
+          "y": 9,
+          "angle": 0,
+          "text": "P2"
+        },
+        {
+          "uuid": "d433862d-97a9-480c-9988-500840739259",
+          "type": "track",
+          "name": "track4",
+          "x": 18,
+          "y": 7,
+          "angle": 0,
+          "rbusAddress": 18
+        },
+        {
+          "uuid": "c0d3a47f-485d-436f-bfeb-143fafd97c9a",
+          "type": "track",
+          "name": "track72",
+          "x": 41,
+          "y": 8,
+          "angle": 0,
+          "rbusAddress": 22
+        },
+        {
+          "uuid": "09ae6ce5-fd5f-4e17-8e54-d52380e31c1d",
+          "type": "track",
+          "name": "track57",
+          "x": 41,
+          "y": 9,
+          "angle": 0,
+          "rbusAddress": 23
+        },
+        {
+          "uuid": "55ce12b9-ffe8-40b6-8ac4-62df8b388136",
+          "type": "track",
+          "name": "track58",
+          "x": 40,
+          "y": 9,
+          "angle": 0,
+          "rbusAddress": 23
+        },
+        {
+          "uuid": "cc381652-47f8-44f6-a051-c18b00c94113",
+          "type": "track",
+          "name": "track8",
+          "x": 18,
+          "y": 8,
+          "angle": 0,
+          "rbusAddress": 17
+        },
+        {
+          "uuid": "5d3873e4-9c7f-4c69-b40d-83c507d0b92c",
+          "type": "track",
+          "name": "track12",
+          "x": 18,
+          "y": 9,
+          "angle": 0,
+          "rbusAddress": 16
+        },
+        {
+          "uuid": "7409affd-40ed-46b3-b172-9ca51f304b4a",
+          "type": "track",
+          "name": "track16",
+          "x": 18,
+          "y": 10,
+          "angle": 0,
+          "rbusAddress": 15
+        },
+        {
+          "uuid": "cbf3f579-c577-44a2-9d07-5fb16e531cd2",
+          "type": "track",
+          "name": "track35",
+          "x": 28,
+          "y": 8,
+          "angle": 0,
+          "rbusAddress": 14
+        },
+        {
+          "uuid": "32d1828d-2506-4dad-892f-4887071085fa",
+          "type": "track",
+          "name": "track34",
+          "x": 28,
+          "y": 9,
+          "angle": 0,
+          "rbusAddress": 13
         }
       ]
     }
