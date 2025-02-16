@@ -23,7 +23,7 @@ import { commandCenters, CommandCenters } from "./commandcenters";
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import multer, { StorageEngine } from "multer";
-import { app, CC_FILE, CONFIG_FILE, DEVICES_FILE, distFolder, LOCOS_FILE, modulesFolder, PORT, rootFolder, server, SETTINGS_FILE, upload } from "./server";
+import { app, CC_FILE, CONFIG_FILE, DEVICES_FILE, DISPATCHER_FILE, distFolder, LOCOS_FILE, modulesFolder, PORT, rootFolder, server, SETTINGS_FILE, upload } from "./server";
 // import { io } from "./io";
 import { Locomanager } from "./locomanager";
 // import { DeviceManager, DEVICES_FILE } from "./devicemanager";
@@ -74,9 +74,10 @@ console.log("                FILES")
 console.log("==========================================")
 checkFile(CONFIG_FILE)
 checkFile(LOCOS_FILE)
+checkFile(SETTINGS_FILE)
+checkFile(DISPATCHER_FILE)
 checkFile(CC_FILE)
 console.log("------------------------------------------")
-
 
 process.on('SIGINT', () => {
   console.log("SIGINT")

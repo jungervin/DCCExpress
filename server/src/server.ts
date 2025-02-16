@@ -31,6 +31,7 @@ export const DEVICES_FILE = path.resolve(distFolder, "devices.json");
 export const LOCOS_FILE = path.resolve(distFolder, 'locos.json');
 export const CC_FILE = path.resolve(distFolder, 'cc.json');
 export const SETTINGS_FILE = path.resolve(distFolder, 'settings.json');
+export const DISPATCHER_FILE = path.resolve(distFolder, 'dispatcher.js');
 export const uploadDir = path.resolve(distFolder, "uploads");
 app.use("/uploads", express.static(path.resolve(distFolder, "uploads")));
 

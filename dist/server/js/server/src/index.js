@@ -77,6 +77,8 @@ console.log("                FILES");
 console.log("==========================================");
 checkFile(server_1.CONFIG_FILE);
 checkFile(server_1.LOCOS_FILE);
+checkFile(server_1.SETTINGS_FILE);
+checkFile(server_1.DISPATCHER_FILE);
 checkFile(server_1.CC_FILE);
 console.log("------------------------------------------");
 process.on('SIGINT', () => {
