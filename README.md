@@ -51,7 +51,7 @@ tsc --build
 #### To create an executable file, use the following command inside the `dist` folder:  
 
 ```sh
-pkg . --targets node18-win
+:~/DCCExpress/dist$ pkg . --targets node18-win
 ```
 
 ## 📅 Development Status
