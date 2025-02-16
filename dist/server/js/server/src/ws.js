@@ -138,11 +138,9 @@ exports.wsServer.on("connection", (ws, req) => {
                     break;
                 case dcc_1.ApiCommands.setBasicAccessory:
                     commandcenters_1.commandCenters.setBasicAccessory(data);
-                    //broadcastAll({ type: ApiCommands.response, data: "setTurnout executed" })
                     break;
                 case dcc_1.ApiCommands.getBasicAcessory:
                     commandcenters_1.commandCenters.getBasicAccessory(data);
-                    //broadcastAll({ type: ApiCommands.response, data: "getTurnout executed" })
                     break;
                 case dcc_1.ApiCommands.getRBusInfo:
                     try {
@@ -151,7 +149,6 @@ exports.wsServer.on("connection", (ws, req) => {
                     catch (error) {
                         (0, utility_1.log)("WS ApiCommands.getRBusInfo:", error);
                     }
-                    //broadcastAll({ type: ApiCommands.response, data: "setTurnout executed" })
                     break;
                 case dcc_1.ApiCommands.saveSettings:
                     try {

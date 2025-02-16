@@ -282,7 +282,7 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
         var xor = (xheader ^ db0 ^ msb ^ lsb ^ fn);
         this.put([0x0a, 0x00, 0x40, 0x00, xheader, db0, msb, lsb, fn, xor]);
         //this.put([0x0a, 0x00, 0x40, 0x00, xheader, db0, msb, lsb, fn, xor])
-        //this.LAN_X_GET_LOCO_INFO(addr)
+        this.LAN_X_GET_LOCO_INFO(addr);
     }
     LAN_X_SET_LOCO_DRIVE(addr, speedMode, forward, speed) {
         (0, utility_1.log)(`LAN_X_SET_LOCO_DRIVE(addr: ${addr}, speedMode: ${speedMode}, forward: ${forward}, speed: ${speed})`);
@@ -297,7 +297,7 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
         //this.put([0x0a, 0x00, 0x40, 0x00, xheader, db0, msb, lsb, db3, xor])
         // if (!this.locos[addr]) {
         //     this.locos[addr] == addr
-        //     this.LAN_X_GET_LOCO_INFO(addr)
+        this.LAN_X_GET_LOCO_INFO(addr);
         // }
     }
     LAN_X_GET_LOCO_INFO(addr) {
@@ -313,7 +313,9 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
         this.put([0x09, 0x00, 0x40, 0x00, xheader, db0, msb, lsb, xor]);
     }
     LAN_RMBUS_GETDATA() {
+        (0, utility_1.log)(`LAN_RMBUS_GETDATA()`);
         this.put([0x05, 0x00, 0x81, 0x00, 0x00]);
+        this.put([0x05, 0x00, 0x81, 0x00, 0x01]);
     }
     LAN_LOGOFF() {
         (0, utility_1.log)(`LAN_LOGOFF()`);

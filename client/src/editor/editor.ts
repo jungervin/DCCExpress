@@ -843,7 +843,7 @@ export class CustomCanvas extends HTMLElement {
                     this.removeIfExists(x, y)
                     this.unselectAll()
                     var tod = new TurnoutDoubleElement(getUUID(), 0, 0, x, y, "turnoutdouble" + this.views.elements.length);
-
+                    tod.showAddress = Globals.AppSettings.ShowAddress
                     tod.angle = this.cursorElement!.angle
                     // tod.cc = Globals.defaultDevice!
                     this.add(tod)
@@ -858,7 +858,7 @@ export class CustomCanvas extends HTMLElement {
                     this.removeIfExists(x, y)
                     this.unselectAll()
                     var s2 = new Signal2Element(getUUID(), 14, x, y, "turnoutleft" + this.views.elements.length);
-
+                    s2.showAddress = Globals.AppSettings.ShowAddress
                     s2.angle = this.cursorElement!.angle
                     // s2.cc = Globals.defaultDevice!
                     s2.aspect = 1
@@ -868,7 +868,7 @@ export class CustomCanvas extends HTMLElement {
                     this.removeIfExists(x, y)
                     this.unselectAll()
                     var s3 = new Signal3Element(getUUID(), 14, x, y, "turnoutleft" + this.views.elements.length);
-
+                    s3.showAddress = Globals.AppSettings.ShowAddress
                     s3.angle = this.cursorElement!.angle
                     // s3.cc = Globals.defaultDevice!
                     s3.aspect = 1
@@ -878,7 +878,7 @@ export class CustomCanvas extends HTMLElement {
                     this.removeIfExists(x, y)
                     this.unselectAll()
                     var s4 = new Signal4Element(getUUID(), 14, x, y, "turnoutleft" + this.views.elements.length);
-
+                    s4.showAddress = Globals.AppSettings.ShowAddress
                     s4.angle = this.cursorElement!.angle
                     // s4.cc = Globals.defaultDevice!
                     s4.aspect = 1

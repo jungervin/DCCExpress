@@ -320,7 +320,7 @@ export class Z21CommandCenter extends CommandCenter {
 
         this.put([0x0a, 0x00, 0x40, 0x00, xheader, db0, msb, lsb, fn, xor])
         //this.put([0x0a, 0x00, 0x40, 0x00, xheader, db0, msb, lsb, fn, xor])
-        //this.LAN_X_GET_LOCO_INFO(addr)
+        this.LAN_X_GET_LOCO_INFO(addr)
     }
 
     private LAN_X_SET_LOCO_DRIVE(addr: number, speedMode: number, forward: boolean, speed: number) {
@@ -338,7 +338,7 @@ export class Z21CommandCenter extends CommandCenter {
         // if (!this.locos[addr]) {
 
         //     this.locos[addr] == addr
-        //     this.LAN_X_GET_LOCO_INFO(addr)
+        this.LAN_X_GET_LOCO_INFO(addr)
         // }
     }
 
@@ -357,7 +357,9 @@ export class Z21CommandCenter extends CommandCenter {
     }
 
     private LAN_RMBUS_GETDATA() {
+        log(`LAN_RMBUS_GETDATA()`)
         this.put([0x05, 0x00, 0x81, 0x00, 0x00])
+        this.put([0x05, 0x00, 0x81, 0x00, 0x01])
     }
 
     private LAN_LOGOFF() {
