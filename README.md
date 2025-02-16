@@ -18,8 +18,16 @@ The dispatcher.js file allows users to write control automation scripts for mana
 (You need to edit the `DCCExpress/dist/dispatcher.js` file. 
 In the menu, reload the script by clicking on the **Dispatcher** icon.)
 
+## 🚀Quick Start Guide
+
+1. **Download the ZIP file.**  
+2. **Extract it** and navigate to the `dist` folder.  
+3. **Configure the command center settings** in the `settings.json` file (IP, port).  
+4. **Run the server** by launching `DCCExpress.exe`.  
+5. **Open your browser** and go to `127.0.0.1:3000`. 🚀
 
 ## 💻 Installation & 🚀Setup & 🚂Run 
+
 _(Installation instructions will be added as the project progresses.)_
 
 For now, you can **clone the repository** and install dependencies:
@@ -40,7 +48,11 @@ tsc --build
 cd DCCExpress/server
 tsc --build
 ```
+#### To create an executable file, use the following command inside the `dist` folder:  
 
+```sh
+pkg . --targets node18-win
+```
 
 ## 📅 Development Status
 DCCExpress is in early alpha and actively evolving.
