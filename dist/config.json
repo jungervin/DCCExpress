@@ -11,7 +11,7 @@
     "gridSizeY": 40,
     "showAddress": false,
     "locoPanelVisible": true,
-    "propertyPanelVisible": false
+    "propertyPanelVisible": true
   },
   "pages": [
     {
@@ -26,73 +26,35 @@
           "turnouts": [
             {
               "address": 12,
-              "isClosed": true,
-              "cc": {
-                "uuid": "ffb58431-8fdb-4acb-8d21-49e6cb797656",
-                "name": "z21",
-                "type": 0,
-                "isDefault": false
-              }
+              "isClosed": true
             },
             {
               "address": 13,
-              "isClosed": false,
-              "cc": {
-                "uuid": "ffb58431-8fdb-4acb-8d21-49e6cb797656",
-                "name": "z21",
-                "type": 0,
-                "isDefault": false
-              }
+              "isClosed": true
             },
             {
               "address": 16,
-              "isClosed": false,
-              "cc": {
-                "uuid": "ffb58431-8fdb-4acb-8d21-49e6cb797656",
-                "name": "z21",
-                "type": 0,
-                "isDefault": false
-              }
+              "isClosed": false
             },
             {
               "address": 20,
-              "isClosed": false,
-              "cc": {
-                "uuid": "ffb58431-8fdb-4acb-8d21-49e6cb797656",
-                "name": "z21",
-                "type": 0,
-                "isDefault": false
-              }
+              "isClosed": false
+            },
+            {
+              "address": 20,
+              "isClosed": false
             },
             {
               "address": 21,
-              "isClosed": false,
-              "cc": {
-                "uuid": "ffb58431-8fdb-4acb-8d21-49e6cb797656",
-                "name": "z21",
-                "type": 0,
-                "isDefault": false
-              }
+              "isClosed": false
             },
             {
               "address": 24,
-              "isClosed": false,
-              "cc": {
-                "uuid": "ffb58431-8fdb-4acb-8d21-49e6cb797656",
-                "name": "z21",
-                "type": 0,
-                "isDefault": false
-              }
+              "isClosed": false
             },
             {
               "address": 25,
-              "isClosed": false,
-              "cc": {
-                "uuid": "ffb58431-8fdb-4acb-8d21-49e6cb797656",
-                "name": "z21",
-                "type": 0,
-                "isDefault": false
-              }
+              "isClosed": false
             }
           ]
         },

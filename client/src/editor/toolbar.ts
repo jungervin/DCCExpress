@@ -78,8 +78,8 @@ export class Toolbar extends HTMLElement {
                     padding: 4px;
                     cursor: pointer;
                     border-radius: 5px;
-                    border: solid 1px #404040;
-                    
+                    border: solid 1px rgb(168, 168, 168);
+                    background-color: white;
                 }
                 .toolbarButton:hover {
                     background-color: #e0e0e0;
@@ -107,9 +107,8 @@ export class Toolbar extends HTMLElement {
                     }
                 }                    
                 .toolbarButton.success {
-                    background-color: lime;
-                    fill: green;
-                    
+                    background-color: rgb(0, 255, 0);
+                    fill: black;
                 }
 
                 .toolbarButton.disabled {
