@@ -25,6 +25,15 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 const p = { on: !this.powerOn };
                 ws_1.wsClient.send({ type: dcc_1.ApiCommands.setPower, data: p });
             };
+            this.toolbar.btnEmergencyStop.onclick = (e) => {
+                //wsClient.send({ type: ApiCommands.emergencyStop, data: "" } as iData)
+                if (this.powerOn) {
+                    ws_1.wsClient.send({ type: dcc_1.ApiCommands.emergencyStop, data: "" });
+                }
+                else {
+                    ws_1.wsClient.send({ type: dcc_1.ApiCommands.setPower, data: { on: true } });
+                }
+            };
             //IOConn.initialize(document.location.origin)
             // this.canvas.socket = IOConn.socket
             // this.canvas.views.socket = IOConn.socket;
@@ -314,6 +323,12 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             this.editor.draw();
         }
         powerInfo(pi) {
+            if (pi.emergencyStop) {
+                this.toolbar.btnEmergencyStop.classList.add("error");
+            }
+            else {
+                this.toolbar.btnEmergencyStop.classList.remove("error");
+            }
             switch (pi.info) {
                 case dcc_1.Z21POWERINFO.poweroff:
                     this.toolbar.btnPower.classList.remove("sucess");

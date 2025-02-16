@@ -198,7 +198,6 @@ export class CustomCanvas extends HTMLElement {
             alert("A toolbar nincs beállítva!")
         }
 
-
         document.getElementById("tbTrack")!.onclick = (e: MouseEvent) => {
             this.shapesModal!.hide()
             this.unselectAll()

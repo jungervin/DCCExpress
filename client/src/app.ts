@@ -45,6 +45,17 @@ export class App {
             wsClient.send({ type: ApiCommands.setPower, data: p } as iData)
         }
 
+        this.toolbar!.btnEmergencyStop!.onclick = (e: MouseEvent) => { 
+            //wsClient.send({ type: ApiCommands.emergencyStop, data: "" } as iData)
+
+            if (this.powerOn) {
+                wsClient.send({ type: ApiCommands.emergencyStop, data: "" } as iData)
+            } else {
+                wsClient.send({ type: ApiCommands.setPower, data: { on: true } as iSetPower } as iData)
+            }
+
+
+    }
 
         //IOConn.initialize(document.location.origin)
 
@@ -60,7 +71,7 @@ export class App {
             // wsClient.send({ type: ApiCommands.getCommandCenters, data: "" })
             wsClient.send({ type: ApiCommands.configLoad, data: "" })
             this.locoControlPanel.init()
-            wsClient.send({type: ApiCommands.getRBusInfo, data: ""})
+            wsClient.send({ type: ApiCommands.getRBusInfo, data: "" })
 
         }
         wsClient.onError = () => {
@@ -373,6 +384,15 @@ export class App {
         this.editor.draw()
     }
     powerInfo(pi: iPowerInfo) {
+
+        if (pi.emergencyStop) {
+            this.toolbar.btnEmergencyStop!.classList.add("error")
+            
+        } else {
+            this.toolbar.btnEmergencyStop!.classList.remove("error")
+        }
+
+
         switch (pi.info) {
             case Z21POWERINFO.poweroff:
                 this.toolbar.btnPower!.classList.remove("sucess")
