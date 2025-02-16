@@ -435,7 +435,7 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
             }
             this.taskId = setInterval(() => {
                 this.processBuffer();
-            }, 100);
+            }, 10);
         }
         else {
             (0, utility_1.log)("Z21 Task already started!");

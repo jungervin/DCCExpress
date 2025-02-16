@@ -498,7 +498,7 @@ export class Z21CommandCenter extends CommandCenter {
 
             this.taskId = setInterval(() => {
                 this.processBuffer()
-            }, 100)
+            }, 10)
 
         } else {
             log("Z21 Task already started!")
