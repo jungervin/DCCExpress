@@ -1,5 +1,5 @@
-import { iTurnout } from "./dcc";
+// import { iTurnout } from "./dcc";
 
-export interface IIOConnection {
-    sendTurnoutCmd(to: iTurnout): void;
-}
+// export interface IIOConnection {
+//     sendTurnoutCmd(to: iTurnout): void;
+// }
