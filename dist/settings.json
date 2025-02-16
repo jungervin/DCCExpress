@@ -5,7 +5,7 @@
     "port": 21105,
     "serialPort": "COM7",
     "turnoutActiveTime": 500,
-    "basicAccessoryDecoderActiveTime": 100
+    "basicAccessoryDecoderActiveTime": 500
   },
   "Dispacher": {
     "interval": 500

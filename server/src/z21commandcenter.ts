@@ -338,7 +338,10 @@ export class Z21CommandCenter extends CommandCenter {
         // if (!this.locos[addr]) {
 
         //     this.locos[addr] == addr
-        this.LAN_X_GET_LOCO_INFO(addr)
+        // setTimeout(() => {
+        //     this.LAN_SET_BROADCASTFLAGS()
+        //     this.LAN_X_GET_LOCO_INFO(addr)
+        // }, 10)
         // }
     }
 
@@ -438,23 +441,29 @@ export class Z21CommandCenter extends CommandCenter {
 
         if (this.buffer.length > 0) {
             log('Z21 Task Üzenet start');
+
+
+
+
+            //var data = [0x08, 0x00, 0x50, 0x00, 0x03, 0x01, 0x00, 0x00]    
             var data: any[] = []
             while (this.buffer.length > 0 && data.length < 1024) {
                 const row = this.buffer.shift()
                 log('Z21 SendMessageTask: ' + arrayToHex(row))
-
                 data = data.concat(row)
             }
+
+            
 
             this.udpClient.send(Buffer.from(data), (err, bytes) => {
                 if (err) {
                     logError("Z21 Hiba az üzenet küldésekor:", err);
                 } else {
                     log('Z21 Task Üzenet elküldve:', bytes);
+                    this.lastMessageReceivedTime = performance.now()
                 }
             })
-
-            this.lastMessageReceivedTime = performance.now()
+           
         }
 
         if (performance.now() - this.lastMessageReceivedTime > 55000) {
@@ -489,7 +498,7 @@ export class Z21CommandCenter extends CommandCenter {
 
             this.taskId = setInterval(() => {
                 this.processBuffer()
-            }, 50)
+            }, 100)
 
         } else {
             log("Z21 Task already started!")

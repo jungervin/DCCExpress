@@ -297,7 +297,10 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
         //this.put([0x0a, 0x00, 0x40, 0x00, xheader, db0, msb, lsb, db3, xor])
         // if (!this.locos[addr]) {
         //     this.locos[addr] == addr
-        this.LAN_X_GET_LOCO_INFO(addr);
+        // setTimeout(() => {
+        //     this.LAN_SET_BROADCASTFLAGS()
+        //     this.LAN_X_GET_LOCO_INFO(addr)
+        // }, 10)
         // }
     }
     LAN_X_GET_LOCO_INFO(addr) {
@@ -385,6 +388,7 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
             yield this.mutex.lock();
             if (this.buffer.length > 0) {
                 (0, utility_1.log)('Z21 Task Üzenet start');
+                //var data = [0x08, 0x00, 0x50, 0x00, 0x03, 0x01, 0x00, 0x00]    
                 var data = [];
                 while (this.buffer.length > 0 && data.length < 1024) {
                     const row = this.buffer.shift();
@@ -397,9 +401,9 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
                     }
                     else {
                         (0, utility_1.log)('Z21 Task Üzenet elküldve:', bytes);
+                        this.lastMessageReceivedTime = performance.now();
                     }
                 });
-                this.lastMessageReceivedTime = performance.now();
             }
             if (performance.now() - this.lastMessageReceivedTime > 55000) {
                 this.LAN_GET_SERIAL_NUMBER();
@@ -431,7 +435,7 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
             }
             this.taskId = setInterval(() => {
                 this.processBuffer();
-            }, 50);
+            }, 100);
         }
         else {
             (0, utility_1.log)("Z21 Task already started!");
