@@ -168,7 +168,7 @@ export class LocoControlPanel extends HTMLElement {
                     padding: 10px;
                     border-radius: 10px;
                     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-                    min-width: 400px;
+                    
                     text-align: center;
                     
                 }
@@ -196,7 +196,7 @@ export class LocoControlPanel extends HTMLElement {
                 }
 
                 .loco-item img {
-                    height: 80px;
+                    
                     height: auto;
                     margin-right: 10px;
                     border-radius: 5px;
@@ -229,6 +229,7 @@ export class LocoControlPanel extends HTMLElement {
                     justify-content: center;
                     text-align: center;
                     font-size: 2em;
+                    
                 }
 
                 #container #btnEmergency {
