@@ -5,13 +5,13 @@
   },
   "settings": {
     "scale": 1.0605981687795876,
-    "origX": -509,
-    "origY": -51,
+    "origX": -54,
+    "origY": 104,
     "gridSizeX": 40,
     "gridSizeY": 40,
     "showAddress": false,
     "locoPanelVisible": true,
-    "propertyPanelVisible": false
+    "propertyPanelVisible": true
   },
   "pages": [
     {
