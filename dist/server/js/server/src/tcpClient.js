@@ -25,8 +25,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TCPClient = void 0;
 const net = __importStar(require("net"));
+const utility_1 = require("./utility");
 class TCPClient {
-    constructor(host, port, reconnectDelay = 3000, onConnected, onData, onError) {
+    constructor(host, port, reconnectDelay = 5000, onConnected, onData, onError) {
         this.host = host;
         this.port = port;
         this.reconnectDelay = reconnectDelay;
@@ -38,7 +39,7 @@ class TCPClient {
     }
     start() {
         if (!this.isStopped) {
-            console.warn("A kliens már fut.");
+            (0, utility_1.log)("tcpClient.start() already stopped!");
             return;
         }
         this.isStopped = false;
@@ -47,23 +48,23 @@ class TCPClient {
     stop() {
         this.isStopped = true;
         this.cleanup();
-        console.log("A kliens leállt.");
+        (0, utility_1.log)("tcpClient.stop()");
     }
     send(message, callback) {
         if (this.client && !this.client.destroyed) {
-            console.log(`TCP Küldés: ${message}`);
+            (0, utility_1.log)(`TCP Küldés: ${message}`);
             //this.client.write(message + "\n");
             this.client.write(message);
         }
         else {
-            console.warn("Nincs aktív kapcsolat, nem lehet üzenetet küldeni.");
+            (0, utility_1.logError)("Nincs aktív kapcsolat, nem lehet üzenetet küldeni.");
         }
     }
     connectToServer() {
-        console.log("Csatlakozás a szerverhez...");
+        (0, utility_1.log)("tcpClient.connectToServer()");
         this.client = new net.Socket();
         this.client.connect(this.port, this.host, () => {
-            console.log(`Kapcsolat létrejött: ${this.host}:${this.port}`);
+            (0, utility_1.log)(`tcpClient Connected: ${this.host}:${this.port}`);
             //this.startKeepAlive();
             if (this.onConnected) {
                 this.onConnected();
@@ -74,12 +75,12 @@ class TCPClient {
             this.onData(message);
         });
         this.client.on("error", (err) => {
-            console.error("Hiba történt:", err.message);
+            (0, utility_1.logError)("tcpClient error:", err.message);
             this.onError(err);
             this.reconnect();
         });
         this.client.on("close", () => {
-            console.warn("Kapcsolat lezárult.");
+            (0, utility_1.log)("tcpClient close");
             this.reconnect();
         });
     }
@@ -89,14 +90,19 @@ class TCPClient {
         }
         this.cleanup();
         setTimeout(() => {
-            console.log("Újracsatlakozás próbálkozás...");
+            (0, utility_1.log)("tcpClient.reconnect()");
             this.connectToServer();
         }, this.reconnectDelay);
     }
     cleanup() {
+        (0, utility_1.log)("tcpClient.cleanup()");
         if (this.client) {
             this.client.destroy();
             this.client = null;
+            (0, utility_1.log)("tcpClient.destroy()");
+        }
+        else {
+            (0, utility_1.log)("tcpClient.cleanup() socket doesn't exists!");
         }
     }
 }
