@@ -66,7 +66,6 @@ export class DCCExCommandCenter extends CommandCenter {
         // <H id state>
         //throw new Error("Method not implemented.");
         //this.buffer.push(`<t ${address} ${closed ? DCCExTurnout.closed : DCCExTurnout.open}>`)
-
     }
 
     // 'a': // ACCESSORY <a ADDRESS SUBADDRESS ACTIVATE [ONOFF]> or <a LINEARADDRESS ACTIVATE>
