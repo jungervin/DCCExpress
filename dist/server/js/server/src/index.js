@@ -42,6 +42,8 @@ const locomanager_1 = require("./locomanager");
 // import { DeviceManager, DEVICES_FILE } from "./devicemanager";
 const ws_1 = require("./ws");
 const z21commandcenter_1 = require("./z21commandcenter");
+// import { DeviceManager } from "./devicemanager";
+const dccExTCPCommandCenter_1 = require("./dccExTCPCommandCenter");
 //  PARAMS:
 //    cc Command Center
 //    ip
@@ -114,6 +116,15 @@ try {
     }
     if (cc.CommandCenter.type == dcc_1.CommandCenterTypes.Z21) {
         commandcenters_1.commandCenters.cc = new z21commandcenter_1.Z21CommandCenter("z21", cc.CommandCenter.ip, cc.CommandCenter.port);
+        commandcenters_1.commandCenters.cc.TURNOUT_WAIT_TIME = cc.CommandCenter.turnoutActiveTime;
+        commandcenters_1.commandCenters.cc.BASICACCESSORY_WAIT_TIME = cc.CommandCenter.basicAccessoryDecoderActiveTime;
+        console.log("Z21 Command Center Registered!");
+        console.log("Z21 ip:", cc.CommandCenter.ip);
+        console.log("Z21 port:", cc.CommandCenter.port);
+        commandcenters_1.commandCenters.start();
+    }
+    else if (cc.CommandCenter.type == dcc_1.CommandCenterTypes.DCCExTCP) {
+        commandcenters_1.commandCenters.cc = new dccExTCPCommandCenter_1.DCCExTCPCommancenter("dcc-ex-tcp", cc.CommandCenter.ip, cc.CommandCenter.port);
         commandcenters_1.commandCenters.cc.TURNOUT_WAIT_TIME = cc.CommandCenter.turnoutActiveTime;
         commandcenters_1.commandCenters.cc.BASICACCESSORY_WAIT_TIME = cc.CommandCenter.basicAccessoryDecoderActiveTime;
         console.log("Z21 Command Center Registered!");

@@ -31,7 +31,7 @@ import { wsServer } from "./ws";
 import { Z21CommandCenter } from "./z21commandcenter";
 import { File, logError } from "./utility";
 // import { DeviceManager } from "./devicemanager";
-import { DCCExTCPCommancenter } from "./dccExTCPCommandCenter";
+import { DCCExTCPCommancenter as DCCExTCPCommandCenter } from "./dccExTCPCommandCenter";
 import { log } from "console";
 import { exit } from "process";
 
@@ -120,6 +120,15 @@ try {
   if (cc.CommandCenter.type == CommandCenterTypes.Z21) {
     
     commandCenters.cc = new Z21CommandCenter("z21", cc.CommandCenter.ip, cc.CommandCenter.port)
+    commandCenters.cc.TURNOUT_WAIT_TIME = cc.CommandCenter.turnoutActiveTime
+    commandCenters.cc.BASICACCESSORY_WAIT_TIME = cc.CommandCenter.basicAccessoryDecoderActiveTime
+    console.log("Z21 Command Center Registered!")
+    console.log("Z21 ip:", cc.CommandCenter.ip)
+    console.log("Z21 port:", cc.CommandCenter.port)
+    commandCenters.start()
+  }
+  else if(cc.CommandCenter.type == CommandCenterTypes.DCCExTCP) {
+    commandCenters.cc = new DCCExTCPCommandCenter("dcc-ex-tcp", cc.CommandCenter.ip, cc.CommandCenter.port)
     commandCenters.cc.TURNOUT_WAIT_TIME = cc.CommandCenter.turnoutActiveTime
     commandCenters.cc.BASICACCESSORY_WAIT_TIME = cc.CommandCenter.basicAccessoryDecoderActiveTime
     console.log("Z21 Command Center Registered!")
