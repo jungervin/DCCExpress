@@ -6,7 +6,7 @@ import { broadcastAll } from "./ws";
 export class DCCExTCPCommancenter extends DCCExCommandCenter {
   ip: string;
   port: number;
-  aliveTask?: NodeJS.Timeout;
+  // aliveTask?: NodeJS.Timeout;
   mainTask?: NodeJS.Timeout;
   tcpClient: TCPClient
   lastSentTime: number = 0;
@@ -69,7 +69,7 @@ export class DCCExTCPCommancenter extends DCCExCommandCenter {
     this.mainTask = setInterval(() => {
       this.processBuffer();
       if (performance.now() - this.lastSentTime > 5000) {
-        this.send("<#>");
+        this.put("<#>");
       }
     }, this.MAIN_TASK_INTERVAL);
   }
@@ -79,10 +79,10 @@ export class DCCExTCPCommancenter extends DCCExCommandCenter {
       clearInterval(this.mainTask);
       this.mainTask = undefined;
     }
-    if (this.aliveTask) {
-      clearInterval(this.aliveTask);
-      this.aliveTask = undefined;
-    }
+    // if (this.aliveTask) {
+    //   clearInterval(this.aliveTask);
+    //   this.aliveTask = undefined;
+    // }
 
     if (this.tcpClient) {
       this.tcpClient.stop()

@@ -2,8 +2,8 @@ import * as net from "net";
 
 export class TCPClient {
     private client: net.Socket | null = null;
-    private keepAliveInterval: NodeJS.Timeout | null = null;
-    private isRunning: boolean = false;
+    //private keepAliveInterval: NodeJS.Timeout | null = null;
+    private isStopped: boolean = false;
 
     constructor(
         private host: string,
@@ -16,16 +16,16 @@ export class TCPClient {
     ) {}
 
     public start() {
-        if (this.isRunning) {
+        if (!this.isStopped) {
             console.warn("A kliens már fut.");
             return;
         }
-        this.isRunning = true;
+        this.isStopped = false;
         this.connectToServer();
     }
 
     public stop() {
-        this.isRunning = false;
+        this.isStopped = true;
         this.cleanup();
         console.log("A kliens leállt.");
     }
@@ -47,7 +47,7 @@ export class TCPClient {
 
         this.client.connect(this.port, this.host, () => {
             console.log(`Kapcsolat létrejött: ${this.host}:${this.port}`);
-            this.startKeepAlive();
+            //this.startKeepAlive();
             if(this.onConnected) {
                 this.onConnected()
             }
@@ -71,21 +71,21 @@ export class TCPClient {
         });
     }
 
-    private startKeepAlive() {
-        if (this.keepAliveInterval) {
-            clearInterval(this.keepAliveInterval);
-        }
+    // private startKeepAlive() {
+    //     if (this.keepAliveInterval) {
+    //         clearInterval(this.keepAliveInterval);
+    //     }
 
-        this.keepAliveInterval = setInterval(() => {
-            if (this.client && !this.client.destroyed) {
-                console.log("Keep-alive küldése: <#>");
-                this.client.write("<#>\n");
-            }
-        }, this.keepAliveIntervalMs);
-    }
+    //     this.keepAliveInterval = setInterval(() => {
+    //         if (this.client && !this.client.destroyed) {
+    //             console.log("Keep-alive küldése: <#>");
+    //             this.client.write("<#>\n");
+    //         }
+    //     }, this.keepAliveIntervalMs);
+    // }
 
     private reconnect() {
-        if (!this.isRunning) return; // Ha a kliens le van állítva, ne próbáljon újracsatlakozni
+        if (!this.isStopped) return; // Ha a kliens le van állítva, ne próbáljon újracsatlakozni
 
         this.cleanup();
 
@@ -96,10 +96,10 @@ export class TCPClient {
     }
 
     private cleanup() {
-        if (this.keepAliveInterval) {
-            clearInterval(this.keepAliveInterval);
-            this.keepAliveInterval = null;
-        }
+        // if (this.keepAliveInterval) {
+        //     clearInterval(this.keepAliveInterval);
+        //     this.keepAliveInterval = null;
+        // }
 
         if (this.client) {
             this.client.destroy();
