@@ -13,6 +13,11 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
         this.power = false;
         this._data = "";
     }
+    put(msg) {
+        // Mutex??
+        (0, console_1.log)(`DCCEx ${this.name} put: ${msg}`);
+        this.buffer.push(msg);
+    }
     getConnectionString() {
         throw new Error("Method not implemented.");
     }
@@ -20,27 +25,27 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     // turnouts: { [address: number]: iTurnoutInfo; };
     trackPower(on) {
         (0, console_1.log)("DCCEx ", `trackPower(${on})`);
-        this.buffer.push('<p>');
+        this.put(on ? '<1>' : '<0>');
     }
     emergenyStop(stop) {
-        (0, console_1.log)("DCCEx ", `emergenyStop(${stop})`);
-        this.buffer.push('<p>');
+        this.put('<!>');
     }
     setLocoFunction(address, fn, on) {
         // <F cab funct state> - Turn loco decoder functions ON or OFF
         // 6 Response: <l cab reg speedByte functMap>
         //throw new Error("Method not implemented.");
+        this.put(`<F ${address} ${fn} ${on ? 1 : 0}`);
     }
     clientConnected() {
         //throw new Error("Method not implemented.");
     }
     getLoco(address) {
         // <t cab>
-        this.buffer.push(`<t ${address}>`);
+        this.put(`<t ${address}>`);
     }
     setLoco(address, speed, direction) {
         // <t cab speed dir>
-        this.buffer.push(`<t ${address} ${speed} ${direction}>`);
+        this.put(`<t ${address} ${speed} ${direction}>`);
     }
     start() {
         this._data = "";
@@ -50,9 +55,7 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     }
     setTurnout(address, closed) {
         // <T id state>
-        var msg = `<T ${address} ${closed ? dcc_1.DCCExTurnout.closed : dcc_1.DCCExTurnout.open}>`;
-        console.log("DCCEx setTurnout:", msg);
-        this.buffer.push(msg);
+        this.put(`<T ${address} ${closed ? dcc_1.DCCExTurnout.closed : dcc_1.DCCExTurnout.open}>`);
     }
     getTurnout(address) {
         // <H id state>
@@ -63,7 +66,6 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     setAccessoryDecoder(address, on) {
         dcc_1.accessories[address] = { address: address, value: on };
         var msg = `<a ${address} ${on ? 1 : 0}>`;
-        console.log("setAccessoryDecoder:", msg);
         this.buffer.push(msg);
         // Accessory
         const turnoutInfo = { address: address, isClosed: on };
@@ -71,16 +73,12 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     }
     getAccessoryDecoder(address) {
         const a = dcc_1.accessories[address];
-        //throw new Error("Method not implemented.");
-        this.buffer.push(`<t ${address} ${closed ? dcc_1.DCCExTurnout.closed : dcc_1.DCCExTurnout.open}>`);
     }
     getRBusInfo() {
         //throw new Error("Method not implemented.");
-        //        this.buffer.push(`<t ${address} ${closed ? DCCExTurnout.closed : DCCExTurnout.open}>`)
     }
     getSystemState() {
         //throw new Error("Method not implemented.");
-        //      this.buffer.push(`<t ${address} ${closed ? DCCExTurnout.closed : DCCExTurnout.open}>`)
     }
     parse(data) {
         console.log("DCCEx Parse:", data);
