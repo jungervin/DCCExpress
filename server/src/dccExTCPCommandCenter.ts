@@ -51,9 +51,9 @@ export class DCCExTCPCommancenter extends DCCExCommandCenter {
             console.log("tcpClient.write Error:", err);
             broadcastAll({ type: ApiCommands.UnsuccessfulOperation, data: "DCCEx TCP processBuffer()" })
           } else {
-            this.lastSentTime = performance.now()
           }
         });
+        this.lastSentTime = performance.now()
       }
     }
   }
@@ -68,7 +68,7 @@ export class DCCExTCPCommancenter extends DCCExCommandCenter {
 
     this.mainTask = setInterval(() => {
       this.processBuffer();
-      if (performance.now() - this.lastSentTime > 5000) {
+      if ((performance.now() - this.lastSentTime) > 5000) {
         this.put("<#>");
       }
     }, this.MAIN_TASK_INTERVAL);

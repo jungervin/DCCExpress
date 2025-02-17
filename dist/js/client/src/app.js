@@ -333,10 +333,12 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 case dcc_1.Z21POWERINFO.poweroff:
                     this.toolbar.btnPower.classList.remove("sucess");
                     this.toolbar.btnPower.classList.add("error");
+                    this.powerOn = false;
                     break;
                 case dcc_1.Z21POWERINFO.poweron:
                     this.toolbar.btnPower.classList.remove("error");
                     this.toolbar.btnPower.classList.add("success");
+                    this.powerOn = true;
                     break;
                 case dcc_1.Z21POWERINFO.programmingmode:
                     break;
@@ -344,6 +346,10 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                     this.toolbar.btnPower.classList.remove("sucess");
                     this.toolbar.btnPower.classList.add("error");
                     break;
+            }
+            if (this.prevPower != this.powerOn) {
+                window.powerChanged(this.powerOn);
+                this.prevPower = this.powerOn;
             }
         }
     }

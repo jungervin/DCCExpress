@@ -1,6 +1,6 @@
 {
   "dispatcher": {
-    "active": true,
+    "active": false,
     "interval": 500
   },
   "settings": {

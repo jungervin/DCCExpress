@@ -1,8 +1,11 @@
 {
   "CommandCenter": {
-    "type": 0,
-    "ip": "192.168.1.70",
-    "port": 21105,
+    "type2": 0,
+    "ip2": "192.168.1.70",
+    "port2": 21105,
+    "type": 1,
+    "ip": "192.168.1.137",
+    "port": 2560,
     "serialPort": "COM7",
     "turnoutActiveTime": 500,
     "basicAccessoryDecoderActiveTime": 500

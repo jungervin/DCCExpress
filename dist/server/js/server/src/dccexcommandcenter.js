@@ -1,17 +1,29 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DCCExCommandCenter = void 0;
-const console_1 = require("console");
 const dcc_1 = require("../../common/src/dcc");
 const commandcenter_1 = require("./commandcenter");
+const utility_1 = require("./utility");
 const ws_1 = require("./ws");
 class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     constructor(name) {
         super(name);
-        // type: CommandCenterTypes | undefined;
         this.buffer = [];
         this.power = false;
         this._data = "";
+        this.powerInfo = {
+            info: 0b00000010,
+            emergencyStop: false,
+            trackVoltageOff: true,
+            shortCircuit: false,
+            programmingModeActive: false,
+            //cc: z21
+        };
+    }
+    put(msg) {
+        // Mutex??
+        (0, utility_1.log)(`DCCEx ${this.name} put: ${msg}`);
+        this.buffer.push(msg);
     }
     getConnectionString() {
         throw new Error("Method not implemented.");
@@ -19,28 +31,34 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     // locos: { [address: number]: number; };
     // turnouts: { [address: number]: iTurnoutInfo; };
     trackPower(on) {
-        (0, console_1.log)("DCCEx ", `trackPower(${on})`);
-        this.buffer.push('<p>');
+        (0, utility_1.log)("DCCEx ", `trackPower(${on})`);
+        this.put(on ? '<1>' : '<0>');
     }
     emergenyStop(stop) {
-        (0, console_1.log)("DCCEx ", `emergenyStop(${stop})`);
-        this.buffer.push('<p>');
+        this.put('<!>');
     }
     setLocoFunction(address, fn, on) {
         // <F cab funct state> - Turn loco decoder functions ON or OFF
         // 6 Response: <l cab reg speedByte functMap>
         //throw new Error("Method not implemented.");
+        this.put(`<F ${address} ${fn} ${on ? 1 : 0}`);
     }
     clientConnected() {
         //throw new Error("Method not implemented.");
+        this.powerInfo.info = this.power ? 0b00000001 : 0b00000000;
+        this.powerInfo.trackVoltageOff = !this.power;
+        (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.powerInfo, data: this.powerInfo });
     }
     getLoco(address) {
         // <t cab>
-        this.buffer.push(`<t ${address}>`);
+        this.put(`<t ${address}>`);
     }
     setLoco(address, speed, direction) {
         // <t cab speed dir>
-        this.buffer.push(`<t ${address} ${speed} ${direction}>`);
+        if (speed > 126) {
+            speed = 126;
+        }
+        this.put(`<t ${address} ${speed} ${direction}>`);
     }
     start() {
         this._data = "";
@@ -49,34 +67,29 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
         //throw new Error("Method not implemented.");
     }
     setTurnout(address, closed) {
-        // <T id state>
-        var msg = `<T ${address} ${closed ? dcc_1.DCCExTurnout.closed : dcc_1.DCCExTurnout.open}>`;
-        console.log("DCCEx setTurnout:", msg);
-        this.buffer.push(msg);
+        this.put(`<T ${address} ${closed ? dcc_1.DCCExTurnout.closed : dcc_1.DCCExTurnout.open}>`);
     }
     getTurnout(address) {
-        // <H id state>
-        //throw new Error("Method not implemented.");
-        //this.buffer.push(`<t ${address} ${closed ? DCCExTurnout.closed : DCCExTurnout.open}>`)
+        this.put(`<T ${address} X>`);
     }
+    // 'a': // ACCESSORY <a ADDRESS SUBADDRESS ACTIVATE [ONOFF]> or <a LINEARADDRESS ACTIVATE>
     setAccessoryDecoder(address, on) {
         dcc_1.accessories[address] = { address: address, value: on };
-        var msg = `<a ${address} ${on ? 1 : 0}>`;
-        console.log("setAccessoryDecoder:", msg);
-        this.buffer.push(msg);
+        var msg = `<a ${address} ${(on ? 1 : 0)}>`;
+        this.put(msg);
+        // Accessory
+        const turnoutInfo = { address: address, isClosed: on };
+        (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.turnoutInfo, data: turnoutInfo });
+        (0, utility_1.log)('setAccessoryDecoder() BROADCAST ', turnoutInfo);
     }
     getAccessoryDecoder(address) {
         const a = dcc_1.accessories[address];
-        //throw new Error("Method not implemented.");
-        this.buffer.push(`<t ${address} ${closed ? dcc_1.DCCExTurnout.closed : dcc_1.DCCExTurnout.open}>`);
     }
     getRBusInfo() {
         //throw new Error("Method not implemented.");
-        //        this.buffer.push(`<t ${address} ${closed ? DCCExTurnout.closed : DCCExTurnout.open}>`)
     }
     getSystemState() {
         //throw new Error("Method not implemented.");
-        //      this.buffer.push(`<t ${address} ${closed ? DCCExTurnout.closed : DCCExTurnout.open}>`)
     }
     parse(data) {
         console.log("DCCEx Parse:", data);
@@ -85,53 +98,89 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
         }
         if (data.startsWith('p1')) {
             this.power = true;
-            //io.emit("resPower", true)
+            // const sysdata: iSystemStatus = {
+            //     MainCurrent: 0,
+            //     ProgCurrent: 0,
+            //     FilteredMainCurrent: 0,
+            //     Temperature: 0,
+            //     SupplyVoltage: 0,
+            //     VCCVoltage: 0,
+            //     CentralState: 0b0010_1111,
+            //     CentralStateEx: 0,
+            //     Reserved: 0,
+            //     Capabilities: 0,
+            // }
+            // broadcastAll({ type: ApiCommands.systemInfo, data: sysdata } as iData)
+            this.powerInfo.info = 0b00000001;
+            this.powerInfo.trackVoltageOff = false;
+            //const pi: iPowerInfo = { info: data.readUInt8(5), cc: commandCenters.getDevice(this.uuid) }
+            (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.powerInfo, data: this.powerInfo });
         }
         else if (data.startsWith('p0')) {
             this.power = false;
-            //io.emit("resPower", false)
+            this.powerInfo.info = 0b00000000;
+            this.powerInfo.trackVoltageOff = true;
+            (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.powerInfo, data: this.powerInfo });
+            // const sysdata: iSystemStatus = {
+            //     MainCurrent: 0,
+            //     ProgCurrent: 0,
+            //     FilteredMainCurrent: 0,
+            //     Temperature: 0,
+            //     SupplyVoltage: 0,
+            //     VCCVoltage: 0,
+            //     CentralState: 0,
+            //     CentralStateEx: 0,
+            //     Reserved: 0,
+            //     Capabilities: 0,
+            // }
+            // broadcastAll({ type: ApiCommands.systemInfo, data: sysdata } as iData)
         }
         else if (data.startsWith("Q ")) {
             var params = data.replace(">", "").split(" ");
             console.log('tcpClient Data: processSensor');
-            var addr = parseInt(params[1]);
+            var address = parseInt(params[1]);
         }
         else if (data.startsWith("q ")) {
             var params = data.replace(">", "").split(" ");
-            var addr = parseInt(params[1]);
+            var address = parseInt(params[1]);
             //processSensor(addr);
             //var sensor = getSensor(addr)
         }
         else if (data.startsWith('l')) {
             console.log("TCP Rec:", data);
             var items = data.split(" ");
-            var addr = parseInt(items[1]);
+            var address = parseInt(items[1]);
             var speedByte = parseInt(items[3]);
             var funcMap = parseInt(items[4]);
-            var loco = dcc_1.locos[addr]; // this.getLoco(addr)
-            if (loco) {
+            var direction = dcc_1.DCCExDirections.forward;
+            //var loco = locos[address] // this.getLoco(addr)
+            //if (loco) 
+            {
                 var newSpeed = 0;
-                loco.funcMap = funcMap;
+                //loco.funcMap = funcMap
                 if ((speedByte >= 2) && (speedByte <= 127)) {
                     newSpeed = speedByte - 1;
-                    loco.direction = dcc_1.DCCExDirections.reverse;
+                    direction = dcc_1.DCCExDirections.reverse;
                 }
                 else if ((speedByte >= 130) && (speedByte <= 255)) {
                     newSpeed = speedByte - 129;
-                    loco.direction = dcc_1.DCCExDirections.forward;
+                    direction = dcc_1.DCCExDirections.forward;
                 }
                 else if (speedByte == 0) {
                     newSpeed = 0;
-                    loco.direction = dcc_1.DCCExDirections.reverse;
+                    direction = dcc_1.DCCExDirections.reverse;
                 }
                 else if (speedByte == 128) {
                     newSpeed = 0;
-                    loco.direction = dcc_1.DCCExDirections.forward;
+                    direction = dcc_1.DCCExDirections.forward;
                 }
                 else {
                     //loco.speed = 0;
                 }
-                loco.speed = newSpeed;
+                //loco.speed = newSpeed
+                var loco = { address: address, speed: newSpeed, direction: direction, funcMap: funcMap };
+                (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.locoInfo, data: loco });
+                (0, utility_1.log)("BROADCAST DCC-EX LOCO INFO:", loco);
                 // for (var i = 0; i <= 28; i++) {
                 //     var func = loco.functions.find(f => f.index == i)
                 //     if (func) {
@@ -142,22 +191,10 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
         }
         else if (data.startsWith('H')) {
             var items = data.split(" ");
-            var addr = parseInt(items[1]);
+            var address = parseInt(items[1]);
             var closed = parseInt(items[2]);
-            var t = { address: addr, isClosed: closed == 0 };
+            var t = { address: address, isClosed: closed == 0 };
             (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.turnoutInfo, data: t });
-            // var lines = data.split("\n")
-            // lines.forEach((item) => {
-            //     var items = item.trim().replace(">", "").split(" ")
-            //     var addr = parseInt(items[1])
-            //     var closed = parseInt(items[2])
-            //     var to = turnouts[addr] // this.getTurnout(addr)
-            //     if (to) {
-            //         to.isClosed = closed == 0
-            //         //console.log("EMIT turnoutEvent:", to)
-            //         //io.emit("turnoutEvent", to)
-            //     }
-            // })
         }
         else if (data == "X") {
             console.log("A művelet nem sikerült!");
@@ -166,7 +203,7 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
         }
     }
     connected() {
-        this.buffer.push('<T>');
+        this.put('<T>');
     }
     received(buffer) {
         var msg = buffer.toString();

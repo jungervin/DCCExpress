@@ -40,9 +40,9 @@ class DCCExTCPCommancenter extends dccExCommandCenter_1.DCCExCommandCenter {
                         (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.UnsuccessfulOperation, data: "DCCEx TCP processBuffer()" });
                     }
                     else {
-                        this.lastSentTime = performance.now();
                     }
                 });
+                this.lastSentTime = performance.now();
             }
         }
     }
@@ -56,7 +56,7 @@ class DCCExTCPCommancenter extends dccExCommandCenter_1.DCCExCommandCenter {
         }
         this.mainTask = setInterval(() => {
             this.processBuffer();
-            if (performance.now() - this.lastSentTime > 5000) {
+            if ((performance.now() - this.lastSentTime) > 5000) {
                 this.put("<#>");
             }
         }, this.MAIN_TASK_INTERVAL);
