@@ -26,35 +26,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TCPClient = void 0;
 const net = __importStar(require("net"));
 class TCPClient {
-    constructor(host, port, reconnectDelay = 3000, keepAliveIntervalMs = 5000, onConnected, onData, onError) {
+    constructor(host, port, reconnectDelay = 3000, onConnected, onData, onError) {
         this.host = host;
         this.port = port;
         this.reconnectDelay = reconnectDelay;
-        this.keepAliveIntervalMs = keepAliveIntervalMs;
         this.onConnected = onConnected;
         this.onData = onData;
         this.onError = onError;
         this.client = null;
-        this.keepAliveInterval = null;
-        this.isRunning = false;
+        this.isStopped = true;
     }
     start() {
-        if (this.isRunning) {
+        if (!this.isStopped) {
             console.warn("A kliens már fut.");
             return;
         }
-        this.isRunning = true;
+        this.isStopped = false;
         this.connectToServer();
     }
     stop() {
-        this.isRunning = false;
+        this.isStopped = true;
         this.cleanup();
         console.log("A kliens leállt.");
     }
     send(message, callback) {
         if (this.client && !this.client.destroyed) {
-            console.log(`Küldés: ${message}`);
-            this.client.write(message + "\n");
+            console.log(`TCP Küldés: ${message}`);
+            //this.client.write(message + "\n");
+            this.client.write(message);
         }
         else {
             console.warn("Nincs aktív kapcsolat, nem lehet üzenetet küldeni.");
@@ -65,19 +64,18 @@ class TCPClient {
         this.client = new net.Socket();
         this.client.connect(this.port, this.host, () => {
             console.log(`Kapcsolat létrejött: ${this.host}:${this.port}`);
-            this.startKeepAlive();
+            //this.startKeepAlive();
             if (this.onConnected) {
                 this.onConnected();
             }
         });
         this.client.on("data", (data) => {
             const message = data.toString().trim();
-            //console.log("Fogadott adat:", message);
-            this.onData(message); // Callback hívása
+            this.onData(message);
         });
         this.client.on("error", (err) => {
             console.error("Hiba történt:", err.message);
-            this.onError(err); // Hiba callback hívása
+            this.onError(err);
             this.reconnect();
         });
         this.client.on("close", () => {
@@ -85,20 +83,10 @@ class TCPClient {
             this.reconnect();
         });
     }
-    startKeepAlive() {
-        if (this.keepAliveInterval) {
-            clearInterval(this.keepAliveInterval);
-        }
-        this.keepAliveInterval = setInterval(() => {
-            if (this.client && !this.client.destroyed) {
-                console.log("Keep-alive küldése: <#>");
-                this.client.write("<#>\n");
-            }
-        }, this.keepAliveIntervalMs);
-    }
     reconnect() {
-        if (!this.isRunning)
-            return; // Ha a kliens le van állítva, ne próbáljon újracsatlakozni
+        if (this.isStopped) {
+            return;
+        }
         this.cleanup();
         setTimeout(() => {
             console.log("Újracsatlakozás próbálkozás...");
@@ -106,10 +94,6 @@ class TCPClient {
         }, this.reconnectDelay);
     }
     cleanup() {
-        if (this.keepAliveInterval) {
-            clearInterval(this.keepAliveInterval);
-            this.keepAliveInterval = null;
-        }
         if (this.client) {
             this.client.destroy();
             this.client = null;

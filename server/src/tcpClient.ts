@@ -8,7 +8,6 @@ export class TCPClient {
         private host: string,
         private port: number,
         private reconnectDelay: number = 3000,
-        private keepAliveIntervalMs: number = 5000,
         private onConnected: () => void,
         private onData: (data: any) => void ,
         private onError: (error: Error) => void

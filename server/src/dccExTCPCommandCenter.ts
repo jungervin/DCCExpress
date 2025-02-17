@@ -17,7 +17,7 @@ export class DCCExTCPCommancenter extends DCCExCommandCenter {
     super(name);
     this.ip = ip;
     this.port = port;
-    this.tcpClient = new TCPClient(ip, port, 5000, 5000,
+    this.tcpClient = new TCPClient(ip, port, 5000,
       this.connected.bind(this),
       this.received.bind(this),
       this.error.bind(this))

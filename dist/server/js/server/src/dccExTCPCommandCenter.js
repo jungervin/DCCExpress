@@ -1,15 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DCCExTCPCommancenter = void 0;
+const dcc_1 = require("../../common/src/dcc");
 const dccExCommandCenter_1 = require("./dccExCommandCenter");
 const tcpClient_1 = require("./tcpClient");
+const ws_1 = require("./ws");
 class DCCExTCPCommancenter extends dccExCommandCenter_1.DCCExCommandCenter {
     constructor(name, ip, port) {
         super(name);
         this.lastSentTime = 0;
+        this.MAIN_TASK_INTERVAL = 50;
         this.ip = ip;
         this.port = port;
-        this.tcpClient = new tcpClient_1.TCPClient(ip, port, 5000, 5000, this.connected.bind(this), this.received.bind(this), this.error.bind(this));
+        this.tcpClient = new tcpClient_1.TCPClient(ip, port, 5000, this.connected.bind(this), this.received.bind(this), this.error.bind(this));
     }
     getConnectionString() {
         return "tcp://" + this.ip + ":" + this.port;
@@ -22,16 +25,24 @@ class DCCExTCPCommancenter extends dccExCommandCenter_1.DCCExCommandCenter {
             console.log("DCCEx TCP Command Center Buffer is Full! size:", this.buffer.length);
         }
     }
-    write() {
+    processBuffer() {
         if (this.tcpClient) {
             if (this.buffer.length > 0) {
-                const msg = this.buffer.shift();
-                this.tcpClient.send(msg, (err) => {
+                var data = "";
+                var i = 0;
+                while (this.buffer.length > 0 && i < 10) {
+                    data += this.buffer.shift();
+                    i++;
+                }
+                this.tcpClient.send(data, (err) => {
                     if (err) {
                         console.log("tcpClient.write Error:", err);
+                        (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.UnsuccessfulOperation, data: "DCCEx TCP processBuffer()" });
+                    }
+                    else {
+                        this.lastSentTime = performance.now();
                     }
                 });
-                this.lastSentTime = performance.now();
             }
         }
     }
@@ -44,22 +55,21 @@ class DCCExTCPCommancenter extends dccExCommandCenter_1.DCCExCommandCenter {
             this.tcpClient.start();
         }
         this.mainTask = setInterval(() => {
-            this.write();
+            this.processBuffer();
             if (performance.now() - this.lastSentTime > 5000) {
-                this.lastSentTime = performance.now();
-                this.send("<#>");
+                this.put("<#>");
             }
-        }, 100);
+        }, this.MAIN_TASK_INTERVAL);
     }
     stop() {
         if (this.mainTask) {
             clearInterval(this.mainTask);
             this.mainTask = undefined;
         }
-        if (this.aliveTask) {
-            clearInterval(this.aliveTask);
-            this.aliveTask = undefined;
-        }
+        // if (this.aliveTask) {
+        //   clearInterval(this.aliveTask);
+        //   this.aliveTask = undefined;
+        // }
         if (this.tcpClient) {
             this.tcpClient.stop();
         }
