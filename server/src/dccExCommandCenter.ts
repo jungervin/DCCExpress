@@ -1,7 +1,6 @@
 import { log } from "console";
-import { accessories, ApiCommands, CommandCenterTypes, DCCExDirections, DCCExTurnout, iData, iLoco, iLocoData, iSetBasicAccessory, iTurnoutInfo, locos, turnouts, Z21Directions } from "../../common/src/dcc";
+import { accessories, ApiCommands, DCCExDirections, DCCExTurnout, iData, iLoco, iSetBasicAccessory, iTurnoutInfo, locos, turnouts, Z21Directions } from "../../common/src/dcc";
 import { CommandCenter } from "./commandcenter";
-import { commandCenters } from "./commandcenters";
 import { broadcastAll } from "./ws";
 
 export class DCCExCommandCenter extends CommandCenter {
@@ -73,6 +72,11 @@ export class DCCExCommandCenter extends CommandCenter {
         var msg = `<a ${address} ${on ? 1 : 0}>`
         console.log("setAccessoryDecoder:", msg)
         this.buffer.push(msg)
+
+        // Accessory
+        const turnoutInfo: iTurnoutInfo = { address: address, isClosed: on }
+        broadcastAll({ type: ApiCommands.turnoutInfo, data: turnoutInfo } as iData)
+
     }
     getAccessoryDecoder(address: number): void {
         const a = accessories[address];
