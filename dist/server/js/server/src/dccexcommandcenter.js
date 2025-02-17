@@ -1,28 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DCCExCommandCenter = void 0;
+const console_1 = require("console");
 const dcc_1 = require("../../common/src/dcc");
 const commandcenter_1 = require("./commandcenter");
-const utility_1 = require("./utility");
 const ws_1 = require("./ws");
 class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     constructor(name) {
         super(name);
+        // type: CommandCenterTypes | undefined;
         this.buffer = [];
         this.power = false;
         this._data = "";
-        this.powerInfo = {
-            info: 0b00000010,
-            emergencyStop: false,
-            trackVoltageOff: true,
-            shortCircuit: false,
-            programmingModeActive: false,
-            //cc: z21
-        };
     }
     put(msg) {
         // Mutex??
-        (0, utility_1.log)(`DCCEx ${this.name} put: ${msg}`);
+        (0, console_1.log)(`DCCEx ${this.name} put: ${msg}`);
         this.buffer.push(msg);
     }
     getConnectionString() {
@@ -31,7 +24,7 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     // locos: { [address: number]: number; };
     // turnouts: { [address: number]: iTurnoutInfo; };
     trackPower(on) {
-        (0, utility_1.log)("DCCEx ", `trackPower(${on})`);
+        (0, console_1.log)("DCCEx ", `trackPower(${on})`);
         this.put(on ? '<1>' : '<0>');
     }
     emergenyStop(stop) {
@@ -45,9 +38,6 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     }
     clientConnected() {
         //throw new Error("Method not implemented.");
-        this.powerInfo.info = this.power ? 0b00000001 : 0b00000000;
-        this.powerInfo.trackVoltageOff = !this.power;
-        (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.powerInfo, data: this.powerInfo });
     }
     getLoco(address) {
         // <t cab>
@@ -55,9 +45,6 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     }
     setLoco(address, speed, direction) {
         // <t cab speed dir>
-        if (speed > 126) {
-            speed = 126;
-        }
         this.put(`<t ${address} ${speed} ${direction}>`);
     }
     start() {
@@ -75,12 +62,11 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     // 'a': // ACCESSORY <a ADDRESS SUBADDRESS ACTIVATE [ONOFF]> or <a LINEARADDRESS ACTIVATE>
     setAccessoryDecoder(address, on) {
         dcc_1.accessories[address] = { address: address, value: on };
-        var msg = `<a ${address} ${(on ? 1 : 0)}>`;
-        this.put(msg);
+        var msg = `<a ${address} ${on ? 1 : 0}>`;
+        this.buffer.push(msg);
         // Accessory
         const turnoutInfo = { address: address, isClosed: on };
         (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.turnoutInfo, data: turnoutInfo });
-        (0, utility_1.log)('setAccessoryDecoder() BROADCAST ', turnoutInfo);
     }
     getAccessoryDecoder(address) {
         const a = dcc_1.accessories[address];
@@ -98,42 +84,11 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
         }
         if (data.startsWith('p1')) {
             this.power = true;
-            // const sysdata: iSystemStatus = {
-            //     MainCurrent: 0,
-            //     ProgCurrent: 0,
-            //     FilteredMainCurrent: 0,
-            //     Temperature: 0,
-            //     SupplyVoltage: 0,
-            //     VCCVoltage: 0,
-            //     CentralState: 0b0010_1111,
-            //     CentralStateEx: 0,
-            //     Reserved: 0,
-            //     Capabilities: 0,
-            // }
-            // broadcastAll({ type: ApiCommands.systemInfo, data: sysdata } as iData)
-            this.powerInfo.info = 0b00000001;
-            this.powerInfo.trackVoltageOff = false;
-            //const pi: iPowerInfo = { info: data.readUInt8(5), cc: commandCenters.getDevice(this.uuid) }
-            (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.powerInfo, data: this.powerInfo });
+            //io.emit("resPower", true)
         }
         else if (data.startsWith('p0')) {
             this.power = false;
-            this.powerInfo.info = 0b00000000;
-            this.powerInfo.trackVoltageOff = true;
-            (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.powerInfo, data: this.powerInfo });
-            // const sysdata: iSystemStatus = {
-            //     MainCurrent: 0,
-            //     ProgCurrent: 0,
-            //     FilteredMainCurrent: 0,
-            //     Temperature: 0,
-            //     SupplyVoltage: 0,
-            //     VCCVoltage: 0,
-            //     CentralState: 0,
-            //     CentralStateEx: 0,
-            //     Reserved: 0,
-            //     Capabilities: 0,
-            // }
-            // broadcastAll({ type: ApiCommands.systemInfo, data: sysdata } as iData)
+            //io.emit("resPower", false)
         }
         else if (data.startsWith("Q ")) {
             var params = data.replace(">", "").split(" ");
@@ -180,7 +135,7 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
                 //loco.speed = newSpeed
                 var loco = { address: address, speed: newSpeed, direction: direction, funcMap: funcMap };
                 (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.locoInfo, data: loco });
-                (0, utility_1.log)("BROADCAST DCC-EX LOCO INFO:", loco);
+                (0, console_1.log)("BROADCAST Z21 LOCO INFO:", loco);
                 // for (var i = 0; i <= 28; i++) {
                 //     var func = loco.functions.find(f => f.index == i)
                 //     if (func) {
@@ -203,7 +158,7 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
         }
     }
     connected() {
-        this.put('<T>');
+        this.buffer.push('<T>');
     }
     received(buffer) {
         var msg = buffer.toString();
