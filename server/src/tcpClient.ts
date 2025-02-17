@@ -2,8 +2,7 @@ import * as net from "net";
 
 export class TCPClient {
     private client: net.Socket | null = null;
-    //private keepAliveInterval: NodeJS.Timeout | null = null;
-    private isStopped: boolean = false;
+    private isStopped: boolean = true;
 
     constructor(
         private host: string,
@@ -55,13 +54,12 @@ export class TCPClient {
 
         this.client.on("data", (data) => {
             const message = data.toString().trim();
-            //console.log("Fogadott adat:", message);
-            this.onData(message); // Callback hívása
+            this.onData(message); 
         });
 
         this.client.on("error", (err) => {
             console.error("Hiba történt:", err.message);
-            this.onError(err); // Hiba callback hívása
+            this.onError(err); 
             this.reconnect();
         });
 
@@ -71,21 +69,10 @@ export class TCPClient {
         });
     }
 
-    // private startKeepAlive() {
-    //     if (this.keepAliveInterval) {
-    //         clearInterval(this.keepAliveInterval);
-    //     }
-
-    //     this.keepAliveInterval = setInterval(() => {
-    //         if (this.client && !this.client.destroyed) {
-    //             console.log("Keep-alive küldése: <#>");
-    //             this.client.write("<#>\n");
-    //         }
-    //     }, this.keepAliveIntervalMs);
-    // }
-
     private reconnect() {
-        if (!this.isStopped) return; // Ha a kliens le van állítva, ne próbáljon újracsatlakozni
+        if (this.isStopped) {
+            return
+        }
 
         this.cleanup();
 
@@ -96,11 +83,6 @@ export class TCPClient {
     }
 
     private cleanup() {
-        // if (this.keepAliveInterval) {
-        //     clearInterval(this.keepAliveInterval);
-        //     this.keepAliveInterval = null;
-        // }
-
         if (this.client) {
             this.client.destroy();
             this.client = null;
