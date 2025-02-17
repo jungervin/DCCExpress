@@ -1,5 +1,4 @@
 "use strict";
-// import * as net from 'net';
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -25,82 +24,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TCPClient = void 0;
-// export class TCPClient {
-//     private client: net.Socket;
-//     private receivedCallback: (data: Buffer) => void;
-//     host: string;
-//     port: number;
-//     stopped: boolean = false;
-//     constructor(host: string, port: number, receivedCallback: (data: any) => void) {
-//         this.receivedCallback = receivedCallback;
-//         this.host = host
-//         this.port = port
-//         this.client = new net.Socket();
-//         this.client.setTimeout(1000);
-//         // Csatlakozás a szerverhez
-//         // Adat fogadása
-//         this.client.on('data', (data) => {
-//             this.receivedCallback(data);
-//         });
-//         // Hibakezelés
-//         this.client.on('error', (err) => {
-//             console.error('Hiba történt:', err.message);
-//             this.connect()
-//         });
-//         // Kapcsolat bezárása
-//         this.client.on('close', () => {
-//             console.log('Kapcsolat bezárva');
-//             this.connect()
-//         });
-//     }
-//     // Adat küldése
-//     public send(data: string, callback: (error: Error) => void): void {
-//         this.client.write(data, (err?: Error) => {
-//             if (err && callback) {
-//                 callback(err)
-//                 this.connect()
-//             }
-//         });
-//     }
-//     // Kapcsolat bezárása
-//     public connect() {
-//         if (!this.stopped && this.client.closed) {
-//             this.client.connect(this.port, this.host, () => {
-//                 console.log(`Csatlakozva a szerverhez: ${this.host}:${this.port}`);
-//             });
-//         } else {
-//             console.log(`Stopped a szerverhez: ${this.host}:${this.port}`);
-//         }
-//     }
-//     public close(): void {
-//         if (!this.client.closed) {
-//             //this.client.destroy();
-//         }
-//     }
-//     start() {
-//         this.stopped = false
-//         this.connect()
-//     }
-//     stop() {
-//         this.stopped = true;
-//         this.close();
-//     }
-// }
-// // // Példa használat
-// // const host = '127.0.0.1'; // Szerver IP címe
-// // const port = 12345;       // Szerver portja
-// // // A received metódus, amit megadhatsz
-// // const receivedCallback = (data: Buffer) => {
-// //     console.log('Fogadott adat:', data.toString());
-// // };
-// // // TCP kliens létrehozása
-// // const client = new TCPClient(host, port, receivedCallback);
-// // // Adat küldése
-// // client.send('Hello, szerver!');
-// // // Kapcsolat bezárása (opcionális)
-// // setTimeout(() => {
-// //     client.close();
-// // }, 5000);
 const net = __importStar(require("net"));
 class TCPClient {
     constructor(host, port, reconnectDelay = 3000, keepAliveIntervalMs = 5000, onConnected, onData, onError) {
@@ -194,22 +117,4 @@ class TCPClient {
     }
 }
 exports.TCPClient = TCPClient;
-// // Használat
-// const client = new TCPClient(
-//     "127.0.0.1",
-//     1234,
-//     3000, // Újracsatlakozás késleltetése (ms)
-//     5000, // Keep-alive intervallum (ms)
-//     (data) => console.log("📩 Callback - Fogadott adat:", data), // Adat fogadás
-//     (error) => console.error("❌ Callback - Hiba történt:", error.message) // Hiba kezelése
-// );
-// client.start();
-// // Példa üzenet küldésére 3 másodperc múlva
-// setTimeout(() => {
-//     client.send("Hello, Server!");
-// }, 3000);
-// // Példa: 30 másodperc múlva állítsuk le
-// setTimeout(() => {
-//     client.stop();
-// }, 30000);
 //# sourceMappingURL=tcpClient.js.map

@@ -7,61 +7,6 @@ import { config } from "process";
 import { log, logError } from "./utility";
 export const wsServer = new WebSocketServer({ server, path: "/ws" });
 
-// export class WSConn {
-//     ws: WebSocketServer;
-//     constructor(ws: WebSocketServer) {
-//         this.ws = ws
-//         this.ws.on("connection", (ws) => {
-//             console.log("WebSocket client connected.");
-//             ws.on("message", (message) => {
-//                 try {
-//                     // Üzenet JSON formátumú feldolgozása
-//                     const parsedMessage = JSON.parse(message.toString());
-//                     const { type, data } = parsedMessage;
-
-//                     // Események kezelése
-//                     switch (type) {
-//                         case "command1":
-//                             console.log("Command1 received:", data);
-//                             // Példa: Válasz küldése
-//                             ws.send(JSON.stringify({ type: "response", data: "Command1 executed" }));
-//                             break;
-
-//                         case "command2":
-//                             console.log("Command2 received:", data);
-//                             ws.send(JSON.stringify({ type: "response", data: "Command2 executed" }));
-//                             break;
-
-//                         default:
-//                             console.log("Unknown command:", type);
-//                             ws.send(JSON.stringify({ type: "error", data: "Unknown command" }));
-//                             break;
-//                     }
-//                 } catch (err) {
-//                     console.error("Invalid message format:", message);
-//                     ws.send(JSON.stringify({ type: "error", data: "Invalid message format" }));
-//                 }
-//             });
-
-//             ws.on("close", () => {
-//                 console.log("WebSocket client disconnected.");
-//             });
-//         });
-
-//     }
-
-//     getLoco(addr: number) {
-//         var l = locos[addr]
-//         var d: iLocoData = {type: ApiCommands.getLoco, data: l}
-//         this.ws.emit(JSON.stringify(d))
-//     }
-
-//     setLoco(l: iLoco) {
-
-//     }
-// }
-
-
 export function broadcastAll(msg: iData) {
     wsServer.clients.forEach(client => {
         // && client !== sender

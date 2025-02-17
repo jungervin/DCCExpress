@@ -197,17 +197,3 @@ export class Dispatcher {
         console.log("⏹ Script leállítva.");
     }
 }
-
-// // Példa App objektum
-// const App = {
-//     log: (message: string) => console.log("App log:", message),
-//     sum: (a: number, b: number) => a + b,
-// };
-
-// // Példa script futtatása, amelyet 2 másodpercenként hívunk meg
-// Dispatcher.start("example.js", 2000);
-
-// // 10 másodperc múlva leállítja a scriptet
-// setTimeout(() => {
-//     Dispatcher.stop();
-// }, 10000);

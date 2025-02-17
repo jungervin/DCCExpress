@@ -113,7 +113,6 @@ define(["require", "exports"], function (require, exports) {
         }
     }
     exports.DecoderDialog = DecoderDialog;
-    // Példa használatra
     const decoderManager = new DecoderManager();
     const decoderDialog = new DecoderDialog(decoderManager);
     document.addEventListener("DOMContentLoaded", () => {

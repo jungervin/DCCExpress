@@ -119,17 +119,17 @@ try {
         commandcenters_1.commandCenters.cc.TURNOUT_WAIT_TIME = cc.CommandCenter.turnoutActiveTime;
         commandcenters_1.commandCenters.cc.BASICACCESSORY_WAIT_TIME = cc.CommandCenter.basicAccessoryDecoderActiveTime;
         console.log("Z21 Command Center Registered!");
-        console.log("Z21 ip:", cc.CommandCenter.ip);
-        console.log("Z21 port:", cc.CommandCenter.port);
+        console.log("IP:", cc.CommandCenter.ip);
+        console.log("Port:", cc.CommandCenter.port);
         commandcenters_1.commandCenters.start();
     }
     else if (cc.CommandCenter.type == dcc_1.CommandCenterTypes.DCCExTCP) {
         commandcenters_1.commandCenters.cc = new dccExTCPCommandCenter_1.DCCExTCPCommancenter("dcc-ex-tcp", cc.CommandCenter.ip, cc.CommandCenter.port);
         commandcenters_1.commandCenters.cc.TURNOUT_WAIT_TIME = cc.CommandCenter.turnoutActiveTime;
         commandcenters_1.commandCenters.cc.BASICACCESSORY_WAIT_TIME = cc.CommandCenter.basicAccessoryDecoderActiveTime;
-        console.log("Z21 Command Center Registered!");
-        console.log("Z21 ip:", cc.CommandCenter.ip);
-        console.log("Z21 port:", cc.CommandCenter.port);
+        console.log("ECCEx TCP Command Center Registered!");
+        console.log("IP:", cc.CommandCenter.ip);
+        console.log("Port:", cc.CommandCenter.port);
         commandcenters_1.commandCenters.start();
     }
 }

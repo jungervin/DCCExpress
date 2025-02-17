@@ -140,7 +140,6 @@ export class DecoderDialog {
     }
 }
 
-// Példa használatra
 const decoderManager = new DecoderManager();
 const decoderDialog = new DecoderDialog(decoderManager);
 

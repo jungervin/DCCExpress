@@ -60,10 +60,5 @@ define(["require", "exports", "../../../common/src/dcc"], function (require, exp
             console.log("Processing message:", message);
         }
     }
-    // Példa használatra
     exports.wsClient = new WebSocketClient();
 });
-// // Üzenet küldése
-// setTimeout(() => {
-//     wsClient.send({ type: ApiCommands.Turnouts, data: "Hello from client!" });
-// }, 3000);

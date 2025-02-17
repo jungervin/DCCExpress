@@ -418,11 +418,3 @@ export class App {
     }
 
 }
-
-
-
-
-
-// Példa a használatra
-
-

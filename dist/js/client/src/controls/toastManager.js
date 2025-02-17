@@ -22,7 +22,6 @@ define(["require", "exports"], function (require, exports) {
         }
     }
     exports.ToastManager = ToastManager;
-    // Példa használat
     exports.toastManager = new ToastManager();
     exports.toastManager.showToast("Started!");
 });

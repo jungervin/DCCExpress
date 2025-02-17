@@ -59,6 +59,7 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
         //throw new Error("Method not implemented.");
         //this.buffer.push(`<t ${address} ${closed ? DCCExTurnout.closed : DCCExTurnout.open}>`)
     }
+    // 'a': // ACCESSORY <a ADDRESS SUBADDRESS ACTIVATE [ONOFF]> or <a LINEARADDRESS ACTIVATE>
     setAccessoryDecoder(address, on) {
         dcc_1.accessories[address] = { address: address, value: on };
         var msg = `<a ${address} ${on ? 1 : 0}>`;

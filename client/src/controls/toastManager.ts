@@ -23,6 +23,6 @@ export class ToastManager {
     }
 }
 
-// Példa használat
+
 export const toastManager = new ToastManager();
 toastManager.showToast("Started!");

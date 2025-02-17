@@ -73,10 +73,5 @@ class WebSocketClient {
     }
 }
 
-// Példa használatra
-export const wsClient = new WebSocketClient();
 
-// // Üzenet küldése
-// setTimeout(() => {
-//     wsClient.send({ type: ApiCommands.Turnouts, data: "Hello from client!" });
-// }, 3000);
+export const wsClient = new WebSocketClient();

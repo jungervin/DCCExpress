@@ -367,7 +367,5 @@ define(["require", "exports"], function (require, exports) {
             });
         }
     }
-    // Példa használat
-    //const serverUrl = "http://192.168.1.42:3000"; // A szerver címe
     const manager = new LocomotiveManager("table-container");
 });
