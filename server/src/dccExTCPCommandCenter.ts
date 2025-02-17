@@ -49,8 +49,6 @@ export class DCCExTCPCommancenter extends DCCExCommandCenter {
     console.log("DCCEx TCP Error:", err)
   }
   start() {
-
-    //return;
     this.stop();
     if (this.tcpClient) {
       this.tcpClient.start();

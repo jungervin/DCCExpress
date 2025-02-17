@@ -204,25 +204,3 @@ export class TCPClient {
 
     }
 }
-
-// // Használat
-// const client = new TCPClient(
-//     "127.0.0.1",
-//     1234,
-//     3000, // Újracsatlakozás késleltetése (ms)
-//     5000, // Keep-alive intervallum (ms)
-//     (data) => console.log("📩 Callback - Fogadott adat:", data), // Adat fogadás
-//     (error) => console.error("❌ Callback - Hiba történt:", error.message) // Hiba kezelése
-// );
-
-// client.start();
-
-// // Példa üzenet küldésére 3 másodperc múlva
-// setTimeout(() => {
-//     client.send("Hello, Server!");
-// }, 3000);
-
-// // Példa: 30 másodperc múlva állítsuk le
-// setTimeout(() => {
-//     client.stop();
-// }, 30000);
