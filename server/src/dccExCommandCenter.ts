@@ -85,8 +85,6 @@ export class DCCExCommandCenter extends CommandCenter {
         //throw new Error("Method not implemented.");
     }
 
-   
-
     parse(data: string) {
         console.log("DCCEx Parse:", data)
         if (data != "# 50") {

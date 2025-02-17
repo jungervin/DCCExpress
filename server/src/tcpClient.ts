@@ -32,8 +32,9 @@ export class TCPClient {
 
     public send(message: string, callback: (err?: Error) => void) {
         if (this.client && !this.client.destroyed) {
-            console.log(`Küldés: ${message}`);
-            this.client.write(message + "\n");
+            console.log(`TCP Küldés: ${message}`);
+            //this.client.write(message + "\n");
+            this.client.write(message);
         } else {
             console.warn("Nincs aktív kapcsolat, nem lehet üzenetet küldeni.");
         }

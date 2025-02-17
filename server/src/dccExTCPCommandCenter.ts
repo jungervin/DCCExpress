@@ -1,5 +1,7 @@
+import { ApiCommands } from "../../common/src/dcc";
 import { DCCExCommandCenter } from "./dccExCommandCenter";
 import { TCPClient } from "./tcpClient";
+import { broadcastAll } from "./ws";
 
 export class DCCExTCPCommancenter extends DCCExCommandCenter {
   ip: string;
@@ -8,6 +10,7 @@ export class DCCExTCPCommancenter extends DCCExCommandCenter {
   mainTask?: NodeJS.Timeout;
   tcpClient: TCPClient
   lastSentTime: number = 0;
+  MAIN_TASK_INTERVAL: number = 50;
 
 
   constructor(name: string, ip: string, port: number) {
@@ -32,16 +35,25 @@ export class DCCExTCPCommancenter extends DCCExCommandCenter {
     }
   }
 
-  write() {
+  processBuffer() {
     if (this.tcpClient) {
       if (this.buffer.length > 0) {
-        const msg = this.buffer.shift() as string;
-        this.tcpClient.send(msg, (err?: Error) => {
+        var data = ""
+        var i = 0
+
+        while (this.buffer.length > 0 && i < 10) {
+          data += this.buffer.shift()
+          i++
+        }
+
+        this.tcpClient.send(data, (err?: Error) => {
           if (err) {
             console.log("tcpClient.write Error:", err);
+            broadcastAll({ type: ApiCommands.UnsuccessfulOperation, data: "DCCEx TCP processBuffer()" })
+          } else {
+            this.lastSentTime = performance.now()
           }
         });
-        this.lastSentTime = performance.now();
       }
     }
   }
@@ -55,12 +67,11 @@ export class DCCExTCPCommancenter extends DCCExCommandCenter {
     }
 
     this.mainTask = setInterval(() => {
-      this.write();
+      this.processBuffer();
       if (performance.now() - this.lastSentTime > 5000) {
-        this.lastSentTime = performance.now()
         this.send("<#>");
       }
-    }, 100);
+    }, this.MAIN_TASK_INTERVAL);
   }
 
   stop() {
