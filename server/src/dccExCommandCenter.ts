@@ -1,10 +1,9 @@
-import { log } from "console";
 import { accessories, ApiCommands, DCCExDirections, DCCExTurnout, iData, iLoco, iSetBasicAccessory, iTurnoutInfo, locos, turnouts, Z21Directions } from "../../common/src/dcc";
 import { CommandCenter } from "./commandcenter";
+import { log } from "./utility";
 import { broadcastAll } from "./ws";
 
 export class DCCExCommandCenter extends CommandCenter {
-    // type: CommandCenterTypes | undefined;
     buffer: string[] = []
     power: boolean = false;
     private _data: string = ""
