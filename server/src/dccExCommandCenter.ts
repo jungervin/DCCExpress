@@ -66,6 +66,8 @@ export class DCCExCommandCenter extends CommandCenter {
         //this.buffer.push(`<t ${address} ${closed ? DCCExTurnout.closed : DCCExTurnout.open}>`)
 
     }
+
+    // 'a': // ACCESSORY <a ADDRESS SUBADDRESS ACTIVATE [ONOFF]> or <a LINEARADDRESS ACTIVATE>
     setAccessoryDecoder(address: number, on: boolean): void {
         accessories[address] = { address: address, value: on } as iSetBasicAccessory
         var msg = `<a ${address} ${on ? 1 : 0}>`
