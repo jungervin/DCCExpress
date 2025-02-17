@@ -59,13 +59,10 @@ export class DCCExCommandCenter extends CommandCenter {
         //throw new Error("Method not implemented.");
     }
     setTurnout(address: number, closed: boolean): void {
-        // <T id state>
         this.put(`<T ${address} ${closed ? DCCExTurnout.closed : DCCExTurnout.open}>`)
     }
     getTurnout(address: number): void {
-        // <H id state>
-        //throw new Error("Method not implemented.");
-        //this.buffer.push(`<t ${address} ${closed ? DCCExTurnout.closed : DCCExTurnout.open}>`)
+        this.put(`<T ${address} X>`)
     }
 
     // 'a': // ACCESSORY <a ADDRESS SUBADDRESS ACTIVATE [ONOFF]> or <a LINEARADDRESS ACTIVATE>
