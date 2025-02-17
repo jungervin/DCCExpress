@@ -147,7 +147,6 @@ export class Z21CommandCenter extends CommandCenter {
                 var f = (db8 << 29) | (db7 << 21) | (db6 << 13) | (db5 << 5) | f0
 
                 var loco: iLoco = { address: address, speed: speed, direction: direction, funcMap: f }
-
                 broadcastAll({ type: ApiCommands.locoInfo, data: loco } as iData)
                 log("BROADCAST Z21 LOCO INFO:", loco)
             }

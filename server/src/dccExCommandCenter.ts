@@ -1,5 +1,5 @@
 import { log } from "console";
-import { accessories, ApiCommands, CommandCenterTypes, DCCExDirections, DCCExTurnout, iData, iLoco, iSetBasicAccessory, iTurnoutInfo, locos, turnouts, Z21Directions } from "../../common/src/dcc";
+import { accessories, ApiCommands, CommandCenterTypes, DCCExDirections, DCCExTurnout, iData, iLoco, iLocoData, iSetBasicAccessory, iTurnoutInfo, locos, turnouts, Z21Directions } from "../../common/src/dcc";
 import { CommandCenter } from "./commandcenter";
 import { commandCenters } from "./commandcenters";
 import { broadcastAll } from "./ws";
@@ -107,11 +107,11 @@ export class DCCExCommandCenter extends CommandCenter {
         else if (data.startsWith("Q ")) {
             var params = data.replace(">", "").split(" ");
             console.log('tcpClient Data: processSensor');
-            var addr = parseInt(params[1])
+            var address = parseInt(params[1])
         }
         else if (data.startsWith("q ")) {
             var params = data.replace(">", "").split(" ");
-            var addr = parseInt(params[1])
+            var address = parseInt(params[1])
             //processSensor(addr);
             //var sensor = getSensor(addr)
         }
@@ -119,36 +119,41 @@ export class DCCExCommandCenter extends CommandCenter {
             console.log("TCP Rec:", data)
 
             var items = data.split(" ")
-            var addr = parseInt(items[1])
+            var address = parseInt(items[1])
             var speedByte = parseInt(items[3]);
             var funcMap = parseInt(items[4]);
+            var direction: DCCExDirections = DCCExDirections.forward
+            //var loco = locos[address] // this.getLoco(addr)
 
-            var loco = locos[addr] // this.getLoco(addr)
-
-            if (loco) {
+            //if (loco) 
+            {
                 var newSpeed = 0
-                loco.funcMap = funcMap
+                //loco.funcMap = funcMap
                 if ((speedByte >= 2) && (speedByte <= 127)) {
                     newSpeed = speedByte - 1;
-                    loco.direction = DCCExDirections.reverse;
+                    direction = DCCExDirections.reverse;
                 }
                 else if ((speedByte >= 130) && (speedByte <= 255)) {
                     newSpeed = speedByte - 129;
-                    loco.direction = DCCExDirections.forward;
+                    direction = DCCExDirections.forward;
                 }
                 else if (speedByte == 0) {
                     newSpeed = 0;
-                    loco.direction = DCCExDirections.reverse;
+                    direction = DCCExDirections.reverse;
                 }
                 else if (speedByte == 128) {
                     newSpeed = 0;
-                    loco.direction = DCCExDirections.forward;
+                    direction = DCCExDirections.forward;
                 } else {
                     //loco.speed = 0;
                 }
 
-                loco.speed = newSpeed
+                //loco.speed = newSpeed
 
+                var loco: iLoco = { address: address, speed: newSpeed, direction: direction, funcMap: funcMap }
+                broadcastAll({ type: ApiCommands.locoInfo, data: loco } as iData)
+                log("BROADCAST Z21 LOCO INFO:", loco)
+                
                 // for (var i = 0; i <= 28; i++) {
                 //     var func = loco.functions.find(f => f.index == i)
                 //     if (func) {
@@ -160,23 +165,11 @@ export class DCCExCommandCenter extends CommandCenter {
         }
         else if (data.startsWith('H')) {
                 var items = data.split(" ")
-                var addr = parseInt(items[1])
+                var address = parseInt(items[1])
                 var closed = parseInt(items[2])
 
-            var t : iTurnoutInfo = {address: addr,  isClosed: closed == 0}
+            var t : iTurnoutInfo = {address: address,  isClosed: closed == 0}
             broadcastAll({type: ApiCommands.turnoutInfo, data: t} as iData)
-            // var lines = data.split("\n")
-            // lines.forEach((item) => {
-            //     var items = item.trim().replace(">", "").split(" ")
-            //     var addr = parseInt(items[1])
-            //     var closed = parseInt(items[2])
-            //     var to = turnouts[addr] // this.getTurnout(addr)
-            //     if (to) {
-            //         to.isClosed = closed == 0
-            //         //console.log("EMIT turnoutEvent:", to)
-            //         //io.emit("turnoutEvent", to)
-            //     }
-            // })
         } else if (data == "X") {
             console.log("A művelet nem sikerült!")
             var d: iData = { type: ApiCommands.UnsuccessfulOperation, data: "DCCEx Unsuccessful Operation!" }
