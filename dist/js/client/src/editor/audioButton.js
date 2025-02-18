@@ -18,7 +18,7 @@ define(["require", "exports", "./view"], function (require, exports, view_1) {
             const audio = this.activeAudios.get(filename);
             if (audio) {
                 audio.pause();
-                audio.currentTime = 0; // Visszaállítás elejére
+                audio.currentTime = 0;
                 this.activeAudios.delete(filename);
             }
         }
@@ -34,6 +34,7 @@ define(["require", "exports", "./view"], function (require, exports, view_1) {
     class AudioButtonShapeElement extends view_1.View {
         constructor(uuid, x, y, name) {
             super(uuid, x, y, name);
+            this._filename = "";
         }
         get type() {
             return 'audiobutton';
@@ -42,15 +43,41 @@ define(["require", "exports", "./view"], function (require, exports, view_1) {
             const p = 5; // padding
             ctx.save();
             ctx.strokeRect(this.posLeft + p, this.posTop + p, this.width - 2 * p, this.height - 2 * p);
+            const x = this.posLeft + 3;
+            const y = this.posTop + 3;
+            const size = 35;
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.scale(size / 24, size / 24);
+            ctx.beginPath();
+            ctx.moveTo(5, 9);
+            ctx.lineTo(5, 15);
+            ctx.lineTo(9, 15);
+            ctx.lineTo(14, 20);
+            ctx.lineTo(14, 4);
+            ctx.lineTo(9, 9);
+            ctx.closePath();
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(15, 12, 3, Math.PI / -2, Math.PI / 2); // Körív létrehozása a hangerőhöz
+            ctx.fill();
             ctx.restore();
             super.draw(ctx);
         }
-        mouseDown(e) {
+        play() {
             if (this.filename) {
                 audioManager.play(this.filename);
+            }
+        }
+        mouseDown(e) {
+            if (this.filename) {
+                this.play();
                 if (this.mouseDownHandler) {
                     this.mouseDownHandler(this);
                 }
+            }
+            else {
+                console.log("audio filename doesnt exists!");
             }
         }
         get filename() {

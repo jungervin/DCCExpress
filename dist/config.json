@@ -4,9 +4,9 @@
     "interval": 500
   },
   "settings": {
-    "scale": 1.0605981687795876,
-    "origX": -54,
-    "origY": 104,
+    "scale": 0.7134806557659963,
+    "origX": 125,
+    "origY": 35,
     "gridSizeX": 40,
     "gridSizeY": 40,
     "showAddress": false,
@@ -1888,6 +1888,23 @@
           "y": 9,
           "angle": 0,
           "rbusAddress": 13
+        },
+        {
+          "uuid": "8c79e536-364f-448c-a48c-42241915d313",
+          "type": "audiobutton",
+          "x": 25,
+          "y": 14,
+          "name": "audiobutton173",
+          "filename": "sig.mp3"
+        },
+        {
+          "uuid": "3eb3b969-4c20-4ec2-bc27-440895349ea3",
+          "type": "label2",
+          "name": "label174",
+          "x": 26,
+          "y": 14,
+          "angle": 0,
+          "text": "MÁV SZIGNÁL"
         }
       ]
     }

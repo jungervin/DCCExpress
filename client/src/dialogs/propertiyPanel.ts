@@ -18,6 +18,8 @@ import { Signal2PropertiesElement, Signal3PropertiesElement, Signal4PropertiesEl
 import { TurnoutLeftCanvasElement } from "../components/canvasElement";
 import { LabelPropertiesElement } from "../components/labelPropertiesElement";
 import { Label2Element } from "../editor/label";
+import { AudioButtonPropertiesElement } from "../components/audioButtonPropetiesElement";
+import { AudioButtonShapeElement } from "../editor/audioButton";
 
 console.log(TurnoutLeftPropertiesElement)
 console.log(RouteListElementProperties)
@@ -27,6 +29,7 @@ console.log(LabelPropertiesElement)
 console.log(LocomotiveComboBox)
 console.log(Signal2PropertiesElement)
 console.log(TurnoutLeftCanvasElement)
+console.log(AudioButtonPropertiesElement)
 
 export class PropertyPanel extends HTMLElement {
 
@@ -45,7 +48,7 @@ export class PropertyPanel extends HTMLElement {
     trackPropertiesElement: TrackPropertiesElement;
     turnoutDoublePropertiesElement: TurnoutDoublePropertiesElement;
     routeListElementProperties: RouteListElementProperties;
-    
+    audioButtonPropertiesElement: AudioButtonPropertiesElement;
 
     constructor() {
         super()
@@ -139,6 +142,7 @@ export class PropertyPanel extends HTMLElement {
         this.turnoutRightPropertiesElement = document.createElement("turnout-right-properties-element") as TurnoutRightPropertiesElement
         this.turnoutDoublePropertiesElement = document.createElement("turnout-double-properties-element") as TurnoutDoublePropertiesElement
         this.routeListElementProperties = document.createElement('route-list-element-properties') as RouteListElementProperties
+        this.audioButtonPropertiesElement = document.createElement('audio-button-properties-element') as AudioButtonPropertiesElement
     }
 
     private open() {
@@ -202,6 +206,10 @@ export class PropertyPanel extends HTMLElement {
             else if (Object.getPrototypeOf(v) == Label2Element.prototype) {
                 this.container.appendChild(this.labelPropertiesElement)
                 this.labelPropertiesElement.setLabel(this.selectedObject as Label2Element)
+            }
+            else if (Object.getPrototypeOf(v) == AudioButtonShapeElement.prototype) {
+                this.container.appendChild(this.audioButtonPropertiesElement)
+                this.audioButtonPropertiesElement.setButton(this.selectedObject as AudioButtonShapeElement)
             }
             else if (Object.getPrototypeOf(v) == TrackElement.prototype) {
                 this.container.appendChild(this.trackPropertiesElement)

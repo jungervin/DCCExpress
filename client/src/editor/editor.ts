@@ -3,7 +3,7 @@ import { TrackElement } from "./track";
 import { RectangleElement } from "./rectangle";
 import { Toolbar } from "./toolbar";
 import { TurnoutDoubleElement, TurnoutElement, TurnoutLeftElement, TurnoutRightElement } from "./turnout";
-import {  RailView, View, RailStates } from "./view";
+import { RailView, View, RailStates } from "./view";
 import { Views } from "./views";
 import * as bootstrap from "bootstrap";
 import { TrackCurveElement } from "./curve";
@@ -29,6 +29,7 @@ import { CodeEditor } from "../dialogs/codeEditor";
 import { Dispatcher } from "./dispatcher";
 import { LocoControlPanel } from "../components/controlPanel";
 import { ButtonShapeElement } from "./button";
+import { AudioButtonShapeElement } from "./audioButton";
 
 console.log(PropertyPanel)
 
@@ -52,6 +53,7 @@ export enum drawModes {
     block,
     label2,
     button,
+    audiobutton,
 }
 
 export class CustomCanvas extends HTMLElement {
@@ -103,6 +105,7 @@ export class CustomCanvas extends HTMLElement {
     globalY: number = 0;
     cursorLabel2Element?: Label2Element;
     locoControlPanel?: LocoControlPanel;
+    cursorAudioButtonElement?: AudioButtonShapeElement;
 
     constructor() {
         super();
@@ -177,6 +180,8 @@ export class CustomCanvas extends HTMLElement {
 
         this.cursorButtonElement = new ButtonShapeElement("", 0, 0, 0, "cursor");
         this.cursorButtonElement.isSelected = true;
+        this.cursorAudioButtonElement = new AudioButtonShapeElement("", 0, 0, "cursor");
+        this.cursorAudioButtonElement.isSelected = true;
 
         // this.cursorSignal5Element = new Signal5Element("", 10, 0, 0, "cursor");
         // this.cursorSignal5Element.isSelected = true
@@ -278,6 +283,15 @@ export class CustomCanvas extends HTMLElement {
             this.cursorElement = this.cursorButtonElement!
             this.cursorElement!.draw(this.ctx!)
         }
+
+        document.getElementById("tbAudioButton")!.onclick = (e: MouseEvent) => {
+            this.shapesModal!.hide()
+            this.unselectAll()
+            this.drawMode = drawModes.audiobutton
+            this.cursorElement = this.cursorAudioButtonElement!
+            this.cursorElement!.draw(this.ctx!)
+        }
+
 
 
         document.getElementById("tbBlock")!.onclick = (e: MouseEvent) => {
@@ -449,7 +463,7 @@ export class CustomCanvas extends HTMLElement {
                     //settings.GridSizeY = d.gridSize.value
                     Globals.AppSettings.ShowAddress = d.showAddress.checked
                     Globals.ServerSettings.Dispacher.interval = d.intervalElement.value
-                    wsClient.send({type: ApiCommands.saveSettings, data: Globals.ServerSettings})
+                    wsClient.send({ type: ApiCommands.saveSettings, data: Globals.ServerSettings })
                     this.showAddresses(Globals.AppSettings.ShowAddress)
                 }
             }
@@ -897,6 +911,12 @@ export class CustomCanvas extends HTMLElement {
                     //b.angle = this.cursorElement!.angle
                     this.add(btn)
                     break;
+                case drawModes.audiobutton:
+                    this.removeIfExists(x, y)
+                    this.unselectAll()
+                    var abtn = new AudioButtonShapeElement(getUUID(), x, y, "audiobutton" + this.views.elements.length);
+                    this.add(abtn)
+                    break;
                 case drawModes.label2:
                     //this.removeIfExists(x, y)
                     this.unselectAll()
@@ -1283,6 +1303,10 @@ export class CustomCanvas extends HTMLElement {
                     var b = elem as ButtonShapeElement
                     elems.push({ uuid: b.UUID, type: b.type, address: b.address, x: b.x, y: b.y, name: b.name })
                     break;
+                case 'audiobutton':
+                    var ab = elem as AudioButtonShapeElement
+                    elems.push({ uuid: ab.UUID, type: ab.type, x: ab.x, y: ab.y, name: ab.name, filename: ab.filename })
+                    break;
 
 
             }
@@ -1478,6 +1502,11 @@ export class CustomCanvas extends HTMLElement {
                     case "button":
                         var b = new ButtonShapeElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
                         this.add(b)
+                        break;
+                    case "audiobutton":
+                        var ab = new AudioButtonShapeElement(elem.uuid, elem.x, elem.y, elem.name);
+                        ab.filename = elem.filename
+                        this.add(ab)
                         break;
 
                 }
