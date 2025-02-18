@@ -8,6 +8,7 @@ define(["require", "exports", "../helpers/globals", "./view"], function (require
             this.text = 'LABEL';
             this.textColor = 'black';
             this.locoAddress = 0;
+            this._valign = "center";
             this.angleStep = 0;
             this.w = 2;
             this.h = 1;
@@ -21,7 +22,14 @@ define(["require", "exports", "../helpers/globals", "./view"], function (require
             ctx.font = "10px Arial";
             ctx.textAlign = "left";
             ctx.textBaseline = "top";
-            ctx.fillText(this.text, this.posLeft, this.posTop + 1);
+            var y = this.posTop + 1;
+            if (this.valign == "center") {
+                y = this.centerY - 4;
+            }
+            else if (this.valign == "bottom") {
+                y = this.posBottom - 10;
+            }
+            ctx.fillText(this.text, this.posLeft, y);
             super.draw(ctx);
             ctx.restore();
         }
@@ -37,6 +45,12 @@ define(["require", "exports", "../helpers/globals", "./view"], function (require
         }
         get posRight() {
             return this.x * globals_1.Globals.AppSettings.GridSizeX + 2 * globals_1.Globals.AppSettings.GridSizeX;
+        }
+        get valign() {
+            return this._valign;
+        }
+        set valign(v) {
+            this._valign = v;
         }
     }
     exports.Label2Element = Label2Element;

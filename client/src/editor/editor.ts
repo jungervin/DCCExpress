@@ -1232,10 +1232,11 @@ export class CustomCanvas extends HTMLElement {
                     })
                     break;
                 case 'label2':
-                    var la = elem as BlockElement
+                    var la = elem as Label2Element
                     elems.push({
                         uuid: la.UUID, type: la.type, name: la.name, x: la.x, y: la.y, angle: 0,
-                        text: la.text
+                        text: la.text,
+                        valign: la.valign
                     })
                     break;
                 case 'routeSwitch':
@@ -1437,6 +1438,7 @@ export class CustomCanvas extends HTMLElement {
                     case "label2":
                         var l = new Label2Element(elem.uuid, elem.x, elem.y, elem.name);
                         l.text = elem.text ?? "LABEL"
+                        l.valign = elem.valign
                         l.angle = 0
                         this.add(l)
                         break;

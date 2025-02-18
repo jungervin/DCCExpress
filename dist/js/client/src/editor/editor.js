@@ -1064,7 +1064,8 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                         var la = elem;
                         elems.push({
                             uuid: la.UUID, type: la.type, name: la.name, x: la.x, y: la.y, angle: 0,
-                            text: la.text
+                            text: la.text,
+                            valign: la.valign
                         });
                         break;
                     case 'routeSwitch':
@@ -1259,6 +1260,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                         case "label2":
                             var l = new label_1.Label2Element(elem.uuid, elem.x, elem.y, elem.name);
                             l.text = (_l = elem.text) !== null && _l !== void 0 ? _l : "LABEL";
+                            l.valign = elem.valign;
                             l.angle = 0;
                             this.add(l);
                             break;
