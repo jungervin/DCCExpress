@@ -28,7 +28,23 @@ const s65 = elems.getSignal(65)
 
 const rb12 = App.sensors[12]
 
+const rb15 = App.sensors[15]
+const rb24 = App.sensors[24]
 
+if (rb15 != App.status.rb15) {
+    if(rb15) {
+        audioManager.play("mav_szignal.mp3")
+    }
+    
+    App.status.rb15 = rb15
+}
+if (rb24 != App.status.rb24) {
+    if(rb24) {
+        audioManager.play("mav_szignal.mp3")
+    }
+    audioManager.play("mav_szignal.mp3")
+    App.status.rb24 = rb24
+}
 //======================================
 // SIGNAL #50
 //======================================
@@ -54,12 +70,12 @@ const rb12 = App.sensors[12]
 // SIGNAL #55
 //======================================
 {
-    if(rb12 || t16.t1Closed || !t12.t2Closed) {
-        if(!s55.isRed) {
+    if (rb12 || t16.t1Closed || !t12.t2Closed) {
+        if (!s55.isRed) {
             s55.sendRed()
         }
     } else {
-        if(!s55.isYellow) {
+        if (!s55.isYellow) {
             s55.sendYellow()
         }
     }

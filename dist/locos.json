@@ -54,12 +54,20 @@
       {
         "id": 0,
         "name": "Világítás",
-        "momentary": false
+        "momentary": false,
+        "isOn": false
       },
       {
         "id": 1,
         "name": "Motor",
-        "momentary": false
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 3,
+        "name": "RKürt",
+        "momentary": true,
+        "isOn": false
       }
     ]
   },

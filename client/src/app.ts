@@ -11,6 +11,7 @@ import { wsClient } from "./helpers/ws";
 import { toastManager, ToastManager } from "./controls/toastManager";
 import { Dispatcher } from "./editor/dispatcher";
 import { LocoControlPanel } from "./components/controlPanel";
+import { audioManager, AudioManager } from "./editor/audioButton";
 
 console.log(Dispatcher)
 console.log(ApiCommands)
@@ -33,10 +34,12 @@ export class App {
         programmingModeActive: undefined,
         shortCircuit: undefined,
     }
+    audioManager: AudioManager;
 
 
     //commandCenters: iCommandCenter[] = []
     constructor() {
+        this.audioManager = audioManager
         //Dispatcher.intervalTime = 111
         this.toolbar = document.getElementById("toolbar") as Toolbar
         this.editor = document.getElementById("editorCanvas") as CustomCanvas
@@ -76,7 +79,7 @@ export class App {
             wsClient.send({ type: ApiCommands.configLoad, data: "" })
             this.locoControlPanel.init()
             wsClient.send({ type: ApiCommands.getRBusInfo, data: "" })
-
+            
         }
         wsClient.onError = () => {
             this.toolbar.wsStatus!.classList.remove("success")

@@ -1,6 +1,6 @@
 import { View } from "./view";
 
-class AudioManager {
+export class AudioManager {
     private activeAudios: Map<string, HTMLAudioElement> = new Map();
 
     play(filename: string) {
@@ -34,7 +34,7 @@ class AudioManager {
 }
 
 
-const audioManager = new AudioManager();
+export const audioManager = new AudioManager();
 
 export class AudioButtonShapeElement extends View {
     fillColor: string = "black";

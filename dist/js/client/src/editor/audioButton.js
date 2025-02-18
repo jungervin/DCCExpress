@@ -1,7 +1,7 @@
 define(["require", "exports", "./view"], function (require, exports, view_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.AudioButtonShapeElement = void 0;
+    exports.AudioButtonShapeElement = exports.audioManager = exports.AudioManager = void 0;
     class AudioManager {
         constructor() {
             this.activeAudios = new Map();
@@ -31,7 +31,8 @@ define(["require", "exports", "./view"], function (require, exports, view_1) {
             this.activeAudios.clear();
         }
     }
-    const audioManager = new AudioManager();
+    exports.AudioManager = AudioManager;
+    exports.audioManager = new AudioManager();
     class AudioButtonShapeElement extends view_1.View {
         constructor(uuid, x, y, name) {
             super(uuid, x, y, name);
@@ -69,7 +70,7 @@ define(["require", "exports", "./view"], function (require, exports, view_1) {
         }
         play() {
             if (this.filename) {
-                audioManager.play(this.filename);
+                exports.audioManager.play(this.filename);
             }
         }
         mouseDown(e) {

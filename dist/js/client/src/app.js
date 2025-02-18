@@ -1,4 +1,4 @@
-define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/view", "../../common/src/dcc", "./helpers/globals", "./controls/dialog", "./helpers/ws", "./controls/toastManager", "./editor/dispatcher", "./components/controlPanel"], function (require, exports, editor_1, turnout_1, view_1, dcc_1, globals_1, dialog_1, ws_1, toastManager_1, dispatcher_1, controlPanel_1) {
+define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/view", "../../common/src/dcc", "./helpers/globals", "./controls/dialog", "./helpers/ws", "./controls/toastManager", "./editor/dispatcher", "./components/controlPanel", "./editor/audioButton"], function (require, exports, editor_1, turnout_1, view_1, dcc_1, globals_1, dialog_1, ws_1, toastManager_1, dispatcher_1, controlPanel_1, audioButton_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.App = void 0;
@@ -20,6 +20,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 programmingModeActive: undefined,
                 shortCircuit: undefined,
             };
+            this.audioManager = audioButton_1.audioManager;
             //Dispatcher.intervalTime = 111
             this.toolbar = document.getElementById("toolbar");
             this.editor = document.getElementById("editorCanvas");
