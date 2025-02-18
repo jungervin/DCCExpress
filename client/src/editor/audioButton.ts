@@ -4,6 +4,7 @@ class AudioManager {
     private activeAudios: Map<string, HTMLAudioElement> = new Map();
 
     play(filename: string) {
+        filename = '/audio/' + filename
         if (this.activeAudios.has(filename)) {
             this.stop(filename);
         }

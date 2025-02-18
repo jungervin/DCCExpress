@@ -7,6 +7,7 @@ define(["require", "exports", "./view"], function (require, exports, view_1) {
             this.activeAudios = new Map();
         }
         play(filename) {
+            filename = '/audio/' + filename;
             if (this.activeAudios.has(filename)) {
                 this.stop(filename);
             }
