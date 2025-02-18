@@ -116,7 +116,7 @@ export class Views {
     }
 
     getObjectXy(point: Point) {
-        var elem = this.elements.find((elem: View) => {
+        var elem = this.getRailElements().find((elem: View) => {
             return elem.x == point.x && elem.y == point.y
         })
         return elem
@@ -133,7 +133,7 @@ export class Views {
         var p2 = obj.getPrevItemXy()
 
         var next = this.getObjectXy(p1)
-        if (next instanceof RailView) {
+        if (next) {
             if (!next.isVisited && (obj.pos.isEqual(next.getNextItemXy()) || obj.pos.isEqual(next.getPrevItemXy()))) {
                 next.isRoute = true
                 this.startWalk(next)
@@ -141,7 +141,7 @@ export class Views {
         }
 
         var prev = this.getObjectXy(p2)
-        if (prev instanceof RailView) {
+        if (prev) {
             if (!prev.isVisited && (obj.pos.isEqual(prev.getNextItemXy()) || obj.pos.isEqual(prev.getPrevItemXy()))) {
                 prev.isRoute = true
                 this.startWalk(prev)

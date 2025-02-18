@@ -1437,6 +1437,7 @@ export class CustomCanvas extends HTMLElement {
                         break;
                     case "label2":
                         var l = new Label2Element(elem.uuid, elem.x, elem.y, elem.name);
+                        console.log("LABEL:", l instanceof RailView);
                         l.text = elem.text ?? "LABEL"
                         l.valign = elem.valign
                         l.angle = 0

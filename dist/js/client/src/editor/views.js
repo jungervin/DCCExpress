@@ -88,7 +88,7 @@ define(["require", "exports", "./turnout", "./view", "./route", "./signals"], fu
             return items;
         }
         getObjectXy(point) {
-            var elem = this.elements.find((elem) => {
+            var elem = this.getRailElements().find((elem) => {
                 return elem.x == point.x && elem.y == point.y;
             });
             return elem;
@@ -102,14 +102,14 @@ define(["require", "exports", "./turnout", "./view", "./route", "./signals"], fu
             var p1 = obj.getNextItemXy();
             var p2 = obj.getPrevItemXy();
             var next = this.getObjectXy(p1);
-            if (next instanceof view_1.RailView) {
+            if (next) {
                 if (!next.isVisited && (obj.pos.isEqual(next.getNextItemXy()) || obj.pos.isEqual(next.getPrevItemXy()))) {
                     next.isRoute = true;
                     this.startWalk(next);
                 }
             }
             var prev = this.getObjectXy(p2);
-            if (prev instanceof view_1.RailView) {
+            if (prev) {
                 if (!prev.isVisited && (obj.pos.isEqual(prev.getNextItemXy()) || obj.pos.isEqual(prev.getPrevItemXy()))) {
                     prev.isRoute = true;
                     this.startWalk(prev);

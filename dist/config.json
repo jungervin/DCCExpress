@@ -4,13 +4,13 @@
     "interval": 500
   },
   "settings": {
-    "scale": 0.8521768450894479,
-    "origX": -152,
-    "origY": -18,
+    "scale": 1.1334548812100238,
+    "origX": -292,
+    "origY": 65,
     "gridSizeX": 40,
     "gridSizeY": 40,
     "showAddress": false,
-    "locoPanelVisible": false,
+    "locoPanelVisible": true,
     "propertyPanelVisible": false
   },
   "pages": [
@@ -1868,17 +1868,17 @@
         {
           "uuid": "8c79e536-364f-448c-a48c-42241915d313",
           "type": "audiobutton",
-          "x": 25,
-          "y": 14,
+          "x": 38,
+          "y": 7,
           "name": "audiobutton173",
-          "filename": "sig.mp3"
+          "filename": "mav_szignal.mp3"
         },
         {
           "uuid": "3eb3b969-4c20-4ec2-bc27-440895349ea3",
           "type": "label2",
           "name": "label174",
-          "x": 26,
-          "y": 14,
+          "x": 39,
+          "y": 7,
           "angle": 0,
           "text": "MÁV SZIGNÁL",
           "valign": "center"
