@@ -24,7 +24,7 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
         this.put(on ? '<1>' : '<0>');
     }
     emergenyStop(stop) {
-        this.put('<!>');
+        this.put('<!>'); 
         this.powerInfo.emergencyStop = true;
         (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.powerInfo, data: this.powerInfo });
     }
