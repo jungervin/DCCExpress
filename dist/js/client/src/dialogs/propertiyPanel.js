@@ -1,4 +1,4 @@
-define(["require", "exports", "../components/turnoutPropertiesElement", "../editor/turnout", "../components/routeListElementProperties", "../editor/route", "../editor/track", "../components/trackPropertiesElement", "../editor/trackend", "../editor/corner", "../editor/curve", "../editor/signals", "../components/blockPropertiesElement", "../editor/block", "../components/locoComboboxElement", "../components/signal2PropertiesElement", "../components/canvasElement", "../components/labelPropertiesElement", "../editor/label", "../components/audioButtonPropetiesElement", "../editor/audioButton"], function (require, exports, turnoutPropertiesElement_1, turnout_1, routeListElementProperties_1, route_1, track_1, trackPropertiesElement_1, trackend_1, corner_1, curve_1, signals_1, blockPropertiesElement_1, block_1, locoComboboxElement_1, signal2PropertiesElement_1, canvasElement_1, labelPropertiesElement_1, label_1, audioButtonPropetiesElement_1, audioButton_1) {
+define(["require", "exports", "../components/turnoutPropertiesElement", "../editor/turnout", "../components/routeListElementProperties", "../editor/route", "../editor/track", "../components/trackPropertiesElement", "../editor/trackend", "../editor/corner", "../editor/curve", "../editor/signals", "../components/blockPropertiesElement", "../editor/block", "../components/locoComboboxElement", "../components/signal2PropertiesElement", "../components/canvasElement", "../components/labelPropertiesElement", "../editor/label", "../components/audioButtonPropetiesElement", "../editor/audioButton", "../components/buttonPropertiesElement", "../editor/button"], function (require, exports, turnoutPropertiesElement_1, turnout_1, routeListElementProperties_1, route_1, track_1, trackPropertiesElement_1, trackend_1, corner_1, curve_1, signals_1, blockPropertiesElement_1, block_1, locoComboboxElement_1, signal2PropertiesElement_1, canvasElement_1, labelPropertiesElement_1, label_1, audioButtonPropetiesElement_1, audioButton_1, buttonPropertiesElement_1, button_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.PropertyPanel = void 0;
@@ -10,6 +10,7 @@ define(["require", "exports", "../components/turnoutPropertiesElement", "../edit
     console.log(locoComboboxElement_1.LocomotiveComboBox);
     console.log(signal2PropertiesElement_1.Signal2PropertiesElement);
     console.log(canvasElement_1.TurnoutLeftCanvasElement);
+    console.log(buttonPropertiesElement_1.ButtonPropertiesElement);
     console.log(audioButtonPropetiesElement_1.AudioButtonPropertiesElement);
     class PropertyPanel extends HTMLElement {
         constructor() {
@@ -103,6 +104,7 @@ define(["require", "exports", "../components/turnoutPropertiesElement", "../edit
             this.turnoutRightPropertiesElement = document.createElement("turnout-right-properties-element");
             this.turnoutDoublePropertiesElement = document.createElement("turnout-double-properties-element");
             this.routeListElementProperties = document.createElement('route-list-element-properties');
+            this.buttonPropertiesElement = document.createElement('button-properties-element');
             this.audioButtonPropertiesElement = document.createElement('audio-button-properties-element');
         }
         open() {
@@ -157,6 +159,10 @@ define(["require", "exports", "../components/turnoutPropertiesElement", "../edit
                 else if (Object.getPrototypeOf(v) == label_1.Label2Element.prototype) {
                     this.container.appendChild(this.labelPropertiesElement);
                     this.labelPropertiesElement.setLabel(this.selectedObject);
+                }
+                else if (Object.getPrototypeOf(v) == button_1.ButtonShapeElement.prototype) {
+                    this.container.appendChild(this.buttonPropertiesElement);
+                    this.buttonPropertiesElement.setButton(this.selectedObject);
                 }
                 else if (Object.getPrototypeOf(v) == audioButton_1.AudioButtonShapeElement.prototype) {
                     this.container.appendChild(this.audioButtonPropertiesElement);
