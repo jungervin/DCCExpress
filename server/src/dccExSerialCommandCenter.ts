@@ -1,8 +1,6 @@
 import { DCCExCommandCenter } from "./dccExCommandCenter";
 import { SerialClient } from "./serialClient";
 
-
-
 export class DccExSerialCommandCenter extends DCCExCommandCenter {
 
     mainTask?: NodeJS.Timeout;
