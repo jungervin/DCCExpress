@@ -25,11 +25,21 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
             this.LAN_X_SET_TRACK_POWER_ON();
         }
         else {
-            this.LAN_X_SET_TRACK_POWER_OFF();
+            if (this.powerInfo.emergencyStop) {
+                this.LAN_X_SET_TRACK_POWER_ON();
+            }
+            else {
+                this.LAN_X_SET_TRACK_POWER_OFF();
+            }
         }
     }
     emergenyStop(stop) {
-        this.LAN_X_SET_STOP();
+        if (this.powerInfo.emergencyStop) {
+            this.LAN_X_SET_TRACK_POWER_ON();
+        }
+        else {
+            this.LAN_X_SET_STOP();
+        }
     }
     constructor(name, ip, port) {
         super(name);
@@ -189,7 +199,7 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
             };
             const info = data.readUInt8(16);
             this.powerInfo.emergencyStop = (info & 0x01) == 0x01;
-            this.powerInfo.trackVoltageOn = (info & 0x02) == 0x02;
+            this.powerInfo.trackVoltageOn = (info & 0x02) == 0x00;
             this.powerInfo.shortCircuit = (info & 0x04) == 0x04;
             this.powerInfo.programmingModeActive = (info & 0x20) == 0x20;
             //const pi: iPowerInfo = { info: data.readUInt8(5), cc: commandCenters.getDevice(this.uuid) }

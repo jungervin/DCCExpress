@@ -37,6 +37,7 @@ class AudioManager {
 const audioManager = new AudioManager();
 
 export class AudioButtonShapeElement extends View {
+    fillColor: string = "black";
 
     constructor(uuid: string, x: number, y: number, name: string) {
         super(uuid, x, y, name)
@@ -59,6 +60,7 @@ export class AudioButtonShapeElement extends View {
         ctx.translate(x, y);
         ctx.scale(size / 24, size / 24); 
 
+        ctx.fillStyle = this.fillColor;
 
         ctx.beginPath();
         ctx.moveTo(5, 9);
@@ -89,10 +91,17 @@ export class AudioButtonShapeElement extends View {
 
     mouseDown(e: MouseEvent): void {
         if (this.filename) {
+            this.fillColor = "lime";
+            window.invalidate();
             this.play()
             if (this.mouseDownHandler) {
                 this.mouseDownHandler(this)
             }
+
+            setTimeout(() => {
+                this.fillColor = "black";
+                window.invalidate();
+            }, 250);
         } else {
             console.log("audio filename doesnt exists!")
         }

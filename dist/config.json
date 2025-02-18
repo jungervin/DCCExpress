@@ -4,9 +4,9 @@
     "interval": 500
   },
   "settings": {
-    "scale": 1.1334548812100238,
-    "origX": -292,
-    "origY": 65,
+    "scale": 1.670442511821703,
+    "origX": -1292,
+    "origY": -205,
     "gridSizeX": 40,
     "gridSizeY": 40,
     "showAddress": false,
@@ -1937,6 +1937,42 @@
           "y": 15,
           "angle": 0,
           "text": "Teszt 1",
+          "valign": "center"
+        },
+        {
+          "uuid": "c9d8ed67-d8bc-4c78-94eb-ee3308d4e94d",
+          "type": "audiobutton",
+          "x": 43,
+          "y": 10,
+          "name": "audiobutton177",
+          "filename": "Szfvarrol.V3.mp3"
+        },
+        {
+          "uuid": "794808fd-bbb9-488d-aa66-4529129eda4d",
+          "type": "audiobutton",
+          "x": 38,
+          "y": 6,
+          "name": "audiobutton178",
+          "filename": "SzbattyanIndul.mp3"
+        },
+        {
+          "uuid": "e2447451-f125-4314-a612-7e3b538061d1",
+          "type": "label2",
+          "name": "label179",
+          "x": 39,
+          "y": 6,
+          "angle": 0,
+          "text": "Indul",
+          "valign": "center"
+        },
+        {
+          "uuid": "de322f88-1f4b-47e5-a9af-479aa6f8a74a",
+          "type": "label2",
+          "name": "label180",
+          "x": 44,
+          "y": 10,
+          "angle": 0,
+          "text": "Érkezik P3",
           "valign": "center"
         }
       ]

@@ -35,6 +35,7 @@ define(["require", "exports", "./view"], function (require, exports, view_1) {
     class AudioButtonShapeElement extends view_1.View {
         constructor(uuid, x, y, name) {
             super(uuid, x, y, name);
+            this.fillColor = "black";
             this._filename = "";
         }
         get type() {
@@ -50,6 +51,7 @@ define(["require", "exports", "./view"], function (require, exports, view_1) {
             ctx.save();
             ctx.translate(x, y);
             ctx.scale(size / 24, size / 24);
+            ctx.fillStyle = this.fillColor;
             ctx.beginPath();
             ctx.moveTo(5, 9);
             ctx.lineTo(5, 15);
@@ -72,10 +74,16 @@ define(["require", "exports", "./view"], function (require, exports, view_1) {
         }
         mouseDown(e) {
             if (this.filename) {
+                this.fillColor = "lime";
+                window.invalidate();
                 this.play();
                 if (this.mouseDownHandler) {
                     this.mouseDownHandler(this);
                 }
+                setTimeout(() => {
+                    this.fillColor = "black";
+                    window.invalidate();
+                }, 250);
             }
             else {
                 console.log("audio filename doesnt exists!");
