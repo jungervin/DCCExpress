@@ -51,7 +51,7 @@ class TCPClient {
         (0, utility_1.log)("tcpClient.stop()");
     }
     send(message, callback) {
-        if (this.client && !this.client.destroyed) {
+        if (this.client && !this.client.destroyed && !this.client.closed) {
             (0, utility_1.log)(`TCP Küldés: ${message}`);
             //this.client.write(message + "\n");
             this.client.write(message);

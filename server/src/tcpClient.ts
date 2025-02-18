@@ -30,7 +30,7 @@ export class TCPClient {
     }
 
     public send(message: string, callback: (err?: Error) => void) {
-        if (this.client && !this.client.destroyed) {
+        if (this.client && !this.client.destroyed && !this.client.closed) {
             log(`TCP Küldés: ${message}`);
             //this.client.write(message + "\n");
             this.client.write(message);

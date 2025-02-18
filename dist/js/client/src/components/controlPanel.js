@@ -17,7 +17,6 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
             super();
             this.locomotives = [];
             this.buttons = {};
-            this._power = false;
             const shadow = this.attachShadow({ mode: "open" });
             shadow.innerHTML = `
             <style>
@@ -605,14 +604,14 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
         get power() {
             return this._power;
         }
-        set power(v) {
-            if (v) {
-                this.btnEmergency.classList.remove('on');
-            }
-            else {
+        set power(pi) {
+            if (pi.emergencyStop) {
                 this.btnEmergency.classList.add('on');
             }
-            this._power = v;
+            else {
+                this.btnEmergency.classList.remove('on');
+            }
+            this._power = pi;
         }
     }
     exports.LocoControlPanel = LocoControlPanel;

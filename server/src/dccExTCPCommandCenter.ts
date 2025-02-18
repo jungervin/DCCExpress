@@ -12,7 +12,6 @@ export class DCCExTCPCommancenter extends DCCExCommandCenter {
   lastSentTime: number = 0;
   MAIN_TASK_INTERVAL: number = 50;
 
-
   constructor(name: string, ip: string, port: number) {
     super(name);
     this.ip = ip;
@@ -25,14 +24,6 @@ export class DCCExTCPCommancenter extends DCCExCommandCenter {
 
   getConnectionString(): string {
     return "tcp://" + this.ip + ":" + this.port
-  }
-
-  send(msg: string) {
-    if (this.buffer.length < 100) {
-      this.buffer.push(msg);
-    } else {
-      console.log("DCCEx TCP Command Center Buffer is Full! size:", this.buffer.length);
-    }
   }
 
   processBuffer() {
@@ -79,11 +70,6 @@ export class DCCExTCPCommancenter extends DCCExCommandCenter {
       clearInterval(this.mainTask);
       this.mainTask = undefined;
     }
-    // if (this.aliveTask) {
-    //   clearInterval(this.aliveTask);
-    //   this.aliveTask = undefined;
-    // }
-
     if (this.tcpClient) {
       this.tcpClient.stop()
     }

@@ -204,11 +204,12 @@ export enum Z21POWERINFO {
     shortcircuit = 8
 }
 export interface iPowerInfo {
-    info: number,
-    emergencyStop: boolean,                  // 0x01 // The emergency stop is switched on
-    trackVoltageOff: boolean,                // 0x02 // The track voltage is switched off.
-    shortCircuit: boolean,                   // 0x04 // Short-circuit
-    programmingModeActive: boolean,          // 0x20 // The programming mode is active    
+    info?: number,
+    current?: number,
+    emergencyStop?: boolean,                  // 0x01 // The emergency stop is switched on
+    trackVoltageOn?: boolean,                // 0x02 // The track voltage is switched off.
+    shortCircuit?: boolean,                   // 0x04 // Short-circuit
+    programmingModeActive?: boolean,          // 0x20 // The programming mode is active    
     //cc: iCommandCenter
 }
 

@@ -5,41 +5,30 @@ import { broadcastAll } from "./ws";
 
 export class DCCExCommandCenter extends CommandCenter {
     buffer: string[] = []
-    power: boolean = false;
     private _data: string = ""
-    powerInfo: iPowerInfo
 
     constructor(name: string) {
         super(name)
-        this.powerInfo = {
-            info: 0b00000010,
-            emergencyStop: false,
-            trackVoltageOff: true,
-            shortCircuit: false,
-            programmingModeActive: false,
-            //cc: z21
-        }
     }
 
     put(msg: string) {
         // Mutex??
-
         log(`DCCEx ${this.name} put: ${msg}`)
         this.buffer.push(msg)
     }
     getConnectionString(): string {
         throw new Error("Method not implemented.");
     }
-
-    // locos: { [address: number]: number; };
-    // turnouts: { [address: number]: iTurnoutInfo; };
-    
+   
     trackPower(on: boolean): void {
         log("DCCEx ", `trackPower(${on})`)
         this.put(on ? '<1>' : '<0>')
     }
     emergenyStop(stop: boolean): void {
         this.put('<!>')
+        this.powerInfo.emergencyStop = true;
+        broadcastAll({type: ApiCommands.powerInfo, data: this.powerInfo})
+
     }
     setLocoFunction(address: number, fn: number, on: boolean): void {
         // <F cab funct state> - Turn loco decoder functions ON or OFF
@@ -48,9 +37,6 @@ export class DCCExCommandCenter extends CommandCenter {
         this.put(`<F ${address} ${fn} ${on ? 1 : 0}`)
     }
     clientConnected(): void {
-        //throw new Error("Method not implemented.");
-        this.powerInfo.info = this.power ? 0b00000001 : 0b00000000
-        this.powerInfo!.trackVoltageOff = !this.power
         broadcastAll({ type: ApiCommands.powerInfo, data: this.powerInfo } as iData)
 
     }
@@ -64,7 +50,12 @@ export class DCCExCommandCenter extends CommandCenter {
         if(speed > 126) {
             speed = 126
         }
+
         this.put(`<t ${address} ${speed} ${direction}>`)
+
+        // Clear&Send EmergencyStop
+        this.powerInfo.emergencyStop = false;
+        broadcastAll({ type: ApiCommands.powerInfo, data: this.powerInfo } as iData)
     }
 
     start(): void {
@@ -108,50 +99,15 @@ export class DCCExCommandCenter extends CommandCenter {
         }
 
         if (data.startsWith('p1')) {
-            this.power = true
-            // const sysdata: iSystemStatus = {
-            //     MainCurrent: 0,
-            //     ProgCurrent: 0,
-            //     FilteredMainCurrent: 0,
-            //     Temperature: 0,
-            //     SupplyVoltage: 0,
-            //     VCCVoltage: 0,
-            //     CentralState: 0b0010_1111,
-            //     CentralStateEx: 0,
-            //     Reserved: 0,
-            //     Capabilities: 0,
-            // }
-            // broadcastAll({ type: ApiCommands.systemInfo, data: sysdata } as iData)
-
             this.powerInfo.info = 0b00000001
-            this.powerInfo.trackVoltageOff = false
-
-            //const pi: iPowerInfo = { info: data.readUInt8(5), cc: commandCenters.getDevice(this.uuid) }
-
-            
+            this.powerInfo.trackVoltageOn = true
             broadcastAll({ type: ApiCommands.powerInfo, data: this.powerInfo } as iData)
 
         }
         else if (data.startsWith('p0')) {
-            this.power = false
             this.powerInfo.info = 0b00000000
-            this.powerInfo!.trackVoltageOff = true
+            this.powerInfo.trackVoltageOn = false
             broadcastAll({ type: ApiCommands.powerInfo, data: this.powerInfo } as iData)
-
-            // const sysdata: iSystemStatus = {
-            //     MainCurrent: 0,
-            //     ProgCurrent: 0,
-            //     FilteredMainCurrent: 0,
-            //     Temperature: 0,
-            //     SupplyVoltage: 0,
-            //     VCCVoltage: 0,
-            //     CentralState: 0,
-            //     CentralStateEx: 0,
-            //     Reserved: 0,
-            //     Capabilities: 0,
-            // }
-            // broadcastAll({ type: ApiCommands.systemInfo, data: sysdata } as iData)
-
         }
         else if (data.startsWith("Q ")) {
             var params = data.replace(">", "").split(" ");
@@ -173,6 +129,16 @@ export class DCCExCommandCenter extends CommandCenter {
             var funcMap = parseInt(items[4]);
             var direction: DCCExDirections = DCCExDirections.forward
             //var loco = locos[address] // this.getLoco(addr)
+
+            // if(speedByte == -1 && !this.powerInfo.emergencyStop) {
+            //     this.powerInfo.emergencyStop = true;
+            //     broadcastAll({type: ApiCommands.powerInfo, data: this.powerInfo})
+            // } else if(this.powerInfo.emergencyStop) {
+            //     this.powerInfo.emergencyStop = false;
+            //     broadcastAll({type: ApiCommands.powerInfo, data: this.powerInfo})
+            // }
+
+    
 
             //if (loco) 
             {
@@ -197,12 +163,15 @@ export class DCCExCommandCenter extends CommandCenter {
                     //loco.speed = 0;
                 }
 
-                //loco.speed = newSpeed
-
+  
                 var loco: iLoco = { address: address, speed: newSpeed, direction: direction, funcMap: funcMap }
                 broadcastAll({ type: ApiCommands.locoInfo, data: loco } as iData)
                 log("BROADCAST DCC-EX LOCO INFO:", loco)
                 
+                // if(this.powerInfo.emergencyStop && newSpeed > 0) {
+                //     this.powerInfo.emergencyStop = false;
+                //     broadcastAll({type: ApiCommands.powerInfo, data: this.powerInfo})
+                // }
                 // for (var i = 0; i <= 28; i++) {
                 //     var func = loco.functions.find(f => f.index == i)
                 //     if (func) {

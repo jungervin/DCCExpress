@@ -17,14 +17,6 @@ class DCCExTCPCommancenter extends dccExCommandCenter_1.DCCExCommandCenter {
     getConnectionString() {
         return "tcp://" + this.ip + ":" + this.port;
     }
-    send(msg) {
-        if (this.buffer.length < 100) {
-            this.buffer.push(msg);
-        }
-        else {
-            console.log("DCCEx TCP Command Center Buffer is Full! size:", this.buffer.length);
-        }
-    }
     processBuffer() {
         if (this.tcpClient) {
             if (this.buffer.length > 0) {
@@ -66,10 +58,6 @@ class DCCExTCPCommancenter extends dccExCommandCenter_1.DCCExCommandCenter {
             clearInterval(this.mainTask);
             this.mainTask = undefined;
         }
-        // if (this.aliveTask) {
-        //   clearInterval(this.aliveTask);
-        //   this.aliveTask = undefined;
-        // }
         if (this.tcpClient) {
             this.tcpClient.stop();
         }

@@ -1,6 +1,6 @@
 // import { iBasicAccessory, iTurnout } from "../../common/src/dcc";
 
-import { CommandCenterTypes, iSetBasicAccessory, iSetTurnout, iTurnoutInfo, Z21Directions } from "../../common/src/dcc";
+import { CommandCenterTypes, iPowerInfo, iSetBasicAccessory, iSetTurnout, iTurnoutInfo, Z21Directions } from "../../common/src/dcc";
 
 export abstract class CommandCenter {
     //uuid: string = ""
@@ -14,11 +14,20 @@ export abstract class CommandCenter {
 
     TURNOUT_WAIT_TIME = 500
     BASICACCESSORY_WAIT_TIME = 10
-    
+
+    powerInfo: iPowerInfo
 
     constructor(name: string) {
         // this.uuid = uuid
         this.name = name
+        this.powerInfo = {
+            info: 0,
+            current: 0,
+            trackVoltageOn: true,
+            emergencyStop: false,
+            programmingModeActive: false,
+            shortCircuit: false,
+        }
     }
 
     abstract getConnectionString(): string;

@@ -21,41 +21,45 @@ console.log(LocoControlPanel)
 export class App {
     editor: CustomCanvas;
     toolbar: Toolbar;
-
     locos: Locos | undefined;
     sensors: { [key: number]: boolean } = {}
     decoders: { [key: number]: boolean } = {}
     locoControlPanel: LocoControlPanel;
-    powerOn: boolean = false;
-    prevPower?: boolean = undefined;
-    //static wsClient: WebSocket
+    powerInfo: iPowerInfo = {
+        info: undefined,
+        current: undefined,
+        trackVoltageOn: undefined,
+        emergencyStop: undefined,
+        programmingModeActive: undefined,
+        shortCircuit: undefined,
+    }
+
 
     //commandCenters: iCommandCenter[] = []
     constructor() {
         //Dispatcher.intervalTime = 111
         this.toolbar = document.getElementById("toolbar") as Toolbar
-
         this.editor = document.getElementById("editorCanvas") as CustomCanvas
         this.editor.toolbar = this.toolbar
         this.toolbar.canvas = this.editor
         this.toolbar.canvas.drawMode = drawModes.pointer
 
         this.toolbar!.btnPower!.onclick = (e: MouseEvent) => {
-            const p: iSetPower = { on: !this.powerOn }
+            const p: iSetPower = { on: !this.powerInfo.trackVoltageOn }
             wsClient.send({ type: ApiCommands.setPower, data: p } as iData)
         }
 
-        this.toolbar!.btnEmergencyStop!.onclick = (e: MouseEvent) => { 
-            //wsClient.send({ type: ApiCommands.emergencyStop, data: "" } as iData)
+        this.toolbar!.btnEmergencyStop!.onclick = (e: MouseEvent) => {
+            wsClient.send({ type: ApiCommands.emergencyStop, data: "" } as iData)
 
-            if (this.powerOn) {
-                wsClient.send({ type: ApiCommands.emergencyStop, data: "" } as iData)
-            } else {
-                wsClient.send({ type: ApiCommands.setPower, data: { on: true } as iSetPower } as iData)
-            }
+            // if (this.powerOn) {
+            //     wsClient.send({ type: ApiCommands.emergencyStop, data: "" } as iData)
+            // } else {
+            //     wsClient.send({ type: ApiCommands.setPower, data: { on: true } as iSetPower } as iData)
+            // }
 
 
-    }
+        }
 
         //IOConn.initialize(document.location.origin)
 
@@ -123,7 +127,7 @@ export class App {
                     this.systemInfo(msg.data as iSystemStatus)
                     break;
                 case ApiCommands.powerInfo:
-                    this.powerInfo(msg.data as iPowerInfo)
+                    this.procPowerInfo(msg.data as iPowerInfo)
                     break;
                 case ApiCommands.UnsuccessfulOperation:
                     toastManager.showToast("UnsuccessfulOperation")
@@ -207,43 +211,43 @@ export class App {
 
     }
     systemInfo(ss: iSystemStatus) {
-        //Bitmask for CentralState:
-        const csEmergencyStop = 0x01 // The emergency stop is switched on
-        const csTrackVoltageOff = 0x02 // The track voltage is switched off
-        const csShortCircuit = 0x04 // Short-circuit
-        const csProgrammingModeActive = 0x20 // The programming mode is active
-        //Bitmask for CentralStateEx:
-        const cseHighTemperature = 0x01 // temperature too high
-        const csePowerLost = 0x02 // Input voltage too low
-        const cseShortCircuitExternal = 0x04 // S.C. at the external booster output
-        const cseShortCircuitInternal = 0x08 // S.C. at the main track or programming track
-        //From Z21 FW Version 1.42:
-        const cseRCN213 = 0x20 // turnout addresses according to RCN-213
-        //From Z21 FW Version 1.42:
-        //Bitmask for Capabilities:
-        const capDCC = 0x01 // capable of DCC
-        const capMM = 0x02 // capable of MM
-        //#define capReserved 0x04 // reserved for future development
-        const capRailCom = 0x08 // RailCom is activated
-        const capLocoCmds = 0x10 // accepts LAN commands for locomotive decoders
-        const capAccessoryCmds = 0x20 // accepts LAN commands for accessory decoders
-        const capDetectorCmds = 0x40 // accepts LAN commands for detectors
-        const capNeedsUnlockCode = 0x80 // device needs activate code (z21start)
+        // //Bitmask for CentralState:
+        // const csEmergencyStop = 0x01 // The emergency stop is switched on
+        // const csTrackVoltageOff = 0x02 // The track voltage is switched off
+        // const csShortCircuit = 0x04 // Short-circuit
+        // const csProgrammingModeActive = 0x20 // The programming mode is active
+        // //Bitmask for CentralStateEx:
+        // const cseHighTemperature = 0x01 // temperature too high
+        // const csePowerLost = 0x02 // Input voltage too low
+        // const cseShortCircuitExternal = 0x04 // S.C. at the external booster output
+        // const cseShortCircuitInternal = 0x08 // S.C. at the main track or programming track
+        // //From Z21 FW Version 1.42:
+        // const cseRCN213 = 0x20 // turnout addresses according to RCN-213
+        // //From Z21 FW Version 1.42:
+        // //Bitmask for Capabilities:
+        // const capDCC = 0x01 // capable of DCC
+        // const capMM = 0x02 // capable of MM
+        // //#define capReserved 0x04 // reserved for future development
+        // const capRailCom = 0x08 // RailCom is activated
+        // const capLocoCmds = 0x10 // accepts LAN commands for locomotive decoders
+        // const capAccessoryCmds = 0x20 // accepts LAN commands for accessory decoders
+        // const capDetectorCmds = 0x40 // accepts LAN commands for detectors
+        // const capNeedsUnlockCode = 0x80 // device needs activate code (z21start)
 
-        if ((ss.CentralState & 0b0010_1111) > 0) {
-            this.toolbar.btnPower!.classList.remove("success")
-            this.toolbar.btnPower!.classList.add("error")
-            this.powerOn = false
-        } else {
-            this.toolbar.btnPower!.classList.add("success")
-            this.toolbar.btnPower!.classList.remove("error")
-            this.powerOn = true
-        }
+        // if ((ss.CentralState & 0b0010_1111) > 0) {
+        //     this.toolbar.btnPower!.classList.remove("success")
+        //     this.toolbar.btnPower!.classList.add("error")
+        //     this.powerOn = false
+        // } else {
+        //     this.toolbar.btnPower!.classList.add("success")
+        //     this.toolbar.btnPower!.classList.remove("error")
+        //     this.powerOn = true
+        // }
 
-        if (this.prevPower != this.powerOn) {
-            window.powerChanged(this.powerOn)
-            this.prevPower = this.powerOn;
-        }
+        // if (this.prevPower != this.powerOn) {
+        //     window.powerChanged(this.powerOn)
+        //     this.prevPower = this.powerOn;
+        // }
 
     }
     configLoaded(config: any) {
@@ -383,42 +387,56 @@ export class App {
         }
         this.editor.draw()
     }
-    powerInfo(pi: iPowerInfo) {
+    procPowerInfo(pi: iPowerInfo) {
 
-        if (pi.emergencyStop) {
-            this.toolbar.btnEmergencyStop!.classList.add("error")
-            
-        } else {
-            this.toolbar.btnEmergencyStop!.classList.remove("error")
+        if (this.powerInfo.emergencyStop != pi.emergencyStop) {
+            window.powerChanged(pi)
+            if (pi.emergencyStop) {
+                this.toolbar.btnEmergencyStop!.classList.add("error")
+            } else {
+                this.toolbar.btnEmergencyStop!.classList.remove("error")
+            }
         }
 
-
-        switch (pi.info) {
-            case Z21POWERINFO.poweroff:
-                this.toolbar.btnPower!.classList.remove("sucess")
-                this.toolbar.btnPower!.classList.add("error")
-                this.powerOn = false
-                break;
-
-            case Z21POWERINFO.poweron:
-                this.toolbar.btnPower!.classList.remove("error")
+        if(this.powerInfo.trackVoltageOn != pi.trackVoltageOn)
+        {
+            window.powerChanged(pi)
+            if(pi.trackVoltageOn) {
                 this.toolbar.btnPower!.classList.add("success")
-                this.powerOn = true
-                break;
-
-            case Z21POWERINFO.programmingmode:
-                break;
-
-            case Z21POWERINFO.shortcircuit:
-                this.toolbar.btnPower!.classList.remove("sucess")
-                this.toolbar.btnPower!.classList.add("error")
-                break;
+            } else {
+                this.toolbar.btnPower!.classList.remove("success")
+            }
         }
 
-        if (this.prevPower != this.powerOn) {
-            window.powerChanged(this.powerOn)
-            this.prevPower = this.powerOn;
-        }
+        this.powerInfo = pi;
+
+
+        // switch (pi.info) {
+        //     case Z21POWERINFO.poweroff:
+        //         this.toolbar.btnPower!.classList.remove("sucess")
+        //         this.toolbar.btnPower!.classList.add("error")
+        //         this.powerOn = false
+        //         break;
+
+        //     case Z21POWERINFO.poweron:
+        //         this.toolbar.btnPower!.classList.remove("error")
+        //         this.toolbar.btnPower!.classList.add("success")
+        //         this.powerOn = true
+        //         break;
+
+        //     case Z21POWERINFO.programmingmode:
+        //         break;
+
+        //     case Z21POWERINFO.shortcircuit:
+        //         this.toolbar.btnPower!.classList.remove("sucess")
+        //         this.toolbar.btnPower!.classList.add("error")
+        //         break;
+        // }
+
+        // if (this.prevPower != this.powerOn) {
+        //     window.powerChanged(this.powerOn)
+        //     this.prevPower = this.powerOn;
+        // }
 
 
     }

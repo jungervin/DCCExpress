@@ -14,6 +14,14 @@ class CommandCenter {
         this.BASICACCESSORY_WAIT_TIME = 10;
         // this.uuid = uuid
         this.name = name;
+        this.powerInfo = {
+            info: 0,
+            current: 0,
+            trackVoltageOn: true,
+            emergencyStop: false,
+            programmingModeActive: false,
+            shortCircuit: false,
+        };
     }
 }
 exports.CommandCenter = CommandCenter;

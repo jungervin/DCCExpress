@@ -32,6 +32,12 @@ class CommandCenters {
         }
     }
     clientConnected() {
+        if (this.cc) {
+            this.cc.clientConnected();
+        }
+        else {
+            (0, console_1.log)("Command Center doesn't exists!");
+        }
     }
     setBasicAccessory(a) {
         if (this.cc) {

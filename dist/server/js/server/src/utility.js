@@ -11,17 +11,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Mutex = exports.File = exports.arrayToHex = exports.bufferToHex = exports.logError = exports.log = void 0;
+exports.Mutex = exports.File = void 0;
+exports.log = log;
+exports.logError = logError;
+exports.bufferToHex = bufferToHex;
+exports.arrayToHex = arrayToHex;
 const fs_1 = require("fs");
 function log(...args) {
     console.log(new Date(), args);
 }
-exports.log = log;
 function logError(...args) {
     const message = args.join(' ');
     console.error(new Date(), `\x1b[41m\x1b[33m${message}\x1b[0m`);
 }
-exports.logError = logError;
 function bufferToHex(buffer) {
     // Ellenőrizzük, hogy a bemeneti paraméter egy Buffer típusú objektum-e
     if (!Buffer.isBuffer(buffer)) {
@@ -35,7 +37,6 @@ function bufferToHex(buffer) {
     }
     return hexOutput.trim(); // Az utolsó szóköz eltávolítása
 }
-exports.bufferToHex = bufferToHex;
 function arrayToHex(array) {
     // Ellenőrizzük, hogy a bemenet egy számokat tartalmazó tömb-e
     if (!Array.isArray(array) || !array.every(num => Number.isInteger(num) && num >= 0 && num <= 255)) {
@@ -44,7 +45,6 @@ function arrayToHex(array) {
     // A számokat hexadecimális formátumra alakítjuk
     return array.map(num => num.toString(16).padStart(2, '0')).join(" ");
 }
-exports.arrayToHex = arrayToHex;
 class File {
     static read(fname) {
         return (0, fs_1.readFileSync)(fname, 'utf8');

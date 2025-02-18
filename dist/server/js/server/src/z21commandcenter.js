@@ -39,18 +39,9 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
         this.lastMessageReceivedTime = 0;
         this.taskId = undefined;
         this.buffer = [];
-        this.powerInfo = undefined;
         this.type = dcc_1.CommandCenterTypes.Z21;
         this.ip = ip;
         this.port = port;
-        this.powerInfo = {
-            info: 0b00000010,
-            emergencyStop: false,
-            trackVoltageOff: true,
-            shortCircuit: false,
-            programmingModeActive: false,
-            //cc: z21
-        };
         this.udpClient = new udpClient_1.UDPClient(this.name, this.ip, this.port, (buffer, rinfo) => {
             const length = buffer.readUInt16LE(0);
             var i = 0;
@@ -145,7 +136,7 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
             else if (len == 0x07 && xheader == 0x61) {
                 const info = data.readUInt8(5);
                 this.powerInfo.emergencyStop = (info & 0x01) == 0x01;
-                this.powerInfo.trackVoltageOff = (info & 0x02) == 0x02;
+                this.powerInfo.trackVoltageOn = (info & 0x02) == 0x02;
                 this.powerInfo.shortCircuit = (info & 0x04) == 0x04;
                 this.powerInfo.programmingModeActive = (info & 0x20) == 0x20;
                 //const pi: iPowerInfo = { info: data.readUInt8(5), cc: commandCenters.getDevice(this.uuid) }
@@ -155,11 +146,11 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
             // POWER INFO
             //========================================
             else if (len == 0x07 && xheader == 0x61) {
-                const info = data.readUInt8(5);
-                this.powerInfo.emergencyStop = (info & 0x01) == 0x01;
-                this.powerInfo.trackVoltageOff = (info & 0x02) == 0x02;
-                this.powerInfo.shortCircuit = (info & 0x04) == 0x04;
-                this.powerInfo.programmingModeActive = (info & 0x20) == 0x20;
+                // const info = data.readUInt8(5)
+                // this.powerInfo!.emergencyStop = (info & 0x01) == 0x01
+                // this.powerInfo!.trackVoltageOff = (info & 0x02) == 0x02
+                // this.powerInfo!.shortCircuit = (info & 0x04) == 0x04
+                // this.powerInfo!.programmingModeActive = (info & 0x20) == 0x20
                 //broadcastAll({ type: ApiCommands.powerInfo, data: pi } as iData)
             }
         }
@@ -198,7 +189,7 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
             };
             const info = data.readUInt8(16);
             this.powerInfo.emergencyStop = (info & 0x01) == 0x01;
-            this.powerInfo.trackVoltageOff = (info & 0x02) == 0x02;
+            this.powerInfo.trackVoltageOn = (info & 0x02) == 0x02;
             this.powerInfo.shortCircuit = (info & 0x04) == 0x04;
             this.powerInfo.programmingModeActive = (info & 0x20) == 0x20;
             //const pi: iPowerInfo = { info: data.readUInt8(5), cc: commandCenters.getDevice(this.uuid) }

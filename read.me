@@ -29,3 +29,14 @@ Na ez lesz a jelzőkkel:
   ha ez nem lesz pipantva, akkor accessory lesz
   lehetne turnout is, de az konfogolni kellene, hmm még nem tom :)
 
+
+DCC-EX:
+  emergencyStop:
+    https://dccwiki.com/E-Stop
+    
+    // Convert DCC-EX protocol speed steps where
+    // -1=emergency stop, 0-126 as speeds
+    // to DCC 0=stop, 1= emergency stop, 2-127 speeds
+
+    az emergencystop, akkor törlődik a ha valamelyik loco speedje > 0
+    vagy küldünk egy loco STOP parancsot!

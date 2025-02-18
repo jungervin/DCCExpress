@@ -33,6 +33,11 @@ export class CommandCenters {
 
 
     clientConnected() {
+        if(this.cc) {
+            this.cc.clientConnected()   
+        }else {
+            log("Command Center doesn't exists!")
+        }
     }
 
     setBasicAccessory(a: iSetBasicAccessory) {
@@ -51,7 +56,6 @@ export class CommandCenters {
         }
     }
 
-
     getTurnout(t: iGetTurnout) {
         if (this.cc) {
             this.cc.getTurnout(t.address)
@@ -59,7 +63,6 @@ export class CommandCenters {
             log("Command Center doesn't exists!")
         }
     }
-
 
     setTurnout(t: iSetTurnout) {
         if (this.cc) {

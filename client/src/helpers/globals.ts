@@ -1,10 +1,10 @@
-import { CommandCenterTypes, DCCExDirections, iServerSettings } from "../../../common/src/dcc";
+import { CommandCenterTypes, DCCExDirections, iPowerInfo, iServerSettings } from "../../../common/src/dcc";
 
 
 declare global {
     interface Window {
         invalidate: () => void;
-        powerChanged: (on: boolean) => void;
+        powerChanged: (pi: iPowerInfo) => void;
     }
 }
 

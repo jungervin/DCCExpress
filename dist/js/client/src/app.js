@@ -8,13 +8,18 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
     console.log(toastManager_1.ToastManager);
     console.log(controlPanel_1.LocoControlPanel);
     class App {
-        //static wsClient: WebSocket
         //commandCenters: iCommandCenter[] = []
         constructor() {
             this.sensors = {};
             this.decoders = {};
-            this.powerOn = false;
-            this.prevPower = undefined;
+            this.powerInfo = {
+                info: undefined,
+                current: undefined,
+                trackVoltageOn: undefined,
+                emergencyStop: undefined,
+                programmingModeActive: undefined,
+                shortCircuit: undefined,
+            };
             //Dispatcher.intervalTime = 111
             this.toolbar = document.getElementById("toolbar");
             this.editor = document.getElementById("editorCanvas");
@@ -22,17 +27,16 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             this.toolbar.canvas = this.editor;
             this.toolbar.canvas.drawMode = editor_1.drawModes.pointer;
             this.toolbar.btnPower.onclick = (e) => {
-                const p = { on: !this.powerOn };
+                const p = { on: !this.powerInfo.trackVoltageOn };
                 ws_1.wsClient.send({ type: dcc_1.ApiCommands.setPower, data: p });
             };
             this.toolbar.btnEmergencyStop.onclick = (e) => {
-                //wsClient.send({ type: ApiCommands.emergencyStop, data: "" } as iData)
-                if (this.powerOn) {
-                    ws_1.wsClient.send({ type: dcc_1.ApiCommands.emergencyStop, data: "" });
-                }
-                else {
-                    ws_1.wsClient.send({ type: dcc_1.ApiCommands.setPower, data: { on: true } });
-                }
+                ws_1.wsClient.send({ type: dcc_1.ApiCommands.emergencyStop, data: "" });
+                // if (this.powerOn) {
+                //     wsClient.send({ type: ApiCommands.emergencyStop, data: "" } as iData)
+                // } else {
+                //     wsClient.send({ type: ApiCommands.setPower, data: { on: true } as iSetPower } as iData)
+                // }
             };
             //IOConn.initialize(document.location.origin)
             // this.canvas.socket = IOConn.socket
@@ -89,7 +93,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                         this.systemInfo(msg.data);
                         break;
                     case dcc_1.ApiCommands.powerInfo:
-                        this.powerInfo(msg.data);
+                        this.procPowerInfo(msg.data);
                         break;
                     case dcc_1.ApiCommands.UnsuccessfulOperation:
                         toastManager_1.toastManager.showToast("UnsuccessfulOperation");
@@ -162,42 +166,41 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             }
         }
         systemInfo(ss) {
-            //Bitmask for CentralState:
-            const csEmergencyStop = 0x01; // The emergency stop is switched on
-            const csTrackVoltageOff = 0x02; // The track voltage is switched off
-            const csShortCircuit = 0x04; // Short-circuit
-            const csProgrammingModeActive = 0x20; // The programming mode is active
-            //Bitmask for CentralStateEx:
-            const cseHighTemperature = 0x01; // temperature too high
-            const csePowerLost = 0x02; // Input voltage too low
-            const cseShortCircuitExternal = 0x04; // S.C. at the external booster output
-            const cseShortCircuitInternal = 0x08; // S.C. at the main track or programming track
-            //From Z21 FW Version 1.42:
-            const cseRCN213 = 0x20; // turnout addresses according to RCN-213
-            //From Z21 FW Version 1.42:
-            //Bitmask for Capabilities:
-            const capDCC = 0x01; // capable of DCC
-            const capMM = 0x02; // capable of MM
-            //#define capReserved 0x04 // reserved for future development
-            const capRailCom = 0x08; // RailCom is activated
-            const capLocoCmds = 0x10; // accepts LAN commands for locomotive decoders
-            const capAccessoryCmds = 0x20; // accepts LAN commands for accessory decoders
-            const capDetectorCmds = 0x40; // accepts LAN commands for detectors
-            const capNeedsUnlockCode = 0x80; // device needs activate code (z21start)
-            if ((ss.CentralState & 47) > 0) {
-                this.toolbar.btnPower.classList.remove("success");
-                this.toolbar.btnPower.classList.add("error");
-                this.powerOn = false;
-            }
-            else {
-                this.toolbar.btnPower.classList.add("success");
-                this.toolbar.btnPower.classList.remove("error");
-                this.powerOn = true;
-            }
-            if (this.prevPower != this.powerOn) {
-                window.powerChanged(this.powerOn);
-                this.prevPower = this.powerOn;
-            }
+            // //Bitmask for CentralState:
+            // const csEmergencyStop = 0x01 // The emergency stop is switched on
+            // const csTrackVoltageOff = 0x02 // The track voltage is switched off
+            // const csShortCircuit = 0x04 // Short-circuit
+            // const csProgrammingModeActive = 0x20 // The programming mode is active
+            // //Bitmask for CentralStateEx:
+            // const cseHighTemperature = 0x01 // temperature too high
+            // const csePowerLost = 0x02 // Input voltage too low
+            // const cseShortCircuitExternal = 0x04 // S.C. at the external booster output
+            // const cseShortCircuitInternal = 0x08 // S.C. at the main track or programming track
+            // //From Z21 FW Version 1.42:
+            // const cseRCN213 = 0x20 // turnout addresses according to RCN-213
+            // //From Z21 FW Version 1.42:
+            // //Bitmask for Capabilities:
+            // const capDCC = 0x01 // capable of DCC
+            // const capMM = 0x02 // capable of MM
+            // //#define capReserved 0x04 // reserved for future development
+            // const capRailCom = 0x08 // RailCom is activated
+            // const capLocoCmds = 0x10 // accepts LAN commands for locomotive decoders
+            // const capAccessoryCmds = 0x20 // accepts LAN commands for accessory decoders
+            // const capDetectorCmds = 0x40 // accepts LAN commands for detectors
+            // const capNeedsUnlockCode = 0x80 // device needs activate code (z21start)
+            // if ((ss.CentralState & 0b0010_1111) > 0) {
+            //     this.toolbar.btnPower!.classList.remove("success")
+            //     this.toolbar.btnPower!.classList.add("error")
+            //     this.powerOn = false
+            // } else {
+            //     this.toolbar.btnPower!.classList.add("success")
+            //     this.toolbar.btnPower!.classList.remove("error")
+            //     this.powerOn = true
+            // }
+            // if (this.prevPower != this.powerOn) {
+            //     window.powerChanged(this.powerOn)
+            //     this.prevPower = this.powerOn;
+            // }
         }
         configLoaded(config) {
             this.editor.load(config);
@@ -322,35 +325,48 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             }
             this.editor.draw();
         }
-        powerInfo(pi) {
-            if (pi.emergencyStop) {
-                this.toolbar.btnEmergencyStop.classList.add("error");
+        procPowerInfo(pi) {
+            if (this.powerInfo.emergencyStop != pi.emergencyStop) {
+                window.powerChanged(pi);
+                if (pi.emergencyStop) {
+                    this.toolbar.btnEmergencyStop.classList.add("error");
+                }
+                else {
+                    this.toolbar.btnEmergencyStop.classList.remove("error");
+                }
             }
-            else {
-                this.toolbar.btnEmergencyStop.classList.remove("error");
-            }
-            switch (pi.info) {
-                case dcc_1.Z21POWERINFO.poweroff:
-                    this.toolbar.btnPower.classList.remove("sucess");
-                    this.toolbar.btnPower.classList.add("error");
-                    this.powerOn = false;
-                    break;
-                case dcc_1.Z21POWERINFO.poweron:
-                    this.toolbar.btnPower.classList.remove("error");
+            if (this.powerInfo.trackVoltageOn != pi.trackVoltageOn) {
+                window.powerChanged(pi);
+                if (pi.trackVoltageOn) {
                     this.toolbar.btnPower.classList.add("success");
-                    this.powerOn = true;
-                    break;
-                case dcc_1.Z21POWERINFO.programmingmode:
-                    break;
-                case dcc_1.Z21POWERINFO.shortcircuit:
-                    this.toolbar.btnPower.classList.remove("sucess");
-                    this.toolbar.btnPower.classList.add("error");
-                    break;
+                }
+                else {
+                    this.toolbar.btnPower.classList.remove("success");
+                }
             }
-            if (this.prevPower != this.powerOn) {
-                window.powerChanged(this.powerOn);
-                this.prevPower = this.powerOn;
-            }
+            this.powerInfo = pi;
+            // switch (pi.info) {
+            //     case Z21POWERINFO.poweroff:
+            //         this.toolbar.btnPower!.classList.remove("sucess")
+            //         this.toolbar.btnPower!.classList.add("error")
+            //         this.powerOn = false
+            //         break;
+            //     case Z21POWERINFO.poweron:
+            //         this.toolbar.btnPower!.classList.remove("error")
+            //         this.toolbar.btnPower!.classList.add("success")
+            //         this.powerOn = true
+            //         break;
+            //     case Z21POWERINFO.programmingmode:
+            //         break;
+            //     case Z21POWERINFO.shortcircuit:
+            //         this.toolbar.btnPower!.classList.remove("sucess")
+            //         this.toolbar.btnPower!.classList.add("error")
+            //         break;
+            // }
+            // if (this.prevPower != this.powerOn) {
+            //     window.powerChanged(this.powerOn)
+            //     this.prevPower = this.powerOn;
+            // }
         }
     }
     exports.App = App;

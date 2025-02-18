@@ -662,17 +662,17 @@ export class LocoControlPanel extends HTMLElement {
     }
 
 
-    private _power: boolean = false;
-    public get power(): boolean {
+    private _power?: iPowerInfo
+    public get power(): iPowerInfo | undefined {
         return this._power;
     }
-    public set power(v: boolean) {
-        if (v) {
-            this.btnEmergency.classList.remove('on')
-        } else {
+    public set power(pi: iPowerInfo) {
+        if (pi.emergencyStop) {
             this.btnEmergency.classList.add('on')
+        } else {
+            this.btnEmergency.classList.remove('on')
         }
-        this._power = v;
+        this._power = pi;
     }
 
 }
