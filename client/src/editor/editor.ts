@@ -61,7 +61,7 @@ export class CustomCanvas extends HTMLElement {
     public ctx: CanvasRenderingContext2D | undefined;
 
     views: Views = new Views()
-    status?: HTMLDivElement;
+    statusbar?: HTMLDivElement;
     downX: number = 0;
     downY: number = 0;
     lastX: number = 0;
@@ -153,7 +153,8 @@ export class CustomCanvas extends HTMLElement {
 
     init() {
 
-        this.status = document.getElementById("status") as HTMLDivElement
+        this.statusbar = document.getElementById("statusbar") as HTMLDivElement
+        
         this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
         this.canvas.addEventListener('mouseup', (e) => this.handleMouseUp(e));
         this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
@@ -1105,8 +1106,8 @@ export class CustomCanvas extends HTMLElement {
         return Math.floor(worldY / this.gridSizeY);
     }
     drawStatus() {
-        if (this.status) {
-            this.status.innerHTML = `Status| x: ${this.getMouseGridX()} y: ${this.getMouseGridY()} Elements: ${this.views.elements.length} Scale: ${this.scale} origX: ${this.originX} origY: ${this.originY}`
+        if (this.statusbar) {
+            this.statusbar.innerHTML = `Status| x: ${this.getMouseGridX()} y: ${this.getMouseGridY()} Elements: ${this.views.elements.length} Scale: ${this.scale} origX: ${this.originX} origY: ${this.originY}`
         }
     }
     unselectAll() {

@@ -567,7 +567,7 @@ export class TurnoutDoubleElement extends TurnoutElement {
     drawAddress(ctx: CanvasRenderingContext2D) {
         if (this.showAddress) {
             drawTextWithRoundedBackground(ctx, this.posLeft, this.posBottom - 10, "#" + this.address.toString() + " #" + this.address2.toString())
-            drawTextWithRoundedBackground(ctx, this.posLeft, this.posTop, this.angle.toString())
+            // drawTextWithRoundedBackground(ctx, this.posLeft, this.posTop, this.angle.toString())
         }
     }
 

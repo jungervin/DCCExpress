@@ -154,13 +154,32 @@ body {
     height: 100vh;
 }
 
-.ui-container {
-    display: block;
-    align-items: flex-start;
+
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* A teljes képernyő magassága */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+#toolbar, #statusbar {
+    color:#2a2a2a;
+    background: #333;
+    color: white;
+    text-align: left;
+    line-height: 32px;
+    flex-shrink: 0; /* Megakadályozza, hogy összenyomódjanak */
+}
+
+#uiContainer {
+    flex-grow: 1; /* Kitölti a maradék helyet */
+    width: 100%;
     position: relative;
     overflow: hidden;
-    width: 100vw;
-    height: 80vh;
 }
 
 #editorCanvas {
@@ -241,7 +260,7 @@ body {
     top: 0;
     left: 0;
     width: 25%;
-    
+    min-width: 360px;
     height: 100%;
     background: black;
     color: whitesmoke;

@@ -102,7 +102,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             this.propertyPanel = document.getElementById("EditorPropertyPanel");
         }
         init() {
-            this.status = document.getElementById("status");
+            this.statusbar = document.getElementById("statusbar");
             this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
             this.canvas.addEventListener('mouseup', (e) => this.handleMouseUp(e));
             this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
@@ -943,8 +943,8 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             return Math.floor(worldY / this.gridSizeY);
         }
         drawStatus() {
-            if (this.status) {
-                this.status.innerHTML = `Status| x: ${this.getMouseGridX()} y: ${this.getMouseGridY()} Elements: ${this.views.elements.length} Scale: ${this.scale} origX: ${this.originX} origY: ${this.originY}`;
+            if (this.statusbar) {
+                this.statusbar.innerHTML = `Status| x: ${this.getMouseGridX()} y: ${this.getMouseGridY()} Elements: ${this.views.elements.length} Scale: ${this.scale} origX: ${this.originX} origY: ${this.originY}`;
             }
         }
         unselectAll() {

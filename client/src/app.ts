@@ -36,7 +36,33 @@ export class App {
     }
     audioManager: AudioManager;
 
+
+    saveCanvasState() {
+        const state = {
+            originX: this.editor.originX,
+            originY: this.editor.originY,
+            scale: this.editor.scale,
+        };
+        localStorage.setItem("canvasState", JSON.stringify(state));
+        console.log("Canvas state saved!", state);
+    }
+    loadCanvasState() {
+        const savedState = localStorage.getItem("canvasState");
+        if (savedState) {
+            const state = JSON.parse(savedState);
+            this.editor.originX = state.originX;
+            this.editor.originY = state.originY;
+            this.editor.scale = state.scale;
+            //canvasController.redraw();
+            console.log("Canvas state loaded!", state);
+        }
+    }
+
     constructor() {
+
+        this.loadCanvasState(); // Indításkor betöltjük az adatokat
+
+        window.addEventListener("beforeunload", this.saveCanvasState);
 
         this.audioManager = audioManager
 
@@ -55,7 +81,17 @@ export class App {
             wsClient.send({ type: ApiCommands.emergencyStop, data: "" } as iData)
         }
 
+        window.addEventListener("resize", (ev) => {
+            this.editor.canvas.width = window.innerWidth;
+            this.editor.canvas.height = window.innerHeight;
+            this.editor.draw()
+        })
+
         this.editor.init()
+
+
+
+        wsClient.connect()
 
         Globals.fetchJsonData("/settings.json").then((data: any) => {
             const s = data as iSettings
@@ -63,7 +99,7 @@ export class App {
             Globals.Settings.CommandCenter = s.CommandCenter ?? defaultSettings.CommandCenter
             Globals.Settings.CommandCenterZ21 = s.CommandCenterZ21 ?? defaultSettings.CommandCenterZ21
             Globals.Settings.CommandCenterDCCExTcp = s.CommandCenterDCCExTcp ?? defaultSettings.CommandCenterDCCExTcp
-            Globals.Settings.CommandCenterDCCExSerial = s.CommandCenterDCCExSerial ?? defaultSettings.CommandCenterDCCExSerial            
+            Globals.Settings.CommandCenterDCCExSerial = s.CommandCenterDCCExSerial ?? defaultSettings.CommandCenterDCCExSerial
             Globals.Settings.Dispacher = s.Dispacher ?? defaultSettings.Dispacher
             Globals.Settings.EditorSettings = s.EditorSettings ?? defaultSettings.EditorSettings
 
@@ -73,10 +109,10 @@ export class App {
                 alert("Config Error:\n" + reason)
             })
 
-        }).catch((reason:any) =>  {
+        }).catch((reason: any) => {
             alert("Settings Error:\n" + reason)
         }).finally(() => {
-            wsClient.connect()            
+            wsClient.send({ type: ApiCommands.getRBusInfo, data: "" })
         })
 
         wsClient.onConnected = () => {
@@ -86,7 +122,7 @@ export class App {
             // wsClient.send({ type: ApiCommands.getCommandCenters, data: "" })
             //wsClient.send({ type: ApiCommands.configLoad, data: "" })
             this.locoControlPanel.init()
-            wsClient.send({ type: ApiCommands.getRBusInfo, data: "" })
+
         }
         wsClient.onError = () => {
             this.toolbar.wsStatus!.classList.remove("success")
@@ -146,11 +182,6 @@ export class App {
             }
         }
 
-        window.addEventListener("resize", (ev) => {
-            this.editor.canvas.width = window.innerWidth;
-            this.editor.canvas.height = window.innerHeight;
-            this.editor.draw()
-        })
 
 
         // A settings betöltése után
@@ -347,10 +378,9 @@ export class App {
             }
         }
 
-        if(this.powerInfo.trackVoltageOn != pi.trackVoltageOn)
-        {
+        if (this.powerInfo.trackVoltageOn != pi.trackVoltageOn) {
             window.powerChanged(pi)
-            if(pi.trackVoltageOn) {
+            if (pi.trackVoltageOn) {
                 this.toolbar.btnPower!.classList.add("success")
             } else {
                 this.toolbar.btnPower!.classList.remove("success")

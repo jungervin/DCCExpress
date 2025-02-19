@@ -8,6 +8,26 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
     console.log(toastManager_1.ToastManager);
     console.log(controlPanel_1.LocoControlPanel);
     class App {
+        saveCanvasState() {
+            const state = {
+                originX: this.editor.originX,
+                originY: this.editor.originY,
+                scale: this.editor.scale,
+            };
+            localStorage.setItem("canvasState", JSON.stringify(state));
+            console.log("Canvas state saved!", state);
+        }
+        loadCanvasState() {
+            const savedState = localStorage.getItem("canvasState");
+            if (savedState) {
+                const state = JSON.parse(savedState);
+                this.editor.originX = state.originX;
+                this.editor.originY = state.originY;
+                this.editor.scale = state.scale;
+                //canvasController.redraw();
+                console.log("Canvas state loaded!", state);
+            }
+        }
         constructor() {
             this.sensors = {};
             this.decoders = {};
@@ -19,6 +39,8 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 programmingModeActive: undefined,
                 shortCircuit: undefined,
             };
+            this.loadCanvasState(); // Indításkor betöltjük az adatokat
+            window.addEventListener("beforeunload", this.saveCanvasState);
             this.audioManager = audioButton_1.audioManager;
             this.toolbar = document.getElementById("toolbar");
             this.editor = document.getElementById("editorCanvas");
@@ -32,7 +54,13 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             this.toolbar.btnEmergencyStop.onclick = (e) => {
                 ws_1.wsClient.send({ type: dcc_1.ApiCommands.emergencyStop, data: "" });
             };
+            window.addEventListener("resize", (ev) => {
+                this.editor.canvas.width = window.innerWidth;
+                this.editor.canvas.height = window.innerHeight;
+                this.editor.draw();
+            });
             this.editor.init();
+            ws_1.wsClient.connect();
             globals_1.Globals.fetchJsonData("/settings.json").then((data) => {
                 var _a, _b, _c, _d, _e, _f;
                 const s = data;
@@ -51,7 +79,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             }).catch((reason) => {
                 alert("Settings Error:\n" + reason);
             }).finally(() => {
-                ws_1.wsClient.connect();
+                ws_1.wsClient.send({ type: dcc_1.ApiCommands.getRBusInfo, data: "" });
             });
             ws_1.wsClient.onConnected = () => {
                 this.toolbar.wsStatus.classList.remove("error");
@@ -60,7 +88,6 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 // wsClient.send({ type: ApiCommands.getCommandCenters, data: "" })
                 //wsClient.send({ type: ApiCommands.configLoad, data: "" })
                 this.locoControlPanel.init();
-                ws_1.wsClient.send({ type: dcc_1.ApiCommands.getRBusInfo, data: "" });
             };
             ws_1.wsClient.onError = () => {
                 this.toolbar.wsStatus.classList.remove("success");
@@ -113,11 +140,6 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                         break;
                 }
             };
-            window.addEventListener("resize", (ev) => {
-                this.editor.canvas.width = window.innerWidth;
-                this.editor.canvas.height = window.innerHeight;
-                this.editor.draw();
-            });
             // A settings betöltése után
             this.locoControlPanel = document.getElementById("locoControlPanel");
             dispatcher_1.Dispatcher.App = this;

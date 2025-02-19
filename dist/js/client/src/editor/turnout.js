@@ -533,7 +533,7 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
         drawAddress(ctx) {
             if (this.showAddress) {
                 (0, graphics_1.drawTextWithRoundedBackground)(ctx, this.posLeft, this.posBottom - 10, "#" + this.address.toString() + " #" + this.address2.toString());
-                (0, graphics_1.drawTextWithRoundedBackground)(ctx, this.posLeft, this.posTop, this.angle.toString());
+                // drawTextWithRoundedBackground(ctx, this.posLeft, this.posTop, this.angle.toString())
             }
         }
         // Lime

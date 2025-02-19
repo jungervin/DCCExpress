@@ -50,7 +50,7 @@ export class Toolbar extends HTMLElement {
             <style>
                 .toolbar {
                     display: flex;
-                    padding: 8px;
+                    padding: 4px;
                     margin: 0px;
                     background-color: #f0f0f0;
                     height: 32px;
@@ -127,8 +127,8 @@ export class Toolbar extends HTMLElement {
                     position: absolute;
                     right: 0;
                     top:0;
-                    
-                    padding: 8px;
+                    margin: 0;
+                    padding-top: 2px;
                 }
             </style>
             <div class="toolbar">
