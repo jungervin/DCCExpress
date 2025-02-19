@@ -53,14 +53,13 @@ export class App {
             this.editor.originX = state.originX;
             this.editor.originY = state.originY;
             this.editor.scale = state.scale;
-            //canvasController.redraw();
             console.log("Canvas state loaded!", state);
         }
     }
 
     constructor() {
 
-        this.loadCanvasState(); // Indításkor betöltjük az adatokat
+        this.loadCanvasState(); 
 
         window.addEventListener("beforeunload", this.saveCanvasState);
 

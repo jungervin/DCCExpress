@@ -24,7 +24,6 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 this.editor.originX = state.originX;
                 this.editor.originY = state.originY;
                 this.editor.scale = state.scale;
-                //canvasController.redraw();
                 console.log("Canvas state loaded!", state);
             }
         }
@@ -39,7 +38,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 programmingModeActive: undefined,
                 shortCircuit: undefined,
             };
-            this.loadCanvasState(); // Indításkor betöltjük az adatokat
+            this.loadCanvasState();
             window.addEventListener("beforeunload", this.saveCanvasState);
             this.audioManager = audioButton_1.audioManager;
             this.toolbar = document.getElementById("toolbar");
