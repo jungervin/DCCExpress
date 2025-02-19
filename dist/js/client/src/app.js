@@ -8,7 +8,6 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
     console.log(toastManager_1.ToastManager);
     console.log(controlPanel_1.LocoControlPanel);
     class App {
-        //commandCenters: iCommandCenter[] = []
         constructor() {
             this.sensors = {};
             this.decoders = {};
@@ -21,7 +20,6 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 shortCircuit: undefined,
             };
             this.audioManager = audioButton_1.audioManager;
-            //Dispatcher.intervalTime = 111
             this.toolbar = document.getElementById("toolbar");
             this.editor = document.getElementById("editorCanvas");
             this.editor.toolbar = this.toolbar;
@@ -33,15 +31,8 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             };
             this.toolbar.btnEmergencyStop.onclick = (e) => {
                 ws_1.wsClient.send({ type: dcc_1.ApiCommands.emergencyStop, data: "" });
-                // if (this.powerOn) {
-                //     wsClient.send({ type: ApiCommands.emergencyStop, data: "" } as iData)
-                // } else {
-                //     wsClient.send({ type: ApiCommands.setPower, data: { on: true } as iSetPower } as iData)
-                // }
             };
-            //IOConn.initialize(document.location.origin)
-            // this.canvas.socket = IOConn.socket
-            // this.canvas.views.socket = IOConn.socket;
+            this.editor.init();
             globals_1.Globals.fetchJsonData("/settings.json").then((data) => {
                 var _a, _b, _c, _d, _e, _f;
                 const s = data;
@@ -53,13 +44,14 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 globals_1.Globals.Settings.Dispacher = (_e = s.Dispacher) !== null && _e !== void 0 ? _e : dcc_1.defaultSettings.Dispacher;
                 globals_1.Globals.Settings.EditorSettings = (_f = s.EditorSettings) !== null && _f !== void 0 ? _f : dcc_1.defaultSettings.EditorSettings;
                 globals_1.Globals.fetchJsonData('/config.json').then((conf) => {
-                    this.editor.init();
                     this.configLoaded(conf);
                 }).catch((reason) => {
                     alert("Config Error:\n" + reason);
                 });
             }).catch((reason) => {
                 alert("Settings Error:\n" + reason);
+            }).finally(() => {
+                ws_1.wsClient.connect();
             });
             ws_1.wsClient.onConnected = () => {
                 this.toolbar.wsStatus.classList.remove("error");
@@ -73,7 +65,6 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             ws_1.wsClient.onError = () => {
                 this.toolbar.wsStatus.classList.remove("success");
                 this.toolbar.wsStatus.classList.add("error");
-                //this.toolbar.wsStatus?.setAttribute("fill", "red")
             };
             ws_1.wsClient.onMessage = (msg) => {
                 switch (msg.type) {
@@ -127,7 +118,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 this.editor.canvas.height = window.innerHeight;
                 this.editor.draw();
             });
-            ws_1.wsClient.connect();
+            // A settings betöltése után
             this.locoControlPanel = document.getElementById("locoControlPanel");
             dispatcher_1.Dispatcher.App = this;
         }

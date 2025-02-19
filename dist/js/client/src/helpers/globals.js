@@ -55,6 +55,11 @@ define(["require", "exports", "../../../common/src/dcc"], function (require, exp
                 }
             });
         }
+        static settingsSave() {
+            return __awaiter(this, void 0, void 0, function* () {
+                yield Globals.saveJson("/settings.json", Globals.Settings);
+            });
+        }
     }
     exports.Globals = Globals;
     // static ServerSettings: iServerSettings = {

@@ -37,11 +37,10 @@ export class App {
     audioManager: AudioManager;
 
 
-    //commandCenters: iCommandCenter[] = []
     constructor() {
 
         this.audioManager = audioManager
-        //Dispatcher.intervalTime = 111
+
         this.toolbar = document.getElementById("toolbar") as Toolbar
         this.editor = document.getElementById("editorCanvas") as CustomCanvas
         this.editor.toolbar = this.toolbar
@@ -55,20 +54,10 @@ export class App {
 
         this.toolbar!.btnEmergencyStop!.onclick = (e: MouseEvent) => {
             wsClient.send({ type: ApiCommands.emergencyStop, data: "" } as iData)
-
-            // if (this.powerOn) {
-            //     wsClient.send({ type: ApiCommands.emergencyStop, data: "" } as iData)
-            // } else {
-            //     wsClient.send({ type: ApiCommands.setPower, data: { on: true } as iSetPower } as iData)
-            // }
-
-
         }
 
-        //IOConn.initialize(document.location.origin)
+        this.editor.init()
 
-        // this.canvas.socket = IOConn.socket
-        // this.canvas.views.socket = IOConn.socket;
         Globals.fetchJsonData("/settings.json").then((data: any) => {
             const s = data as iSettings
             Globals.Settings = data as iSettings
@@ -80,17 +69,16 @@ export class App {
             Globals.Settings.EditorSettings = s.EditorSettings ?? defaultSettings.EditorSettings
 
             Globals.fetchJsonData('/config.json').then((conf: any) => {
-                this.editor.init()
                 this.configLoaded(conf)
             }).catch((reason) => {
                 alert("Config Error:\n" + reason)
             })
-            
 
         }).catch((reason:any) =>  {
             alert("Settings Error:\n" + reason)
+        }).finally(() => {
+            wsClient.connect()            
         })
-
 
         wsClient.onConnected = () => {
             this.toolbar.wsStatus!.classList.remove("error")
@@ -100,12 +88,10 @@ export class App {
             //wsClient.send({ type: ApiCommands.configLoad, data: "" })
             this.locoControlPanel.init()
             wsClient.send({ type: ApiCommands.getRBusInfo, data: "" })
-            
         }
         wsClient.onError = () => {
             this.toolbar.wsStatus!.classList.remove("success")
             this.toolbar.wsStatus!.classList.add("error")
-            //this.toolbar.wsStatus?.setAttribute("fill", "red")
         }
 
         wsClient.onMessage = (msg: iData) => {
@@ -168,7 +154,7 @@ export class App {
         })
 
 
-        wsClient.connect()
+        // A settings betöltése után
 
         this.locoControlPanel = document.getElementById("locoControlPanel") as LocoControlPanel
 

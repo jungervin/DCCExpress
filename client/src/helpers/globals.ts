@@ -63,7 +63,6 @@ export class Globals {
     }
 
     static async saveJson(fileName: string, data: any) {
-
         try {
             const response = await fetch("/save", {
                 method: "POST",
@@ -76,6 +75,10 @@ export class Globals {
         } catch (error) {
             alert("Error saving file:\n" + error);
         }
+    }
+
+    static async settingsSave() {
+        await Globals.saveJson("/settings.json", Globals.Settings)
     }
 }
 
