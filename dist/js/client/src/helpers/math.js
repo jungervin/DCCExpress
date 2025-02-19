@@ -1,13 +1,11 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Rect = exports.Point = void 0;
-    exports.degreesToRadians = degreesToRadians;
-    exports.getDirection = getDirection;
-    exports.getDirectionXy = getDirectionXy;
+    exports.getDistance = exports.getDirectionXy = exports.getDirection = exports.Rect = exports.Point = exports.degreesToRadians = void 0;
     function degreesToRadians(degrees) {
         return degrees * Math.PI / 180;
     }
+    exports.degreesToRadians = degreesToRadians;
     const directions = [
         { x: 1, y: 0 }, // 0° (jobbra)
         { x: 1, y: 1 }, // 45° (jobbra-le)
@@ -64,9 +62,15 @@ define(["require", "exports"], function (require, exports) {
         const index = Math.round(a / 45) % directions.length;
         return directions[index];
     }
+    exports.getDirection = getDirection;
     function getDirectionXy(point, angle) {
         const d = getDirection(angle);
         var p = new Point(point.x + d.x, point.y + d.y);
         return p;
     }
+    exports.getDirectionXy = getDirectionXy;
+    function getDistance(p1, p2) {
+        return Math.sqrt(Math.pow((p1.x - p2.x), 2) + Math.pow((p1.y - p2.y), 2));
+    }
+    exports.getDistance = getDistance;
 });

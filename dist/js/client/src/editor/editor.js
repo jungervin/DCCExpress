@@ -67,6 +67,8 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             this.dragEnabled = false;
             this.globalX = 0;
             this.globalY = 0;
+            this.pointerMap = new Map(); // Pointer ID-k mentése
+            this.lastDistance = 0;
             this._drawMode = drawModes.track;
             this.originX = 0;
             this.originY = 0;

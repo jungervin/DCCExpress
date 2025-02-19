@@ -30,6 +30,7 @@ import { Dispatcher } from "./dispatcher";
 import { LocoControlPanel } from "../components/controlPanel";
 import { ButtonShapeElement } from "./button";
 import { AudioButtonShapeElement } from "./audioButton";
+import { getDistance } from "../helpers/math";
 
 console.log(PropertyPanel)
 
@@ -107,6 +108,9 @@ export class CustomCanvas extends HTMLElement {
     locoControlPanel?: LocoControlPanel;
     cursorAudioButtonElement?: AudioButtonShapeElement;
 
+    private pointerMap = new Map<number, { x: number; y: number }>(); // Pointer ID-k mentése
+    private lastDistance = 0;
+
     constructor() {
         super();
         this.originX = 0
@@ -154,11 +158,11 @@ export class CustomCanvas extends HTMLElement {
     init() {
 
         this.statusbar = document.getElementById("statusbar") as HTMLDivElement
-        
+
         this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
-        this.canvas.addEventListener('mouseup', (e) => this.handleMouseUp(e));
+        this.canvas.addEventListener('mouseup', (e) =>   this.handleMouseUp(e));
         this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
-        this.canvas.addEventListener('wheel', (e) => this.handleMouseWheel(e));
+        this.canvas.addEventListener('wheel', (e) =>     this.handleMouseWheel(e));
 
         this.cursorTrackElement = new TrackElement("", 0, 0, "cursor");
         this.cursorTrackElement.isSelected = true
@@ -1334,18 +1338,18 @@ export class CustomCanvas extends HTMLElement {
     }
 
     load(config: any) {
-        
+
         this.views.elements.length = 0
 
         const defaults = { scale: 1, origX: 0, origY: 0, locoPanelVisible: false }
-        
+
         try {
 
             if (config.settings) {
                 this.scale = config.settings.scale ?? 1
                 this.originX = config.settings.origX ?? 0
                 this.originY = config.settings.origY ?? 0
-                
+
             } else {
                 config.settings = defaults;
             }

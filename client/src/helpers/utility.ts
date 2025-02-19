@@ -19,10 +19,10 @@ export function byteToBinary(byte: number, len: number = 8): string {
 
 export function toDecimal(v: string) {
     var base = 10
-    if(v.startsWith('0b')) {
+    if (v.startsWith('0b')) {
         v = v.slice(2)
         base = 2
-    } else if(v.startsWith('0x')) {
+    } else if (v.startsWith('0x')) {
         v = v.slice(2)
         base = 16
     }
@@ -40,44 +40,47 @@ export function moveUp(arr: any[], index: number) {
     const temp = arr[index - 1];
     arr[index - 1] = arr[index];
     arr[index] = temp;
-  }
-  
-  /**
-   * Egy elem helyét lejjebb mozgatja egy hellyel.
-   * @param {any[]} arr - A módosítandó tömb.
-   * @param {number} index - A mozgatandó elem indexe.
-   */
-  export function moveDown(arr: any[], index: number) {
+}
+
+/**
+ * Egy elem helyét lejjebb mozgatja egy hellyel.
+ * @param {any[]} arr - A módosítandó tömb.
+ * @param {number} index - A mozgatandó elem indexe.
+ */
+export function moveDown(arr: any[], index: number) {
     if (index >= arr.length - 1) return; // már az utolsó elemnél vagyunk
     // A felcserélés:
     const temp = arr[index + 1];
     arr[index + 1] = arr[index];
     arr[index] = temp;
-  }
+}
 
-  /**
- * Egy elem mozgatása a tömb elejére.
- * @param {any[]} arr - A módosítandó tömb.
- * @param {number} index - A mozgatandó elem indexe.
- */
+/**
+* Egy elem mozgatása a tömb elejére.
+* @param {any[]} arr - A módosítandó tömb.
+* @param {number} index - A mozgatandó elem indexe.
+*/
 export function moveToStart(arr: any[], index: number) {
     if (index <= 0) return; // Ha már elején van, nincs dolgunk
     // Vágjuk ki az elemet a régi helyéről:
     const [item] = arr.splice(index, 1);
     // Illesszük be a tömb elejére:
     arr.unshift(item);
-  }
-  
-  /**
-   * Egy elem mozgatása a tömb végére.
-   * @param {any[]} arr - A módosítandó tömb.
-   * @param {number} index - A mozgatandó elem indexe.
-   */
-  export function moveToEnd(arr: any[], index: number) {
+}
+
+/**
+ * Egy elem mozgatása a tömb végére.
+ * @param {any[]} arr - A módosítandó tömb.
+ * @param {number} index - A mozgatandó elem indexe.
+ */
+export function moveToEnd(arr: any[], index: number) {
     if (index >= arr.length - 1) return; // Ha már a végén van, nincs dolgunk
     // Vágjuk ki az elemet a régi helyéről:
     const [item] = arr.splice(index, 1);
     // Illesszük be a tömb végére:
     arr.push(item);
-  }
-  
+}
+
+export function isTouchDevice(): boolean {
+    return navigator.maxTouchPoints > 0 || "ontouchstart" in window || window.matchMedia("(pointer: coarse)").matches;
+}
