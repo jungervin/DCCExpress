@@ -88,9 +88,9 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                         this.rbusInfo(msg.data);
                         this.execDispatcher();
                         break;
-                    case dcc_1.ApiCommands.configLoaded:
-                        this.configLoaded(msg.data);
-                        break;
+                    // case ApiCommands.configLoaded:
+                    //     // this.configLoaded(msg.data)
+                    //     break;
                     case dcc_1.ApiCommands.settingsInfo:
                         //setSettings(msg.data)
                         const d = msg.data;

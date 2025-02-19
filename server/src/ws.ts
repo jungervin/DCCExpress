@@ -62,12 +62,12 @@ wsServer.on("connection", (ws, req) => {
                 //     commandCenters.getSystemState()
                 //     break;
 
-                case ApiCommands.configLoad:
-                    configLoad(ws)
-                    break;
-                case ApiCommands.configSave:
-                    configSave(data)
-                    break;
+                // case ApiCommands.configLoad:
+                //     configLoad(ws)
+                //     break;
+                // case ApiCommands.configSave:
+                //     configSave(data)
+                //     break;
 
                 case ApiCommands.setTurnout:
                     commandCenters.setTurnout(data)
@@ -125,36 +125,36 @@ wsServer.on("connection", (ws, req) => {
     });
 });
 
-function configLoad(ws: WebSocket) {
-    // Fájl beolvasása
-    fs.readFile(CONFIG_FILE, "utf8", (err, data) => {
-        if (err) {
-            console.error("Hiba a fájl olvasásakor:", err);
-        } else {
-            const deserialized: Element[] = JSON.parse(data);
-            log("Beolvasott elemek:", deserialized);
-            ws.send(JSON.stringify({ type: ApiCommands.configLoaded, data: deserialized } as iData))
+// function configLoad(ws: WebSocket) {
+//     // Fájl beolvasása
+//     fs.readFile(CONFIG_FILE, "utf8", (err, data) => {
+//         if (err) {
+//             console.error("Hiba a fájl olvasásakor:", err);
+//         } else {
+//             const deserialized: Element[] = JSON.parse(data);
+//             log("Beolvasott elemek:", deserialized);
+//             //ws.send(JSON.stringify({ type: ApiCommands.configLoaded, data: deserialized } as iData))
 
-            // DeviceManager.connections.commandcenters.forEach(cc => {
-            //     if (cc instanceof Z21) {
-            //         cc.LAN_RMBUS_GETDATA()
-            //         console.log("io sent LAN_RMBUS_GETDATA()")
-            //         cc.EMIT_TURNOUT_STATES()
-            //         //cc.EMIT_RBUS_STATES()
+//             // DeviceManager.connections.commandcenters.forEach(cc => {
+//             //     if (cc instanceof Z21) {
+//             //         cc.LAN_RMBUS_GETDATA()
+//             //         console.log("io sent LAN_RMBUS_GETDATA()")
+//             //         cc.EMIT_TURNOUT_STATES()
+//             //         //cc.EMIT_RBUS_STATES()
 
-            //     }
-            // });
-        }
-    });
-}
+//             //     }
+//             // });
+//         }
+//     });
+// }
 
-function configSave(data: any) {
-    const serialized = JSON.stringify(data, null, 2); // Formázott JSON
-    fs.writeFile(CONFIG_FILE, serialized, (err) => {
-        if (err) {
-            logError("Hiba a fájl írásakor:", err);
-        } else {
-            log(`Az adatok kiírva a ${CONFIG_FILE} fájlba.`);
-        }
-    });
-}
+// function configSave(data: any) {
+//     const serialized = JSON.stringify(data, null, 2); // Formázott JSON
+//     fs.writeFile(CONFIG_FILE, serialized, (err) => {
+//         if (err) {
+//             logError("Hiba a fájl írásakor:", err);
+//         } else {
+//             log(`Az adatok kiírva a ${CONFIG_FILE} fájlba.`);
+//         }
+//     });
+// }

@@ -12,16 +12,6 @@ define(["require", "exports", "../../../common/src/dcc"], function (require, exp
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Globals = void 0;
     class Globals {
-        // static EditorSettings = {
-        //     GridSizeX: dGridSizeX,
-        //     GridSizeY: dGridSizeY,
-        //     TrackWidth7: dTrackWidth7,
-        //     TrackWidth3: dTrackWidth3,
-        //     ShowAddress: true,
-        //     // LocoPanelVisible: false,
-        //     // TurnoutWaitTime: 200,
-        //     Orientation: DCCExDirections.forward,
-        // }
         static fetchJsonData(url) {
             return __awaiter(this, void 0, void 0, function* () {
                 try {
@@ -60,25 +50,13 @@ define(["require", "exports", "../../../common/src/dcc"], function (require, exp
                 yield Globals.saveJson("/settings.json", Globals.Settings);
             });
         }
+        static configSave(config) {
+            return __awaiter(this, void 0, void 0, function* () {
+                yield Globals.saveJson("/config.json", config);
+            });
+        }
     }
     exports.Globals = Globals;
-    // static ServerSettings: iServerSettings = {
-    //     CommandCenter: {
-    //         type: CommandCenterTypes.Z21,
-    //         ip: '192.168.0.70',
-    //         port: 21105,
-    //         serialPort: 'COM7',
-    //         turnoutActiveTime: 500,
-    //         basicAccessoryDecoderActiveTime: 100
-    //     },
-    //     CommandCenterZ21: {
-    //         ip: '192.168.0.70',
-    //         port: 21105,
-    //     },
-    //     Dispacher: {
-    //         interval: 500
-    //     }
-    // }
     Globals.GridSizeX = 40;
     Globals.GridSizeY = 40;
     Globals.TrackWidth7 = 7;

@@ -60,7 +60,7 @@ export class CustomCanvas extends HTMLElement {
     canvas: HTMLCanvasElement;
     public ctx: CanvasRenderingContext2D | undefined;
 
-    views: Views
+    views: Views = new Views()
     status?: HTMLDivElement;
     downX: number = 0;
     downY: number = 0;
@@ -111,7 +111,7 @@ export class CustomCanvas extends HTMLElement {
         super();
         this.originX = 0
         this.originY = 0
-        this.views = new Views()
+        //this.views = new Views()
         this.canvas = document.createElement('canvas');
 
         const shadow = this.attachShadow({ mode: 'open' });
@@ -1313,11 +1313,6 @@ export class CustomCanvas extends HTMLElement {
         })
 
         var config = {
-            dispatcher: {
-                //code: Dispatcher.code,
-                active: Dispatcher.active,
-                interval: Globals.Settings.Dispacher.interval
-            },
             settings: {
                 scale: this.scale,
                 origX: this.originX,
@@ -1334,198 +1329,194 @@ export class CustomCanvas extends HTMLElement {
             ],
         }
 
-        //this.socket!.emit("configSave", config)
-        wsClient.send({ type: ApiCommands.configSave, data: config } as iData)
+        Globals.configSave(config)
     }
 
     load(config: any) {
-        this.views = new Views()
+        
+        this.views.elements.length = 0
+
+        const defaults = { scale: 1, origX: 0, origY: 0, locoPanelVisible: false }
+        
         try {
-            
-        //Dispatcher.code = "";
-        if (config.dispatcher) {
-            //Dispatcher.code = config.dispatcher.code ?? ""
-            Dispatcher.active = config.dispatcher.active ?? false;
-            Dispatcher.interval = config.dispatcher.interval ?? 800
-        } else {
 
-        }
+            if (config.settings) {
+                this.scale = config.settings.scale ?? 1
+                this.originX = config.settings.origX ?? 0
+                this.originY = config.settings.origY ?? 0
+                
+            } else {
+                config.settings = defaults;
+            }
 
-        this.scale = config.settings.scale
-        // Globals.EditorSettings.GridSizeX = config.settings.gridSizeX
-        // Globals.EditorSettings.GridSizeY = config.settings.gridSizeY
-        // Globals.EditorSettings.ShowAddress = config.settings.showAddress
-        // Globals.EditorSettings.Orientation = config.settings.orientation
-        this.originX = config.settings.origX
-        this.originY = config.settings.origY
-        if (config.settings.locoPanelVisible) {
-            this.sidePanelLeft?.classList.add('show')
-            this.toolbar!.btnLoco.classList.add("active")
-        }
-        //var elems = config.elems
-        config.pages.forEach((page: any) => {
-            page.elems.forEach((elem: any) => {
-                console.log(elem)
-                switch (elem.type) {
-                    case "track":
-                        var t = new TrackElement(elem.uuid, elem.x, elem.y, elem.name);
-                        t.angle = elem.angle | 0
-                        // t.cc = elem.cc
-                        t.rbusAddress = elem.rbusAddress
-                        this.add(t)
-                        break;
-                    case "trackEnd":
-                        var te = new TrackEndElement(elem.uuid, elem.x, elem.y, elem.name);
-                        te.angle = elem.angle | 0
-                        // te.cc = elem.cc
-                        te.rbusAddress = elem.rbusAddress
-                        this.add(te)
-                        break;
-                    case "turnoutRight":
-                        var tor = new TurnoutRightElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
-                        tor.showAddress = Globals.Settings.EditorSettings.ShowAddress
-                        tor.angle = elem.angle | 0
-                        tor.t1ClosedValue = elem.t1ClosedValue ?? true
-                        tor.t1OpenValue = elem.t1OpenValue ?? false
-                        tor.rbusAddress = elem.rbusAddress
-                        // tor.cc = elem.cc == undefined ? undefined : elem.cc
-                        this.add(tor)
-                        break;
-                    case "turnoutLeft":
-                        var tol = new TurnoutLeftElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
-                        tol.showAddress = Globals.Settings.EditorSettings.ShowAddress
-                        tol.angle = elem.angle | 0
-                        tol.t1ClosedValue = elem.t1ClosedValue ?? true
-                        tol.t1OpenValue = elem.t1OpenValue ?? false
-                        tol.rbusAddress = elem.rbusAddress
-                        // tol.cc = elem.cc == undefined ? undefined : elem.cc
-                        this.add(tol)
-                        break;
-                    case "turnoutDouble":
-                        var tod = new TurnoutDoubleElement(elem.uuid, elem.address1 ?? 0, elem.address2 ?? 0, elem.x, elem.y, elem.name);
-                        tod.showAddress = Globals.Settings.EditorSettings.ShowAddress
-                        tod.angle = elem.angle | 0
+            if (config.settings.locoPanelVisible) {
+                this.sidePanelLeft?.classList.add('show')
+                this.toolbar!.btnLoco.classList.add("active")
+            }
+            //var elems = config.elems
+            config.pages.forEach((page: any) => {
+                page.elems.forEach((elem: any) => {
+                    console.log(elem)
+                    switch (elem.type) {
+                        case "track":
+                            var t = new TrackElement(elem.uuid, elem.x, elem.y, elem.name);
+                            t.angle = elem.angle | 0
+                            // t.cc = elem.cc
+                            t.rbusAddress = elem.rbusAddress
+                            this.add(t)
+                            break;
+                        case "trackEnd":
+                            var te = new TrackEndElement(elem.uuid, elem.x, elem.y, elem.name);
+                            te.angle = elem.angle | 0
+                            // te.cc = elem.cc
+                            te.rbusAddress = elem.rbusAddress
+                            this.add(te)
+                            break;
+                        case "turnoutRight":
+                            var tor = new TurnoutRightElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
+                            tor.showAddress = Globals.Settings.EditorSettings.ShowAddress
+                            tor.angle = elem.angle | 0
+                            tor.t1ClosedValue = elem.t1ClosedValue ?? true
+                            tor.t1OpenValue = elem.t1OpenValue ?? false
+                            tor.rbusAddress = elem.rbusAddress
+                            // tor.cc = elem.cc == undefined ? undefined : elem.cc
+                            this.add(tor)
+                            break;
+                        case "turnoutLeft":
+                            var tol = new TurnoutLeftElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
+                            tol.showAddress = Globals.Settings.EditorSettings.ShowAddress
+                            tol.angle = elem.angle | 0
+                            tol.t1ClosedValue = elem.t1ClosedValue ?? true
+                            tol.t1OpenValue = elem.t1OpenValue ?? false
+                            tol.rbusAddress = elem.rbusAddress
+                            // tol.cc = elem.cc == undefined ? undefined : elem.cc
+                            this.add(tol)
+                            break;
+                        case "turnoutDouble":
+                            var tod = new TurnoutDoubleElement(elem.uuid, elem.address1 ?? 0, elem.address2 ?? 0, elem.x, elem.y, elem.name);
+                            tod.showAddress = Globals.Settings.EditorSettings.ShowAddress
+                            tod.angle = elem.angle | 0
 
-                        tod.t1ClosedValue = elem.t1ClosedValue ?? true
-                        tod.t1OpenValue = elem.t1OpenValue ?? false
+                            tod.t1ClosedValue = elem.t1ClosedValue ?? true
+                            tod.t1OpenValue = elem.t1OpenValue ?? false
 
-                        tod.t2ClosedValue = elem.t2ClosedValue ?? true
-                        tod.t2OpenValue = elem.t2OpenValue ?? false
-                        tod.rbusAddress = elem.rbusAddress
-                        // tod.cc = elem.cc == undefined ? undefined : elem.cc
+                            tod.t2ClosedValue = elem.t2ClosedValue ?? true
+                            tod.t2OpenValue = elem.t2OpenValue ?? false
+                            tod.rbusAddress = elem.rbusAddress
+                            // tod.cc = elem.cc == undefined ? undefined : elem.cc
 
-                        this.add(tod)
-                        break;
-                    case "curve":
-                        var cu = new TrackCurveElement(elem.uuid, elem.x, elem.y, elem.name);
-                        cu.angle = elem.angle | 0
-                        // cu.cc = elem.cc
-                        cu.rbusAddress = elem.rbusAddress
-                        this.add(cu)
-                        break;
-                    case "corner":
-                        var co = new TrackCornerElement(elem.uuid, elem.x, elem.y, elem.name);
-                        co.angle = elem.angle | 0
-                        // co.cc = elem.cc
-                        co.rbusAddress = elem.rbusAddress
-                        this.add(co)
-                        break;
-                    case "block":
-                        var bl = new BlockElement(elem.uuid, elem.x, elem.y, elem.name);
-                        bl.angle = elem.angle | 0
-                        bl.locoAddress = elem.locoAddress | 0
-                        this.add(bl)
-                        break;
-                    case "label2":
-                        var l = new Label2Element(elem.uuid, elem.x, elem.y, elem.name);
-                        console.log("LABEL:", l instanceof RailView);
-                        l.text = elem.text ?? "LABEL"
-                        l.valign = elem.valign
-                        l.angle = 0
-                        this.add(l)
-                        break;
-                    case "routeSwitch":
-                        var rs = new RouteSwitchElement(elem.uuid, elem.x, elem.y, elem.name);
-                        rs.turnouts = elem.turnouts
-                        this.add(rs)
-                        break;
-                    case "signal2":
-                        var s2 = new Signal2Element(elem.uuid, elem.address | 0, elem.x, elem.y, elem.name);
-                        s2.angle = elem.angle ?? 0
-                        s2.addressLength = elem.addressLength ?? 5
-                        s2.isExtendedDecoder = s2.isExtendedDecoder ?? false;
-                        s2.valueGreen = elem.valueGreen ?? 0
-                        s2.valueRed = elem.valueRed ?? 0
-                        s2.rbusAddress = elem.rbusAddress
-                        // s2.cc = elem.cc == undefined ? undefined : elem.cc
-                        s2.aspect = 1 // elem.aspect ?? 1
-                        this.add(s2)
-                        break;
-                    case "signal3":
-                        var s3 = new Signal3Element(elem.uuid, elem.address | 0, elem.x, elem.y, elem.name);
-                        s3.angle = elem.angle ?? 0
-                        s3.addressLength = elem.addressLength ?? 5
-                        s3.isExtendedDecoder = s3.isExtendedDecoder ?? false;
-                        s3.valueGreen = elem.valueGreen ?? 0
-                        s3.valueRed = elem.valueRed ?? 0
-                        s3.valueYellow = elem.valueYellow ?? 0
-                        s3.rbusAddress = elem.rbusAddress
-                        // s3.cc = elem.cc == undefined ? undefined : elem.cc
-                        s3.aspect = 1; //elem.aspect ?? 1
-                        this.add(s3)
-                        break;
-                    case "signal4":
-                        var s4 = new Signal4Element(elem.uuid, elem.address | 0, elem.x, elem.y, elem.name);
-                        s4.angle = elem.angle ?? 0
-                        s4.addressLength = elem.addressLength ?? 5
-                        s4.isExtendedDecoder = s4.isExtendedDecoder ?? false;
-                        s4.valueGreen = elem.valueGreen ?? 0
-                        s4.valueRed = elem.valueRed ?? 0
-                        s4.valueYellow = elem.valueYellow ?? 0
-                        s4.valueWhite = elem.valueWhite ?? 0
-                        s4.rbusAddress = elem.rbusAddress
-                        // s4.cc = elem.cc == undefined ? undefined : elem.cc
-                        s4.aspect = 1 //elem.aspect ?? 1
-                        this.add(s4)
-                        break;
-                    // case "signal5":
-                    //     var s5 = new Signal5Element(elem.uuid, elem.address | 0, elem.x, elem.y, elem.name);
-                    //     s5.angle = elem.angle ?? 0
-                    //     s5.addressLength = elem.addressLength ?? 5
-                    //     s5.isExtendedDecoder = s5.isExtendedDecoder ?? false;
-                    //     s5.valueGreen = elem.valueGreen ?? 0
-                    //     s5.valueRed = elem.valueRed ?? 0
-                    //     s5.valueYellow = elem.valueYellow ?? 0
-                    //     s5.valueWhite = elem.valueWhite ?? 0
-                    //     s5.valueBlue = elem.valueBlue ?? 0
-                    //     s5.rbusAddress = elem.rbusAddress
-                    //     s5.device = elem.device == undefined ? undefined : elem.device
+                            this.add(tod)
+                            break;
+                        case "curve":
+                            var cu = new TrackCurveElement(elem.uuid, elem.x, elem.y, elem.name);
+                            cu.angle = elem.angle | 0
+                            // cu.cc = elem.cc
+                            cu.rbusAddress = elem.rbusAddress
+                            this.add(cu)
+                            break;
+                        case "corner":
+                            var co = new TrackCornerElement(elem.uuid, elem.x, elem.y, elem.name);
+                            co.angle = elem.angle | 0
+                            // co.cc = elem.cc
+                            co.rbusAddress = elem.rbusAddress
+                            this.add(co)
+                            break;
+                        case "block":
+                            var bl = new BlockElement(elem.uuid, elem.x, elem.y, elem.name);
+                            bl.angle = elem.angle | 0
+                            bl.locoAddress = elem.locoAddress | 0
+                            this.add(bl)
+                            break;
+                        case "label2":
+                            var l = new Label2Element(elem.uuid, elem.x, elem.y, elem.name);
+                            console.log("LABEL:", l instanceof RailView);
+                            l.text = elem.text ?? "LABEL"
+                            l.valign = elem.valign
+                            l.angle = 0
+                            this.add(l)
+                            break;
+                        case "routeSwitch":
+                            var rs = new RouteSwitchElement(elem.uuid, elem.x, elem.y, elem.name);
+                            rs.turnouts = elem.turnouts
+                            this.add(rs)
+                            break;
+                        case "signal2":
+                            var s2 = new Signal2Element(elem.uuid, elem.address | 0, elem.x, elem.y, elem.name);
+                            s2.angle = elem.angle ?? 0
+                            s2.addressLength = elem.addressLength ?? 5
+                            s2.isExtendedDecoder = s2.isExtendedDecoder ?? false;
+                            s2.valueGreen = elem.valueGreen ?? 0
+                            s2.valueRed = elem.valueRed ?? 0
+                            s2.rbusAddress = elem.rbusAddress
+                            // s2.cc = elem.cc == undefined ? undefined : elem.cc
+                            s2.aspect = 1 // elem.aspect ?? 1
+                            this.add(s2)
+                            break;
+                        case "signal3":
+                            var s3 = new Signal3Element(elem.uuid, elem.address | 0, elem.x, elem.y, elem.name);
+                            s3.angle = elem.angle ?? 0
+                            s3.addressLength = elem.addressLength ?? 5
+                            s3.isExtendedDecoder = s3.isExtendedDecoder ?? false;
+                            s3.valueGreen = elem.valueGreen ?? 0
+                            s3.valueRed = elem.valueRed ?? 0
+                            s3.valueYellow = elem.valueYellow ?? 0
+                            s3.rbusAddress = elem.rbusAddress
+                            // s3.cc = elem.cc == undefined ? undefined : elem.cc
+                            s3.aspect = 1; //elem.aspect ?? 1
+                            this.add(s3)
+                            break;
+                        case "signal4":
+                            var s4 = new Signal4Element(elem.uuid, elem.address | 0, elem.x, elem.y, elem.name);
+                            s4.angle = elem.angle ?? 0
+                            s4.addressLength = elem.addressLength ?? 5
+                            s4.isExtendedDecoder = s4.isExtendedDecoder ?? false;
+                            s4.valueGreen = elem.valueGreen ?? 0
+                            s4.valueRed = elem.valueRed ?? 0
+                            s4.valueYellow = elem.valueYellow ?? 0
+                            s4.valueWhite = elem.valueWhite ?? 0
+                            s4.rbusAddress = elem.rbusAddress
+                            // s4.cc = elem.cc == undefined ? undefined : elem.cc
+                            s4.aspect = 1 //elem.aspect ?? 1
+                            this.add(s4)
+                            break;
+                        // case "signal5":
+                        //     var s5 = new Signal5Element(elem.uuid, elem.address | 0, elem.x, elem.y, elem.name);
+                        //     s5.angle = elem.angle ?? 0
+                        //     s5.addressLength = elem.addressLength ?? 5
+                        //     s5.isExtendedDecoder = s5.isExtendedDecoder ?? false;
+                        //     s5.valueGreen = elem.valueGreen ?? 0
+                        //     s5.valueRed = elem.valueRed ?? 0
+                        //     s5.valueYellow = elem.valueYellow ?? 0
+                        //     s5.valueWhite = elem.valueWhite ?? 0
+                        //     s5.valueBlue = elem.valueBlue ?? 0
+                        //     s5.rbusAddress = elem.rbusAddress
+                        //     s5.device = elem.device == undefined ? undefined : elem.device
 
-                    //     this.add(s5)
-                    //     break;
-                    case "button":
-                        var b = new ButtonShapeElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
-                        this.add(b)
-                        break;
-                    case "audiobutton":
-                        var ab = new AudioButtonShapeElement(elem.uuid, elem.x, elem.y, elem.name);
-                        ab.filename = elem.filename
-                        this.add(ab)
-                        break;
+                        //     this.add(s5)
+                        //     break;
+                        case "button":
+                            var b = new ButtonShapeElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
+                            this.add(b)
+                            break;
+                        case "audiobutton":
+                            var ab = new AudioButtonShapeElement(elem.uuid, elem.x, elem.y, elem.name);
+                            ab.filename = elem.filename
+                            this.add(ab)
+                            break;
 
-                }
+                    }
+                })
             })
-        })
 
-        // const route1 = new RouteSwitchElement(this.ctx!, 2, 2, "route1")
-        // this.add(route1)
+            // const route1 = new RouteSwitchElement(this.ctx!, 2, 2, "route1")
+            // this.add(route1)
 
-        this.showAddresses(Globals.Settings.EditorSettings.ShowAddress)
+            this.showAddresses(Globals.Settings.EditorSettings.ShowAddress)
 
-        this.draw()
-    } catch (error) {
-        console.log(error)            
-    }
+            this.draw()
+        } catch (error) {
+            console.log(error)
+        }
 
         // this.manager.addState(this.canvas.elements.elements)
     }

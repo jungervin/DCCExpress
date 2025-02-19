@@ -21,7 +21,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "./views", "bootstrap", "./curve", "./corner", "./signals", "./trackend", "./route", "../controls/dialog", "../../../common/src/dcc", "../dialogs/propertiyPanel", "./block", "../helpers/globals", "../dialogs/AppSettingsDialog", "../dialogs/dlgSignal2Select", "../dialogs/turnoutsPopup", "../helpers/ws", "./label", "../helpers/utility", "../dialogs/codeEditor", "./dispatcher", "./button", "./audioButton"], function (require, exports, track_1, rectangle_1, turnout_1, view_1, views_1, bootstrap, curve_1, corner_1, signals_1, trackend_1, route_1, dialog_1, dcc_1, propertiyPanel_1, block_1, globals_1, AppSettingsDialog_1, dlgSignal2Select_1, turnoutsPopup_1, ws_1, label_1, utility_1, codeEditor_1, dispatcher_1, button_1, audioButton_1) {
+define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "./views", "bootstrap", "./curve", "./corner", "./signals", "./trackend", "./route", "../controls/dialog", "../../../common/src/dcc", "../dialogs/propertiyPanel", "./block", "../helpers/globals", "../dialogs/AppSettingsDialog", "../dialogs/dlgSignal2Select", "../dialogs/turnoutsPopup", "./label", "../helpers/utility", "../dialogs/codeEditor", "./dispatcher", "./button", "./audioButton"], function (require, exports, track_1, rectangle_1, turnout_1, view_1, views_1, bootstrap, curve_1, corner_1, signals_1, trackend_1, route_1, dialog_1, dcc_1, propertiyPanel_1, block_1, globals_1, AppSettingsDialog_1, dlgSignal2Select_1, turnoutsPopup_1, label_1, utility_1, codeEditor_1, dispatcher_1, button_1, audioButton_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CustomCanvas = exports.drawModes = void 0;
@@ -53,6 +53,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
     class CustomCanvas extends HTMLElement {
         constructor() {
             super();
+            this.views = new views_1.Views();
             this.downX = 0;
             this.downY = 0;
             this.lastX = 0;
@@ -69,7 +70,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             this._drawMode = drawModes.track;
             this.originX = 0;
             this.originY = 0;
-            this.views = new views_1.Views();
+            //this.views = new Views()
             this.canvas = document.createElement('canvas');
             const shadow = this.attachShadow({ mode: 'open' });
             shadow.innerHTML = `<style>canvas { border: 1px solid #000; display: block; margin:0; padding: 0}</style>`;
@@ -1140,11 +1141,6 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                 }
             });
             var config = {
-                dispatcher: {
-                    //code: Dispatcher.code,
-                    active: dispatcher_1.Dispatcher.active,
-                    interval: globals_1.Globals.Settings.Dispacher.interval
-                },
                 settings: {
                     scale: this.scale,
                     origX: this.originX,
@@ -1160,30 +1156,23 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                     { name: "page1", elems: elems },
                 ],
             };
-            //this.socket!.emit("configSave", config)
-            ws_1.wsClient.send({ type: dcc_1.ApiCommands.configSave, data: config });
+            globals_1.Globals.configSave(config);
         }
         load(config) {
-            var _a, _b, _c;
-            this.views = new views_1.Views();
+            var _a, _b, _c, _d;
+            this.views.elements.length = 0;
+            const defaults = { scale: 1, origX: 0, origY: 0, locoPanelVisible: false };
             try {
-                //Dispatcher.code = "";
-                if (config.dispatcher) {
-                    //Dispatcher.code = config.dispatcher.code ?? ""
-                    dispatcher_1.Dispatcher.active = (_a = config.dispatcher.active) !== null && _a !== void 0 ? _a : false;
-                    dispatcher_1.Dispatcher.interval = (_b = config.dispatcher.interval) !== null && _b !== void 0 ? _b : 800;
+                if (config.settings) {
+                    this.scale = (_a = config.settings.scale) !== null && _a !== void 0 ? _a : 1;
+                    this.originX = (_b = config.settings.origX) !== null && _b !== void 0 ? _b : 0;
+                    this.originY = (_c = config.settings.origY) !== null && _c !== void 0 ? _c : 0;
                 }
                 else {
+                    config.settings = defaults;
                 }
-                this.scale = config.settings.scale;
-                // Globals.EditorSettings.GridSizeX = config.settings.gridSizeX
-                // Globals.EditorSettings.GridSizeY = config.settings.gridSizeY
-                // Globals.EditorSettings.ShowAddress = config.settings.showAddress
-                // Globals.EditorSettings.Orientation = config.settings.orientation
-                this.originX = config.settings.origX;
-                this.originY = config.settings.origY;
                 if (config.settings.locoPanelVisible) {
-                    (_c = this.sidePanelLeft) === null || _c === void 0 ? void 0 : _c.classList.add('show');
+                    (_d = this.sidePanelLeft) === null || _d === void 0 ? void 0 : _d.classList.add('show');
                     this.toolbar.btnLoco.classList.add("active");
                 }
                 //var elems = config.elems

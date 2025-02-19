@@ -41,10 +41,10 @@ var DCCExTurnout;
 })(DCCExTurnout || (exports.DCCExTurnout = DCCExTurnout = {}));
 var ApiCommands;
 (function (ApiCommands) {
-    ApiCommands["configSave"] = "configSave";
-    ApiCommands["configSaved"] = "configSaved";
-    ApiCommands["configLoad"] = "configLoad";
-    ApiCommands["configLoaded"] = "configLoaded";
+    // configSave = "configSave",
+    // configSaved = "configSaved",
+    // configLoad = "configLoad",
+    // configLoaded = "configLoaded",
     ApiCommands["getLoco"] = "getLoco";
     ApiCommands["setLoco"] = "setLoco";
     ApiCommands["locoInfo"] = "locoInfo";

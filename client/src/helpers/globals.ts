@@ -1,6 +1,5 @@
 import { CommandCenterTypes, DCCExDirections, defaultSettings, iPowerInfo, iSettings } from "../../../common/src/dcc";
 
-
 declare global {
     interface Window {
         invalidate: () => void;
@@ -8,26 +7,7 @@ declare global {
     }
 }
 
-
 export class Globals {
-
-    // static ServerSettings: iServerSettings = {
-    //     CommandCenter: {
-    //         type: CommandCenterTypes.Z21,
-    //         ip: '192.168.0.70',
-    //         port: 21105,
-    //         serialPort: 'COM7',
-    //         turnoutActiveTime: 500,
-    //         basicAccessoryDecoderActiveTime: 100
-    //     },
-    //     CommandCenterZ21: {
-    //         ip: '192.168.0.70',
-    //         port: 21105,
-    //     },
-    //     Dispacher: {
-    //         interval: 500
-    //     }
-    // }
 
     static GridSizeX = 40
     static GridSizeY = 40
@@ -35,17 +15,6 @@ export class Globals {
     static TrackWidth3 = 3
 
     static Settings = defaultSettings 
-
-    // static EditorSettings = {
-    //     GridSizeX: dGridSizeX,
-    //     GridSizeY: dGridSizeY,
-    //     TrackWidth7: dTrackWidth7,
-    //     TrackWidth3: dTrackWidth3,
-    //     ShowAddress: true,
-    //     // LocoPanelVisible: false,
-    //     // TurnoutWaitTime: 200,
-    //     Orientation: DCCExDirections.forward,
-    // }
 
     static async fetchJsonData(url: string) {
         try {
@@ -80,6 +49,11 @@ export class Globals {
     static async settingsSave() {
         await Globals.saveJson("/settings.json", Globals.Settings)
     }
+
+    static async configSave(config: any) {
+        await Globals.saveJson("/config.json", config)
+    }
+
 }
 
 // export let commandCenters: iCommandCenter[] = []

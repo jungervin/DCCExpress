@@ -42,10 +42,10 @@ define(["require", "exports"], function (require, exports) {
     })(DCCExTurnout || (exports.DCCExTurnout = DCCExTurnout = {}));
     var ApiCommands;
     (function (ApiCommands) {
-        ApiCommands["configSave"] = "configSave";
-        ApiCommands["configSaved"] = "configSaved";
-        ApiCommands["configLoad"] = "configLoad";
-        ApiCommands["configLoaded"] = "configLoaded";
+        // configSave = "configSave",
+        // configSaved = "configSaved",
+        // configLoad = "configLoad",
+        // configLoaded = "configLoaded",
         ApiCommands["getLoco"] = "getLoco";
         ApiCommands["setLoco"] = "setLoco";
         ApiCommands["locoInfo"] = "locoInfo";
@@ -163,9 +163,10 @@ define(["require", "exports"], function (require, exports) {
             interval: 500
         },
         EditorSettings: {
-            ShowAddress: true,
-            // LocoPanelVisible: false,
-            // TurnoutWaitTime: 200,
+            ShowAddress: false,
+            LocoPanelVisible: false,
+            PropertyPanelVisible: false,
+            EditModeEnable: true,
             Orientation: DCCExDirections.forward,
         }
     };

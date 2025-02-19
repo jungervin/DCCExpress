@@ -77,12 +77,12 @@ exports.wsServer.on("connection", (ws, req) => {
                 //     ws.send(JSON.stringify(commandcenters))
                 //     commandCenters.getSystemState()
                 //     break;
-                case dcc_1.ApiCommands.configLoad:
-                    configLoad(ws);
-                    break;
-                case dcc_1.ApiCommands.configSave:
-                    configSave(data);
-                    break;
+                // case ApiCommands.configLoad:
+                //     configLoad(ws)
+                //     break;
+                // case ApiCommands.configSave:
+                //     configSave(data)
+                //     break;
                 case dcc_1.ApiCommands.setTurnout:
                     commandcenters_1.commandCenters.setTurnout(data);
                     //broadcastAll({ type: ApiCommands.response, data: "setTurnout executed" })
@@ -137,36 +137,34 @@ exports.wsServer.on("connection", (ws, req) => {
         (0, utility_1.log)("WebSocket client disconnected.");
     });
 });
-function configLoad(ws) {
-    // Fájl beolvasása
-    fs.readFile(server_1.CONFIG_FILE, "utf8", (err, data) => {
-        if (err) {
-            console.error("Hiba a fájl olvasásakor:", err);
-        }
-        else {
-            const deserialized = JSON.parse(data);
-            (0, utility_1.log)("Beolvasott elemek:", deserialized);
-            ws.send(JSON.stringify({ type: dcc_1.ApiCommands.configLoaded, data: deserialized }));
-            // DeviceManager.connections.commandcenters.forEach(cc => {
-            //     if (cc instanceof Z21) {
-            //         cc.LAN_RMBUS_GETDATA()
-            //         console.log("io sent LAN_RMBUS_GETDATA()")
-            //         cc.EMIT_TURNOUT_STATES()
-            //         //cc.EMIT_RBUS_STATES()
-            //     }
-            // });
-        }
-    });
-}
-function configSave(data) {
-    const serialized = JSON.stringify(data, null, 2); // Formázott JSON
-    fs.writeFile(server_1.CONFIG_FILE, serialized, (err) => {
-        if (err) {
-            (0, utility_1.logError)("Hiba a fájl írásakor:", err);
-        }
-        else {
-            (0, utility_1.log)(`Az adatok kiírva a ${server_1.CONFIG_FILE} fájlba.`);
-        }
-    });
-}
+// function configLoad(ws: WebSocket) {
+//     // Fájl beolvasása
+//     fs.readFile(CONFIG_FILE, "utf8", (err, data) => {
+//         if (err) {
+//             console.error("Hiba a fájl olvasásakor:", err);
+//         } else {
+//             const deserialized: Element[] = JSON.parse(data);
+//             log("Beolvasott elemek:", deserialized);
+//             //ws.send(JSON.stringify({ type: ApiCommands.configLoaded, data: deserialized } as iData))
+//             // DeviceManager.connections.commandcenters.forEach(cc => {
+//             //     if (cc instanceof Z21) {
+//             //         cc.LAN_RMBUS_GETDATA()
+//             //         console.log("io sent LAN_RMBUS_GETDATA()")
+//             //         cc.EMIT_TURNOUT_STATES()
+//             //         //cc.EMIT_RBUS_STATES()
+//             //     }
+//             // });
+//         }
+//     });
+// }
+// function configSave(data: any) {
+//     const serialized = JSON.stringify(data, null, 2); // Formázott JSON
+//     fs.writeFile(CONFIG_FILE, serialized, (err) => {
+//         if (err) {
+//             logError("Hiba a fájl írásakor:", err);
+//         } else {
+//             log(`Az adatok kiírva a ${CONFIG_FILE} fájlba.`);
+//         }
+//     });
+// }
 //# sourceMappingURL=ws.js.map

@@ -31,10 +31,10 @@ export enum DCCExTurnout {
 }
 
 export enum ApiCommands {
-    configSave = "configSave",
-    configSaved = "configSaved",
-    configLoad = "configLoad",
-    configLoaded = "configLoaded",
+    // configSave = "configSave",
+    // configSaved = "configSaved",
+    // configLoad = "configLoad",
+    // configLoaded = "configLoaded",
     getLoco = "getLoco",
     setLoco = "setLoco",
     locoInfo = "locoInfo",
@@ -332,11 +332,10 @@ export interface iSettings {
         interval: number
     },
     EditorSettings : {
-        // GridSizeX: number,
-        // GridSizeY: number,
-        // TrackWidth7: number,
-        // TrackWidth3: number,
         ShowAddress: boolean,
+        LocoPanelVisible: boolean,
+        PropertyPanelVisible: boolean,
+        EditModeEnable: boolean,
         Orientation: DCCExDirections.forward,
     }
 }
@@ -365,9 +364,10 @@ export const defaultSettings: iSettings = {
       interval: 500
     },
     EditorSettings : {
-        ShowAddress: true,
-        // LocoPanelVisible: false,
-        // TurnoutWaitTime: 200,
+        ShowAddress: false,
+        LocoPanelVisible: false,
+        PropertyPanelVisible: false,
+        EditModeEnable: true,
         Orientation: DCCExDirections.forward,
     }    
   }

@@ -36,7 +36,6 @@ export class App {
     }
     audioManager: AudioManager;
 
-
     constructor() {
 
         this.audioManager = audioManager
@@ -120,9 +119,9 @@ export class App {
                     this.execDispatcher()
                     break;
 
-                case ApiCommands.configLoaded:
-                    this.configLoaded(msg.data)
-                    break;
+                // case ApiCommands.configLoaded:
+                //     // this.configLoaded(msg.data)
+                //     break;
 
                 case ApiCommands.settingsInfo:
                     //setSettings(msg.data)
