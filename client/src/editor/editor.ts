@@ -61,7 +61,7 @@ export class CustomCanvas extends HTMLElement {
     public ctx: CanvasRenderingContext2D | undefined;
 
     views: Views
-    status: HTMLDivElement;
+    status?: HTMLDivElement;
     downX: number = 0;
     downY: number = 0;
     lastX: number = 0;
@@ -117,11 +117,6 @@ export class CustomCanvas extends HTMLElement {
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.innerHTML = `<style>canvas { border: 1px solid #000; display: block; margin:0; padding: 0}</style>`;
         shadow.appendChild(this.canvas);
-        this.status = document.getElementById("status") as HTMLDivElement
-        this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
-        this.canvas.addEventListener('mouseup', (e) => this.handleMouseUp(e));
-        this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
-        this.canvas.addEventListener('wheel', (e) => this.handleMouseWheel(e));
 
         window.addEventListener('propertiesChanged', () => {
             this.draw()
@@ -157,6 +152,13 @@ export class CustomCanvas extends HTMLElement {
     }
 
     init() {
+
+        this.status = document.getElementById("status") as HTMLDivElement
+        this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
+        this.canvas.addEventListener('mouseup', (e) => this.handleMouseUp(e));
+        this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+        this.canvas.addEventListener('wheel', (e) => this.handleMouseWheel(e));
+
         this.cursorTrackElement = new TrackElement("", 0, 0, "cursor");
         this.cursorTrackElement.isSelected = true
         this.cursorTrackEndElement = new TrackEndElement("", 0, 0, "cursor");
@@ -455,22 +457,17 @@ export class CustomCanvas extends HTMLElement {
         this.toolbar!.btnAppSettings.onclick = (e: MouseEvent) => {
             const d = new AppSettingsDialog()
             //d.gridSize.value = settings.GridSizeX;
-            d.showAddress.checked = Globals.AppSettings.ShowAddress;
-            d.intervalElement.value = Globals.ServerSettings.Dispacher.interval
+            d.showAddress.checked = Globals.Settings.EditorSettings.ShowAddress;
+            d.intervalElement.value = Globals.Settings.Dispacher.interval
             d.onclose = (sender) => {
                 if (d.dialogResult == DialogResult.ok) {
-                    //settings.GridSizeX = d.gridSize.value
-                    //settings.GridSizeY = d.gridSize.value
-                    Globals.AppSettings.ShowAddress = d.showAddress.checked
-                    Globals.ServerSettings.Dispacher.interval = d.intervalElement.value
-                    wsClient.send({ type: ApiCommands.saveSettings, data: Globals.ServerSettings })
-                    this.showAddresses(Globals.AppSettings.ShowAddress)
+                    Globals.Settings.EditorSettings.ShowAddress = d.showAddress.checked
+                    Globals.Settings.Dispacher.interval = d.intervalElement.value
+                    Globals.saveJson("/settings.json", Globals.Settings)
+                    this.showAddresses(Globals.Settings.EditorSettings.ShowAddress)
                 }
             }
-
-
         }
-
 
         Dispatcher.onchange = () => {
             if (Dispatcher.active) {
@@ -603,12 +600,12 @@ export class CustomCanvas extends HTMLElement {
         const canvasHeight = this.canvas.height;
 
         // Skálázott grid méret
-        const scaledGridX = Globals.AppSettings.GridSizeX * this.scale;
-        const scaledGridY = Globals.AppSettings.GridSizeY * this.scale;
+        const scaledGridX = Globals.GridSizeX * this.scale;
+        const scaledGridY = Globals.GridSizeY * this.scale;
 
         // Bal felső sarok világ koordinátái
-        const startX = Math.floor(-this.originX / scaledGridX) * Globals.AppSettings.GridSizeX;
-        const startY = Math.floor(-this.originY / scaledGridY) * Globals.AppSettings.GridSizeY;
+        const startX = Math.floor(-this.originX / scaledGridX) * Globals.GridSizeX;
+        const startY = Math.floor(-this.originY / scaledGridY) * Globals.GridSizeY;
 
         if (this.ctx) {
             // Háttér kitöltése
@@ -623,8 +620,8 @@ export class CustomCanvas extends HTMLElement {
             // Vízszintes vonalak
             for (
                 let y = startY;
-                y <= startY + (canvasHeight / this.scale) + Globals.AppSettings.GridSizeX;
-                y += Globals.AppSettings.GridSizeY
+                y <= startY + (canvasHeight / this.scale) + Globals.GridSizeX;
+                y += Globals.GridSizeY
             ) {
                 const screenY = (y - this.originY) * this.scale;
                 this.ctx.moveTo(startX, y);
@@ -634,8 +631,8 @@ export class CustomCanvas extends HTMLElement {
             // Függőleges vonalak
             for (
                 let x = startX;
-                x <= startX + (canvasWidth / this.scale) + Globals.AppSettings.GridSizeX;
-                x += Globals.AppSettings.GridSizeX
+                x <= startX + (canvasWidth / this.scale) + Globals.GridSizeX;
+                x += Globals.GridSizeX
             ) {
                 const screenX = (x - this.originX) * this.scale;
                 this.ctx.moveTo(x, startY);
@@ -683,10 +680,10 @@ export class CustomCanvas extends HTMLElement {
         return e.offsetY - this.originY
     }
     get gridSizeX(): number {
-        return Globals.AppSettings.GridSizeX //* this.scale
+        return Globals.GridSizeX //* this.scale
     }
     get gridSizeY(): number {
-        return Globals.AppSettings.GridSizeY //* this.scale
+        return Globals.GridSizeY //* this.scale
     }
     handleMouseDown(e: MouseEvent): any {
         e.preventDefault()
@@ -838,7 +835,7 @@ export class CustomCanvas extends HTMLElement {
                     this.removeIfExists(x, y)
                     this.unselectAll()
                     var tor = new TurnoutRightElement(getUUID(), 14, x, y, "turnoutRight" + this.views.elements.length);
-                    tor.showAddress = Globals.AppSettings.ShowAddress
+                    tor.showAddress = Globals.Settings.EditorSettings.ShowAddress
                     tor.angle = this.cursorElement!.angle
                     // tor.cc = Globals.defaultDevice!
                     this.add(tor)
@@ -847,7 +844,7 @@ export class CustomCanvas extends HTMLElement {
                     this.removeIfExists(x, y)
                     this.unselectAll()
                     var tol = new TurnoutLeftElement(getUUID(), 14, x, y, "turnoutleft" + this.views.elements.length);
-                    tol.showAddress = Globals.AppSettings.ShowAddress
+                    tol.showAddress = Globals.Settings.EditorSettings.ShowAddress
                     tol.angle = this.cursorElement!.angle
                     // tol.cc = Globals.defaultDevice!
                     this.add(tol)
@@ -856,7 +853,7 @@ export class CustomCanvas extends HTMLElement {
                     this.removeIfExists(x, y)
                     this.unselectAll()
                     var tod = new TurnoutDoubleElement(getUUID(), 0, 0, x, y, "turnoutdouble" + this.views.elements.length);
-                    tod.showAddress = Globals.AppSettings.ShowAddress
+                    tod.showAddress = Globals.Settings.EditorSettings.ShowAddress
                     tod.angle = this.cursorElement!.angle
                     // tod.cc = Globals.defaultDevice!
                     this.add(tod)
@@ -871,7 +868,7 @@ export class CustomCanvas extends HTMLElement {
                     this.removeIfExists(x, y)
                     this.unselectAll()
                     var s2 = new Signal2Element(getUUID(), 14, x, y, "turnoutleft" + this.views.elements.length);
-                    s2.showAddress = Globals.AppSettings.ShowAddress
+                    s2.showAddress = Globals.Settings.EditorSettings.ShowAddress
                     s2.angle = this.cursorElement!.angle
                     // s2.cc = Globals.defaultDevice!
                     s2.aspect = 1
@@ -881,7 +878,7 @@ export class CustomCanvas extends HTMLElement {
                     this.removeIfExists(x, y)
                     this.unselectAll()
                     var s3 = new Signal3Element(getUUID(), 14, x, y, "turnoutleft" + this.views.elements.length);
-                    s3.showAddress = Globals.AppSettings.ShowAddress
+                    s3.showAddress = Globals.Settings.EditorSettings.ShowAddress
                     s3.angle = this.cursorElement!.angle
                     // s3.cc = Globals.defaultDevice!
                     s3.aspect = 1
@@ -891,7 +888,7 @@ export class CustomCanvas extends HTMLElement {
                     this.removeIfExists(x, y)
                     this.unselectAll()
                     var s4 = new Signal4Element(getUUID(), 14, x, y, "turnoutleft" + this.views.elements.length);
-                    s4.showAddress = Globals.AppSettings.ShowAddress
+                    s4.showAddress = Globals.Settings.EditorSettings.ShowAddress
                     s4.angle = this.cursorElement!.angle
                     // s4.cc = Globals.defaultDevice!
                     s4.aspect = 1
@@ -1108,7 +1105,9 @@ export class CustomCanvas extends HTMLElement {
         return Math.floor(worldY / this.gridSizeY);
     }
     drawStatus() {
-        this.status.innerHTML = `Status| x: ${this.getMouseGridX()} y: ${this.getMouseGridY()} Elements: ${this.views.elements.length} Scale: ${this.scale} origX: ${this.originX} origY: ${this.originY}`
+        if (this.status) {
+            this.status.innerHTML = `Status| x: ${this.getMouseGridX()} y: ${this.getMouseGridY()} Elements: ${this.views.elements.length} Scale: ${this.scale} origX: ${this.originX} origY: ${this.originY}`
+        }
     }
     unselectAll() {
         this.views.elements.forEach((e) => {
@@ -1317,16 +1316,16 @@ export class CustomCanvas extends HTMLElement {
             dispatcher: {
                 //code: Dispatcher.code,
                 active: Dispatcher.active,
-                interval: Globals.ServerSettings.Dispacher.interval
+                interval: Globals.Settings.Dispacher.interval
             },
             settings: {
                 scale: this.scale,
                 origX: this.originX,
                 origY: this.originY,
-                gridSizeX: Globals.AppSettings.GridSizeX,
-                gridSizeY: Globals.AppSettings.GridSizeY,
-                showAddress: Globals.AppSettings.ShowAddress,
-                orientation: Globals.AppSettings.Orientation,
+                // gridSizeX: Globals.EditorSettings.GridSizeX,
+                // gridSizeY: Globals.EditorSettings.GridSizeY,
+                // showAddress: Globals.EditorSettings.ShowAddress,
+                // orientation: Globals.EditorSettings.Orientation,
                 locoPanelVisible: this.sidePanelLeft?.classList.contains('show'),
                 propertyPanelVisible: this.propertyPanel?.classList.contains('show')
             },
@@ -1341,6 +1340,8 @@ export class CustomCanvas extends HTMLElement {
 
     load(config: any) {
         this.views = new Views()
+        try {
+            
         //Dispatcher.code = "";
         if (config.dispatcher) {
             //Dispatcher.code = config.dispatcher.code ?? ""
@@ -1351,10 +1352,10 @@ export class CustomCanvas extends HTMLElement {
         }
 
         this.scale = config.settings.scale
-        Globals.AppSettings.GridSizeX = config.settings.gridSizeX
-        Globals.AppSettings.GridSizeY = config.settings.gridSizeY
-        Globals.AppSettings.ShowAddress = config.settings.showAddress
-        Globals.AppSettings.Orientation = config.settings.orientation
+        // Globals.EditorSettings.GridSizeX = config.settings.gridSizeX
+        // Globals.EditorSettings.GridSizeY = config.settings.gridSizeY
+        // Globals.EditorSettings.ShowAddress = config.settings.showAddress
+        // Globals.EditorSettings.Orientation = config.settings.orientation
         this.originX = config.settings.origX
         this.originY = config.settings.origY
         if (config.settings.locoPanelVisible) {
@@ -1382,7 +1383,7 @@ export class CustomCanvas extends HTMLElement {
                         break;
                     case "turnoutRight":
                         var tor = new TurnoutRightElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
-                        tor.showAddress = Globals.AppSettings.ShowAddress
+                        tor.showAddress = Globals.Settings.EditorSettings.ShowAddress
                         tor.angle = elem.angle | 0
                         tor.t1ClosedValue = elem.t1ClosedValue ?? true
                         tor.t1OpenValue = elem.t1OpenValue ?? false
@@ -1392,7 +1393,7 @@ export class CustomCanvas extends HTMLElement {
                         break;
                     case "turnoutLeft":
                         var tol = new TurnoutLeftElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
-                        tol.showAddress = Globals.AppSettings.ShowAddress
+                        tol.showAddress = Globals.Settings.EditorSettings.ShowAddress
                         tol.angle = elem.angle | 0
                         tol.t1ClosedValue = elem.t1ClosedValue ?? true
                         tol.t1OpenValue = elem.t1OpenValue ?? false
@@ -1402,7 +1403,7 @@ export class CustomCanvas extends HTMLElement {
                         break;
                     case "turnoutDouble":
                         var tod = new TurnoutDoubleElement(elem.uuid, elem.address1 ?? 0, elem.address2 ?? 0, elem.x, elem.y, elem.name);
-                        tod.showAddress = Globals.AppSettings.ShowAddress
+                        tod.showAddress = Globals.Settings.EditorSettings.ShowAddress
                         tod.angle = elem.angle | 0
 
                         tod.t1ClosedValue = elem.t1ClosedValue ?? true
@@ -1519,9 +1520,13 @@ export class CustomCanvas extends HTMLElement {
         // const route1 = new RouteSwitchElement(this.ctx!, 2, 2, "route1")
         // this.add(route1)
 
-        this.showAddresses(Globals.AppSettings.ShowAddress)
+        this.showAddresses(Globals.Settings.EditorSettings.ShowAddress)
 
         this.draw()
+    } catch (error) {
+        console.log(error)            
+    }
+
         // this.manager.addState(this.canvas.elements.elements)
     }
 

@@ -17,17 +17,17 @@ define(["require", "exports", "../helpers/globals", "../helpers/math", "./view",
             return true;
         }
         draw(ctx) {
-            var w = globals_1.Globals.AppSettings.GridSizeX / 4.0;
-            var h = globals_1.Globals.AppSettings.GridSizeY / 4.0;
+            var w = globals_1.Globals.GridSizeX / 4.0;
+            var h = globals_1.Globals.GridSizeY / 4.0;
             ctx.save();
-            ctx.lineWidth = globals_1.Globals.AppSettings.TrackWidth7;
+            ctx.lineWidth = globals_1.Globals.TrackWidth7;
             ctx.strokeStyle = view_2.Colors.TrackPrimaryColor;
             if (this.angle == 0) {
                 ctx.beginPath();
                 ctx.moveTo(this.PositionX, this.centerY);
                 ctx.lineTo(this.PositionX + 1 * w, this.centerY);
                 ctx.lineTo(this.centerX, this.centerY + 1 * h);
-                ctx.lineTo(this.centerX, this.PositionY + globals_1.Globals.AppSettings.GridSizeY);
+                ctx.lineTo(this.centerX, this.PositionY + globals_1.Globals.GridSizeY);
                 ctx.stroke();
             }
             else if (this.angle == 90) {
@@ -43,15 +43,15 @@ define(["require", "exports", "../helpers/globals", "../helpers/math", "./view",
                 ctx.moveTo(this.centerX, this.PositionY);
                 ctx.lineTo(this.centerX, this.PositionY + h);
                 ctx.lineTo(this.centerX + w, this.centerY);
-                ctx.lineTo(this.PositionX + globals_1.Globals.AppSettings.GridSizeX, this.centerY);
+                ctx.lineTo(this.PositionX + globals_1.Globals.GridSizeX, this.centerY);
                 ctx.stroke();
             }
             else if (this.angle == 270) {
                 ctx.beginPath();
-                ctx.moveTo(this.PositionX + globals_1.Globals.AppSettings.GridSizeX, this.centerY);
+                ctx.moveTo(this.PositionX + globals_1.Globals.GridSizeX, this.centerY);
                 ctx.lineTo(this.centerX + w, this.centerY);
                 ctx.lineTo(this.centerX, this.centerY + h);
-                ctx.lineTo(this.centerX, this.PositionY + globals_1.Globals.AppSettings.GridSizeY);
+                ctx.lineTo(this.centerX, this.PositionY + globals_1.Globals.GridSizeY);
                 ctx.stroke();
             }
             ctx.lineWidth = 3;

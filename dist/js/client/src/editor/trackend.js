@@ -18,12 +18,12 @@ define(["require", "exports", "../helpers/globals", "../helpers/math", "./view",
         }
         draw(ctx) {
             ctx.save();
-            var h = globals_1.Globals.AppSettings.GridSizeY / 4.0;
+            var h = globals_1.Globals.GridSizeY / 4.0;
             {
                 ctx.translate(this.centerX, this.centerY);
                 ctx.rotate((0, math_1.degreesToRadians)(this.angle));
                 ctx.translate(-this.centerX, -this.centerY);
-                ctx.lineWidth = globals_1.Globals.AppSettings.TrackWidth7;
+                ctx.lineWidth = globals_1.Globals.TrackWidth7;
                 ctx.strokeStyle = view_2.Colors.TrackPrimaryColor;
                 if (this.angle % 90 == 0) {
                     ctx.beginPath();
@@ -34,7 +34,7 @@ define(["require", "exports", "../helpers/globals", "../helpers/math", "./view",
                     ctx.stroke();
                 }
                 else {
-                    var r = globals_1.Globals.AppSettings.GridSizeX / 2;
+                    var r = globals_1.Globals.GridSizeX / 2;
                     var l = Math.sqrt(2 * r * r);
                     ctx.beginPath();
                     ctx.moveTo(this.centerX - l, this.centerY);
@@ -43,7 +43,7 @@ define(["require", "exports", "../helpers/globals", "../helpers/math", "./view",
                     ctx.lineTo(this.centerX, this.centerY + h);
                     ctx.stroke();
                 }
-                ctx.lineWidth = globals_1.Globals.AppSettings.TrackWidth3;
+                ctx.lineWidth = globals_1.Globals.TrackWidth3;
                 // var color = Colors.TrackLightColor
                 // switch(this.state) {
                 //     case RailStates.selected : color = Colors.TrackSelectedColor
@@ -55,15 +55,15 @@ define(["require", "exports", "../helpers/globals", "../helpers/math", "./view",
                 if (this.angle % 90 == 0) {
                     ctx.beginPath();
                     ctx.moveTo(this.PositionX, this.centerY);
-                    ctx.lineTo(this.centerX - globals_1.Globals.AppSettings.TrackWidth7 / 2, this.centerY);
+                    ctx.lineTo(this.centerX - globals_1.Globals.TrackWidth7 / 2, this.centerY);
                     ctx.stroke();
                 }
                 else {
-                    var r = globals_1.Globals.AppSettings.GridSizeX / 2;
+                    var r = globals_1.Globals.GridSizeX / 2;
                     var l = Math.sqrt(2 * r * r);
                     ctx.beginPath();
                     ctx.moveTo(this.centerX - l, this.centerY);
-                    ctx.lineTo(this.centerX - globals_1.Globals.AppSettings.TrackWidth7 / 2, this.centerY);
+                    ctx.lineTo(this.centerX - globals_1.Globals.TrackWidth7 / 2, this.centerY);
                     ctx.stroke();
                 }
                 // drawPolarLine(ctx, this.centerX, this.centerY, settings.GridSizeX / 4, this.angle , color, settings.TrackWidth3)

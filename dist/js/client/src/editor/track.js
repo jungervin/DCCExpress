@@ -22,33 +22,33 @@ define(["require", "exports", "../helpers/globals", "./view", "./view"], functio
             }
             ctx.save();
             {
-                ctx.lineWidth = globals_1.Globals.AppSettings.TrackWidth7;
+                ctx.lineWidth = globals_1.Globals.TrackWidth7;
                 ctx.strokeStyle = view_2.Colors.TrackPrimaryColor;
                 if (this.angle == 0 || this.angle == 180) {
                     ctx.beginPath();
                     ctx.moveTo(this.PositionX, this.centerY);
-                    ctx.lineTo(this.PositionX + globals_1.Globals.AppSettings.GridSizeX, this.centerY);
+                    ctx.lineTo(this.PositionX + globals_1.Globals.GridSizeX, this.centerY);
                     ctx.stroke();
                 }
                 else if (this.angle == 45 || this.angle == 225) {
                     ctx.beginPath();
                     ctx.moveTo(this.PositionX, this.PositionY);
-                    ctx.lineTo(this.PositionX + globals_1.Globals.AppSettings.GridSizeX, this.PositionY + globals_1.Globals.AppSettings.GridSizeY);
+                    ctx.lineTo(this.PositionX + globals_1.Globals.GridSizeX, this.PositionY + globals_1.Globals.GridSizeY);
                     ctx.stroke();
                 }
                 else if (this.angle == 90 || this.angle == 270) {
                     ctx.beginPath();
                     ctx.moveTo(this.centerX, this.PositionY);
-                    ctx.lineTo(this.centerX, this.PositionY + globals_1.Globals.AppSettings.GridSizeY);
+                    ctx.lineTo(this.centerX, this.PositionY + globals_1.Globals.GridSizeY);
                     ctx.stroke();
                 }
                 else if (this.angle == 135 || this.angle == 315) {
                     ctx.beginPath();
-                    ctx.moveTo(this.PositionX + globals_1.Globals.AppSettings.GridSizeX, this.PositionY);
-                    ctx.lineTo(this.PositionX, this.PositionY + globals_1.Globals.AppSettings.GridSizeY);
+                    ctx.moveTo(this.PositionX + globals_1.Globals.GridSizeX, this.PositionY);
+                    ctx.lineTo(this.PositionX, this.PositionY + globals_1.Globals.GridSizeY);
                     ctx.stroke();
                 }
-                ctx.lineWidth = globals_1.Globals.AppSettings.TrackWidth3;
+                ctx.lineWidth = globals_1.Globals.TrackWidth3;
                 // var color = Colors.TrackLightColor
                 // switch(this.state) {
                 //     case RailStates.selected : color = Colors.TrackSelectedColor
@@ -57,7 +57,7 @@ define(["require", "exports", "../helpers/globals", "./view", "./view"], functio
                 //     break;
                 // }
                 ctx.strokeStyle = this.stateColor;
-                var w4 = globals_1.Globals.AppSettings.GridSizeX / 4;
+                var w4 = globals_1.Globals.GridSizeX / 4;
                 if (this.angle == 0 || this.angle == 180) {
                     ctx.beginPath();
                     ctx.moveTo(this.posLeft + w4, this.centerY);

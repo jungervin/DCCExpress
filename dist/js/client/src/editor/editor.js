@@ -74,11 +74,6 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             const shadow = this.attachShadow({ mode: 'open' });
             shadow.innerHTML = `<style>canvas { border: 1px solid #000; display: block; margin:0; padding: 0}</style>`;
             shadow.appendChild(this.canvas);
-            this.status = document.getElementById("status");
-            this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
-            this.canvas.addEventListener('mouseup', (e) => this.handleMouseUp(e));
-            this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
-            this.canvas.addEventListener('wheel', (e) => this.handleMouseWheel(e));
             window.addEventListener('propertiesChanged', () => {
                 this.draw();
             });
@@ -106,6 +101,11 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             this.propertyPanel = document.getElementById("EditorPropertyPanel");
         }
         init() {
+            this.status = document.getElementById("status");
+            this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
+            this.canvas.addEventListener('mouseup', (e) => this.handleMouseUp(e));
+            this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+            this.canvas.addEventListener('wheel', (e) => this.handleMouseWheel(e));
             this.cursorTrackElement = new track_1.TrackElement("", 0, 0, "cursor");
             this.cursorTrackElement.isSelected = true;
             this.cursorTrackEndElement = new trackend_1.TrackEndElement("", 0, 0, "cursor");
@@ -377,16 +377,14 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             this.toolbar.btnAppSettings.onclick = (e) => {
                 const d = new AppSettingsDialog_1.AppSettingsDialog();
                 //d.gridSize.value = settings.GridSizeX;
-                d.showAddress.checked = globals_1.Globals.AppSettings.ShowAddress;
-                d.intervalElement.value = globals_1.Globals.ServerSettings.Dispacher.interval;
+                d.showAddress.checked = globals_1.Globals.Settings.EditorSettings.ShowAddress;
+                d.intervalElement.value = globals_1.Globals.Settings.Dispacher.interval;
                 d.onclose = (sender) => {
                     if (d.dialogResult == dialog_1.DialogResult.ok) {
-                        //settings.GridSizeX = d.gridSize.value
-                        //settings.GridSizeY = d.gridSize.value
-                        globals_1.Globals.AppSettings.ShowAddress = d.showAddress.checked;
-                        globals_1.Globals.ServerSettings.Dispacher.interval = d.intervalElement.value;
-                        ws_1.wsClient.send({ type: dcc_1.ApiCommands.saveSettings, data: globals_1.Globals.ServerSettings });
-                        this.showAddresses(globals_1.Globals.AppSettings.ShowAddress);
+                        globals_1.Globals.Settings.EditorSettings.ShowAddress = d.showAddress.checked;
+                        globals_1.Globals.Settings.Dispacher.interval = d.intervalElement.value;
+                        globals_1.Globals.saveJson("/settings.json", globals_1.Globals.Settings);
+                        this.showAddresses(globals_1.Globals.Settings.EditorSettings.ShowAddress);
                     }
                 };
             };
@@ -508,11 +506,11 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             const canvasWidth = this.canvas.width;
             const canvasHeight = this.canvas.height;
             // Skálázott grid méret
-            const scaledGridX = globals_1.Globals.AppSettings.GridSizeX * this.scale;
-            const scaledGridY = globals_1.Globals.AppSettings.GridSizeY * this.scale;
+            const scaledGridX = globals_1.Globals.GridSizeX * this.scale;
+            const scaledGridY = globals_1.Globals.GridSizeY * this.scale;
             // Bal felső sarok világ koordinátái
-            const startX = Math.floor(-this.originX / scaledGridX) * globals_1.Globals.AppSettings.GridSizeX;
-            const startY = Math.floor(-this.originY / scaledGridY) * globals_1.Globals.AppSettings.GridSizeY;
+            const startX = Math.floor(-this.originX / scaledGridX) * globals_1.Globals.GridSizeX;
+            const startY = Math.floor(-this.originY / scaledGridY) * globals_1.Globals.GridSizeY;
             if (this.ctx) {
                 // Háttér kitöltése
                 //this.ctx.fillStyle = 'whitesmoke';
@@ -522,13 +520,13 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                 this.ctx.strokeStyle = "#eee";
                 this.ctx.lineWidth = 1;
                 // Vízszintes vonalak
-                for (let y = startY; y <= startY + (canvasHeight / this.scale) + globals_1.Globals.AppSettings.GridSizeX; y += globals_1.Globals.AppSettings.GridSizeY) {
+                for (let y = startY; y <= startY + (canvasHeight / this.scale) + globals_1.Globals.GridSizeX; y += globals_1.Globals.GridSizeY) {
                     const screenY = (y - this.originY) * this.scale;
                     this.ctx.moveTo(startX, y);
                     this.ctx.lineTo(this.originX + canvasWidth * scaledGridY, y);
                 }
                 // Függőleges vonalak
-                for (let x = startX; x <= startX + (canvasWidth / this.scale) + globals_1.Globals.AppSettings.GridSizeX; x += globals_1.Globals.AppSettings.GridSizeX) {
+                for (let x = startX; x <= startX + (canvasWidth / this.scale) + globals_1.Globals.GridSizeX; x += globals_1.Globals.GridSizeX) {
                     const screenX = (x - this.originX) * this.scale;
                     this.ctx.moveTo(x, startY);
                     this.ctx.lineTo(x, this.originY + canvasHeight * scaledGridY);
@@ -562,10 +560,10 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             return e.offsetY - this.originY;
         }
         get gridSizeX() {
-            return globals_1.Globals.AppSettings.GridSizeX; //* this.scale
+            return globals_1.Globals.GridSizeX; //* this.scale
         }
         get gridSizeY() {
-            return globals_1.Globals.AppSettings.GridSizeY; //* this.scale
+            return globals_1.Globals.GridSizeY; //* this.scale
         }
         handleMouseDown(e) {
             e.preventDefault();
@@ -700,7 +698,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         this.removeIfExists(x, y);
                         this.unselectAll();
                         var tor = new turnout_1.TurnoutRightElement((0, dcc_1.getUUID)(), 14, x, y, "turnoutRight" + this.views.elements.length);
-                        tor.showAddress = globals_1.Globals.AppSettings.ShowAddress;
+                        tor.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
                         tor.angle = this.cursorElement.angle;
                         // tor.cc = Globals.defaultDevice!
                         this.add(tor);
@@ -709,7 +707,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         this.removeIfExists(x, y);
                         this.unselectAll();
                         var tol = new turnout_1.TurnoutLeftElement((0, dcc_1.getUUID)(), 14, x, y, "turnoutleft" + this.views.elements.length);
-                        tol.showAddress = globals_1.Globals.AppSettings.ShowAddress;
+                        tol.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
                         tol.angle = this.cursorElement.angle;
                         // tol.cc = Globals.defaultDevice!
                         this.add(tol);
@@ -718,7 +716,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         this.removeIfExists(x, y);
                         this.unselectAll();
                         var tod = new turnout_1.TurnoutDoubleElement((0, dcc_1.getUUID)(), 0, 0, x, y, "turnoutdouble" + this.views.elements.length);
-                        tod.showAddress = globals_1.Globals.AppSettings.ShowAddress;
+                        tod.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
                         tod.angle = this.cursorElement.angle;
                         // tod.cc = Globals.defaultDevice!
                         this.add(tod);
@@ -733,7 +731,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         this.removeIfExists(x, y);
                         this.unselectAll();
                         var s2 = new signals_1.Signal2Element((0, dcc_1.getUUID)(), 14, x, y, "turnoutleft" + this.views.elements.length);
-                        s2.showAddress = globals_1.Globals.AppSettings.ShowAddress;
+                        s2.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
                         s2.angle = this.cursorElement.angle;
                         // s2.cc = Globals.defaultDevice!
                         s2.aspect = 1;
@@ -743,7 +741,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         this.removeIfExists(x, y);
                         this.unselectAll();
                         var s3 = new signals_1.Signal3Element((0, dcc_1.getUUID)(), 14, x, y, "turnoutleft" + this.views.elements.length);
-                        s3.showAddress = globals_1.Globals.AppSettings.ShowAddress;
+                        s3.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
                         s3.angle = this.cursorElement.angle;
                         // s3.cc = Globals.defaultDevice!
                         s3.aspect = 1;
@@ -753,7 +751,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         this.removeIfExists(x, y);
                         this.unselectAll();
                         var s4 = new signals_1.Signal4Element((0, dcc_1.getUUID)(), 14, x, y, "turnoutleft" + this.views.elements.length);
-                        s4.showAddress = globals_1.Globals.AppSettings.ShowAddress;
+                        s4.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
                         s4.angle = this.cursorElement.angle;
                         // s4.cc = Globals.defaultDevice!
                         s4.aspect = 1;
@@ -944,7 +942,9 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             return Math.floor(worldY / this.gridSizeY);
         }
         drawStatus() {
-            this.status.innerHTML = `Status| x: ${this.getMouseGridX()} y: ${this.getMouseGridY()} Elements: ${this.views.elements.length} Scale: ${this.scale} origX: ${this.originX} origY: ${this.originY}`;
+            if (this.status) {
+                this.status.innerHTML = `Status| x: ${this.getMouseGridX()} y: ${this.getMouseGridY()} Elements: ${this.views.elements.length} Scale: ${this.scale} origX: ${this.originX} origY: ${this.originY}`;
+            }
         }
         unselectAll() {
             this.views.elements.forEach((e) => {
@@ -1143,16 +1143,16 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                 dispatcher: {
                     //code: Dispatcher.code,
                     active: dispatcher_1.Dispatcher.active,
-                    interval: globals_1.Globals.ServerSettings.Dispacher.interval
+                    interval: globals_1.Globals.Settings.Dispacher.interval
                 },
                 settings: {
                     scale: this.scale,
                     origX: this.originX,
                     origY: this.originY,
-                    gridSizeX: globals_1.Globals.AppSettings.GridSizeX,
-                    gridSizeY: globals_1.Globals.AppSettings.GridSizeY,
-                    showAddress: globals_1.Globals.AppSettings.ShowAddress,
-                    orientation: globals_1.Globals.AppSettings.Orientation,
+                    // gridSizeX: Globals.EditorSettings.GridSizeX,
+                    // gridSizeY: Globals.EditorSettings.GridSizeY,
+                    // showAddress: Globals.EditorSettings.ShowAddress,
+                    // orientation: Globals.EditorSettings.Orientation,
                     locoPanelVisible: (_a = this.sidePanelLeft) === null || _a === void 0 ? void 0 : _a.classList.contains('show'),
                     propertyPanelVisible: (_b = this.propertyPanel) === null || _b === void 0 ? void 0 : _b.classList.contains('show')
                 },
@@ -1166,179 +1166,184 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
         load(config) {
             var _a, _b, _c;
             this.views = new views_1.Views();
-            //Dispatcher.code = "";
-            if (config.dispatcher) {
-                //Dispatcher.code = config.dispatcher.code ?? ""
-                dispatcher_1.Dispatcher.active = (_a = config.dispatcher.active) !== null && _a !== void 0 ? _a : false;
-                dispatcher_1.Dispatcher.interval = (_b = config.dispatcher.interval) !== null && _b !== void 0 ? _b : 800;
-            }
-            else {
-            }
-            this.scale = config.settings.scale;
-            globals_1.Globals.AppSettings.GridSizeX = config.settings.gridSizeX;
-            globals_1.Globals.AppSettings.GridSizeY = config.settings.gridSizeY;
-            globals_1.Globals.AppSettings.ShowAddress = config.settings.showAddress;
-            globals_1.Globals.AppSettings.Orientation = config.settings.orientation;
-            this.originX = config.settings.origX;
-            this.originY = config.settings.origY;
-            if (config.settings.locoPanelVisible) {
-                (_c = this.sidePanelLeft) === null || _c === void 0 ? void 0 : _c.classList.add('show');
-                this.toolbar.btnLoco.classList.add("active");
-            }
-            //var elems = config.elems
-            config.pages.forEach((page) => {
-                page.elems.forEach((elem) => {
-                    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4;
-                    console.log(elem);
-                    switch (elem.type) {
-                        case "track":
-                            var t = new track_1.TrackElement(elem.uuid, elem.x, elem.y, elem.name);
-                            t.angle = elem.angle | 0;
-                            // t.cc = elem.cc
-                            t.rbusAddress = elem.rbusAddress;
-                            this.add(t);
-                            break;
-                        case "trackEnd":
-                            var te = new trackend_1.TrackEndElement(elem.uuid, elem.x, elem.y, elem.name);
-                            te.angle = elem.angle | 0;
-                            // te.cc = elem.cc
-                            te.rbusAddress = elem.rbusAddress;
-                            this.add(te);
-                            break;
-                        case "turnoutRight":
-                            var tor = new turnout_1.TurnoutRightElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
-                            tor.showAddress = globals_1.Globals.AppSettings.ShowAddress;
-                            tor.angle = elem.angle | 0;
-                            tor.t1ClosedValue = (_a = elem.t1ClosedValue) !== null && _a !== void 0 ? _a : true;
-                            tor.t1OpenValue = (_b = elem.t1OpenValue) !== null && _b !== void 0 ? _b : false;
-                            tor.rbusAddress = elem.rbusAddress;
-                            // tor.cc = elem.cc == undefined ? undefined : elem.cc
-                            this.add(tor);
-                            break;
-                        case "turnoutLeft":
-                            var tol = new turnout_1.TurnoutLeftElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
-                            tol.showAddress = globals_1.Globals.AppSettings.ShowAddress;
-                            tol.angle = elem.angle | 0;
-                            tol.t1ClosedValue = (_c = elem.t1ClosedValue) !== null && _c !== void 0 ? _c : true;
-                            tol.t1OpenValue = (_d = elem.t1OpenValue) !== null && _d !== void 0 ? _d : false;
-                            tol.rbusAddress = elem.rbusAddress;
-                            // tol.cc = elem.cc == undefined ? undefined : elem.cc
-                            this.add(tol);
-                            break;
-                        case "turnoutDouble":
-                            var tod = new turnout_1.TurnoutDoubleElement(elem.uuid, (_e = elem.address1) !== null && _e !== void 0 ? _e : 0, (_f = elem.address2) !== null && _f !== void 0 ? _f : 0, elem.x, elem.y, elem.name);
-                            tod.showAddress = globals_1.Globals.AppSettings.ShowAddress;
-                            tod.angle = elem.angle | 0;
-                            tod.t1ClosedValue = (_g = elem.t1ClosedValue) !== null && _g !== void 0 ? _g : true;
-                            tod.t1OpenValue = (_h = elem.t1OpenValue) !== null && _h !== void 0 ? _h : false;
-                            tod.t2ClosedValue = (_j = elem.t2ClosedValue) !== null && _j !== void 0 ? _j : true;
-                            tod.t2OpenValue = (_k = elem.t2OpenValue) !== null && _k !== void 0 ? _k : false;
-                            tod.rbusAddress = elem.rbusAddress;
-                            // tod.cc = elem.cc == undefined ? undefined : elem.cc
-                            this.add(tod);
-                            break;
-                        case "curve":
-                            var cu = new curve_1.TrackCurveElement(elem.uuid, elem.x, elem.y, elem.name);
-                            cu.angle = elem.angle | 0;
-                            // cu.cc = elem.cc
-                            cu.rbusAddress = elem.rbusAddress;
-                            this.add(cu);
-                            break;
-                        case "corner":
-                            var co = new corner_1.TrackCornerElement(elem.uuid, elem.x, elem.y, elem.name);
-                            co.angle = elem.angle | 0;
-                            // co.cc = elem.cc
-                            co.rbusAddress = elem.rbusAddress;
-                            this.add(co);
-                            break;
-                        case "block":
-                            var bl = new block_1.BlockElement(elem.uuid, elem.x, elem.y, elem.name);
-                            bl.angle = elem.angle | 0;
-                            bl.locoAddress = elem.locoAddress | 0;
-                            this.add(bl);
-                            break;
-                        case "label2":
-                            var l = new label_1.Label2Element(elem.uuid, elem.x, elem.y, elem.name);
-                            console.log("LABEL:", l instanceof view_1.RailView);
-                            l.text = (_l = elem.text) !== null && _l !== void 0 ? _l : "LABEL";
-                            l.valign = elem.valign;
-                            l.angle = 0;
-                            this.add(l);
-                            break;
-                        case "routeSwitch":
-                            var rs = new route_1.RouteSwitchElement(elem.uuid, elem.x, elem.y, elem.name);
-                            rs.turnouts = elem.turnouts;
-                            this.add(rs);
-                            break;
-                        case "signal2":
-                            var s2 = new signals_1.Signal2Element(elem.uuid, elem.address | 0, elem.x, elem.y, elem.name);
-                            s2.angle = (_m = elem.angle) !== null && _m !== void 0 ? _m : 0;
-                            s2.addressLength = (_o = elem.addressLength) !== null && _o !== void 0 ? _o : 5;
-                            s2.isExtendedDecoder = (_p = s2.isExtendedDecoder) !== null && _p !== void 0 ? _p : false;
-                            s2.valueGreen = (_q = elem.valueGreen) !== null && _q !== void 0 ? _q : 0;
-                            s2.valueRed = (_r = elem.valueRed) !== null && _r !== void 0 ? _r : 0;
-                            s2.rbusAddress = elem.rbusAddress;
-                            // s2.cc = elem.cc == undefined ? undefined : elem.cc
-                            s2.aspect = 1; // elem.aspect ?? 1
-                            this.add(s2);
-                            break;
-                        case "signal3":
-                            var s3 = new signals_1.Signal3Element(elem.uuid, elem.address | 0, elem.x, elem.y, elem.name);
-                            s3.angle = (_s = elem.angle) !== null && _s !== void 0 ? _s : 0;
-                            s3.addressLength = (_t = elem.addressLength) !== null && _t !== void 0 ? _t : 5;
-                            s3.isExtendedDecoder = (_u = s3.isExtendedDecoder) !== null && _u !== void 0 ? _u : false;
-                            s3.valueGreen = (_v = elem.valueGreen) !== null && _v !== void 0 ? _v : 0;
-                            s3.valueRed = (_w = elem.valueRed) !== null && _w !== void 0 ? _w : 0;
-                            s3.valueYellow = (_x = elem.valueYellow) !== null && _x !== void 0 ? _x : 0;
-                            s3.rbusAddress = elem.rbusAddress;
-                            // s3.cc = elem.cc == undefined ? undefined : elem.cc
-                            s3.aspect = 1; //elem.aspect ?? 1
-                            this.add(s3);
-                            break;
-                        case "signal4":
-                            var s4 = new signals_1.Signal4Element(elem.uuid, elem.address | 0, elem.x, elem.y, elem.name);
-                            s4.angle = (_y = elem.angle) !== null && _y !== void 0 ? _y : 0;
-                            s4.addressLength = (_z = elem.addressLength) !== null && _z !== void 0 ? _z : 5;
-                            s4.isExtendedDecoder = (_0 = s4.isExtendedDecoder) !== null && _0 !== void 0 ? _0 : false;
-                            s4.valueGreen = (_1 = elem.valueGreen) !== null && _1 !== void 0 ? _1 : 0;
-                            s4.valueRed = (_2 = elem.valueRed) !== null && _2 !== void 0 ? _2 : 0;
-                            s4.valueYellow = (_3 = elem.valueYellow) !== null && _3 !== void 0 ? _3 : 0;
-                            s4.valueWhite = (_4 = elem.valueWhite) !== null && _4 !== void 0 ? _4 : 0;
-                            s4.rbusAddress = elem.rbusAddress;
-                            // s4.cc = elem.cc == undefined ? undefined : elem.cc
-                            s4.aspect = 1; //elem.aspect ?? 1
-                            this.add(s4);
-                            break;
-                        // case "signal5":
-                        //     var s5 = new Signal5Element(elem.uuid, elem.address | 0, elem.x, elem.y, elem.name);
-                        //     s5.angle = elem.angle ?? 0
-                        //     s5.addressLength = elem.addressLength ?? 5
-                        //     s5.isExtendedDecoder = s5.isExtendedDecoder ?? false;
-                        //     s5.valueGreen = elem.valueGreen ?? 0
-                        //     s5.valueRed = elem.valueRed ?? 0
-                        //     s5.valueYellow = elem.valueYellow ?? 0
-                        //     s5.valueWhite = elem.valueWhite ?? 0
-                        //     s5.valueBlue = elem.valueBlue ?? 0
-                        //     s5.rbusAddress = elem.rbusAddress
-                        //     s5.device = elem.device == undefined ? undefined : elem.device
-                        //     this.add(s5)
-                        //     break;
-                        case "button":
-                            var b = new button_1.ButtonShapeElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
-                            this.add(b);
-                            break;
-                        case "audiobutton":
-                            var ab = new audioButton_1.AudioButtonShapeElement(elem.uuid, elem.x, elem.y, elem.name);
-                            ab.filename = elem.filename;
-                            this.add(ab);
-                            break;
-                    }
+            try {
+                //Dispatcher.code = "";
+                if (config.dispatcher) {
+                    //Dispatcher.code = config.dispatcher.code ?? ""
+                    dispatcher_1.Dispatcher.active = (_a = config.dispatcher.active) !== null && _a !== void 0 ? _a : false;
+                    dispatcher_1.Dispatcher.interval = (_b = config.dispatcher.interval) !== null && _b !== void 0 ? _b : 800;
+                }
+                else {
+                }
+                this.scale = config.settings.scale;
+                // Globals.EditorSettings.GridSizeX = config.settings.gridSizeX
+                // Globals.EditorSettings.GridSizeY = config.settings.gridSizeY
+                // Globals.EditorSettings.ShowAddress = config.settings.showAddress
+                // Globals.EditorSettings.Orientation = config.settings.orientation
+                this.originX = config.settings.origX;
+                this.originY = config.settings.origY;
+                if (config.settings.locoPanelVisible) {
+                    (_c = this.sidePanelLeft) === null || _c === void 0 ? void 0 : _c.classList.add('show');
+                    this.toolbar.btnLoco.classList.add("active");
+                }
+                //var elems = config.elems
+                config.pages.forEach((page) => {
+                    page.elems.forEach((elem) => {
+                        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4;
+                        console.log(elem);
+                        switch (elem.type) {
+                            case "track":
+                                var t = new track_1.TrackElement(elem.uuid, elem.x, elem.y, elem.name);
+                                t.angle = elem.angle | 0;
+                                // t.cc = elem.cc
+                                t.rbusAddress = elem.rbusAddress;
+                                this.add(t);
+                                break;
+                            case "trackEnd":
+                                var te = new trackend_1.TrackEndElement(elem.uuid, elem.x, elem.y, elem.name);
+                                te.angle = elem.angle | 0;
+                                // te.cc = elem.cc
+                                te.rbusAddress = elem.rbusAddress;
+                                this.add(te);
+                                break;
+                            case "turnoutRight":
+                                var tor = new turnout_1.TurnoutRightElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
+                                tor.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
+                                tor.angle = elem.angle | 0;
+                                tor.t1ClosedValue = (_a = elem.t1ClosedValue) !== null && _a !== void 0 ? _a : true;
+                                tor.t1OpenValue = (_b = elem.t1OpenValue) !== null && _b !== void 0 ? _b : false;
+                                tor.rbusAddress = elem.rbusAddress;
+                                // tor.cc = elem.cc == undefined ? undefined : elem.cc
+                                this.add(tor);
+                                break;
+                            case "turnoutLeft":
+                                var tol = new turnout_1.TurnoutLeftElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
+                                tol.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
+                                tol.angle = elem.angle | 0;
+                                tol.t1ClosedValue = (_c = elem.t1ClosedValue) !== null && _c !== void 0 ? _c : true;
+                                tol.t1OpenValue = (_d = elem.t1OpenValue) !== null && _d !== void 0 ? _d : false;
+                                tol.rbusAddress = elem.rbusAddress;
+                                // tol.cc = elem.cc == undefined ? undefined : elem.cc
+                                this.add(tol);
+                                break;
+                            case "turnoutDouble":
+                                var tod = new turnout_1.TurnoutDoubleElement(elem.uuid, (_e = elem.address1) !== null && _e !== void 0 ? _e : 0, (_f = elem.address2) !== null && _f !== void 0 ? _f : 0, elem.x, elem.y, elem.name);
+                                tod.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
+                                tod.angle = elem.angle | 0;
+                                tod.t1ClosedValue = (_g = elem.t1ClosedValue) !== null && _g !== void 0 ? _g : true;
+                                tod.t1OpenValue = (_h = elem.t1OpenValue) !== null && _h !== void 0 ? _h : false;
+                                tod.t2ClosedValue = (_j = elem.t2ClosedValue) !== null && _j !== void 0 ? _j : true;
+                                tod.t2OpenValue = (_k = elem.t2OpenValue) !== null && _k !== void 0 ? _k : false;
+                                tod.rbusAddress = elem.rbusAddress;
+                                // tod.cc = elem.cc == undefined ? undefined : elem.cc
+                                this.add(tod);
+                                break;
+                            case "curve":
+                                var cu = new curve_1.TrackCurveElement(elem.uuid, elem.x, elem.y, elem.name);
+                                cu.angle = elem.angle | 0;
+                                // cu.cc = elem.cc
+                                cu.rbusAddress = elem.rbusAddress;
+                                this.add(cu);
+                                break;
+                            case "corner":
+                                var co = new corner_1.TrackCornerElement(elem.uuid, elem.x, elem.y, elem.name);
+                                co.angle = elem.angle | 0;
+                                // co.cc = elem.cc
+                                co.rbusAddress = elem.rbusAddress;
+                                this.add(co);
+                                break;
+                            case "block":
+                                var bl = new block_1.BlockElement(elem.uuid, elem.x, elem.y, elem.name);
+                                bl.angle = elem.angle | 0;
+                                bl.locoAddress = elem.locoAddress | 0;
+                                this.add(bl);
+                                break;
+                            case "label2":
+                                var l = new label_1.Label2Element(elem.uuid, elem.x, elem.y, elem.name);
+                                console.log("LABEL:", l instanceof view_1.RailView);
+                                l.text = (_l = elem.text) !== null && _l !== void 0 ? _l : "LABEL";
+                                l.valign = elem.valign;
+                                l.angle = 0;
+                                this.add(l);
+                                break;
+                            case "routeSwitch":
+                                var rs = new route_1.RouteSwitchElement(elem.uuid, elem.x, elem.y, elem.name);
+                                rs.turnouts = elem.turnouts;
+                                this.add(rs);
+                                break;
+                            case "signal2":
+                                var s2 = new signals_1.Signal2Element(elem.uuid, elem.address | 0, elem.x, elem.y, elem.name);
+                                s2.angle = (_m = elem.angle) !== null && _m !== void 0 ? _m : 0;
+                                s2.addressLength = (_o = elem.addressLength) !== null && _o !== void 0 ? _o : 5;
+                                s2.isExtendedDecoder = (_p = s2.isExtendedDecoder) !== null && _p !== void 0 ? _p : false;
+                                s2.valueGreen = (_q = elem.valueGreen) !== null && _q !== void 0 ? _q : 0;
+                                s2.valueRed = (_r = elem.valueRed) !== null && _r !== void 0 ? _r : 0;
+                                s2.rbusAddress = elem.rbusAddress;
+                                // s2.cc = elem.cc == undefined ? undefined : elem.cc
+                                s2.aspect = 1; // elem.aspect ?? 1
+                                this.add(s2);
+                                break;
+                            case "signal3":
+                                var s3 = new signals_1.Signal3Element(elem.uuid, elem.address | 0, elem.x, elem.y, elem.name);
+                                s3.angle = (_s = elem.angle) !== null && _s !== void 0 ? _s : 0;
+                                s3.addressLength = (_t = elem.addressLength) !== null && _t !== void 0 ? _t : 5;
+                                s3.isExtendedDecoder = (_u = s3.isExtendedDecoder) !== null && _u !== void 0 ? _u : false;
+                                s3.valueGreen = (_v = elem.valueGreen) !== null && _v !== void 0 ? _v : 0;
+                                s3.valueRed = (_w = elem.valueRed) !== null && _w !== void 0 ? _w : 0;
+                                s3.valueYellow = (_x = elem.valueYellow) !== null && _x !== void 0 ? _x : 0;
+                                s3.rbusAddress = elem.rbusAddress;
+                                // s3.cc = elem.cc == undefined ? undefined : elem.cc
+                                s3.aspect = 1; //elem.aspect ?? 1
+                                this.add(s3);
+                                break;
+                            case "signal4":
+                                var s4 = new signals_1.Signal4Element(elem.uuid, elem.address | 0, elem.x, elem.y, elem.name);
+                                s4.angle = (_y = elem.angle) !== null && _y !== void 0 ? _y : 0;
+                                s4.addressLength = (_z = elem.addressLength) !== null && _z !== void 0 ? _z : 5;
+                                s4.isExtendedDecoder = (_0 = s4.isExtendedDecoder) !== null && _0 !== void 0 ? _0 : false;
+                                s4.valueGreen = (_1 = elem.valueGreen) !== null && _1 !== void 0 ? _1 : 0;
+                                s4.valueRed = (_2 = elem.valueRed) !== null && _2 !== void 0 ? _2 : 0;
+                                s4.valueYellow = (_3 = elem.valueYellow) !== null && _3 !== void 0 ? _3 : 0;
+                                s4.valueWhite = (_4 = elem.valueWhite) !== null && _4 !== void 0 ? _4 : 0;
+                                s4.rbusAddress = elem.rbusAddress;
+                                // s4.cc = elem.cc == undefined ? undefined : elem.cc
+                                s4.aspect = 1; //elem.aspect ?? 1
+                                this.add(s4);
+                                break;
+                            // case "signal5":
+                            //     var s5 = new Signal5Element(elem.uuid, elem.address | 0, elem.x, elem.y, elem.name);
+                            //     s5.angle = elem.angle ?? 0
+                            //     s5.addressLength = elem.addressLength ?? 5
+                            //     s5.isExtendedDecoder = s5.isExtendedDecoder ?? false;
+                            //     s5.valueGreen = elem.valueGreen ?? 0
+                            //     s5.valueRed = elem.valueRed ?? 0
+                            //     s5.valueYellow = elem.valueYellow ?? 0
+                            //     s5.valueWhite = elem.valueWhite ?? 0
+                            //     s5.valueBlue = elem.valueBlue ?? 0
+                            //     s5.rbusAddress = elem.rbusAddress
+                            //     s5.device = elem.device == undefined ? undefined : elem.device
+                            //     this.add(s5)
+                            //     break;
+                            case "button":
+                                var b = new button_1.ButtonShapeElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
+                                this.add(b);
+                                break;
+                            case "audiobutton":
+                                var ab = new audioButton_1.AudioButtonShapeElement(elem.uuid, elem.x, elem.y, elem.name);
+                                ab.filename = elem.filename;
+                                this.add(ab);
+                                break;
+                        }
+                    });
                 });
-            });
-            // const route1 = new RouteSwitchElement(this.ctx!, 2, 2, "route1")
-            // this.add(route1)
-            this.showAddresses(globals_1.Globals.AppSettings.ShowAddress);
-            this.draw();
+                // const route1 = new RouteSwitchElement(this.ctx!, 2, 2, "route1")
+                // this.add(route1)
+                this.showAddresses(globals_1.Globals.Settings.EditorSettings.ShowAddress);
+                this.draw();
+            }
+            catch (error) {
+                console.log(error);
+            }
             // this.manager.addState(this.canvas.elements.elements)
         }
     }

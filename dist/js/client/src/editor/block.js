@@ -17,8 +17,8 @@ define(["require", "exports", "../helpers/globals", "../../../common/src/dcc", "
         }
         draw(ctx) {
             ctx.save();
-            var w = globals_1.Globals.AppSettings.GridSizeX / 2.0;
-            var h = globals_1.Globals.AppSettings.GridSizeY / 4.0;
+            var w = globals_1.Globals.GridSizeX / 2.0;
+            var h = globals_1.Globals.GridSizeY / 4.0;
             ctx.translate(this.centerX, this.centerY);
             ctx.rotate((0, math_1.degreesToRadians)(this.angle));
             ctx.translate(-this.centerX, -this.centerY);
@@ -30,7 +30,7 @@ define(["require", "exports", "../helpers/globals", "../../../common/src/dcc", "
             // Triangle
             ctx.fillStyle = 'black';
             ctx.beginPath();
-            if (globals_1.Globals.AppSettings.Orientation == dcc_1.DCCExDirections.forward) {
+            if (globals_1.Globals.Settings.EditorSettings.Orientation == dcc_1.DCCExDirections.forward) {
                 ctx.moveTo(this.posRight - 5, this.centerY);
                 ctx.lineTo(this.posRight - 10, this.centerY - 3);
                 ctx.lineTo(this.posRight - 10, this.centerY + 3);
@@ -73,16 +73,16 @@ define(["require", "exports", "../helpers/globals", "../../../common/src/dcc", "
             return (x >= x1 && x <= x2 && y >= y1 && y <= y2);
         }
         get posLeft() {
-            return this.x * globals_1.Globals.AppSettings.GridSizeX - globals_1.Globals.AppSettings.GridSizeX;
+            return this.x * globals_1.Globals.GridSizeX - globals_1.Globals.GridSizeX;
         }
         get posRight() {
-            return this.x * globals_1.Globals.AppSettings.GridSizeX + 2 * globals_1.Globals.AppSettings.GridSizeX;
+            return this.x * globals_1.Globals.GridSizeX + 2 * globals_1.Globals.GridSizeX;
         }
         get posTop() {
-            return this.y * globals_1.Globals.AppSettings.GridSizeY;
+            return this.y * globals_1.Globals.GridSizeY;
         }
         get posBottom() {
-            return this.y * globals_1.Globals.AppSettings.GridSizeY + this.h * globals_1.Globals.AppSettings.GridSizeY;
+            return this.y * globals_1.Globals.GridSizeY + this.h * globals_1.Globals.GridSizeY;
         }
         getNextItemXy() {
             const d = (0, math_1.getDirection)(this.angle);

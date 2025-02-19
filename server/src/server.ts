@@ -77,6 +77,29 @@ app.get("/bootstrap.js", (req, res) => {
   res.sendFile(path.resolve(modulesFolder, "bootstrap/dist/js/bootstrap.bundle.min.js"));
 });
 
+app.post("/save", async (req: any, res: any) => {
+  try {
+    const { fileName, data } = req.body;
+
+    if (!fileName || !data) {
+      return res.status(400).json({ success: false, message: "Missing fileName or data" });
+    }
+
+    //const filePath = path.join(__dirname, fileName);
+    const filePath = path.join(distFolder, fileName);
+
+    await fs.writeFile(filePath, JSON.stringify(data, null, 4), "utf8", (err) => {
+      res.status(500).json({ success: false, error: err });
+    });
+
+    res.json({ success: true, message: `JSON saved as ${fileName}` });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error });
+  }
+});
+
+
+
 
 // Multer konfiguráció
 const storage: StorageEngine = multer.diskStorage({
@@ -92,7 +115,6 @@ const storage: StorageEngine = multer.diskStorage({
   },
 });
 export const upload = multer({ storage });
-
 
 
 // Szerver indítása

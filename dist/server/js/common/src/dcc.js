@@ -10,7 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetchDevices = exports.getUUID = exports.rbus = exports.turnouts = exports.ext_accessories = exports.accessories = exports.locos = exports.setDecoder = exports.getCommandCenterType = exports.CommandCenterTypes = exports.iZ21STATUS = exports.Z21POWERINFO = exports.ApiCommands = exports.DCCExTurnout = exports.DCCExDirections = exports.Z21Directions = exports.SpeedModes = void 0;
+exports.defaultSettings = exports.rbus = exports.turnouts = exports.ext_accessories = exports.accessories = exports.locos = exports.setDecoder = exports.CommandCenterTypes = exports.iZ21STATUS = exports.Z21POWERINFO = exports.ApiCommands = exports.DCCExTurnout = exports.DCCExDirections = exports.Z21Directions = exports.SpeedModes = void 0;
+exports.getCommandCenterType = getCommandCenterType;
+exports.getUUID = getUUID;
+exports.fetchDevices = fetchDevices;
 var SpeedModes;
 (function (SpeedModes) {
     SpeedModes[SpeedModes["S14"] = 0] = "S14";
@@ -97,7 +100,6 @@ function getCommandCenterType(type) {
     const res = Object.keys(CommandCenterTypes).filter(key => isNaN(Number(key)));
     return res ? res[type] : "Unknown";
 }
-exports.getCommandCenterType = getCommandCenterType;
 // export interface iDCCExTCPCommandCenter extends iCommandCenter{
 //     ip: string,
 //     port: number
@@ -124,7 +126,6 @@ exports.rbus = {};
 function getUUID() {
     return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c => (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16));
 }
-exports.getUUID = getUUID;
 function fetchDevices() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -137,5 +138,34 @@ function fetchDevices() {
         }
     });
 }
-exports.fetchDevices = fetchDevices;
+exports.defaultSettings = {
+    CommandCenter: {
+        type: CommandCenterTypes.Z21,
+        ip: "192.168.0.70",
+        port: 21105,
+        serialPort: "COM1",
+        turnoutActiveTime: 500,
+        basicAccessoryDecoderActiveTime: 10
+    },
+    CommandCenterZ21: {
+        ip: "",
+        port: 21105,
+    },
+    CommandCenterDCCExTcp: {
+        ip: "192.168.1.183",
+        port: 2560,
+    },
+    CommandCenterDCCExSerial: {
+        port: "COM3"
+    },
+    Dispacher: {
+        interval: 500
+    },
+    EditorSettings: {
+        ShowAddress: true,
+        // LocoPanelVisible: false,
+        // TurnoutWaitTime: 200,
+        Orientation: DCCExDirections.forward,
+    }
+};
 //# sourceMappingURL=dcc.js.map

@@ -1,17 +1,14 @@
 {
   "dispatcher": {
-    "active": true,
-    "interval": 500
+    "active": false,
+    "interval": 100
   },
   "settings": {
-    "scale": 0.8542769597051628,
-    "origX": 44,
-    "origY": 167,
-    "gridSizeX": 40,
-    "gridSizeY": 40,
-    "showAddress": false,
-    "locoPanelVisible": true,
-    "propertyPanelVisible": true
+    "scale": 0.8643884750301338,
+    "origX": -73,
+    "origY": 92,
+    "locoPanelVisible": false,
+    "propertyPanelVisible": false
   },
   "pages": [
     {

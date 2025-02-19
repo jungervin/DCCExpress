@@ -42,13 +42,31 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             //IOConn.initialize(document.location.origin)
             // this.canvas.socket = IOConn.socket
             // this.canvas.views.socket = IOConn.socket;
-            this.editor.init();
+            globals_1.Globals.fetchJsonData("/settings.json").then((data) => {
+                var _a, _b, _c, _d, _e, _f;
+                const s = data;
+                globals_1.Globals.Settings = data;
+                globals_1.Globals.Settings.CommandCenter = (_a = s.CommandCenter) !== null && _a !== void 0 ? _a : dcc_1.defaultSettings.CommandCenter;
+                globals_1.Globals.Settings.CommandCenterZ21 = (_b = s.CommandCenterZ21) !== null && _b !== void 0 ? _b : dcc_1.defaultSettings.CommandCenterZ21;
+                globals_1.Globals.Settings.CommandCenterDCCExTcp = (_c = s.CommandCenterDCCExTcp) !== null && _c !== void 0 ? _c : dcc_1.defaultSettings.CommandCenterDCCExTcp;
+                globals_1.Globals.Settings.CommandCenterDCCExSerial = (_d = s.CommandCenterDCCExSerial) !== null && _d !== void 0 ? _d : dcc_1.defaultSettings.CommandCenterDCCExSerial;
+                globals_1.Globals.Settings.Dispacher = (_e = s.Dispacher) !== null && _e !== void 0 ? _e : dcc_1.defaultSettings.Dispacher;
+                globals_1.Globals.Settings.EditorSettings = (_f = s.EditorSettings) !== null && _f !== void 0 ? _f : dcc_1.defaultSettings.EditorSettings;
+                globals_1.Globals.fetchJsonData('/config.json').then((conf) => {
+                    this.editor.init();
+                    this.configLoaded(conf);
+                }).catch((reason) => {
+                    alert("Config Error:\n" + reason);
+                });
+            }).catch((reason) => {
+                alert("Settings Error:\n" + reason);
+            });
             ws_1.wsClient.onConnected = () => {
                 this.toolbar.wsStatus.classList.remove("error");
                 this.toolbar.wsStatus.classList.add("success");
-                ws_1.wsClient.send({ type: dcc_1.ApiCommands.getSettings, data: "" });
+                //wsClient.send({ type: ApiCommands.getSettings, data: "" })
                 // wsClient.send({ type: ApiCommands.getCommandCenters, data: "" })
-                ws_1.wsClient.send({ type: dcc_1.ApiCommands.configLoad, data: "" });
+                //wsClient.send({ type: ApiCommands.configLoad, data: "" })
                 this.locoControlPanel.init();
                 ws_1.wsClient.send({ type: dcc_1.ApiCommands.getRBusInfo, data: "" });
             };
@@ -87,7 +105,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                         const d = msg.data;
                         //console.log(d)
                         if (d.CommandCenter && d.Dispacher) {
-                            globals_1.Globals.ServerSettings = d;
+                            globals_1.Globals.Settings = d;
                         }
                         break;
                     case dcc_1.ApiCommands.systemInfo:
@@ -109,36 +127,6 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 this.editor.canvas.height = window.innerHeight;
                 this.editor.draw();
             });
-            // IOConn.socket.on(ApiCommands.locoState, (data: iLoco) => {
-            //     var loco = this.locos?.locos.find((l: LocoElement) => {
-            //         return l.address == data.address
-            //     })
-            //     if (loco) {
-            //         loco.speed = data.speed
-            //         loco.forward = data.direction == Z21Directions.forward
-            //         for (var i = 0; i <= 28; i++) {
-            //             if (loco.functions[i]) {
-            //                 loco.functions[i].isOn = (data.functions & (1 << i)) > 0x00
-            //             }
-            //         }
-            //         if (loco.address == data.address) {
-            //             this.locos!.updateUI()
-            //         }
-            //     }
-            // })
-            // // IOConn.socket.on("systemstate", (data) => {
-            // //     document.getElementById("systemstatus")!.innerHTML = `MainCurrent: ${data.MainCurrent} mA | Temp: ${data.Temperature} °C`
-            // // })
-            // IOConn.socket.on(ApiCommands.commandCenters, (data) => {
-            //     Globals.devices = data
-            //     data.forEach((c: iCommandCenter) => {
-            //         console.log(c.name)
-            //     })
-            //     console.log(data)
-            // })
-            // IOConn.socket.on(ApiCommands.alert, (data: iData) => {
-            //     alert(data.data)
-            // })
             ws_1.wsClient.connect();
             this.locoControlPanel = document.getElementById("locoControlPanel");
             dispatcher_1.Dispatcher.App = this;
@@ -222,25 +210,6 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                     //wsClient.send(ApiCommands.getTurnout, s.address + i)
                 }
             });
-            // Globals.devices.forEach((cc) => {
-            //     wsClient.send({ type: ApiCommands.getRBusInfo, data: { cc: cc } as iGetRBusInfo } as iData)
-            // })
-            // const d = new Dialog(300, 200, "Shapes")
-            // const shape1 = new ShapeCombobox(
-            //     turnouts
-            // )
-            // const shape2 = new ShapeCombobox(
-            //     turnouts
-            // )
-            // const ok = new Button("OK")
-            // ok.onclick = () => { d.close() }
-            // const cancel = new Button("Cancel")
-            // d.addBody(shape1)
-            // //d.addBody(shape2)
-            // d.addFooter(ok)
-            // d.addFooter(cancel)
-            // const shape2 = new ShapeCombobox([{label: "kettő", shape: turnouts[1]}])
-            // d.addBody(shape2)
         }
         turnoutInfo(data) {
             //console.log("turnout", data)

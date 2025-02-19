@@ -31,35 +31,35 @@ export class TrackElement extends RailView {
         ctx.save()
         
         {
-            ctx.lineWidth = Globals.AppSettings.TrackWidth7;
+            ctx.lineWidth = Globals.TrackWidth7;
             ctx.strokeStyle = Colors.TrackPrimaryColor
 
             if (this.angle == 0 || this.angle == 180) {
                 ctx.beginPath();
                 ctx.moveTo(this.PositionX, this.centerY);
-                ctx.lineTo(this.PositionX + Globals.AppSettings.GridSizeX, this.centerY);
+                ctx.lineTo(this.PositionX + Globals.GridSizeX, this.centerY);
                 ctx.stroke();
             }
             else if (this.angle == 45 || this.angle == 225) {
                 ctx.beginPath();
                 ctx.moveTo(this.PositionX, this.PositionY);
-                ctx.lineTo(this.PositionX + Globals.AppSettings.GridSizeX, this.PositionY + Globals.AppSettings.GridSizeY);
+                ctx.lineTo(this.PositionX + Globals.GridSizeX, this.PositionY + Globals.GridSizeY);
                 ctx.stroke();
             }
             else if (this.angle == 90 || this.angle == 270) {
                 ctx.beginPath();
                 ctx.moveTo(this.centerX, this.PositionY);
-                ctx.lineTo(this.centerX, this.PositionY + Globals.AppSettings.GridSizeY);
+                ctx.lineTo(this.centerX, this.PositionY + Globals.GridSizeY);
                 ctx.stroke();
             }
             else if (this.angle == 135 || this.angle == 315) {
                 ctx.beginPath();
-                ctx.moveTo(this.PositionX + Globals.AppSettings.GridSizeX, this.PositionY);
-                ctx.lineTo(this.PositionX, this.PositionY + Globals.AppSettings.GridSizeY);
+                ctx.moveTo(this.PositionX + Globals.GridSizeX, this.PositionY);
+                ctx.lineTo(this.PositionX, this.PositionY + Globals.GridSizeY);
                 ctx.stroke();
             }
 
-            ctx.lineWidth = Globals.AppSettings.TrackWidth3;
+            ctx.lineWidth = Globals.TrackWidth3;
             
             // var color = Colors.TrackLightColor
             // switch(this.state) {
@@ -71,7 +71,7 @@ export class TrackElement extends RailView {
 
             ctx.strokeStyle = this.stateColor
 
-            var w4 = Globals.AppSettings.GridSizeX / 4
+            var w4 = Globals.GridSizeX / 4
 
             if (this.angle == 0 || this.angle == 180) {
                 ctx.beginPath();

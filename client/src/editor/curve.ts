@@ -22,58 +22,58 @@ export class TrackCurveElement extends RailView {
 
 
     public draw(ctx: CanvasRenderingContext2D) {
-        var w = Globals.AppSettings.GridSizeX / 2.0
-        var h = Globals.AppSettings.GridSizeY / 2.0
+        var w = Globals.GridSizeX / 2.0
+        var h = Globals.GridSizeY / 2.0
         ctx.save()
 
-        ctx.lineWidth = Globals.AppSettings.TrackWidth7;
+        ctx.lineWidth = Globals.TrackWidth7;
         ctx.strokeStyle = Colors.TrackPrimaryColor
 
         if (this.angle == 0) {
             ctx.beginPath();
             ctx.moveTo(this.PositionX, this.PositionY);
             ctx.lineTo(this.centerX, this.centerY);
-            ctx.lineTo(this.PositionX + Globals.AppSettings.GridSizeX, this.centerY);
+            ctx.lineTo(this.PositionX + Globals.GridSizeX, this.centerY);
             ctx.stroke();
         }
         else if (this.angle == 45) {
             ctx.beginPath();
-            ctx.moveTo(this.PositionX + Globals.AppSettings.GridSizeX / 2, this.PositionY);
+            ctx.moveTo(this.PositionX + Globals.GridSizeX / 2, this.PositionY);
             ctx.lineTo(this.centerX, this.centerY);
-            ctx.lineTo(this.PositionX + Globals.AppSettings.GridSizeX, this.PositionY + Globals.AppSettings.GridSizeY);
+            ctx.lineTo(this.PositionX + Globals.GridSizeX, this.PositionY + Globals.GridSizeY);
             ctx.stroke();
         }
         else if (this.angle == 90) {
             ctx.beginPath();
-            ctx.moveTo(this.PositionX + Globals.AppSettings.GridSizeX, this.PositionY);
+            ctx.moveTo(this.PositionX + Globals.GridSizeX, this.PositionY);
             ctx.lineTo(this.centerX, this.centerY);
-            ctx.lineTo(this.centerX, this.PositionY + Globals.AppSettings.GridSizeY);
+            ctx.lineTo(this.centerX, this.PositionY + Globals.GridSizeY);
             ctx.stroke();
         }
         else if (this.angle == 135) {
             ctx.beginPath();
-            ctx.moveTo(this.PositionX, this.PositionY + Globals.AppSettings.GridSizeY);
+            ctx.moveTo(this.PositionX, this.PositionY + Globals.GridSizeY);
             ctx.lineTo(this.centerX, this.centerY);
-            ctx.lineTo(this.PositionX + Globals.AppSettings.GridSizeX, this.centerY);
+            ctx.lineTo(this.PositionX + Globals.GridSizeX, this.centerY);
             ctx.stroke();
         }
         else if (this.angle == 180) {
             ctx.beginPath();
             ctx.moveTo(this.PositionX, this.centerY);
             ctx.lineTo(this.centerX, this.centerY);
-            ctx.lineTo(this.PositionX + Globals.AppSettings.GridSizeX, this.PositionY + Globals.AppSettings.GridSizeY);
+            ctx.lineTo(this.PositionX + Globals.GridSizeX, this.PositionY + Globals.GridSizeY);
             ctx.stroke();
         }
         else if (this.angle == 225) {
             ctx.beginPath();
             ctx.moveTo(this.PositionX, this.PositionY);
             ctx.lineTo(this.centerX, this.centerY);
-            ctx.lineTo(this.centerX, this.PositionY + Globals.AppSettings.GridSizeY);
+            ctx.lineTo(this.centerX, this.PositionY + Globals.GridSizeY);
             ctx.stroke();
         }
         else if (this.angle == 270) {
             ctx.beginPath();
-            ctx.moveTo(this.PositionX, this.PositionY + Globals.AppSettings.GridSizeY);
+            ctx.moveTo(this.PositionX, this.PositionY + Globals.GridSizeY);
             ctx.lineTo(this.centerX, this.centerY);
             ctx.lineTo(this.centerX, this.PositionY);
             ctx.stroke();
@@ -82,12 +82,12 @@ export class TrackCurveElement extends RailView {
             ctx.beginPath();
             ctx.moveTo(this.PositionX, this.centerY);
             ctx.lineTo(this.centerX, this.centerY);
-            ctx.lineTo(this.PositionX + Globals.AppSettings.GridSizeX, this.PositionY);
+            ctx.lineTo(this.PositionX + Globals.GridSizeX, this.PositionY);
             ctx.stroke();
         }
 
 
-        ctx.lineWidth = Globals.AppSettings.TrackWidth3;
+        ctx.lineWidth = Globals.TrackWidth3;
         // var color = Colors.TrackLightColor
         // switch(this.state) {
         //     case RailStates.selected : color = Colors.TrackSelectedColor
@@ -98,7 +98,7 @@ export class TrackCurveElement extends RailView {
 
         ctx.strokeStyle = this.stateColor
 
-        var w2 = Globals.AppSettings.GridSizeX / 3
+        var w2 = Globals.GridSizeX / 3
         ctx.lineDashOffset = -w2 / 3 //w3 / 2.0
         ctx.setLineDash([w2, w2]);
 
@@ -107,47 +107,47 @@ export class TrackCurveElement extends RailView {
             ctx.beginPath();
             ctx.moveTo(this.PositionX, this.PositionY);
             ctx.lineTo(this.centerX, this.centerY);
-            ctx.lineTo(this.PositionX + Globals.AppSettings.GridSizeX, this.centerY);
+            ctx.lineTo(this.PositionX + Globals.GridSizeX, this.centerY);
             ctx.stroke();
         }
         else if (this.angle == 45) {
             ctx.beginPath();
-            ctx.moveTo(this.PositionX + Globals.AppSettings.GridSizeX / 2, this.PositionY);
+            ctx.moveTo(this.PositionX + Globals.GridSizeX / 2, this.PositionY);
             ctx.lineTo(this.centerX, this.centerY);
-            ctx.lineTo(this.PositionX + Globals.AppSettings.GridSizeX, this.PositionY + Globals.AppSettings.GridSizeY);
+            ctx.lineTo(this.PositionX + Globals.GridSizeX, this.PositionY + Globals.GridSizeY);
             ctx.stroke();
         }
         else if (this.angle == 90) {
             ctx.beginPath();
-            ctx.moveTo(this.PositionX + Globals.AppSettings.GridSizeX, this.PositionY);
+            ctx.moveTo(this.PositionX + Globals.GridSizeX, this.PositionY);
             ctx.lineTo(this.centerX, this.centerY);
-            ctx.lineTo(this.centerX, this.PositionY + Globals.AppSettings.GridSizeY);
+            ctx.lineTo(this.centerX, this.PositionY + Globals.GridSizeY);
             ctx.stroke();
         }
         else if (this.angle == 135) {
             ctx.beginPath();
-            ctx.moveTo(this.PositionX, this.PositionY + Globals.AppSettings.GridSizeY);
+            ctx.moveTo(this.PositionX, this.PositionY + Globals.GridSizeY);
             ctx.lineTo(this.centerX, this.centerY);
-            ctx.lineTo(this.PositionX + Globals.AppSettings.GridSizeX, this.centerY);
+            ctx.lineTo(this.PositionX + Globals.GridSizeX, this.centerY);
             ctx.stroke();
         }
         else if (this.angle == 180) {
             ctx.beginPath();
             ctx.moveTo(this.PositionX, this.centerY);
             ctx.lineTo(this.centerX, this.centerY);
-            ctx.lineTo(this.PositionX + Globals.AppSettings.GridSizeX, this.PositionY + Globals.AppSettings.GridSizeY);
+            ctx.lineTo(this.PositionX + Globals.GridSizeX, this.PositionY + Globals.GridSizeY);
             ctx.stroke();
         }
         else if (this.angle == 225) {
             ctx.beginPath();
             ctx.moveTo(this.PositionX, this.PositionY);
             ctx.lineTo(this.centerX, this.centerY);
-            ctx.lineTo(this.centerX, this.PositionY + Globals.AppSettings.GridSizeY);
+            ctx.lineTo(this.centerX, this.PositionY + Globals.GridSizeY);
             ctx.stroke();
         }
         else if (this.angle == 270) {
             ctx.beginPath();
-            ctx.moveTo(this.PositionX, this.PositionY + Globals.AppSettings.GridSizeY);
+            ctx.moveTo(this.PositionX, this.PositionY + Globals.GridSizeY);
             ctx.lineTo(this.centerX, this.centerY);
             ctx.lineTo(this.centerX, this.PositionY);
             ctx.stroke();
@@ -156,7 +156,7 @@ export class TrackCurveElement extends RailView {
             ctx.beginPath();
             ctx.moveTo(this.PositionX, this.centerY);
             ctx.lineTo(this.centerX, this.centerY);
-            ctx.lineTo(this.PositionX + Globals.AppSettings.GridSizeX, this.PositionY);
+            ctx.lineTo(this.PositionX + Globals.GridSizeX, this.PositionY);
             ctx.stroke();
         }
 

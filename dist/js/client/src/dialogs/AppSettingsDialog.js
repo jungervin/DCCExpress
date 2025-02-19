@@ -31,7 +31,7 @@ define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "
             this.intervalElement = new dialog_1.InputNumber();
             this.intervalElement.minValue = 100;
             this.intervalElement.maxValue = 10000;
-            this.intervalElement.value = globals_1.Globals.ServerSettings.Dispacher.interval;
+            this.intervalElement.value = globals_1.Globals.Settings.Dispacher.interval;
             tab1.addComponent(this.intervalElement);
             this.showAddress = new dialog_1.Checkbox("Show address");
             tab1.addComponent(this.showAddress);
@@ -53,42 +53,42 @@ define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "
                 tab2.addComponent(ccCombobox);
                 const label2 = new dialog_1.Label("Ip Address");
                 tab2.addComponent(label2);
-                const ccIp = new dialog_1.Input((_b = (_a = globals_1.Globals.ServerSettings) === null || _a === void 0 ? void 0 : _a.CommandCenter) === null || _b === void 0 ? void 0 : _b.ip);
+                const ccIp = new dialog_1.Input((_b = (_a = globals_1.Globals.Settings) === null || _a === void 0 ? void 0 : _a.CommandCenter) === null || _b === void 0 ? void 0 : _b.ip);
                 ccIp.onchange = (sender) => {
-                    globals_1.Globals.ServerSettings.CommandCenter.ip = sender.value;
+                    globals_1.Globals.Settings.CommandCenter.ip = sender.value;
                 };
                 tab2.addComponent(ccIp);
                 const label3 = new dialog_1.Label("Port");
                 tab2.addComponent(label3);
-                const ccPort = new dialog_1.Input(globals_1.Globals.ServerSettings.CommandCenter.port.toString());
+                const ccPort = new dialog_1.Input(globals_1.Globals.Settings.CommandCenter.port.toString());
                 ccPort.onchange = (sender) => {
-                    globals_1.Globals.ServerSettings.CommandCenter.port = parseInt(sender.value);
+                    globals_1.Globals.Settings.CommandCenter.port = parseInt(sender.value);
                 };
                 tab2.addComponent(ccPort);
                 const label4 = new dialog_1.Label("Serial Port");
                 tab2.addComponent(label4);
-                const ccSerialPort = new dialog_1.Input(globals_1.Globals.ServerSettings.CommandCenter.serialPort);
+                const ccSerialPort = new dialog_1.Input(globals_1.Globals.Settings.CommandCenter.serialPort);
                 ccSerialPort.onchange = (sender) => {
-                    globals_1.Globals.ServerSettings.CommandCenter.serialPort = sender.value;
+                    globals_1.Globals.Settings.CommandCenter.serialPort = sender.value;
                 };
                 tab2.addComponent(ccSerialPort);
-                ccCombobox.value = globals_1.Globals.ServerSettings.CommandCenter.type.toString();
+                ccCombobox.value = globals_1.Globals.Settings.CommandCenter.type.toString();
                 const label5 = new dialog_1.Label("Turnout Active Time [ms]");
                 tab2.addComponent(label5);
                 const turnoutActiveTime = new dialog_1.InputNumber();
                 turnoutActiveTime.maxValue = 5000;
-                turnoutActiveTime.value = globals_1.Globals.ServerSettings.CommandCenter.turnoutActiveTime;
+                turnoutActiveTime.value = globals_1.Globals.Settings.CommandCenter.turnoutActiveTime;
                 turnoutActiveTime.onchange = (sender) => {
-                    globals_1.Globals.ServerSettings.CommandCenter.turnoutActiveTime = sender.value;
+                    globals_1.Globals.Settings.CommandCenter.turnoutActiveTime = sender.value;
                 };
                 tab2.addComponent(turnoutActiveTime);
                 const label6 = new dialog_1.Label("Accessory Active Time [ms]");
                 tab2.addComponent(label6);
                 const baActiveTime = new dialog_1.InputNumber();
                 baActiveTime.maxValue = 5000;
-                baActiveTime.value = globals_1.Globals.ServerSettings.CommandCenter.basicAccessoryDecoderActiveTime;
+                baActiveTime.value = globals_1.Globals.Settings.CommandCenter.basicAccessoryDecoderActiveTime;
                 baActiveTime.onchange = (sender) => {
-                    globals_1.Globals.ServerSettings.CommandCenter.basicAccessoryDecoderActiveTime = sender.value;
+                    globals_1.Globals.Settings.CommandCenter.basicAccessoryDecoderActiveTime = sender.value;
                 };
                 tab2.addComponent(baActiveTime);
             }

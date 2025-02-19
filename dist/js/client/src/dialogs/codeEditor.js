@@ -17,9 +17,9 @@ define(["require", "exports", "../editor/dispatcher", "../controls/dialog", "../
             this.interval = new dialog_1.InputNumber();
             this.interval.minValue = 100;
             this.interval.maxValue = 10000;
-            this.interval.value = globals_1.Globals.ServerSettings.Dispacher.interval;
+            this.interval.value = globals_1.Globals.Settings.Dispacher.interval;
             this.interval.onchange = (sender) => {
-                globals_1.Globals.ServerSettings.Dispacher.interval = sender.value;
+                globals_1.Globals.Settings.Dispacher.interval = sender.value;
             };
             this.addBody(this.interval);
             this.btnOk = new dialog_1.Button("OK");

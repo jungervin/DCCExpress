@@ -59,8 +59,8 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/math", "../
                 // ctx.rotate(degreesToRadians(this.angle));
                 ctx.rotate((0, math_1.degreesToRadians)(0));
                 ctx.translate(-this.centerX, -this.centerY);
-                var w2 = globals_1.Globals.AppSettings.GridSizeX / 2.0;
-                var h2 = globals_1.Globals.AppSettings.GridSizeY / 2.0;
+                var w2 = globals_1.Globals.GridSizeX / 2.0;
+                var h2 = globals_1.Globals.GridSizeY / 2.0;
                 ctx.beginPath();
                 ctx.lineWidth = 1;
                 ctx.strokeStyle = "red";
@@ -78,13 +78,13 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/math", "../
                     ctx.lineWidth = 1;
                     ctx.strokeStyle = "lime";
                     var n = this.getNextItemXy();
-                    ctx.rect(n.x * globals_1.Globals.AppSettings.GridSizeX, n.y * globals_1.Globals.AppSettings.GridSizeY, globals_1.Globals.AppSettings.GridSizeX, globals_1.Globals.AppSettings.GridSizeY);
+                    ctx.rect(n.x * globals_1.Globals.GridSizeX, n.y * globals_1.Globals.GridSizeY, globals_1.Globals.GridSizeX, globals_1.Globals.GridSizeY);
                     ctx.stroke();
                     ctx.beginPath();
                     ctx.lineWidth = 1;
                     ctx.strokeStyle = "blue";
                     var p = this.getPrevItemXy();
-                    ctx.rect(p.x * globals_1.Globals.AppSettings.GridSizeX, p.y * globals_1.Globals.AppSettings.GridSizeY, globals_1.Globals.AppSettings.GridSizeX, globals_1.Globals.AppSettings.GridSizeY);
+                    ctx.rect(p.x * globals_1.Globals.GridSizeX, p.y * globals_1.Globals.GridSizeY, globals_1.Globals.GridSizeX, globals_1.Globals.GridSizeY);
                     ctx.stroke();
                 }
             }
@@ -101,28 +101,28 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/math", "../
         //     this.ctx.setLineDash([]);
         // }
         get PositionX() {
-            return this.x * globals_1.Globals.AppSettings.GridSizeX;
+            return this.x * globals_1.Globals.GridSizeX;
         }
         get PositionY() {
-            return this.y * globals_1.Globals.AppSettings.GridSizeY;
+            return this.y * globals_1.Globals.GridSizeY;
         }
         get posLeft() {
-            return this.x * globals_1.Globals.AppSettings.GridSizeX;
+            return this.x * globals_1.Globals.GridSizeX;
         }
         get posRight() {
-            return this.x * globals_1.Globals.AppSettings.GridSizeX + this.w * globals_1.Globals.AppSettings.GridSizeX;
+            return this.x * globals_1.Globals.GridSizeX + this.w * globals_1.Globals.GridSizeX;
         }
         get posTop() {
-            return this.y * globals_1.Globals.AppSettings.GridSizeY;
+            return this.y * globals_1.Globals.GridSizeY;
         }
         get posBottom() {
-            return this.y * globals_1.Globals.AppSettings.GridSizeY + this.h * globals_1.Globals.AppSettings.GridSizeY;
+            return this.y * globals_1.Globals.GridSizeY + this.h * globals_1.Globals.GridSizeY;
         }
         get centerX() {
-            return this.x * globals_1.Globals.AppSettings.GridSizeX + this.w * globals_1.Globals.AppSettings.GridSizeX / 2;
+            return this.x * globals_1.Globals.GridSizeX + this.w * globals_1.Globals.GridSizeX / 2;
         }
         get centerY() {
-            return this.y * globals_1.Globals.AppSettings.GridSizeY + this.h * globals_1.Globals.AppSettings.GridSizeY / 2;
+            return this.y * globals_1.Globals.GridSizeY + this.h * globals_1.Globals.GridSizeY / 2;
         }
         get width() {
             return this.posRight - this.posLeft;

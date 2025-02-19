@@ -23,9 +23,9 @@ export class CodeEditor extends Dialog {
         this.interval = new InputNumber()
         this.interval.minValue = 100;
         this.interval.maxValue = 10000;
-        this.interval.value = Globals.ServerSettings.Dispacher.interval
+        this.interval.value = Globals.Settings.Dispacher.interval
         this.interval.onchange = (sender) => {
-            Globals.ServerSettings.Dispacher.interval = sender.value
+            Globals.Settings.Dispacher.interval = sender.value
         }
         this.addBody(this.interval)
 

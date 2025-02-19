@@ -24,8 +24,8 @@ export class BlockElement extends RailView {
     public draw(ctx: CanvasRenderingContext2D) {
         ctx.save()
 
-        var w = Globals.AppSettings.GridSizeX / 2.0
-        var h = Globals.AppSettings.GridSizeY / 4.0
+        var w = Globals.GridSizeX / 2.0
+        var h = Globals.GridSizeY / 4.0
 
         ctx.translate(this.centerX, this.centerY);
         ctx.rotate(degreesToRadians(this.angle));
@@ -41,7 +41,7 @@ export class BlockElement extends RailView {
         // Triangle
         ctx.fillStyle = 'black';
         ctx.beginPath();
-        if (Globals.AppSettings.Orientation == DCCExDirections.forward) {
+        if (Globals.Settings.EditorSettings.Orientation == DCCExDirections.forward) {
             ctx.moveTo(this.posRight - 5, this.centerY);
             ctx.lineTo(this.posRight - 10, this.centerY - 3);
             ctx.lineTo(this.posRight - 10, this.centerY + 3);
@@ -90,16 +90,16 @@ export class BlockElement extends RailView {
     }
 
     get posLeft(): number {
-        return this.x * Globals.AppSettings.GridSizeX - Globals.AppSettings.GridSizeX
+        return this.x * Globals.GridSizeX - Globals.GridSizeX
     }
     get posRight(): number {
-        return this.x * Globals.AppSettings.GridSizeX + 2 * Globals.AppSettings.GridSizeX
+        return this.x * Globals.GridSizeX + 2 * Globals.GridSizeX
     }
     get posTop(): number {
-        return this.y * Globals.AppSettings.GridSizeY
+        return this.y * Globals.GridSizeY
     }
     get posBottom(): number {
-        return this.y * Globals.AppSettings.GridSizeY + this.h * Globals.AppSettings.GridSizeY
+        return this.y * Globals.GridSizeY + this.h * Globals.GridSizeY
     }
 
     getNextItemXy(): Point {

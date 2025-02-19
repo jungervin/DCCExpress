@@ -22,6 +22,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -89,6 +98,23 @@ exports.app.get("/bootstrap.css", (req, res) => {
 exports.app.get("/bootstrap.js", (req, res) => {
     res.sendFile(path_1.default.resolve(exports.modulesFolder, "bootstrap/dist/js/bootstrap.bundle.min.js"));
 });
+exports.app.post("/save", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { fileName, data } = req.body;
+        if (!fileName || !data) {
+            return res.status(400).json({ success: false, message: "Missing fileName or data" });
+        }
+        //const filePath = path.join(__dirname, fileName);
+        const filePath = path_1.default.join(exports.distFolder, fileName);
+        yield fs.writeFile(filePath, JSON.stringify(data, null, 4), "utf8", (err) => {
+            res.status(500).json({ success: false, error: err });
+        });
+        res.json({ success: true, message: `JSON saved as ${fileName}` });
+    }
+    catch (error) {
+        res.status(500).json({ success: false, error: error });
+    }
+}));
 // Multer konfiguráció
 const storage = multer_1.default.diskStorage({
     destination: (req, file, cb) => {

@@ -22,11 +22,11 @@ export class TrackCornerElement extends RailView {
     }
 
     public draw(ctx: CanvasRenderingContext2D) {
-        var w = Globals.AppSettings.GridSizeX / 4.0
-        var h = Globals.AppSettings.GridSizeY / 4.0
+        var w = Globals.GridSizeX / 4.0
+        var h = Globals.GridSizeY / 4.0
         ctx.save()
 
-        ctx.lineWidth = Globals.AppSettings.TrackWidth7;
+        ctx.lineWidth = Globals.TrackWidth7;
         ctx.strokeStyle = Colors.TrackPrimaryColor
 
         if (this.angle == 0) {
@@ -34,7 +34,7 @@ export class TrackCornerElement extends RailView {
             ctx.moveTo(this.PositionX, this.centerY);
             ctx.lineTo(this.PositionX + 1 * w, this.centerY);
             ctx.lineTo(this.centerX, this.centerY + 1 * h);
-            ctx.lineTo(this.centerX, this.PositionY + Globals.AppSettings.GridSizeY);
+            ctx.lineTo(this.centerX, this.PositionY + Globals.GridSizeY);
             ctx.stroke();
         }
         else if (this.angle == 90) {
@@ -50,15 +50,15 @@ export class TrackCornerElement extends RailView {
             ctx.moveTo(this.centerX, this.PositionY);
             ctx.lineTo(this.centerX, this.PositionY + h);
             ctx.lineTo(this.centerX + w, this.centerY);
-            ctx.lineTo(this.PositionX + Globals.AppSettings.GridSizeX, this.centerY);
+            ctx.lineTo(this.PositionX + Globals.GridSizeX, this.centerY);
             ctx.stroke();
         }
         else if (this.angle == 270) {
             ctx.beginPath();
-            ctx.moveTo(this.PositionX + Globals.AppSettings.GridSizeX, this.centerY);
+            ctx.moveTo(this.PositionX + Globals.GridSizeX, this.centerY);
             ctx.lineTo(this.centerX + w, this.centerY);
             ctx.lineTo(this.centerX, this.centerY + h);
-            ctx.lineTo(this.centerX, this.PositionY + Globals.AppSettings.GridSizeY);
+            ctx.lineTo(this.centerX, this.PositionY + Globals.GridSizeY);
             ctx.stroke();
         }
 

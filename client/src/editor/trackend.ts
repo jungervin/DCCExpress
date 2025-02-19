@@ -25,14 +25,14 @@ export class TrackEndElement extends RailView {
     public draw(ctx: CanvasRenderingContext2D) {
         ctx.save()
 
-        var h = Globals.AppSettings.GridSizeY / 4.0
+        var h = Globals.GridSizeY / 4.0
         {
 
             ctx.translate(this.centerX, this.centerY);
             ctx.rotate(degreesToRadians(this.angle));
             ctx.translate(-this.centerX, -this.centerY);
 
-            ctx.lineWidth = Globals.AppSettings.TrackWidth7;
+            ctx.lineWidth = Globals.TrackWidth7;
             ctx.strokeStyle = Colors.TrackPrimaryColor
 
             if (this.angle % 90 == 0) {
@@ -43,7 +43,7 @@ export class TrackEndElement extends RailView {
                 ctx.lineTo(this.centerX, this.centerY + h);
                 ctx.stroke();
             } else {
-                var r = Globals.AppSettings.GridSizeX / 2
+                var r = Globals.GridSizeX / 2
                 var l = Math.sqrt(2 * r * r)
 
                 ctx.beginPath();
@@ -54,7 +54,7 @@ export class TrackEndElement extends RailView {
                 ctx.stroke();
             }
 
-            ctx.lineWidth = Globals.AppSettings.TrackWidth3;
+            ctx.lineWidth = Globals.TrackWidth3;
 
             // var color = Colors.TrackLightColor
             // switch(this.state) {
@@ -69,15 +69,15 @@ export class TrackEndElement extends RailView {
             if (this.angle % 90 == 0) {
                 ctx.beginPath();
                 ctx.moveTo(this.PositionX, this.centerY);
-                ctx.lineTo(this.centerX - Globals.AppSettings.TrackWidth7 / 2, this.centerY);
+                ctx.lineTo(this.centerX - Globals.TrackWidth7 / 2, this.centerY);
                 ctx.stroke();
             } else {
-                var r = Globals.AppSettings.GridSizeX / 2
+                var r = Globals.GridSizeX / 2
                 var l = Math.sqrt(2 * r * r)
 
                 ctx.beginPath();
                 ctx.moveTo(this.centerX - l, this.centerY);
-                ctx.lineTo(this.centerX - Globals.AppSettings.TrackWidth7 / 2, this.centerY);
+                ctx.lineTo(this.centerX - Globals.TrackWidth7 / 2, this.centerY);
                 ctx.stroke();
             }
 

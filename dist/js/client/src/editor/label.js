@@ -44,7 +44,7 @@ define(["require", "exports", "../helpers/globals", "./view"], function (require
             return (x >= x1 && x <= x2 && y >= y1 && y <= y2);
         }
         get posRight() {
-            return this.x * globals_1.Globals.AppSettings.GridSizeX + 2 * globals_1.Globals.AppSettings.GridSizeX;
+            return this.x * globals_1.Globals.GridSizeX + 2 * globals_1.Globals.GridSizeX;
         }
         get valign() {
             return this._valign;

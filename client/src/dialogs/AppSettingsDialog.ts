@@ -49,7 +49,7 @@ export class AppSettingsDialog extends Dialog {
         this.intervalElement = new InputNumber()
         this.intervalElement.minValue = 100;
         this.intervalElement.maxValue = 10000;
-        this.intervalElement.value = Globals.ServerSettings.Dispacher.interval
+        this.intervalElement.value = Globals.Settings.Dispacher.interval
         tab1.addComponent(this.intervalElement)
 
         this.showAddress = new Checkbox("Show address")
@@ -76,40 +76,40 @@ export class AppSettingsDialog extends Dialog {
             const label2 = new Label("Ip Address")
             tab2.addComponent(label2)
 
-            const ccIp = new Input(Globals.ServerSettings?.CommandCenter?.ip)
+            const ccIp = new Input(Globals.Settings?.CommandCenter?.ip)
             ccIp.onchange = (sender) => {
-                Globals.ServerSettings.CommandCenter.ip = sender.value
+                Globals.Settings.CommandCenter.ip = sender.value
             }
             tab2.addComponent(ccIp)
 
             const label3 = new Label("Port")
             tab2.addComponent(label3)
 
-            const ccPort = new Input(Globals.ServerSettings.CommandCenter.port.toString())
+            const ccPort = new Input(Globals.Settings.CommandCenter.port.toString())
             ccPort.onchange = (sender) => {
-                Globals.ServerSettings.CommandCenter.port = parseInt(sender.value)
+                Globals.Settings.CommandCenter.port = parseInt(sender.value)
             }
             tab2.addComponent(ccPort)
             
             const label4 = new Label("Serial Port")
             tab2.addComponent(label4)
             
-            const ccSerialPort = new Input(Globals.ServerSettings.CommandCenter.serialPort)
+            const ccSerialPort = new Input(Globals.Settings.CommandCenter.serialPort)
             ccSerialPort.onchange = (sender) => {
-                Globals.ServerSettings.CommandCenter.serialPort = sender.value
+                Globals.Settings.CommandCenter.serialPort = sender.value
             }
             tab2.addComponent(ccSerialPort)
 
-            ccCombobox.value = Globals.ServerSettings.CommandCenter.type.toString()
+            ccCombobox.value = Globals.Settings.CommandCenter.type.toString()
 
 
             const label5 = new Label("Turnout Active Time [ms]")
             tab2.addComponent(label5)
             const turnoutActiveTime = new InputNumber()
             turnoutActiveTime.maxValue = 5000
-            turnoutActiveTime.value = Globals.ServerSettings.CommandCenter.turnoutActiveTime
+            turnoutActiveTime.value = Globals.Settings.CommandCenter.turnoutActiveTime
             turnoutActiveTime.onchange = (sender) => {
-                Globals.ServerSettings.CommandCenter.turnoutActiveTime = sender.value
+                Globals.Settings.CommandCenter.turnoutActiveTime = sender.value
             }
             tab2.addComponent(turnoutActiveTime)
 
@@ -117,9 +117,9 @@ export class AppSettingsDialog extends Dialog {
             tab2.addComponent(label6)
             const baActiveTime = new InputNumber()
             baActiveTime.maxValue = 5000
-            baActiveTime.value = Globals.ServerSettings.CommandCenter.basicAccessoryDecoderActiveTime
+            baActiveTime.value = Globals.Settings.CommandCenter.basicAccessoryDecoderActiveTime
             baActiveTime.onchange = (sender) => {
-                Globals.ServerSettings.CommandCenter.basicAccessoryDecoderActiveTime = sender.value
+                Globals.Settings.CommandCenter.basicAccessoryDecoderActiveTime = sender.value
             }
             tab2.addComponent(baActiveTime)
 

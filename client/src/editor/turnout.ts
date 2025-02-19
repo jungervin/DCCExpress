@@ -86,7 +86,7 @@ export class TurnoutRightElement extends TurnoutElement {
 
         ctx.beginPath();
         ctx.strokeStyle = Colors.TrackPrimaryColor
-        ctx.lineWidth = Globals.AppSettings.TrackWidth7;
+        ctx.lineWidth = Globals.TrackWidth7;
 
         if (this.angle == 0) {
             ctx.moveTo(this.posLeft, this.centerY)
@@ -152,7 +152,7 @@ export class TurnoutRightElement extends TurnoutElement {
 
 
             ctx.strokeStyle = this.stateColor
-            ctx.lineWidth = Globals.AppSettings.TrackWidth3;
+            ctx.lineWidth = Globals.TrackWidth3;
 
             var dx = this.width / 5
             if (this.angle == 0) {
@@ -193,7 +193,7 @@ export class TurnoutRightElement extends TurnoutElement {
         } else {
             ctx.beginPath();
             ctx.strokeStyle = this.stateColor
-            ctx.lineWidth = Globals.AppSettings.TrackWidth3;
+            ctx.lineWidth = Globals.TrackWidth3;
 
             var dx = this.width / 5
             var dx2 = this.width / 5
@@ -369,7 +369,7 @@ export class TurnoutDoubleElement extends TurnoutElement {
         {
             ctx.beginPath();
             ctx.strokeStyle = Colors.TrackPrimaryColor
-            ctx.lineWidth = Globals.AppSettings.TrackWidth7;
+            ctx.lineWidth = Globals.TrackWidth7;
 
             if (this.angle == 0 || this.angle == 180) {
                 ctx.moveTo(this.posLeft, this.centerY)
@@ -410,7 +410,7 @@ export class TurnoutDoubleElement extends TurnoutElement {
 
             ctx.beginPath();
             ctx.strokeStyle = this.stateColor
-            ctx.lineWidth = Globals.AppSettings.TrackWidth3;
+            ctx.lineWidth = Globals.TrackWidth3;
             var dx = this.width / 5
 
             // t1 Color

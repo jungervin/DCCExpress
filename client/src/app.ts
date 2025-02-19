@@ -4,7 +4,7 @@ import { TurnoutDoubleElement, TurnoutElement, TurnoutLeftElement, TurnoutRightE
 import { Signal1Element } from "./editor/signals";
 import { RailView } from "./editor/view";
 import { Locos } from "./editor/loco";
-import { ApiCommands, iData, iGetTurnout, iLoco, iPowerInfo, iRBus, iServerSettings, iSetPower, iSetTurnout, iSystemStatus, setDecoder, Z21Directions, Z21POWERINFO } from "../../common/src/dcc";
+import { ApiCommands, iData, iGetTurnout, iLoco, iPowerInfo, iRBus, iSettings, iSetPower, iSetTurnout, iSystemStatus, setDecoder, Z21Directions, Z21POWERINFO, defaultSettings } from "../../common/src/dcc";
 import { Globals } from "./helpers/globals";
 import { Dialog } from "./controls/dialog";
 import { wsClient } from "./helpers/ws";
@@ -39,6 +39,7 @@ export class App {
 
     //commandCenters: iCommandCenter[] = []
     constructor() {
+
         this.audioManager = audioManager
         //Dispatcher.intervalTime = 111
         this.toolbar = document.getElementById("toolbar") as Toolbar
@@ -68,15 +69,35 @@ export class App {
 
         // this.canvas.socket = IOConn.socket
         // this.canvas.views.socket = IOConn.socket;
+        Globals.fetchJsonData("/settings.json").then((data: any) => {
+            const s = data as iSettings
+            Globals.Settings = data as iSettings
+            Globals.Settings.CommandCenter = s.CommandCenter ?? defaultSettings.CommandCenter
+            Globals.Settings.CommandCenterZ21 = s.CommandCenterZ21 ?? defaultSettings.CommandCenterZ21
+            Globals.Settings.CommandCenterDCCExTcp = s.CommandCenterDCCExTcp ?? defaultSettings.CommandCenterDCCExTcp
+            Globals.Settings.CommandCenterDCCExSerial = s.CommandCenterDCCExSerial ?? defaultSettings.CommandCenterDCCExSerial            
+            Globals.Settings.Dispacher = s.Dispacher ?? defaultSettings.Dispacher
+            Globals.Settings.EditorSettings = s.EditorSettings ?? defaultSettings.EditorSettings
 
-        this.editor.init()
+            Globals.fetchJsonData('/config.json').then((conf: any) => {
+                this.editor.init()
+                this.configLoaded(conf)
+            }).catch((reason) => {
+                alert("Config Error:\n" + reason)
+            })
+            
+
+        }).catch((reason:any) =>  {
+            alert("Settings Error:\n" + reason)
+        })
+
 
         wsClient.onConnected = () => {
             this.toolbar.wsStatus!.classList.remove("error")
             this.toolbar.wsStatus!.classList.add("success")
-            wsClient.send({ type: ApiCommands.getSettings, data: "" })
+            //wsClient.send({ type: ApiCommands.getSettings, data: "" })
             // wsClient.send({ type: ApiCommands.getCommandCenters, data: "" })
-            wsClient.send({ type: ApiCommands.configLoad, data: "" })
+            //wsClient.send({ type: ApiCommands.configLoad, data: "" })
             this.locoControlPanel.init()
             wsClient.send({ type: ApiCommands.getRBusInfo, data: "" })
             
@@ -119,10 +140,10 @@ export class App {
 
                 case ApiCommands.settingsInfo:
                     //setSettings(msg.data)
-                    const d = msg.data as iServerSettings;
+                    const d = msg.data as iSettings;
                     //console.log(d)
                     if (d.CommandCenter && d.Dispacher) {
-                        Globals.ServerSettings = d
+                        Globals.Settings = d
                     }
                     break;
 
@@ -140,47 +161,11 @@ export class App {
             }
         }
 
-
-
         window.addEventListener("resize", (ev) => {
             this.editor.canvas.width = window.innerWidth;
             this.editor.canvas.height = window.innerHeight;
             this.editor.draw()
         })
-
-        // IOConn.socket.on(ApiCommands.locoState, (data: iLoco) => {
-        //     var loco = this.locos?.locos.find((l: LocoElement) => {
-        //         return l.address == data.address
-        //     })
-
-        //     if (loco) {
-        //         loco.speed = data.speed
-        //         loco.forward = data.direction == Z21Directions.forward
-        //         for (var i = 0; i <= 28; i++) {
-        //             if (loco.functions[i]) {
-        //                 loco.functions[i].isOn = (data.functions & (1 << i)) > 0x00
-        //             }
-        //         }
-        //         if (loco.address == data.address) {
-        //             this.locos!.updateUI()
-        //         }
-        //     }
-        // })
-        // // IOConn.socket.on("systemstate", (data) => {
-        // //     document.getElementById("systemstatus")!.innerHTML = `MainCurrent: ${data.MainCurrent} mA | Temp: ${data.Temperature} °C`
-        // // })
-
-        // IOConn.socket.on(ApiCommands.commandCenters, (data) => {
-        //     Globals.devices = data
-        //     data.forEach((c: iCommandCenter) => {
-        //         console.log(c.name)
-        //     })
-        //     console.log(data)
-        // })
-
-        // IOConn.socket.on(ApiCommands.alert, (data: iData) => {
-        //     alert(data.data)
-        // })
 
 
         wsClient.connect()
@@ -274,30 +259,6 @@ export class App {
                 //wsClient.send(ApiCommands.getTurnout, s.address + i)
             }
         })
-
-        // Globals.devices.forEach((cc) => {
-        //     wsClient.send({ type: ApiCommands.getRBusInfo, data: { cc: cc } as iGetRBusInfo } as iData)
-        // })
-
-
-        // const d = new Dialog(300, 200, "Shapes")
-        // const shape1 = new ShapeCombobox(
-        //     turnouts
-        // )
-        // const shape2 = new ShapeCombobox(
-        //     turnouts
-        // )
-        // const ok = new Button("OK")
-        // ok.onclick = () => { d.close() }
-        // const cancel = new Button("Cancel")
-        // d.addBody(shape1)
-        // //d.addBody(shape2)
-        // d.addFooter(ok)
-        // d.addFooter(cancel)
-
-        // const shape2 = new ShapeCombobox([{label: "kettő", shape: turnouts[1]}])
-        // d.addBody(shape2)
-
 
     }
     turnoutInfo(data: iSetTurnout) {

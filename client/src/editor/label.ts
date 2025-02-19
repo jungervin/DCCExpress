@@ -52,7 +52,7 @@ export class Label2Element extends View {
     }
 
     get posRight(): number {
-        return this.x * Globals.AppSettings.GridSizeX + 2 * Globals.AppSettings.GridSizeX
+        return this.x * Globals.GridSizeX + 2 * Globals.GridSizeX
     }
 
     

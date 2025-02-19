@@ -70,7 +70,7 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
         drawTurnout(ctx, t1Closed) {
             ctx.beginPath();
             ctx.strokeStyle = view_2.Colors.TrackPrimaryColor;
-            ctx.lineWidth = globals_1.Globals.AppSettings.TrackWidth7;
+            ctx.lineWidth = globals_1.Globals.TrackWidth7;
             if (this.angle == 0) {
                 ctx.moveTo(this.posLeft, this.centerY);
                 ctx.lineTo(this.posRight, this.centerY);
@@ -131,7 +131,7 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
             if (t1Closed) {
                 ctx.beginPath();
                 ctx.strokeStyle = this.stateColor;
-                ctx.lineWidth = globals_1.Globals.AppSettings.TrackWidth3;
+                ctx.lineWidth = globals_1.Globals.TrackWidth3;
                 var dx = this.width / 5;
                 if (this.angle == 0) {
                     ctx.moveTo(this.posLeft + dx, this.centerY);
@@ -170,7 +170,7 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
             else {
                 ctx.beginPath();
                 ctx.strokeStyle = this.stateColor;
-                ctx.lineWidth = globals_1.Globals.AppSettings.TrackWidth3;
+                ctx.lineWidth = globals_1.Globals.TrackWidth3;
                 var dx = this.width / 5;
                 var dx2 = this.width / 5;
                 if (this.angle == 0) {
@@ -322,7 +322,7 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
             {
                 ctx.beginPath();
                 ctx.strokeStyle = view_2.Colors.TrackPrimaryColor;
-                ctx.lineWidth = globals_1.Globals.AppSettings.TrackWidth7;
+                ctx.lineWidth = globals_1.Globals.TrackWidth7;
                 if (this.angle == 0 || this.angle == 180) {
                     ctx.moveTo(this.posLeft, this.centerY);
                     ctx.lineTo(this.posRight, this.centerY);
@@ -359,7 +359,7 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
                 // }
                 ctx.beginPath();
                 ctx.strokeStyle = this.stateColor;
-                ctx.lineWidth = globals_1.Globals.AppSettings.TrackWidth3;
+                ctx.lineWidth = globals_1.Globals.TrackWidth3;
                 var dx = this.width / 5;
                 // t1 Color
                 //ctx.strokeStyle = 'lime'

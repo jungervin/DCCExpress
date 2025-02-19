@@ -18,7 +18,7 @@ import { v4 as uuidv4 } from 'uuid';
 import express, { Request, Response } from 'express';
 import { Server as IOServer } from 'socket.io';
 // import { Z21 } from "./z21";
-import { ApiCommands, CommandCenterTypes, iServerSettings } from "../../common/src/dcc";
+import { ApiCommands, CommandCenterTypes, defaultSettings, iSettings } from "../../common/src/dcc";
 import { commandCenters, CommandCenters } from "./commandcenters";
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -90,50 +90,35 @@ process.on('SIGINT', () => {
 
 Locomanager.init()
 
-const cc: iServerSettings = {
-  CommandCenter: {
-    type: CommandCenterTypes.Z21,
-    ip: "192.168.0.70",
-    port: 21105,
-    serialPort: "COM1",
-    turnoutActiveTime: 500,
-    basicAccessoryDecoderActiveTime: 10
-  },
-  Dispacher: {
-    interval: 500
-  }
-
-}
-
 try {
 
-  const settings = JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8')) as iServerSettings;
+  const settings = JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8')) as iSettings;
   if (settings) {
-    cc.CommandCenter.type = settings.CommandCenter.type as CommandCenterTypes;
-    cc.CommandCenter.ip = settings.CommandCenter.ip;
-    cc.CommandCenter.port = settings.CommandCenter.port;
-    cc.CommandCenter.serialPort = settings.CommandCenter.serialPort;
-    cc.CommandCenter.turnoutActiveTime = settings.CommandCenter.turnoutActiveTime
-    cc.CommandCenter.basicAccessoryDecoderActiveTime = settings.CommandCenter.basicAccessoryDecoderActiveTime
+    defaultSettings.CommandCenter.type = settings.CommandCenter.type as CommandCenterTypes;
+    defaultSettings.CommandCenter.ip = settings.CommandCenter.ip;
+    defaultSettings.CommandCenter.port = settings.CommandCenter.port;
+    defaultSettings.CommandCenter.serialPort = settings.CommandCenter.serialPort;
+    defaultSettings.CommandCenter.turnoutActiveTime = settings.CommandCenter.turnoutActiveTime
+    defaultSettings.CommandCenter.basicAccessoryDecoderActiveTime = settings.CommandCenter.basicAccessoryDecoderActiveTime
   }
 
-  if (cc.CommandCenter.type == CommandCenterTypes.Z21) {
+  if (defaultSettings.CommandCenter.type == CommandCenterTypes.Z21) {
     
-    commandCenters.cc = new Z21CommandCenter("z21", cc.CommandCenter.ip, cc.CommandCenter.port)
-    commandCenters.cc.TURNOUT_WAIT_TIME = cc.CommandCenter.turnoutActiveTime
-    commandCenters.cc.BASICACCESSORY_WAIT_TIME = cc.CommandCenter.basicAccessoryDecoderActiveTime
+    commandCenters.cc = new Z21CommandCenter("z21", defaultSettings.CommandCenter.ip, defaultSettings.CommandCenter.port)
+    commandCenters.cc.TURNOUT_WAIT_TIME = defaultSettings.CommandCenter.turnoutActiveTime
+    commandCenters.cc.BASICACCESSORY_WAIT_TIME = defaultSettings.CommandCenter.basicAccessoryDecoderActiveTime
     console.log("Z21 Command Center Registered!")
-    console.log("IP:", cc.CommandCenter.ip)
-    console.log("Port:", cc.CommandCenter.port)
+    console.log("IP:", defaultSettings.CommandCenter.ip)
+    console.log("Port:", defaultSettings.CommandCenter.port)
     commandCenters.start()
   }
-  else if(cc.CommandCenter.type == CommandCenterTypes.DCCExTCP) {
-    commandCenters.cc = new DCCExTCPCommandCenter("dcc-ex-tcp", cc.CommandCenter.ip, cc.CommandCenter.port)
-    commandCenters.cc.TURNOUT_WAIT_TIME = cc.CommandCenter.turnoutActiveTime
-    commandCenters.cc.BASICACCESSORY_WAIT_TIME = cc.CommandCenter.basicAccessoryDecoderActiveTime
+  else if(defaultSettings.CommandCenter.type == CommandCenterTypes.DCCExTCP) {
+    commandCenters.cc = new DCCExTCPCommandCenter("dcc-ex-tcp", defaultSettings.CommandCenter.ip, defaultSettings.CommandCenter.port)
+    commandCenters.cc.TURNOUT_WAIT_TIME = defaultSettings.CommandCenter.turnoutActiveTime
+    commandCenters.cc.BASICACCESSORY_WAIT_TIME = defaultSettings.CommandCenter.basicAccessoryDecoderActiveTime
     console.log("ECCEx TCP Command Center Registered!")
-    console.log("IP:", cc.CommandCenter.ip)
-    console.log("Port:", cc.CommandCenter.port)
+    console.log("IP:", defaultSettings.CommandCenter.ip)
+    console.log("Port:", defaultSettings.CommandCenter.port)
     commandCenters.start()
   }
 

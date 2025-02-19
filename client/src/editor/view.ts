@@ -94,8 +94,8 @@ export abstract class View {
             ctx.translate(-this.centerX, -this.centerY);
 
 
-            var w2 = Globals.AppSettings.GridSizeX / 2.0
-            var h2 = Globals.AppSettings.GridSizeY / 2.0
+            var w2 = Globals.GridSizeX / 2.0
+            var h2 = Globals.GridSizeY / 2.0
             ctx.beginPath();
             ctx.lineWidth = 1;
             ctx.strokeStyle = "red";
@@ -114,14 +114,14 @@ export abstract class View {
                 ctx.lineWidth = 1;
                 ctx.strokeStyle = "lime";
                 var n = this.getNextItemXy()
-                ctx.rect(n.x * Globals.AppSettings.GridSizeX, n.y * Globals.AppSettings.GridSizeY, Globals.AppSettings.GridSizeX, Globals.AppSettings.GridSizeY);
+                ctx.rect(n.x * Globals.GridSizeX, n.y * Globals.GridSizeY, Globals.GridSizeX, Globals.GridSizeY);
                 ctx.stroke();
 
                 ctx.beginPath();
                 ctx.lineWidth = 1;
                 ctx.strokeStyle = "blue";
                 var p = this.getPrevItemXy()
-                ctx.rect(p.x * Globals.AppSettings.GridSizeX, p.y * Globals.AppSettings.GridSizeY, Globals.AppSettings.GridSizeX, Globals.AppSettings.GridSizeY);
+                ctx.rect(p.x * Globals.GridSizeX, p.y * Globals.GridSizeY, Globals.GridSizeX, Globals.GridSizeY);
                 ctx.stroke();
             }
 
@@ -144,32 +144,32 @@ export abstract class View {
 
 
     public get PositionX(): number {
-        return this.x * Globals.AppSettings.GridSizeX
+        return this.x * Globals.GridSizeX
     }
 
     public get PositionY(): number {
-        return this.y * Globals.AppSettings.GridSizeY
+        return this.y * Globals.GridSizeY
     }
 
     get posLeft(): number {
-        return this.x * Globals.AppSettings.GridSizeX
+        return this.x * Globals.GridSizeX
     }
     get posRight(): number {
-        return this.x * Globals.AppSettings.GridSizeX + this.w * Globals.AppSettings.GridSizeX
+        return this.x * Globals.GridSizeX + this.w * Globals.GridSizeX
     }
     get posTop(): number {
-        return this.y * Globals.AppSettings.GridSizeY
+        return this.y * Globals.GridSizeY
     }
     get posBottom(): number {
-        return this.y * Globals.AppSettings.GridSizeY + this.h * Globals.AppSettings.GridSizeY
+        return this.y * Globals.GridSizeY + this.h * Globals.GridSizeY
     }
 
     public get centerX(): number {
-        return this.x * Globals.AppSettings.GridSizeX + this.w * Globals.AppSettings.GridSizeX / 2
+        return this.x * Globals.GridSizeX + this.w * Globals.GridSizeX / 2
     }
 
     public get centerY(): number {
-        return this.y * Globals.AppSettings.GridSizeY + this.h * Globals.AppSettings.GridSizeY / 2
+        return this.y * Globals.GridSizeY + this.h * Globals.GridSizeY / 2
     }
 
     get width(): number {
