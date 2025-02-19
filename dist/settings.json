@@ -25,7 +25,7 @@
         "port": "COM3"
     },
     "EditorSettings": {
-        "ShowAddress": true,
+        "ShowAddress": false,
         "Orientation": 1
     }
 }

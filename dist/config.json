@@ -1,8 +1,8 @@
 {
     "settings": {
-        "scale": 1.5348981416660867,
-        "origX": -913,
-        "origY": -299,
+        "scale": 1.8013549019848967,
+        "origX": -271,
+        "origY": -397,
         "locoPanelVisible": false,
         "propertyPanelVisible": false
     },
@@ -14,7 +14,7 @@
                     "uuid": "02322788-7690-4d34-a716-97118a479664",
                     "type": "label2",
                     "name": "label165",
-                    "x": 41,
+                    "x": 28,
                     "y": 9,
                     "angle": 0,
                     "text": "P2",
@@ -24,7 +24,7 @@
                     "uuid": "47c0b777-6e82-4f6c-8af7-627968861436",
                     "type": "label2",
                     "name": "label166",
-                    "x": 41,
+                    "x": 28,
                     "y": 8,
                     "angle": 0,
                     "text": "P1",
@@ -34,7 +34,7 @@
                     "uuid": "9c204f7b-c942-4b1f-a3bd-f2c3a19cac05",
                     "type": "routeSwitch",
                     "name": "routeSwitch112",
-                    "x": 30,
+                    "x": 17,
                     "y": 14,
                     "turnouts": [
                         {
@@ -75,7 +75,7 @@
                     "uuid": "8b150958-2c92-4718-b56a-608ea2a17c6d",
                     "type": "trackEnd",
                     "name": "trackEnd1",
-                    "x": 17,
+                    "x": 4,
                     "y": 8,
                     "angle": 180,
                     "rbusAddress": 17
@@ -84,7 +84,7 @@
                     "uuid": "f726158e-6c36-47fb-859e-d4ac57aeb2b3",
                     "type": "trackEnd",
                     "name": "trackEnd2",
-                    "x": 17,
+                    "x": 4,
                     "y": 9,
                     "angle": 180,
                     "rbusAddress": 16
@@ -93,7 +93,7 @@
                     "uuid": "7ac3aaed-4bfe-4836-a999-e4e6c1cf6973",
                     "type": "trackEnd",
                     "name": "trackEnd3",
-                    "x": 17,
+                    "x": 4,
                     "y": 10,
                     "angle": 180,
                     "rbusAddress": 15
@@ -102,7 +102,7 @@
                     "uuid": "d4598bd1-7e88-43ce-b2b2-335e85c3f75f",
                     "type": "track",
                     "name": "track5",
-                    "x": 19,
+                    "x": 6,
                     "y": 7,
                     "angle": 0,
                     "rbusAddress": 18
@@ -111,7 +111,7 @@
                     "uuid": "b2769593-1e3f-429b-9f39-8df742932437",
                     "type": "track",
                     "name": "track9",
-                    "x": 19,
+                    "x": 6,
                     "y": 8,
                     "angle": 0,
                     "rbusAddress": 17
@@ -120,7 +120,7 @@
                     "uuid": "f68f000d-5fb4-4ad6-8ed7-fdbdde929f04",
                     "type": "track",
                     "name": "track10",
-                    "x": 20,
+                    "x": 7,
                     "y": 8,
                     "angle": 0,
                     "rbusAddress": 17
@@ -129,7 +129,7 @@
                     "uuid": "71db140c-4c1f-4767-8c3c-0e9f22937645",
                     "type": "track",
                     "name": "track13",
-                    "x": 19,
+                    "x": 6,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 16
@@ -138,7 +138,7 @@
                     "uuid": "c99ebd03-b790-435d-944e-2e29543b823e",
                     "type": "track",
                     "name": "track14",
-                    "x": 20,
+                    "x": 7,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 16
@@ -147,7 +147,7 @@
                     "uuid": "65462367-8178-4e0c-9bbf-20779a068478",
                     "type": "track",
                     "name": "track17",
-                    "x": 19,
+                    "x": 6,
                     "y": 10,
                     "angle": 0,
                     "rbusAddress": 15
@@ -156,7 +156,7 @@
                     "uuid": "882f40f4-2aaa-493a-9c3a-9a15eb90f38e",
                     "type": "track",
                     "name": "track18",
-                    "x": 20,
+                    "x": 7,
                     "y": 10,
                     "angle": 0,
                     "rbusAddress": 15
@@ -165,7 +165,7 @@
                     "uuid": "8352b662-6cfa-41ce-9638-83618eb6fb82",
                     "type": "turnoutLeft",
                     "name": "turnoutleft20",
-                    "x": 23,
+                    "x": 10,
                     "y": 9,
                     "address": 21,
                     "angle": 180,
@@ -177,7 +177,7 @@
                     "uuid": "dcf284f4-2d08-40c7-8283-34ae770d2e37",
                     "type": "turnoutRight",
                     "name": "turnoutRight21",
-                    "x": 23,
+                    "x": 10,
                     "y": 8,
                     "address": 22,
                     "angle": 180,
@@ -189,7 +189,7 @@
                     "uuid": "b4767fb4-68b3-4177-8061-87fb4aecb5b1",
                     "type": "curve",
                     "name": "corner22",
-                    "x": 22,
+                    "x": 9,
                     "y": 7,
                     "angle": 180,
                     "rbusAddress": 18
@@ -198,7 +198,7 @@
                     "uuid": "41bf1849-fc49-43a4-9c91-0b50f11b108f",
                     "type": "curve",
                     "name": "corner23",
-                    "x": 22,
+                    "x": 9,
                     "y": 10,
                     "angle": 315,
                     "rbusAddress": 13
@@ -207,7 +207,7 @@
                     "uuid": "17b4549b-daeb-4544-8e60-939fa7ee67b0",
                     "type": "track",
                     "name": "track27",
-                    "x": 25,
+                    "x": 12,
                     "y": 8,
                     "angle": 0,
                     "rbusAddress": 14
@@ -216,7 +216,7 @@
                     "uuid": "97367a29-6d52-4d7b-a8cf-d7155608b8c0",
                     "type": "track",
                     "name": "track30",
-                    "x": 26,
+                    "x": 13,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 13
@@ -225,7 +225,7 @@
                     "uuid": "dae739ff-671c-4790-8e86-126615d3cf25",
                     "type": "track",
                     "name": "track32",
-                    "x": 27,
+                    "x": 14,
                     "y": 8,
                     "angle": 0,
                     "rbusAddress": 14
@@ -234,7 +234,7 @@
                     "uuid": "ab01eb31-b441-4c8c-a57f-96c1bab3f250",
                     "type": "track",
                     "name": "track33",
-                    "x": 27,
+                    "x": 14,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 13
@@ -243,7 +243,7 @@
                     "uuid": "20a0f015-154b-4e32-be0c-31167a5e7120",
                     "type": "track",
                     "name": "track41",
-                    "x": 31,
+                    "x": 18,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 13
@@ -252,7 +252,7 @@
                     "uuid": "3d5c2981-5d95-4539-9302-48835ef9b67a",
                     "type": "turnoutLeft",
                     "name": "turnoutleft41",
-                    "x": 26,
+                    "x": 13,
                     "y": 8,
                     "address": 24,
                     "angle": 180,
@@ -264,7 +264,7 @@
                     "uuid": "961fa06c-9433-4504-9b62-e52827a59eb2",
                     "type": "turnoutLeft",
                     "name": "turnoutleft41",
-                    "x": 25,
+                    "x": 12,
                     "y": 9,
                     "address": 20,
                     "angle": 0,
@@ -276,7 +276,7 @@
                     "uuid": "2537005c-9bc7-4a09-a4be-af1c02c9427e",
                     "type": "turnoutRight",
                     "name": "turnoutRight41",
-                    "x": 32,
+                    "x": 19,
                     "y": 8,
                     "address": 25,
                     "angle": 0,
@@ -288,7 +288,7 @@
                     "uuid": "15f4cd36-6fd7-4c09-a917-eb32fa81b77d",
                     "type": "track",
                     "name": "track47",
-                    "x": 32,
+                    "x": 19,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 13
@@ -297,7 +297,7 @@
                     "uuid": "eae6e1e4-5441-4e88-bae3-983df7d6b519",
                     "type": "track",
                     "name": "track49",
-                    "x": 38,
+                    "x": 25,
                     "y": 11,
                     "angle": 0,
                     "rbusAddress": 21
@@ -306,7 +306,7 @@
                     "uuid": "c3c0532b-706a-4175-9146-75239d2523a6",
                     "type": "track",
                     "name": "track50",
-                    "x": 39,
+                    "x": 26,
                     "y": 11,
                     "angle": 0,
                     "rbusAddress": 21
@@ -315,7 +315,7 @@
                     "uuid": "0b492240-b473-4113-91c8-3c208cbb7fea",
                     "type": "track",
                     "name": "track51",
-                    "x": 40,
+                    "x": 27,
                     "y": 11,
                     "angle": 0,
                     "rbusAddress": 21
@@ -324,7 +324,7 @@
                     "uuid": "719d2b25-d028-44f3-b83d-d623bd7893c3",
                     "type": "track",
                     "name": "track53",
-                    "x": 37,
+                    "x": 24,
                     "y": 10,
                     "angle": 0,
                     "rbusAddress": 24
@@ -333,7 +333,7 @@
                     "uuid": "6945696d-767b-4526-93b0-44c58be4bc2e",
                     "type": "track",
                     "name": "track54",
-                    "x": 38,
+                    "x": 25,
                     "y": 10,
                     "angle": 0,
                     "rbusAddress": 24
@@ -342,7 +342,7 @@
                     "uuid": "2171ea06-09c0-48e1-98af-0223225dd5e1",
                     "type": "track",
                     "name": "track55",
-                    "x": 39,
+                    "x": 26,
                     "y": 10,
                     "angle": 0,
                     "rbusAddress": 24
@@ -351,7 +351,7 @@
                     "uuid": "dca7c418-d0de-4363-b1bd-bad310bb2def",
                     "type": "track",
                     "name": "track56",
-                    "x": 40,
+                    "x": 27,
                     "y": 10,
                     "angle": 0,
                     "rbusAddress": 24
@@ -360,7 +360,7 @@
                     "uuid": "f1d9bbdd-4c78-4a1d-99c2-65d889a41a73",
                     "type": "track",
                     "name": "track59",
-                    "x": 39,
+                    "x": 26,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 23
@@ -369,7 +369,7 @@
                     "uuid": "75c0d87a-5449-422a-9feb-7d0c2e82b84f",
                     "type": "track",
                     "name": "track60",
-                    "x": 38,
+                    "x": 25,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 23
@@ -378,7 +378,7 @@
                     "uuid": "5f53c372-d449-4a3b-898a-0d8298df7035",
                     "type": "track",
                     "name": "track61",
-                    "x": 37,
+                    "x": 24,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 23
@@ -387,7 +387,7 @@
                     "uuid": "49ec5766-8a13-43a0-9f6f-5d570ca468cb",
                     "type": "track",
                     "name": "track62",
-                    "x": 35,
+                    "x": 22,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 0
@@ -396,7 +396,7 @@
                     "uuid": "2fed9136-0934-4161-980c-9de9be2992d2",
                     "type": "track",
                     "name": "track64",
-                    "x": 33,
+                    "x": 20,
                     "y": 8,
                     "angle": 0,
                     "rbusAddress": 14
@@ -405,7 +405,7 @@
                     "uuid": "f97a00c2-d139-494f-81a3-3328ff110ad8",
                     "type": "track",
                     "name": "track66",
-                    "x": 31,
+                    "x": 18,
                     "y": 8,
                     "angle": 0,
                     "rbusAddress": 14
@@ -414,7 +414,7 @@
                     "uuid": "20d4f97f-cd0f-4185-8578-f6e96ff064fa",
                     "type": "track",
                     "name": "track67",
-                    "x": 35,
+                    "x": 22,
                     "y": 8,
                     "angle": 0,
                     "rbusAddress": 0
@@ -423,7 +423,7 @@
                     "uuid": "eba406aa-7176-41a5-b545-ff28fff35861",
                     "type": "track",
                     "name": "track71",
-                    "x": 39,
+                    "x": 26,
                     "y": 8,
                     "angle": 0,
                     "rbusAddress": 22
@@ -432,7 +432,7 @@
                     "uuid": "0e4ba990-3e40-4c18-9857-d2f3e62e8fc1",
                     "type": "track",
                     "name": "track73",
-                    "x": 40,
+                    "x": 27,
                     "y": 8,
                     "angle": 0,
                     "rbusAddress": 22
@@ -441,7 +441,7 @@
                     "uuid": "1fdaaeb9-6beb-4b48-b7f2-11c10df159ed",
                     "type": "trackEnd",
                     "name": "trackEnd74",
-                    "x": 42,
+                    "x": 29,
                     "y": 8,
                     "angle": 0,
                     "rbusAddress": 22
@@ -450,7 +450,7 @@
                     "uuid": "633541c2-f193-4903-9d08-4d24474a905a",
                     "type": "trackEnd",
                     "name": "trackEnd75",
-                    "x": 42,
+                    "x": 29,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 23
@@ -459,7 +459,7 @@
                     "uuid": "f924406e-fa92-4b78-b2a5-b3fc05b6682d",
                     "type": "trackEnd",
                     "name": "trackEnd76",
-                    "x": 42,
+                    "x": 29,
                     "y": 10,
                     "angle": 0,
                     "rbusAddress": 24
@@ -468,7 +468,7 @@
                     "uuid": "b8e00faf-ce7f-49dd-8a4b-c364d1549540",
                     "type": "trackEnd",
                     "name": "trackEnd77",
-                    "x": 42,
+                    "x": 29,
                     "y": 11,
                     "angle": 0,
                     "rbusAddress": 21
@@ -477,7 +477,7 @@
                     "uuid": "a171707a-f2b2-46fe-87f1-6f07c56ad8cd",
                     "type": "turnoutRight",
                     "name": "turnoutRight77",
-                    "x": 35,
+                    "x": 22,
                     "y": 11,
                     "address": 10,
                     "angle": 180,
@@ -489,7 +489,7 @@
                     "uuid": "76ac6240-d6c4-463b-b8d0-3e3417cb0de2",
                     "type": "turnoutRight",
                     "name": "turnoutRight79",
-                    "x": 32,
+                    "x": 19,
                     "y": 11,
                     "address": 14,
                     "angle": 0,
@@ -501,7 +501,7 @@
                     "uuid": "de652dc4-cbee-498b-b11d-493219180149",
                     "type": "track",
                     "name": "track80",
-                    "x": 33,
+                    "x": 20,
                     "y": 11,
                     "angle": 0,
                     "rbusAddress": 26
@@ -510,7 +510,7 @@
                     "uuid": "e3b2327e-2aab-4990-9454-9aeddcfe017c",
                     "type": "track",
                     "name": "track81",
-                    "x": 34,
+                    "x": 21,
                     "y": 11,
                     "angle": 0,
                     "rbusAddress": 26
@@ -519,7 +519,7 @@
                     "uuid": "6d1ced3a-58bb-4e7c-bc67-69bdf1ab342f",
                     "type": "track",
                     "name": "track82",
-                    "x": 34,
+                    "x": 21,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 12
@@ -528,7 +528,7 @@
                     "uuid": "2bafb007-425f-4d4e-9f18-dcb54440fb09",
                     "type": "track",
                     "name": "track84",
-                    "x": 31,
+                    "x": 18,
                     "y": 11,
                     "angle": 0,
                     "rbusAddress": 26
@@ -537,7 +537,7 @@
                     "uuid": "c14aa614-b894-470e-be58-4ca63c33a460",
                     "type": "track",
                     "name": "track85",
-                    "x": 30,
+                    "x": 17,
                     "y": 11,
                     "angle": 0,
                     "rbusAddress": 26
@@ -546,7 +546,7 @@
                     "uuid": "3c6d01ef-bb56-4e65-84b3-45772757686f",
                     "type": "track",
                     "name": "track86",
-                    "x": 29,
+                    "x": 16,
                     "y": 11,
                     "angle": 0,
                     "rbusAddress": 26
@@ -555,7 +555,7 @@
                     "uuid": "da52dcf1-0ea4-426f-9d3a-4c32f71938b4",
                     "type": "track",
                     "name": "track87",
-                    "x": 29,
+                    "x": 16,
                     "y": 12,
                     "angle": 0,
                     "rbusAddress": 25
@@ -564,7 +564,7 @@
                     "uuid": "128aec41-5700-4c61-8229-15a0b3f1d7ae",
                     "type": "track",
                     "name": "track88",
-                    "x": 30,
+                    "x": 17,
                     "y": 12,
                     "angle": 0,
                     "rbusAddress": 25
@@ -573,7 +573,7 @@
                     "uuid": "c74ee9d3-56d2-4f95-8863-4d80c451d2af",
                     "type": "track",
                     "name": "track89",
-                    "x": 31,
+                    "x": 18,
                     "y": 12,
                     "angle": 0,
                     "rbusAddress": 25
@@ -582,7 +582,7 @@
                     "uuid": "572185b8-56e1-42ee-a826-27692cdaf350",
                     "type": "track",
                     "name": "track90",
-                    "x": 32,
+                    "x": 19,
                     "y": 12,
                     "angle": 0,
                     "rbusAddress": 25
@@ -591,7 +591,7 @@
                     "uuid": "aa182f74-b410-408c-8141-541dc70f49bf",
                     "type": "track",
                     "name": "track91",
-                    "x": 34,
+                    "x": 21,
                     "y": 12,
                     "angle": 0,
                     "rbusAddress": 25
@@ -600,7 +600,7 @@
                     "uuid": "e056bf3d-3984-46c5-bdf8-5f3f0d818552",
                     "type": "track",
                     "name": "track92",
-                    "x": 35,
+                    "x": 22,
                     "y": 12,
                     "angle": 0,
                     "rbusAddress": 25
@@ -609,7 +609,7 @@
                     "uuid": "5189323f-9775-42ab-ae60-43434a8215d0",
                     "type": "turnoutRight",
                     "name": "turnoutRight92",
-                    "x": 33,
+                    "x": 20,
                     "y": 12,
                     "address": 15,
                     "angle": 180,
@@ -621,7 +621,7 @@
                     "uuid": "c8cb3b4f-2cc9-4439-ac0f-59abdb4fc450",
                     "type": "trackEnd",
                     "name": "trackEnd93",
-                    "x": 24,
+                    "x": 11,
                     "y": 11,
                     "angle": 180,
                     "rbusAddress": 26
@@ -630,7 +630,7 @@
                     "uuid": "b6505055-2b4c-47d6-8d62-85d3a9f32275",
                     "type": "trackEnd",
                     "name": "trackEnd94",
-                    "x": 24,
+                    "x": 11,
                     "y": 12,
                     "angle": 180,
                     "rbusAddress": 25
@@ -639,7 +639,7 @@
                     "uuid": "417e3ab1-7543-4f6c-8091-76b8d2d442ae",
                     "type": "trackEnd",
                     "name": "trackEnd95",
-                    "x": 36,
+                    "x": 23,
                     "y": 12,
                     "angle": 0,
                     "rbusAddress": 25
@@ -648,7 +648,7 @@
                     "uuid": "13ee2318-d2d8-49ea-9208-dfa5f9ea1749",
                     "type": "turnoutRight",
                     "name": "turnoutRight95",
-                    "x": 34,
+                    "x": 21,
                     "y": 8,
                     "address": 11,
                     "angle": 180,
@@ -660,7 +660,7 @@
                     "uuid": "4dc8c8ff-4b69-4c73-8d07-ddcae4912f59",
                     "type": "curve",
                     "name": "corner96",
-                    "x": 33,
+                    "x": 20,
                     "y": 7,
                     "angle": 180,
                     "rbusAddress": 0
@@ -669,7 +669,7 @@
                     "uuid": "a36d1a14-70ec-4470-a44c-9baa5d22724b",
                     "type": "track",
                     "name": "track97",
-                    "x": 32,
+                    "x": 19,
                     "y": 7,
                     "angle": 0,
                     "rbusAddress": 0
@@ -678,7 +678,7 @@
                     "uuid": "e1c7bb59-26a0-42dd-a3af-d0a318c3fe13",
                     "type": "track",
                     "name": "track98",
-                    "x": 31,
+                    "x": 18,
                     "y": 7,
                     "angle": 0,
                     "rbusAddress": 0
@@ -687,7 +687,7 @@
                     "uuid": "42a14984-c59d-4481-a6a0-8801063f64eb",
                     "type": "track",
                     "name": "track99",
-                    "x": 30,
+                    "x": 17,
                     "y": 7,
                     "angle": 0,
                     "rbusAddress": 0
@@ -696,7 +696,7 @@
                     "uuid": "c3db59cf-48fe-4f93-891c-ca38d867a439",
                     "type": "trackEnd",
                     "name": "trackEnd100",
-                    "x": 29,
+                    "x": 16,
                     "y": 7,
                     "angle": 180,
                     "rbusAddress": 0
@@ -706,7 +706,7 @@
                     "type": "signal3",
                     "address": 70,
                     "name": "turnoutleft100",
-                    "x": 21,
+                    "x": 8,
                     "y": 7,
                     "angle": 180,
                     "addressLength": 5,
@@ -722,7 +722,7 @@
                     "type": "signal3",
                     "address": 75,
                     "name": "turnoutleft100",
-                    "x": 21,
+                    "x": 8,
                     "y": 8,
                     "angle": 180,
                     "addressLength": 5,
@@ -737,7 +737,7 @@
                     "uuid": "166eed25-594c-4790-aff5-a43abaa73646",
                     "type": "track",
                     "name": "track100",
-                    "x": 22,
+                    "x": 9,
                     "y": 8,
                     "angle": 0,
                     "rbusAddress": 17
@@ -746,7 +746,7 @@
                     "uuid": "be582754-a80b-409f-9062-dd93a46422ad",
                     "type": "track",
                     "name": "track100",
-                    "x": 22,
+                    "x": 9,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 16
@@ -755,7 +755,7 @@
                     "uuid": "6cc6a290-af9c-400b-8538-bf14c450f6f9",
                     "type": "turnoutLeft",
                     "name": "turnoutleft99",
-                    "x": 34,
+                    "x": 21,
                     "y": 10,
                     "address": 16,
                     "angle": 315,
@@ -767,7 +767,7 @@
                     "uuid": "484a5eb1-18df-4b95-a5ae-f9e28f28e748",
                     "type": "track",
                     "name": "track101",
-                    "x": 35,
+                    "x": 22,
                     "y": 10,
                     "angle": 0,
                     "rbusAddress": 12
@@ -776,7 +776,7 @@
                     "uuid": "0aae1b7b-c851-48fe-8874-d4defd5dd154",
                     "type": "track",
                     "name": "track103",
-                    "x": 37,
+                    "x": 24,
                     "y": 11,
                     "angle": 0,
                     "rbusAddress": 21
@@ -785,7 +785,7 @@
                     "uuid": "896093cc-1abf-47b9-b806-e9cb8ebdc758",
                     "type": "routeSwitch",
                     "name": "routeSwitch262",
-                    "x": 35,
+                    "x": 22,
                     "y": 14,
                     "turnouts": [
                         {
@@ -844,7 +844,7 @@
                     "uuid": "9c8c7f38-a3b0-4b1e-8de2-356d8793b93b",
                     "type": "routeSwitch",
                     "name": "routeSwitch263",
-                    "x": 36,
+                    "x": 23,
                     "y": 14,
                     "turnouts": [
                         {
@@ -893,7 +893,7 @@
                     "uuid": "a682d61e-fe89-4eb1-b137-7db87521ee8f",
                     "type": "routeSwitch",
                     "name": "routeSwitch264",
-                    "x": 37,
+                    "x": 24,
                     "y": 14,
                     "turnouts": [
                         {
@@ -942,7 +942,7 @@
                     "uuid": "f67a4770-b792-4a61-9d92-abc995049a77",
                     "type": "turnoutDouble",
                     "name": "turnoutdouble263",
-                    "x": 33,
+                    "x": 20,
                     "y": 9,
                     "address1": 12,
                     "address2": 13,
@@ -957,7 +957,7 @@
                     "uuid": "ec3f4de0-1fb8-47a1-8e0b-2d67ff51388a",
                     "type": "trackEnd",
                     "name": "trackEnd106",
-                    "x": 17,
+                    "x": 4,
                     "y": 7,
                     "angle": 180,
                     "rbusAddress": 18
@@ -966,7 +966,7 @@
                     "uuid": "2d725323-4d03-4581-ad66-d2bb578500b2",
                     "type": "track",
                     "name": "track104",
-                    "x": 20,
+                    "x": 7,
                     "y": 7,
                     "angle": 0,
                     "rbusAddress": 18
@@ -975,7 +975,7 @@
                     "uuid": "95339eac-6e23-45ce-a0e8-7d531edb699e",
                     "type": "track",
                     "name": "track109",
-                    "x": 28,
+                    "x": 15,
                     "y": 12,
                     "angle": 0,
                     "rbusAddress": 25
@@ -984,7 +984,7 @@
                     "uuid": "540747e2-45f1-4a81-afb7-28d29cd01df0",
                     "type": "track",
                     "name": "track110",
-                    "x": 24,
+                    "x": 11,
                     "y": 8,
                     "angle": 0,
                     "rbusAddress": 14
@@ -993,7 +993,7 @@
                     "uuid": "3473c49a-a27c-4ee2-ba46-4bd86c24cff4",
                     "type": "track",
                     "name": "track114",
-                    "x": 28,
+                    "x": 15,
                     "y": 11,
                     "angle": 0,
                     "rbusAddress": 26
@@ -1003,7 +1003,7 @@
                     "type": "signal4",
                     "address": 65,
                     "name": "turnoutleft108",
-                    "x": 36,
+                    "x": 23,
                     "y": 8,
                     "angle": 0,
                     "addressLength": 5,
@@ -1020,7 +1020,7 @@
                     "type": "signal4",
                     "address": 60,
                     "name": "turnoutleft109",
-                    "x": 36,
+                    "x": 23,
                     "y": 9,
                     "angle": 0,
                     "addressLength": 5,
@@ -1037,7 +1037,7 @@
                     "type": "signal4",
                     "address": 55,
                     "name": "turnoutleft110",
-                    "x": 36,
+                    "x": 23,
                     "y": 10,
                     "angle": 0,
                     "addressLength": 5,
@@ -1054,7 +1054,7 @@
                     "type": "signal4",
                     "address": 50,
                     "name": "turnoutleft112",
-                    "x": 36,
+                    "x": 23,
                     "y": 11,
                     "angle": 0,
                     "addressLength": 5,
@@ -1070,7 +1070,7 @@
                     "uuid": "ad1326d2-2d3f-4e85-b843-a76b98949e80",
                     "type": "track",
                     "name": "track106",
-                    "x": 21,
+                    "x": 8,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 16
@@ -1079,7 +1079,7 @@
                     "uuid": "4c7a4ac4-91f6-4c03-91ba-3c7828a5b6c8",
                     "type": "track",
                     "name": "track107",
-                    "x": 21,
+                    "x": 8,
                     "y": 10,
                     "angle": 0,
                     "rbusAddress": 15
@@ -1088,7 +1088,7 @@
                     "uuid": "87a25380-77ca-40b9-98cd-74f5e4cf7ac9",
                     "type": "track",
                     "name": "track108",
-                    "x": 24,
+                    "x": 11,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 13
@@ -1097,7 +1097,7 @@
                     "uuid": "92153982-a56f-41b0-8ba5-e01e749780d4",
                     "type": "track",
                     "name": "track109",
-                    "x": 30,
+                    "x": 17,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 13
@@ -1106,7 +1106,7 @@
                     "uuid": "edb8b4f1-0101-4c87-b9e8-7e4f8d47ae6d",
                     "type": "track",
                     "name": "track110",
-                    "x": 30,
+                    "x": 17,
                     "y": 8,
                     "angle": 0,
                     "rbusAddress": 14
@@ -1115,7 +1115,7 @@
                     "uuid": "e32f580b-0e52-470d-86fa-3f879e0f0992",
                     "type": "routeSwitch",
                     "name": "routeSwitch113",
-                    "x": 30,
+                    "x": 17,
                     "y": 15,
                     "turnouts": [
                         {
@@ -1174,7 +1174,7 @@
                     "uuid": "8357135e-d401-4e3a-9225-8e753cc9379f",
                     "type": "label2",
                     "name": "label115",
-                    "x": 31,
+                    "x": 18,
                     "y": 15,
                     "angle": 0,
                     "text": "P4 == P2 == P3",
@@ -1184,7 +1184,7 @@
                     "uuid": "6c8a8394-e4b9-4292-a01d-19b203eaff7c",
                     "type": "label2",
                     "name": "label116",
-                    "x": 31,
+                    "x": 18,
                     "y": 14,
                     "angle": 0,
                     "text": "P4 == P1 == P3",
@@ -1194,7 +1194,7 @@
                     "uuid": "fa4ed1cb-59b5-49f3-89c8-04c35c63648d",
                     "type": "track",
                     "name": "track70",
-                    "x": 38,
+                    "x": 25,
                     "y": 8,
                     "angle": 0,
                     "rbusAddress": 22
@@ -1203,7 +1203,7 @@
                     "uuid": "c88ee898-155f-4ace-a655-de0fb3450515",
                     "type": "track",
                     "name": "track69",
-                    "x": 37,
+                    "x": 24,
                     "y": 8,
                     "angle": 0,
                     "rbusAddress": 22
@@ -1212,7 +1212,7 @@
                     "uuid": "ef865947-1676-45cd-b639-d71960a99978",
                     "type": "track",
                     "name": "track111",
-                    "x": 25,
+                    "x": 12,
                     "y": 11,
                     "angle": 0,
                     "rbusAddress": 26
@@ -1221,7 +1221,7 @@
                     "uuid": "3355b24e-2122-4817-aebe-7d6d00f3efd1",
                     "type": "track",
                     "name": "track113",
-                    "x": 27,
+                    "x": 14,
                     "y": 11,
                     "angle": 0,
                     "rbusAddress": 26
@@ -1230,7 +1230,7 @@
                     "uuid": "2c4db664-7b80-416c-a6b1-dfa4ab16a94d",
                     "type": "track",
                     "name": "track119",
-                    "x": 25,
+                    "x": 12,
                     "y": 12,
                     "angle": 0,
                     "rbusAddress": 25
@@ -1239,7 +1239,7 @@
                     "uuid": "5113892f-e8c2-4ea1-8614-539d7fb0121c",
                     "type": "track",
                     "name": "track120",
-                    "x": 26,
+                    "x": 13,
                     "y": 12,
                     "angle": 0,
                     "rbusAddress": 25
@@ -1248,7 +1248,7 @@
                     "uuid": "9f45f9aa-8af4-4229-bd81-a623a184911d",
                     "type": "track",
                     "name": "track121",
-                    "x": 27,
+                    "x": 14,
                     "y": 12,
                     "angle": 0,
                     "rbusAddress": 25
@@ -1257,7 +1257,7 @@
                     "uuid": "73aa456a-e250-4711-9cbd-d6099684568d",
                     "type": "track",
                     "name": "track122",
-                    "x": 26,
+                    "x": 13,
                     "y": 11,
                     "angle": 0,
                     "rbusAddress": 26
@@ -1266,7 +1266,7 @@
                     "uuid": "8a1d0862-b2b3-4a4e-afdd-4f5fc31c13c6",
                     "type": "button",
                     "address": 0,
-                    "x": 21,
+                    "x": 8,
                     "y": 14,
                     "name": "button118"
                 },
@@ -1274,7 +1274,7 @@
                     "uuid": "881bf289-b58f-4551-9357-76c9610196a7",
                     "type": "button",
                     "address": 0,
-                    "x": 21,
+                    "x": 8,
                     "y": 15,
                     "name": "button119"
                 },
@@ -1282,7 +1282,7 @@
                     "uuid": "65853d63-b189-4201-8537-9221aca9b230",
                     "type": "corner",
                     "name": "corner119",
-                    "x": 32,
+                    "x": 19,
                     "y": -1,
                     "angle": 0,
                     "rbusAddress": 0
@@ -1291,7 +1291,7 @@
                     "uuid": "65626488-fe5e-4cdc-83df-7b2a2e4306bf",
                     "type": "corner",
                     "name": "corner120",
-                    "x": 19,
+                    "x": 6,
                     "y": -1,
                     "angle": 270,
                     "rbusAddress": 0
@@ -1300,7 +1300,7 @@
                     "uuid": "5890322e-c171-4dac-967a-9f42da1e3d2f",
                     "type": "corner",
                     "name": "corner121",
-                    "x": 19,
+                    "x": 6,
                     "y": 3,
                     "angle": 180,
                     "rbusAddress": 0
@@ -1309,7 +1309,7 @@
                     "uuid": "848bca8f-0bef-45f6-a9f9-ee812c780452",
                     "type": "corner",
                     "name": "corner122",
-                    "x": 32,
+                    "x": 19,
                     "y": 3,
                     "angle": 90,
                     "rbusAddress": 0
@@ -1318,7 +1318,7 @@
                     "uuid": "a81c0fb5-fdff-4a05-a804-e0ae553084da",
                     "type": "turnoutLeft",
                     "name": "turnoutleft123",
-                    "x": 22,
+                    "x": 9,
                     "y": 3,
                     "address": 20,
                     "angle": 0,
@@ -1330,7 +1330,7 @@
                     "uuid": "35e48bc5-bd0f-424c-80fe-90abc21bd2c9",
                     "type": "turnoutRight",
                     "name": "turnoutRight124",
-                    "x": 29,
+                    "x": 16,
                     "y": 3,
                     "address": 10,
                     "angle": 180,
@@ -1342,7 +1342,7 @@
                     "uuid": "965e98be-5e34-4064-a1d1-98ad5ae8da9f",
                     "type": "track",
                     "name": "track125",
-                    "x": 20,
+                    "x": 7,
                     "y": -1,
                     "angle": 0,
                     "rbusAddress": 0
@@ -1351,7 +1351,7 @@
                     "uuid": "a14c0179-5f30-4f95-b82a-73b0a196d6fb",
                     "type": "track",
                     "name": "track126",
-                    "x": 21,
+                    "x": 8,
                     "y": -1,
                     "angle": 0,
                     "rbusAddress": 0
@@ -1360,7 +1360,7 @@
                     "uuid": "7b189dbc-7c82-43d9-8ade-76dc91ac5a26",
                     "type": "track",
                     "name": "track128",
-                    "x": 23,
+                    "x": 10,
                     "y": -1,
                     "angle": 0,
                     "rbusAddress": 0
@@ -1369,7 +1369,7 @@
                     "uuid": "5f8fb431-01ea-4ecd-a6e1-d20d2ab3ea06",
                     "type": "track",
                     "name": "track129",
-                    "x": 24,
+                    "x": 11,
                     "y": -1,
                     "angle": 0,
                     "rbusAddress": 0
@@ -1378,7 +1378,7 @@
                     "uuid": "5e48f17f-04dd-4fde-a313-dc190e72b468",
                     "type": "track",
                     "name": "track130",
-                    "x": 25,
+                    "x": 12,
                     "y": -1,
                     "angle": 0,
                     "rbusAddress": 0
@@ -1387,7 +1387,7 @@
                     "uuid": "cdaad3c3-7ba3-443e-bb7b-539a6a6a5dc0",
                     "type": "track",
                     "name": "track131",
-                    "x": 26,
+                    "x": 13,
                     "y": -1,
                     "angle": 0,
                     "rbusAddress": 0
@@ -1396,7 +1396,7 @@
                     "uuid": "fa3356c7-859c-422d-8ecc-27f1355aa6bd",
                     "type": "track",
                     "name": "track132",
-                    "x": 27,
+                    "x": 14,
                     "y": -1,
                     "angle": 0,
                     "rbusAddress": 0
@@ -1405,7 +1405,7 @@
                     "uuid": "63494733-d3d3-4648-8144-8cf72a065c91",
                     "type": "track",
                     "name": "track133",
-                    "x": 28,
+                    "x": 15,
                     "y": -1,
                     "angle": 0,
                     "rbusAddress": 0
@@ -1414,7 +1414,7 @@
                     "uuid": "d6c536f7-4b54-4f6e-b395-bcc082c72060",
                     "type": "track",
                     "name": "track134",
-                    "x": 29,
+                    "x": 16,
                     "y": -1,
                     "angle": 0,
                     "rbusAddress": 0
@@ -1423,7 +1423,7 @@
                     "uuid": "50762565-1206-4e63-93e9-c16bc96e91eb",
                     "type": "track",
                     "name": "track135",
-                    "x": 30,
+                    "x": 17,
                     "y": -1,
                     "angle": 0,
                     "rbusAddress": 0
@@ -1432,7 +1432,7 @@
                     "uuid": "8bfdfb86-b74e-4963-a961-4e4f4470a4dd",
                     "type": "track",
                     "name": "track136",
-                    "x": 31,
+                    "x": 18,
                     "y": -1,
                     "angle": 0,
                     "rbusAddress": 0
@@ -1441,7 +1441,7 @@
                     "uuid": "a672065a-2af0-4697-a750-191bcddeaa16",
                     "type": "track",
                     "name": "track137",
-                    "x": 32,
+                    "x": 19,
                     "y": 0,
                     "angle": 90,
                     "rbusAddress": 0
@@ -1450,7 +1450,7 @@
                     "uuid": "f729fe16-ce18-4da3-ae50-00cbc9784043",
                     "type": "track",
                     "name": "track138",
-                    "x": 32,
+                    "x": 19,
                     "y": 1,
                     "angle": 90,
                     "rbusAddress": 0
@@ -1459,7 +1459,7 @@
                     "uuid": "506919e7-1647-4333-bc3d-18c7e87a55b4",
                     "type": "track",
                     "name": "track139",
-                    "x": 32,
+                    "x": 19,
                     "y": 2,
                     "angle": 90,
                     "rbusAddress": 0
@@ -1468,7 +1468,7 @@
                     "uuid": "d011a8fd-c18c-4246-b88c-de87b44a9ea1",
                     "type": "track",
                     "name": "track140",
-                    "x": 31,
+                    "x": 18,
                     "y": 3,
                     "angle": 180,
                     "rbusAddress": 0
@@ -1477,7 +1477,7 @@
                     "uuid": "2c038705-d8a4-48ad-b0d9-7855711f857f",
                     "type": "track",
                     "name": "track142",
-                    "x": 28,
+                    "x": 15,
                     "y": 3,
                     "angle": 180,
                     "rbusAddress": 0
@@ -1486,7 +1486,7 @@
                     "uuid": "d0074905-cd51-4bc8-96f3-7aa20d40c224",
                     "type": "track",
                     "name": "track143",
-                    "x": 27,
+                    "x": 14,
                     "y": 3,
                     "angle": 180,
                     "rbusAddress": 0
@@ -1495,7 +1495,7 @@
                     "uuid": "2c4a81f2-a262-4a0b-9e1b-3b9dc6cd95c6",
                     "type": "track",
                     "name": "track144",
-                    "x": 26,
+                    "x": 13,
                     "y": 3,
                     "angle": 180,
                     "rbusAddress": 0
@@ -1504,7 +1504,7 @@
                     "uuid": "f5217abb-ad35-4f29-8142-6bcf416381b5",
                     "type": "track",
                     "name": "track145",
-                    "x": 25,
+                    "x": 12,
                     "y": 3,
                     "angle": 180,
                     "rbusAddress": 0
@@ -1513,7 +1513,7 @@
                     "uuid": "41ba7291-905c-4eb8-92d4-caad58fd1eb1",
                     "type": "track",
                     "name": "track146",
-                    "x": 24,
+                    "x": 11,
                     "y": 3,
                     "angle": 180,
                     "rbusAddress": 0
@@ -1522,7 +1522,7 @@
                     "uuid": "7a6555fa-b271-4dce-a3da-ab30eb9a1561",
                     "type": "track",
                     "name": "track147",
-                    "x": 23,
+                    "x": 10,
                     "y": 3,
                     "angle": 180,
                     "rbusAddress": 0
@@ -1531,7 +1531,7 @@
                     "uuid": "593626d8-aaee-4ef4-a716-b5874e760ff6",
                     "type": "track",
                     "name": "track149",
-                    "x": 20,
+                    "x": 7,
                     "y": 3,
                     "angle": 180,
                     "rbusAddress": 0
@@ -1540,7 +1540,7 @@
                     "uuid": "5a3a827c-9ae5-4036-9483-476d890adbf9",
                     "type": "track",
                     "name": "track150",
-                    "x": 19,
+                    "x": 6,
                     "y": 2,
                     "angle": 270,
                     "rbusAddress": 0
@@ -1549,7 +1549,7 @@
                     "uuid": "2227cc05-5b73-4992-9a77-97126065c942",
                     "type": "track",
                     "name": "track151",
-                    "x": 19,
+                    "x": 6,
                     "y": 1,
                     "angle": 270,
                     "rbusAddress": 0
@@ -1558,7 +1558,7 @@
                     "uuid": "5153180a-d38e-4829-a72d-862ae6080187",
                     "type": "track",
                     "name": "track152",
-                    "x": 19,
+                    "x": 6,
                     "y": 0,
                     "angle": 270,
                     "rbusAddress": 0
@@ -1567,7 +1567,7 @@
                     "uuid": "d47dd1d6-2549-438f-85ce-165badbda714",
                     "type": "track",
                     "name": "track153",
-                    "x": 24,
+                    "x": 11,
                     "y": 2,
                     "angle": 0,
                     "rbusAddress": 0
@@ -1576,7 +1576,7 @@
                     "uuid": "a6b2acf0-5f68-4217-99bd-f9dec779c53b",
                     "type": "track",
                     "name": "track154",
-                    "x": 25,
+                    "x": 12,
                     "y": 2,
                     "angle": 0,
                     "rbusAddress": 0
@@ -1585,7 +1585,7 @@
                     "uuid": "4177ed1d-f6fe-44eb-9274-51e9d0acb798",
                     "type": "track",
                     "name": "track155",
-                    "x": 26,
+                    "x": 13,
                     "y": 2,
                     "angle": 0,
                     "rbusAddress": 0
@@ -1594,7 +1594,7 @@
                     "uuid": "8e3a8f71-38f6-44b3-9708-d24857ea548f",
                     "type": "track",
                     "name": "track156",
-                    "x": 27,
+                    "x": 14,
                     "y": 2,
                     "angle": 0,
                     "rbusAddress": 0
@@ -1603,7 +1603,7 @@
                     "uuid": "1525fcbf-b5bd-4f84-8be9-89581ede37fb",
                     "type": "curve",
                     "name": "curve157",
-                    "x": 23,
+                    "x": 10,
                     "y": 2,
                     "angle": 135,
                     "rbusAddress": 0
@@ -1612,7 +1612,7 @@
                     "uuid": "08dbd8fc-2437-425a-bc9d-7bd0a65f80d8",
                     "type": "curve",
                     "name": "curve158",
-                    "x": 28,
+                    "x": 15,
                     "y": 2,
                     "angle": 180,
                     "rbusAddress": 0
@@ -1622,7 +1622,7 @@
                     "type": "signal3",
                     "address": 55,
                     "name": "turnoutleft158",
-                    "x": 30,
+                    "x": 17,
                     "y": 3,
                     "angle": 0,
                     "addressLength": 5,
@@ -1638,7 +1638,7 @@
                     "type": "signal3",
                     "address": 50,
                     "name": "turnoutleft158",
-                    "x": 21,
+                    "x": 8,
                     "y": 3,
                     "angle": 180,
                     "addressLength": 5,
@@ -1653,7 +1653,7 @@
                     "uuid": "e7edf21b-9b8f-4cd1-b0e3-a65ae426a617",
                     "type": "turnoutRight",
                     "name": "turnoutRight158",
-                    "x": 22,
+                    "x": 9,
                     "y": -1,
                     "address": 14,
                     "angle": 0,
@@ -1665,7 +1665,7 @@
                     "uuid": "487a66dd-563d-4ec1-b412-fe77c862cd56",
                     "type": "curve",
                     "name": "curve159",
-                    "x": 23,
+                    "x": 10,
                     "y": 0,
                     "angle": 0,
                     "rbusAddress": 0
@@ -1674,7 +1674,7 @@
                     "uuid": "fe0bd988-fd11-42b6-9954-279b39f86f47",
                     "type": "track",
                     "name": "track160",
-                    "x": 24,
+                    "x": 11,
                     "y": 0,
                     "angle": 0,
                     "rbusAddress": 0
@@ -1683,7 +1683,7 @@
                     "uuid": "f4614531-4ba4-4f06-9b22-e87c63a94bef",
                     "type": "track",
                     "name": "track161",
-                    "x": 25,
+                    "x": 12,
                     "y": 0,
                     "angle": 0,
                     "rbusAddress": 0
@@ -1692,7 +1692,7 @@
                     "uuid": "5967a323-1a7d-4740-9663-c18d0c5f7a8b",
                     "type": "trackEnd",
                     "name": "trackEnd162",
-                    "x": 26,
+                    "x": 13,
                     "y": 0,
                     "angle": 0,
                     "rbusAddress": 0
@@ -1701,7 +1701,7 @@
                     "uuid": "c6f6f04b-4889-46a1-a739-a211f37ccf4d",
                     "type": "label2",
                     "name": "label163",
-                    "x": 41,
+                    "x": 28,
                     "y": 11,
                     "angle": 0,
                     "text": "P4",
@@ -1711,7 +1711,7 @@
                     "uuid": "b69f9519-a412-4f05-9990-0596de68bf03",
                     "type": "label2",
                     "name": "label164",
-                    "x": 41,
+                    "x": 28,
                     "y": 10,
                     "angle": 0,
                     "text": "P3",
@@ -1721,7 +1721,7 @@
                     "uuid": "87df78af-a885-4cca-b9f1-c59d8f3b4995",
                     "type": "label2",
                     "name": "label167",
-                    "x": 18,
+                    "x": 5,
                     "y": 7,
                     "angle": 0,
                     "text": "P1",
@@ -1731,7 +1731,7 @@
                     "uuid": "d4ea402b-e9fd-46af-bcc6-ac7541c62254",
                     "type": "label2",
                     "name": "label168",
-                    "x": 18,
+                    "x": 5,
                     "y": 8,
                     "angle": 0,
                     "text": "P2",
@@ -1741,7 +1741,7 @@
                     "uuid": "d95a6eb8-d055-47ea-ab7f-2048b5fc958e",
                     "type": "label2",
                     "name": "label169",
-                    "x": 18,
+                    "x": 5,
                     "y": 9,
                     "angle": 0,
                     "text": "P3",
@@ -1751,7 +1751,7 @@
                     "uuid": "76ea2a5e-c65e-4a8c-a1be-040be0ac344e",
                     "type": "label2",
                     "name": "label170",
-                    "x": 18,
+                    "x": 5,
                     "y": 10,
                     "angle": 0,
                     "text": "P4",
@@ -1761,7 +1761,7 @@
                     "uuid": "92ff2e27-43e3-4c29-a6c3-153255b6a869",
                     "type": "label2",
                     "name": "label171",
-                    "x": 29,
+                    "x": 16,
                     "y": 8,
                     "angle": 0,
                     "text": "P1",
@@ -1771,7 +1771,7 @@
                     "uuid": "537c4f0e-7e1f-442f-a90a-efb7da6a6b40",
                     "type": "label2",
                     "name": "label172",
-                    "x": 29,
+                    "x": 16,
                     "y": 9,
                     "angle": 0,
                     "text": "P2",
@@ -1781,7 +1781,7 @@
                     "uuid": "d433862d-97a9-480c-9988-500840739259",
                     "type": "track",
                     "name": "track4",
-                    "x": 18,
+                    "x": 5,
                     "y": 7,
                     "angle": 0,
                     "rbusAddress": 18
@@ -1790,7 +1790,7 @@
                     "uuid": "c0d3a47f-485d-436f-bfeb-143fafd97c9a",
                     "type": "track",
                     "name": "track72",
-                    "x": 41,
+                    "x": 28,
                     "y": 8,
                     "angle": 0,
                     "rbusAddress": 22
@@ -1799,7 +1799,7 @@
                     "uuid": "09ae6ce5-fd5f-4e17-8e54-d52380e31c1d",
                     "type": "track",
                     "name": "track57",
-                    "x": 41,
+                    "x": 28,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 23
@@ -1808,7 +1808,7 @@
                     "uuid": "55ce12b9-ffe8-40b6-8ac4-62df8b388136",
                     "type": "track",
                     "name": "track58",
-                    "x": 40,
+                    "x": 27,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 23
@@ -1817,7 +1817,7 @@
                     "uuid": "cc381652-47f8-44f6-a051-c18b00c94113",
                     "type": "track",
                     "name": "track8",
-                    "x": 18,
+                    "x": 5,
                     "y": 8,
                     "angle": 0,
                     "rbusAddress": 17
@@ -1826,7 +1826,7 @@
                     "uuid": "5d3873e4-9c7f-4c69-b40d-83c507d0b92c",
                     "type": "track",
                     "name": "track12",
-                    "x": 18,
+                    "x": 5,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 16
@@ -1835,7 +1835,7 @@
                     "uuid": "7409affd-40ed-46b3-b172-9ca51f304b4a",
                     "type": "track",
                     "name": "track16",
-                    "x": 18,
+                    "x": 5,
                     "y": 10,
                     "angle": 0,
                     "rbusAddress": 15
@@ -1844,7 +1844,7 @@
                     "uuid": "cbf3f579-c577-44a2-9d07-5fb16e531cd2",
                     "type": "track",
                     "name": "track35",
-                    "x": 28,
+                    "x": 15,
                     "y": 8,
                     "angle": 0,
                     "rbusAddress": 14
@@ -1853,7 +1853,7 @@
                     "uuid": "32d1828d-2506-4dad-892f-4887071085fa",
                     "type": "track",
                     "name": "track34",
-                    "x": 28,
+                    "x": 15,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 13
@@ -1861,7 +1861,7 @@
                 {
                     "uuid": "8c79e536-364f-448c-a48c-42241915d313",
                     "type": "audiobutton",
-                    "x": 38,
+                    "x": 25,
                     "y": 7,
                     "name": "audiobutton173",
                     "filename": "mav_szignal.mp3"
@@ -1870,7 +1870,7 @@
                     "uuid": "3eb3b969-4c20-4ec2-bc27-440895349ea3",
                     "type": "label2",
                     "name": "label174",
-                    "x": 39,
+                    "x": 26,
                     "y": 7,
                     "angle": 0,
                     "text": "MÁV SZIGNÁL",
@@ -1880,7 +1880,7 @@
                     "uuid": "47c5ea42-e8f2-4a05-adee-cf62daf613b7",
                     "type": "track",
                     "name": "track103",
-                    "x": 41,
+                    "x": 28,
                     "y": 11,
                     "angle": 0,
                     "rbusAddress": 21
@@ -1889,7 +1889,7 @@
                     "uuid": "1393d751-8d86-45bd-bd13-a2a070e2416d",
                     "type": "track",
                     "name": "track100",
-                    "x": 41,
+                    "x": 28,
                     "y": 10,
                     "angle": 0,
                     "rbusAddress": 24
@@ -1898,7 +1898,7 @@
                     "uuid": "36914bdf-d395-4ebc-99cc-9edc730e163c",
                     "type": "track",
                     "name": "track36",
-                    "x": 29,
+                    "x": 16,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 13
@@ -1907,7 +1907,7 @@
                     "uuid": "05d6eb6d-8a5e-4b25-b6f4-45aaf255720d",
                     "type": "track",
                     "name": "track37",
-                    "x": 29,
+                    "x": 16,
                     "y": 8,
                     "angle": 0,
                     "rbusAddress": 14
@@ -1916,7 +1916,7 @@
                     "uuid": "fbbf319d-4605-4412-96e3-a5f1949d967e",
                     "type": "label2",
                     "name": "label175",
-                    "x": 22,
+                    "x": 9,
                     "y": 14,
                     "angle": 0,
                     "text": "Világítás 1",
@@ -1926,7 +1926,7 @@
                     "uuid": "2034f167-0da3-4196-b390-811ca198c5b7",
                     "type": "label2",
                     "name": "label176",
-                    "x": 22,
+                    "x": 9,
                     "y": 15,
                     "angle": 0,
                     "text": "Teszt 1",
@@ -1935,15 +1935,15 @@
                 {
                     "uuid": "c9d8ed67-d8bc-4c78-94eb-ee3308d4e94d",
                     "type": "audiobutton",
-                    "x": 43,
-                    "y": 10,
+                    "x": 25,
+                    "y": 12,
                     "name": "audiobutton177",
                     "filename": "Szfvarrol.V3.mp3"
                 },
                 {
                     "uuid": "794808fd-bbb9-488d-aa66-4529129eda4d",
                     "type": "audiobutton",
-                    "x": 38,
+                    "x": 25,
                     "y": 6,
                     "name": "audiobutton178",
                     "filename": "SzbattyanIndul.mp3"
@@ -1952,7 +1952,7 @@
                     "uuid": "e2447451-f125-4314-a612-7e3b538061d1",
                     "type": "label2",
                     "name": "label179",
-                    "x": 39,
+                    "x": 26,
                     "y": 6,
                     "angle": 0,
                     "text": "Indul",
@@ -1962,8 +1962,8 @@
                     "uuid": "de322f88-1f4b-47e5-a9af-479aa6f8a74a",
                     "type": "label2",
                     "name": "label180",
-                    "x": 44,
-                    "y": 10,
+                    "x": 26,
+                    "y": 12,
                     "angle": 0,
                     "text": "Érkezik P3",
                     "valign": "center"
