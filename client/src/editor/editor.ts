@@ -1306,7 +1306,10 @@ export class CustomCanvas extends HTMLElement {
                 //     break;
                 case 'button':
                     var b = elem as ButtonShapeElement
-                    elems.push({ uuid: b.UUID, type: b.type, address: b.address, x: b.x, y: b.y, name: b.name })
+                    elems.push({ uuid: b.UUID, type: b.type, address: b.address, x: b.x, y: b.y, name: b.name,
+                        valueOn: b.valueOn,
+                        valueOff: b.valueOff
+                     })
                     break;
                 case 'audiobutton':
                     var ab = elem as AudioButtonShapeElement
@@ -1501,6 +1504,8 @@ export class CustomCanvas extends HTMLElement {
                         //     break;
                         case "button":
                             var b = new ButtonShapeElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
+                            b.valueOff = elem.valueOff ?? false
+                            b.valueOn = elem.valueOn ?? true
                             this.add(b)
                             break;
                         case "audiobutton":

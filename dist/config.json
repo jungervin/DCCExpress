@@ -1,10 +1,10 @@
 {
     "settings": {
         "scale": 1.9466197204360307,
-        "origX": -227,
-        "origY": -366,
+        "origX": -323,
+        "origY": -785,
         "locoPanelVisible": false,
-        "propertyPanelVisible": false
+        "propertyPanelVisible": true
     },
     "pages": [
         {
@@ -1265,10 +1265,12 @@
                 {
                     "uuid": "8a1d0862-b2b3-4a4e-afdd-4f5fc31c13c6",
                     "type": "button",
-                    "address": 0,
+                    "address": 100,
                     "x": 8,
                     "y": 14,
-                    "name": "button118"
+                    "name": "button118",
+                    "valueOn": true,
+                    "valueOff": false
                 },
                 {
                     "uuid": "881bf289-b58f-4551-9357-76c9610196a7",
@@ -1276,7 +1278,9 @@
                     "address": 0,
                     "x": 8,
                     "y": 15,
-                    "name": "button119"
+                    "name": "button119",
+                    "valueOn": true,
+                    "valueOff": false
                 },
                 {
                     "uuid": "65853d63-b189-4201-8537-9221aca9b230",

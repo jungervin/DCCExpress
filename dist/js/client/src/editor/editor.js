@@ -1134,7 +1134,10 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                     //     break;
                     case 'button':
                         var b = elem;
-                        elems.push({ uuid: b.UUID, type: b.type, address: b.address, x: b.x, y: b.y, name: b.name });
+                        elems.push({ uuid: b.UUID, type: b.type, address: b.address, x: b.x, y: b.y, name: b.name,
+                            valueOn: b.valueOn,
+                            valueOff: b.valueOff
+                        });
                         break;
                     case 'audiobutton':
                         var ab = elem;
@@ -1180,7 +1183,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                 //var elems = config.elems
                 config.pages.forEach((page) => {
                     page.elems.forEach((elem) => {
-                        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4;
+                        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6;
                         console.log(elem);
                         switch (elem.type) {
                             case "track":
@@ -1317,6 +1320,8 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                             //     break;
                             case "button":
                                 var b = new button_1.ButtonShapeElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
+                                b.valueOff = (_5 = elem.valueOff) !== null && _5 !== void 0 ? _5 : false;
+                                b.valueOn = (_6 = elem.valueOn) !== null && _6 !== void 0 ? _6 : true;
                                 this.add(b);
                                 break;
                             case "audiobutton":
