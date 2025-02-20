@@ -10,9 +10,9 @@ if (!App.num) {
 if (!App.init) {
     App.init = "true"
     App.status = {}
+    return
 }
 
-const AppStates = App.States ?? {}
 
 const t10 = elems.getTurnout(10)
 const t11 = elems.getTurnout(11)
@@ -27,24 +27,30 @@ const s60 = elems.getSignal(60)
 const s65 = elems.getSignal(65)
 
 const rb12 = App.sensors[12]
-
 const rb15 = App.sensors[15]
 const rb24 = App.sensors[24]
 
+
+// ======================================
+// The train has reached the station
+// ======================================
 if (rb15 != App.status.rb15) {
     if(rb15) {
         audioManager.play("mav_szignal.mp3")
     }
-    
     App.status.rb15 = rb15
 }
+
 if (rb24 != App.status.rb24) {
     if(rb24) {
         audioManager.play("mav_szignal.mp3")
+        setTimeout(() => {
+            audioManager.play("Szfvarrol.V3.mp3")
+        }, 1000)
     }
-    audioManager.play("mav_szignal.mp3")
     App.status.rb24 = rb24
 }
+
 //======================================
 // SIGNAL #50
 //======================================
@@ -83,6 +89,5 @@ if (rb24 != App.status.rb24) {
 
 App.num += 1;
 console.log(App.num)
-//t10.t1Closed = !t10.t1Closed 
 App.editor.draw()
 

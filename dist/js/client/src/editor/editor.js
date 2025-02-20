@@ -274,6 +274,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             };
             this.toolbar.btnRemove.onclick = (e) => {
                 this.toolbar.currentButton = (this.toolbar.btnRemove);
+                this.unselectAll();
                 this.drawMode = drawModes.remove;
                 this.cursorElement = undefined;
                 this.draw();

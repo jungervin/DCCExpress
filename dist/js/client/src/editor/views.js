@@ -1,4 +1,4 @@
-define(["require", "exports", "./turnout", "./view", "./route", "./signals"], function (require, exports, turnout_1, view_1, route_1, signals_1) {
+define(["require", "exports", "./turnout", "./view", "./route", "./signals", "./button"], function (require, exports, turnout_1, view_1, route_1, signals_1, button_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Views = void 0;
@@ -39,6 +39,15 @@ define(["require", "exports", "./turnout", "./view", "./route", "./signals"], fu
         }
         getSignal(addr) {
             return this.getSignalElements().find((s) => s.address == addr);
+        }
+        getAccessoryElements() {
+            var items = [];
+            this.elements.forEach((elem) => {
+                if (elem instanceof button_1.AccessoryDecoderElement) {
+                    items.push(elem);
+                }
+            });
+            return items;
         }
         getSignalElements() {
             var items = [];

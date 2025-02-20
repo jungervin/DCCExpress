@@ -9,6 +9,7 @@ import { TrackCurveElement } from "./curve"
 import { Point } from "../helpers/math"
 // import { SignalElement } from "../components/signalElement"
 import { Signal1Element, Signal2Element } from "./signals"
+import { AccessoryDecoderElement } from "./button"
 
 
 export class Views {
@@ -63,6 +64,17 @@ export class Views {
     getSignal(addr: number) {
         return this.getSignalElements().find((s) => s.address == addr)
     }
+
+    getAccessoryElements(): AccessoryDecoderElement[] {
+        var items: AccessoryDecoderElement[] = []
+        this.elements.forEach((elem: View) => {
+            if (elem instanceof AccessoryDecoderElement) {
+                items.push(elem)
+            }
+        })
+        return items
+    }
+
     getSignalElements(): Signal1Element[] {
         var items: Signal1Element[] = []
         this.elements.forEach((elem: View) => {

@@ -7,6 +7,7 @@ import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import multer, { StorageEngine } from "multer";
+import { log, logError } from "./utility";
 
 
 export const app = express();
@@ -82,19 +83,21 @@ app.post("/save", async (req: any, res: any) => {
     const { fileName, data } = req.body;
 
     if (!fileName || !data) {
-      return res.status(400).json({ success: false, message: "Missing fileName or data" });
+      log('app.post /save: ', 400);
+      res.status(400).json({ success: false, message: "Missing fileName or data" });
+      return
     }
 
     //const filePath = path.join(__dirname, fileName);
     const filePath = path.join(distFolder, fileName);
 
-    await fs.writeFile(filePath, JSON.stringify(data, null, 4), "utf8", (err) => {
-      res.status(500).json({ success: false, error: err });
-    });
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 4), "utf8");
 
+    log('app.post /save: ', `JSON saved as ${fileName}`);
     res.json({ success: true, message: `JSON saved as ${fileName}` });
   } catch (error) {
     res.status(500).json({ success: false, error: error });
+    logError('app.post /save: 500', error);
   }
 });
 

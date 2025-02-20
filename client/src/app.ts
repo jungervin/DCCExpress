@@ -12,6 +12,7 @@ import { toastManager, ToastManager } from "./controls/toastManager";
 import { Dispatcher } from "./editor/dispatcher";
 import { LocoControlPanel } from "./components/controlPanel";
 import { audioManager, AudioManager } from "./editor/audioButton";
+import { AccessoryDecoderElement } from "./editor/button";
 
 console.log(Dispatcher)
 console.log(ApiCommands)
@@ -88,8 +89,6 @@ export class App {
 
         this.editor.init()
 
-
-
         wsClient.connect()
 
         Globals.fetchJsonData("/settings.json").then((data: any) => {
@@ -104,6 +103,7 @@ export class App {
 
             Globals.fetchJsonData('/config.json').then((conf: any) => {
                 this.configLoaded(conf)
+                wsClient.send({ type: ApiCommands.getRBusInfo, data: "" })                
             }).catch((reason) => {
                 alert("Config Error:\n" + reason)
             })
@@ -111,15 +111,12 @@ export class App {
         }).catch((reason: any) => {
             alert("Settings Error:\n" + reason)
         }).finally(() => {
-            wsClient.send({ type: ApiCommands.getRBusInfo, data: "" })
         })
 
         wsClient.onConnected = () => {
             this.toolbar.wsStatus!.classList.remove("error")
             this.toolbar.wsStatus!.classList.add("success")
-            //wsClient.send({ type: ApiCommands.getSettings, data: "" })
-            // wsClient.send({ type: ApiCommands.getCommandCenters, data: "" })
-            //wsClient.send({ type: ApiCommands.configLoad, data: "" })
+            
             this.locoControlPanel.init()
 
         }
@@ -275,6 +272,11 @@ export class App {
             }
         })
 
+        var accessories = this.editor.views.getAccessoryElements()
+        accessories.forEach((s) => {
+                wsClient.send({ type: ApiCommands.getTurnout, data: { address: s.address} as iGetTurnout } as iData)
+        })
+
     }
     turnoutInfo(data: iSetTurnout) {
         //console.log("turnout", data)
@@ -315,6 +317,14 @@ export class App {
                     td.t2Closed = data.isClosed == td.t2ClosedValue; // : td.t2OpenValue
                     redraw = true
                 }
+            }
+        })
+        
+        const accessories = this.editor.views.getAccessoryElements()
+        accessories.forEach((elem: AccessoryDecoderElement) => {
+            if (elem.address == data.address) {
+                elem.on = data.isClosed ? elem.valueOn : elem.valueOff
+                redraw = true
             }
         })
 

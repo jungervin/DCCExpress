@@ -3,17 +3,41 @@ import { Globals } from "../helpers/globals";
 import { View } from "./view";
 import { ApiCommands, iData, iSetBasicAccessory } from "../../../common/src/dcc";
 
-export class ButtonShapeElement extends View {
+export abstract class AccessoryDecoderElement extends View {
     address: number;
     on: boolean = false;
-    textOn: string = "ON"
-    textOff: string = "OFF"
+    textOn: string = "ON";
+    textOff: string = "OFF";
     valueOn: boolean = true;
     valueOff: boolean = false;
 
     constructor(uuid: string, address: number, x: number, y: number, name: string) {
-        super(uuid, x, y, name)
-        this.address = address
+        super(uuid, x, y, name);
+        this.address = address;
+    }
+
+    get type(): string {
+        return 'accessoryDecoder';
+    }
+
+    toggle() {
+        this.on = !this.on;
+    }
+
+    mouseDown(e: MouseEvent): void {
+        this.toggle();
+        const data: iSetBasicAccessory = { address: this.address, value: this.on ? this.valueOn : this.valueOff } as iSetBasicAccessory;
+        wsClient.send({ type: ApiCommands.setBasicAccessory, data: data } as iData);
+        if (this.mouseDownHandler) {
+            this.mouseDownHandler(this);
+        }
+    }
+}
+
+export class ButtonShapeElement extends AccessoryDecoderElement {
+
+    constructor(uuid: string, address: number, x: number, y: number, name: string) {
+        super(uuid, address, x, y, name)
     }
     get type(): string {
         return 'button'

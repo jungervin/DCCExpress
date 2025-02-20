@@ -1,8 +1,8 @@
 define(["require", "exports", "../helpers/ws", "./view", "../../../common/src/dcc"], function (require, exports, ws_1, view_1, dcc_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.ButtonShapeElement = void 0;
-    class ButtonShapeElement extends view_1.View {
+    exports.ButtonShapeElement = exports.AccessoryDecoderElement = void 0;
+    class AccessoryDecoderElement extends view_1.View {
         constructor(uuid, address, x, y, name) {
             super(uuid, x, y, name);
             this.on = false;
@@ -11,6 +11,26 @@ define(["require", "exports", "../helpers/ws", "./view", "../../../common/src/dc
             this.valueOn = true;
             this.valueOff = false;
             this.address = address;
+        }
+        get type() {
+            return 'accessoryDecoder';
+        }
+        toggle() {
+            this.on = !this.on;
+        }
+        mouseDown(e) {
+            this.toggle();
+            const data = { address: this.address, value: this.on ? this.valueOn : this.valueOff };
+            ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBasicAccessory, data: data });
+            if (this.mouseDownHandler) {
+                this.mouseDownHandler(this);
+            }
+        }
+    }
+    exports.AccessoryDecoderElement = AccessoryDecoderElement;
+    class ButtonShapeElement extends AccessoryDecoderElement {
+        constructor(uuid, address, x, y, name) {
+            super(uuid, address, x, y, name);
         }
         get type() {
             return 'button';

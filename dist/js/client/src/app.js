@@ -72,20 +72,17 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 globals_1.Globals.Settings.EditorSettings = (_f = s.EditorSettings) !== null && _f !== void 0 ? _f : dcc_1.defaultSettings.EditorSettings;
                 globals_1.Globals.fetchJsonData('/config.json').then((conf) => {
                     this.configLoaded(conf);
+                    ws_1.wsClient.send({ type: dcc_1.ApiCommands.getRBusInfo, data: "" });
                 }).catch((reason) => {
                     alert("Config Error:\n" + reason);
                 });
             }).catch((reason) => {
                 alert("Settings Error:\n" + reason);
             }).finally(() => {
-                ws_1.wsClient.send({ type: dcc_1.ApiCommands.getRBusInfo, data: "" });
             });
             ws_1.wsClient.onConnected = () => {
                 this.toolbar.wsStatus.classList.remove("error");
                 this.toolbar.wsStatus.classList.add("success");
-                //wsClient.send({ type: ApiCommands.getSettings, data: "" })
-                // wsClient.send({ type: ApiCommands.getCommandCenters, data: "" })
-                //wsClient.send({ type: ApiCommands.configLoad, data: "" })
                 this.locoControlPanel.init();
             };
             ws_1.wsClient.onError = () => {
@@ -222,6 +219,10 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                     //wsClient.send(ApiCommands.getTurnout, s.address + i)
                 }
             });
+            var accessories = this.editor.views.getAccessoryElements();
+            accessories.forEach((s) => {
+                ws_1.wsClient.send({ type: dcc_1.ApiCommands.getTurnout, data: { address: s.address } });
+            });
         }
         turnoutInfo(data) {
             //console.log("turnout", data)
@@ -260,6 +261,13 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                         td.t2Closed = data.isClosed == td.t2ClosedValue; // : td.t2OpenValue
                         redraw = true;
                     }
+                }
+            });
+            const accessories = this.editor.views.getAccessoryElements();
+            accessories.forEach((elem) => {
+                if (elem.address == data.address) {
+                    elem.on = data.isClosed ? elem.valueOn : elem.valueOff;
+                    redraw = true;
                 }
             });
             if (redraw) {

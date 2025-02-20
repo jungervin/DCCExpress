@@ -347,6 +347,7 @@ export class CustomCanvas extends HTMLElement {
         }
         this.toolbar!.btnRemove.onclick = (e: MouseEvent) => {
             this.toolbar!.currentButton = (this.toolbar!.btnRemove)
+            this.unselectAll()
             this.drawMode = drawModes.remove
             this.cursorElement = undefined
             this.draw()
