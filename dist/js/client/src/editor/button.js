@@ -8,6 +8,8 @@ define(["require", "exports", "../helpers/ws", "./view", "../../../common/src/dc
             this.on = false;
             this.textOn = "ON";
             this.textOff = "OFF";
+            this.valueOn = true;
+            this.valueOff = false;
             this.address = address;
         }
         get type() {
@@ -41,7 +43,7 @@ define(["require", "exports", "../helpers/ws", "./view", "../../../common/src/dc
         }
         mouseDown(e) {
             this.toggle();
-            const data = { address: this.address, value: this.on };
+            const data = { address: this.address, value: this.on ? this.valueOn : this.valueOff };
             ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBasicAccessory, data: data });
             if (this.mouseDownHandler) {
                 this.mouseDownHandler(this);

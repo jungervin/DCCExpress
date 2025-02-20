@@ -8,6 +8,8 @@ export class ButtonShapeElement extends View {
     on: boolean = false;
     textOn: string = "ON"
     textOff: string = "OFF"
+    valueOn: boolean = true;
+    valueOff: boolean = false;
 
     constructor(uuid: string, address: number, x: number, y: number, name: string) {
         super(uuid, x, y, name)
@@ -52,7 +54,7 @@ export class ButtonShapeElement extends View {
 
     mouseDown(e: MouseEvent): void {
         this.toggle()
-        const data: iSetBasicAccessory = {address: this.address, value: this.on} as iSetBasicAccessory
+        const data: iSetBasicAccessory = {address: this.address, value: this.on ? this.valueOn : this.valueOff} as iSetBasicAccessory
         wsClient.send({type: ApiCommands.setBasicAccessory, data: data } as iData)
         if (this.mouseDownHandler) {
             this.mouseDownHandler(this)

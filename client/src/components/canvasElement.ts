@@ -8,6 +8,7 @@ import { TrackCurveElement } from "../editor/curve";
 import { Signal2Element, Signal3Element, Signal4Element } from "../editor/signals";
 import { RouteSwitchElement } from "../editor/route";
 import { Component } from "../controls/dialog";
+import { ButtonShapeElement } from "../editor/button";
 
 export class CanvasElement extends HTMLElement {
     ctx?: CanvasRenderingContext2D
@@ -26,7 +27,7 @@ export class CanvasElement extends HTMLElement {
         `
         this.canvas = shadow.getElementById('canvas') as HTMLCanvasElement
         this.ctx = this.canvas.getContext('2d')!
-        this.draw()
+        //this.draw()
     }
 
     draw() {
@@ -307,3 +308,24 @@ export class RouteSwitchCanvasElement extends CanvasElement {
     
 }
 customElements.define("route-switch-canvas-element", RouteSwitchCanvasElement)
+
+export class ButtonCanvasElement extends CanvasElement {
+    button: ButtonShapeElement;
+    constructor() {
+        super()
+        this.button = new ButtonShapeElement("", 0, 0, 0,  "")
+        this.button.angle = 0
+        
+    }
+
+    connectedCallback() {
+        this.draw()
+    }
+    draw() {
+        super.draw()
+        this.button.draw(this.ctx!)
+    }
+    
+}
+customElements.define("button-canvas-element", ButtonCanvasElement)
+

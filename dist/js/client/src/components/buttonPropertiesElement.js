@@ -19,16 +19,32 @@ define(["require", "exports"], function (require, exports) {
                     <div>
                         <input id="address" type="number" style="width:100%" value="">
                     </div>
+                    <div style="display: flex; gap:8px; text-align: left">
+                        <button-canvas-element id="btnOff"></button-canvas-element>
+                        <bit-element id="valueOn"></bit-element>
+                    </div>
+                    <div style="display: flex; gap:8px; text-align: left">
+                        <button-canvas-element id="btnOn"></button-canvas-element>
+                        <bit-element id="valueOff"></bit-element>
+                    </div>
                 </div>
             </div>
         `;
             this.addressInputElement = this.shadow.getElementById('address');
+            this.btnOffElement = this.shadow.getElementById("btnOff");
+            this.btnOnElement = this.shadow.getElementById("btnOn");
+            this.valueOffElement = this.shadow.getElementById("valueOff");
+            this.valueOnElement = this.shadow.getElementById("valueOn");
         }
         setButton(button) {
-            this.button = button;
+            this.btnOffElement.button.address = button.address;
+            this.btnOffElement.button.on = false;
+            //this.btnOnElement!.button.address = button.address
+            this.btnOnElement.button.on = true;
+            this.btnOnElement.draw();
             this.addressInputElement.value = button.address.toString();
             this.addressInputElement.onchange = (e) => {
-                this.button.address = parseInt(this.addressInputElement.value);
+                //this.btnOffElement?.button!.address = parseInt(this.addressInputElement!.value)
                 window.invalidate();
             };
         }

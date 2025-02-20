@@ -1,7 +1,7 @@
-define(["require", "exports", "../helpers/graphics", "../editor/turnout", "../editor/track", "../editor/trackend", "../editor/corner", "../editor/curve", "../editor/signals", "../editor/route"], function (require, exports, graphics_1, turnout_1, track_1, trackend_1, corner_1, curve_1, signals_1, route_1) {
+define(["require", "exports", "../helpers/graphics", "../editor/turnout", "../editor/track", "../editor/trackend", "../editor/corner", "../editor/curve", "../editor/signals", "../editor/route", "../editor/button"], function (require, exports, graphics_1, turnout_1, track_1, trackend_1, corner_1, curve_1, signals_1, route_1, button_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.RouteSwitchCanvasElement = exports.Signal4CanvasElement = exports.Signal3CanvasElement = exports.Signal2CanvasElement = exports.TurnoutDoubleCanvasElement = exports.TurnoutRightCanvasElement = exports.TurnoutLeftCanvasElement = exports.TrackCurveCanvasElement = exports.TrackCornerCanvasElement = exports.TrackEndCanvasElement = exports.TrackCanvasElement = exports.CanvasShapeElement = exports.CanvasElement = void 0;
+    exports.ButtonCanvasElement = exports.RouteSwitchCanvasElement = exports.Signal4CanvasElement = exports.Signal3CanvasElement = exports.Signal2CanvasElement = exports.TurnoutDoubleCanvasElement = exports.TurnoutRightCanvasElement = exports.TurnoutLeftCanvasElement = exports.TrackCurveCanvasElement = exports.TrackCornerCanvasElement = exports.TrackEndCanvasElement = exports.TrackCanvasElement = exports.CanvasShapeElement = exports.CanvasElement = void 0;
     class CanvasElement extends HTMLElement {
         constructor() {
             super();
@@ -16,7 +16,7 @@ define(["require", "exports", "../helpers/graphics", "../editor/turnout", "../ed
         `;
             this.canvas = shadow.getElementById('canvas');
             this.ctx = this.canvas.getContext('2d');
-            this.draw();
+            //this.draw()
         }
         draw() {
             var _a;
@@ -272,4 +272,20 @@ define(["require", "exports", "../helpers/graphics", "../editor/turnout", "../ed
     }
     exports.RouteSwitchCanvasElement = RouteSwitchCanvasElement;
     customElements.define("route-switch-canvas-element", RouteSwitchCanvasElement);
+    class ButtonCanvasElement extends CanvasElement {
+        constructor() {
+            super();
+            this.button = new button_1.ButtonShapeElement("", 0, 0, 0, "");
+            this.button.angle = 0;
+        }
+        connectedCallback() {
+            this.draw();
+        }
+        draw() {
+            super.draw();
+            this.button.draw(this.ctx);
+        }
+    }
+    exports.ButtonCanvasElement = ButtonCanvasElement;
+    customElements.define("button-canvas-element", ButtonCanvasElement);
 });
