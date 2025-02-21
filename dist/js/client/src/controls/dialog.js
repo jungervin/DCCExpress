@@ -548,7 +548,7 @@ define(["require", "exports"], function (require, exports) {
             this.legend = document.createElement("legend");
             this.legend.textContent = labelText;
             this.legend.style.fontSize = '1em';
-            // this.legend.style.fontWeight = "bold";
+            this.legend.style.fontWeight = "bold";
             this.fieldset.appendChild(this.legend);
             this.container.appendChild(this.fieldset);
         }

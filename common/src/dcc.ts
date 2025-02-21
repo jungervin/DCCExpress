@@ -334,6 +334,8 @@ export interface iSettings {
     EditorSettings : {
         ShowGrid: boolean,
         ShowAddress: boolean,
+        ShowClock: boolean,
+        fastClockFactor: number,
         LocoPanelVisible: boolean,
         PropertyPanelVisible: boolean,
         EditModeEnable: boolean,
@@ -367,6 +369,8 @@ export const defaultSettings: iSettings = {
     EditorSettings : {
         ShowGrid: true,
         ShowAddress: false,
+        ShowClock: true,
+        fastClockFactor: 1,
         LocoPanelVisible: false,
         PropertyPanelVisible: false,
         EditModeEnable: true,

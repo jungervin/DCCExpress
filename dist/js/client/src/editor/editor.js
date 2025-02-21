@@ -100,11 +100,12 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             this.canvas.width = this.parentElement.offsetWidth;
             this.canvas.height = this.parentElement.offsetHeight;
             this.ctx = this.canvas.getContext('2d');
-            this.clock = new clock_1.FastClock(this.ctx);
+            this.fastClock = new clock_1.FastClock(this.ctx);
             this.drawGrid();
             this.propertyPanel = document.getElementById("EditorPropertyPanel");
         }
         init() {
+            //this.fastClock!.setScaleFactor(Globals.Settings.EditorSettings.fastClockFactor)
             this.statusbar = document.getElementById("statusbar");
             this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
             this.canvas.addEventListener('mouseup', (e) => this.handleMouseUp(e));
@@ -389,7 +390,12 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         globals_1.Globals.Settings.EditorSettings.ShowGrid = d.showGrid.checked;
                         globals_1.Globals.Settings.EditorSettings.ShowAddress = d.showAddress.checked;
                         globals_1.Globals.Settings.Dispacher.interval = d.intervalElement.value;
+                        globals_1.Globals.Settings.EditorSettings.ShowClock = d.showClock.checked;
+                        this.fastClock.visible = d.showClock.checked;
+                        globals_1.Globals.Settings.EditorSettings.fastClockFactor = d.fastClockFactor.value;
+                        this.fastClock.setScaleFactor(d.fastClockFactor.value);
                         globals_1.Globals.saveJson("/settings.json", globals_1.Globals.Settings);
+                        //this.draw()
                         this.showAddresses(globals_1.Globals.Settings.EditorSettings.ShowAddress);
                     }
                 };
@@ -559,8 +565,10 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                     this.cursorElement.draw(this.ctx);
                 }
                 this.drawStatus();
-                this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-                this.clock.draw();
+                if (globals_1.Globals.Settings.EditorSettings.ShowClock) {
+                    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+                    this.fastClock.draw();
+                }
             });
         }
         getMouseX(e) {

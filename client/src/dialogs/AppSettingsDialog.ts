@@ -1,6 +1,6 @@
 import { SignalStates } from "../editor/signals";
 import { Signal2CanvasElement } from "../components/canvasElement";
-import { Checkbox, Dialog, Input, Button, InputNumber, DialogResult, TabControl, Combobox, Label } from "../controls/dialog";
+import { Checkbox, Dialog, Input, Button, InputNumber, DialogResult, TabControl, Combobox, Label, GroupBox } from "../controls/dialog";
 import { Dispatcher } from "../editor/dispatcher";
 
 import { CommandCenterTypes } from "../../../common/src/dcc";
@@ -13,6 +13,8 @@ export class AppSettingsDialog extends Dialog {
     // signalGreen: Signal2CanvasElement;
     intervalElement: InputNumber;
     showGrid: Checkbox;
+    showClock: Checkbox;
+    fastClockFactor: InputNumber;
     constructor() {
         super(800, 600, "Settings")
 
@@ -57,10 +59,26 @@ export class AppSettingsDialog extends Dialog {
         this.showGrid.checked = Globals.Settings.EditorSettings.ShowGrid
         tab1.addComponent(this.showGrid)
 
-        this.showAddress = new Checkbox("Show address")
+        this.showAddress = new Checkbox("Show Address")
         this.showAddress.checked = Globals.Settings.EditorSettings.ShowAddress
         tab1.addComponent(this.showAddress)
 
+
+        const fastClockGroup = new GroupBox("Fast Clock")
+        tab1.addComponent(fastClockGroup)
+        this.showClock = new Checkbox("Show Clock")
+        this.showClock.checked = Globals.Settings.EditorSettings.ShowClock ?? false
+        fastClockGroup.add(this.showClock)
+
+        const label1 = new Label("Factor")
+        fastClockGroup.add(label1)
+
+        this.fastClockFactor = new InputNumber()
+        this.fastClockFactor.minValue = 1
+        this.fastClockFactor.maxValue = 10
+        this.fastClockFactor.value = Globals.Settings.EditorSettings.fastClockFactor ?? 1
+        fastClockGroup.add(this.fastClockFactor)
+        
         // ======= LOCO ================
         {
             const label1 = new Label("Command Center")

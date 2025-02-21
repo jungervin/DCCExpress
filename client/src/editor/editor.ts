@@ -111,7 +111,7 @@ export class CustomCanvas extends HTMLElement {
 
     private pointerMap = new Map<number, { x: number; y: number }>(); // Pointer ID-k mentése
     private lastDistance = 0;
-    clock?: FastClock | null;
+    fastClock?: FastClock | null;
 
     constructor() {
         super();
@@ -153,14 +153,15 @@ export class CustomCanvas extends HTMLElement {
         this.canvas.width = this.parentElement!.offsetWidth;
         this.canvas.height = this.parentElement!.offsetHeight;
         this.ctx = this.canvas.getContext('2d')!;
-        this.clock = new FastClock(this.ctx!)
+        this.fastClock = new FastClock(this.ctx!)
+        
         this.drawGrid();
         this.propertyPanel = document.getElementById("EditorPropertyPanel") as PropertyPanel
     }
 
     init() {
 
-        
+        //this.fastClock!.setScaleFactor(Globals.Settings.EditorSettings.fastClockFactor)
 
         this.statusbar = document.getElementById("statusbar") as HTMLDivElement
 
@@ -475,7 +476,12 @@ export class CustomCanvas extends HTMLElement {
                     Globals.Settings.EditorSettings.ShowGrid = d.showGrid.checked
                     Globals.Settings.EditorSettings.ShowAddress = d.showAddress.checked
                     Globals.Settings.Dispacher.interval = d.intervalElement.value
+                    Globals.Settings.EditorSettings.ShowClock = d.showClock.checked
+                    this.fastClock!.visible = d.showClock.checked
+                    Globals.Settings.EditorSettings.fastClockFactor = d.fastClockFactor.value
+                    this.fastClock!.setScaleFactor(d.fastClockFactor.value)
                     Globals.saveJson("/settings.json", Globals.Settings)
+                    //this.draw()
                     this.showAddresses(Globals.Settings.EditorSettings.ShowAddress)
                 }
             }
@@ -681,9 +687,11 @@ export class CustomCanvas extends HTMLElement {
             }
 
             this.drawStatus()
-            
-            this.ctx!.setTransform(1, 0, 0, 1, 0, 0);
-            this.clock!.draw()
+
+            if (Globals.Settings.EditorSettings.ShowClock) {
+                this.ctx!.setTransform(1, 0, 0, 1, 0, 0);
+                this.fastClock!.draw()
+            }
         })
 
     }

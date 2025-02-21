@@ -164,6 +164,8 @@ exports.defaultSettings = {
     EditorSettings: {
         ShowGrid: true,
         ShowAddress: false,
+        ShowClock: true,
+        fastClockFactor: 1,
         LocoPanelVisible: false,
         PropertyPanelVisible: false,
         EditModeEnable: true,

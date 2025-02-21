@@ -4,7 +4,7 @@ define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "
     exports.AppSettingsDialog = void 0;
     class AppSettingsDialog extends dialog_1.Dialog {
         constructor() {
-            var _a, _b;
+            var _a, _b, _c, _d;
             super(800, 600, "Settings");
             const tabControl = new dialog_1.TabControl();
             const tab1 = tabControl.addTab("App");
@@ -36,9 +36,21 @@ define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "
             this.showGrid = new dialog_1.Checkbox("Show Grid");
             this.showGrid.checked = globals_1.Globals.Settings.EditorSettings.ShowGrid;
             tab1.addComponent(this.showGrid);
-            this.showAddress = new dialog_1.Checkbox("Show address");
+            this.showAddress = new dialog_1.Checkbox("Show Address");
             this.showAddress.checked = globals_1.Globals.Settings.EditorSettings.ShowAddress;
             tab1.addComponent(this.showAddress);
+            const fastClockGroup = new dialog_1.GroupBox("Fast Clock");
+            tab1.addComponent(fastClockGroup);
+            this.showClock = new dialog_1.Checkbox("Show Clock");
+            this.showClock.checked = (_a = globals_1.Globals.Settings.EditorSettings.ShowClock) !== null && _a !== void 0 ? _a : false;
+            fastClockGroup.add(this.showClock);
+            const label1 = new dialog_1.Label("Factor");
+            fastClockGroup.add(label1);
+            this.fastClockFactor = new dialog_1.InputNumber();
+            this.fastClockFactor.minValue = 1;
+            this.fastClockFactor.maxValue = 10;
+            this.fastClockFactor.value = (_b = globals_1.Globals.Settings.EditorSettings.fastClockFactor) !== null && _b !== void 0 ? _b : 1;
+            fastClockGroup.add(this.fastClockFactor);
             // ======= LOCO ================
             {
                 const label1 = new dialog_1.Label("Command Center");
@@ -57,7 +69,7 @@ define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "
                 tab2.addComponent(ccCombobox);
                 const label2 = new dialog_1.Label("Ip Address");
                 tab2.addComponent(label2);
-                const ccIp = new dialog_1.Input((_b = (_a = globals_1.Globals.Settings) === null || _a === void 0 ? void 0 : _a.CommandCenter) === null || _b === void 0 ? void 0 : _b.ip);
+                const ccIp = new dialog_1.Input((_d = (_c = globals_1.Globals.Settings) === null || _c === void 0 ? void 0 : _c.CommandCenter) === null || _d === void 0 ? void 0 : _d.ip);
                 ccIp.onchange = (sender) => {
                     globals_1.Globals.Settings.CommandCenter.ip = sender.value;
                 };

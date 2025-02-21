@@ -103,6 +103,10 @@ export class App {
             Globals.Settings.Dispacher = s.Dispacher ?? defaultSettings.Dispacher
             Globals.Settings.EditorSettings = s.EditorSettings ?? defaultSettings.EditorSettings
 
+            
+            this.editor.fastClock!.setScaleFactor(Globals.Settings.EditorSettings.fastClockFactor)
+            this.editor.fastClock!.visible = Globals.Settings.EditorSettings.ShowClock
+
             Globals.fetchJsonData('/config.json').then((conf: any) => {
                 this.configLoaded(conf)
                 wsClient.send({ type: ApiCommands.getRBusInfo, data: "" })                
