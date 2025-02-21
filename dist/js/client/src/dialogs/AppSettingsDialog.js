@@ -33,7 +33,11 @@ define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "
             this.intervalElement.maxValue = 10000;
             this.intervalElement.value = globals_1.Globals.Settings.Dispacher.interval;
             tab1.addComponent(this.intervalElement);
+            this.showGrid = new dialog_1.Checkbox("Show Grid");
+            this.showGrid.checked = globals_1.Globals.Settings.EditorSettings.ShowGrid;
+            tab1.addComponent(this.showGrid);
             this.showAddress = new dialog_1.Checkbox("Show address");
+            this.showAddress.checked = globals_1.Globals.Settings.EditorSettings.ShowAddress;
             tab1.addComponent(this.showAddress);
             // ======= LOCO ================
             {

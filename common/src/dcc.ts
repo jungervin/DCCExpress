@@ -332,6 +332,7 @@ export interface iSettings {
         interval: number
     },
     EditorSettings : {
+        ShowGrid: boolean,
         ShowAddress: boolean,
         LocoPanelVisible: boolean,
         PropertyPanelVisible: boolean,
@@ -364,6 +365,7 @@ export const defaultSettings: iSettings = {
       interval: 500
     },
     EditorSettings : {
+        ShowGrid: true,
         ShowAddress: false,
         LocoPanelVisible: false,
         PropertyPanelVisible: false,

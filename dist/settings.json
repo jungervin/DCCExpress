@@ -26,6 +26,7 @@
     },
     "EditorSettings": {
         "ShowAddress": false,
-        "Orientation": 1
+        "Orientation": 1,
+        "ShowGrid": false
     }
 }

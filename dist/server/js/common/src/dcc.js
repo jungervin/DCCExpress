@@ -162,6 +162,7 @@ exports.defaultSettings = {
         interval: 500
     },
     EditorSettings: {
+        ShowGrid: true,
         ShowAddress: false,
         LocoPanelVisible: false,
         PropertyPanelVisible: false,

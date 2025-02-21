@@ -50,6 +50,7 @@ export class AudioButtonShapeElement extends View {
         const p = 5; // padding
         ctx.save();
 
+        ctx.strokeStyle = "gainsboro";
         ctx.strokeRect(this.posLeft + p, this.posTop + p, this.width - 2 * p, this.height - 2 * p)
 
         const x = this.posLeft + 3

@@ -163,6 +163,7 @@ define(["require", "exports"], function (require, exports) {
             interval: 500
         },
         EditorSettings: {
+            ShowGrid: true,
             ShowAddress: false,
             LocoPanelVisible: false,
             PropertyPanelVisible: false,

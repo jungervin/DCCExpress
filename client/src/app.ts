@@ -13,6 +13,7 @@ import { Dispatcher } from "./editor/dispatcher";
 import { LocoControlPanel } from "./components/controlPanel";
 import { audioManager, AudioManager } from "./editor/audioButton";
 import { AccessoryDecoderElement } from "./editor/button";
+import { Api } from "./helpers/api";
 
 console.log(Dispatcher)
 console.log(ApiCommands)
@@ -186,6 +187,7 @@ export class App {
         this.locoControlPanel = document.getElementById("locoControlPanel") as LocoControlPanel
         this.locos = this.locoControlPanel.locomotives
         Dispatcher.App = this
+        Api.app = this
     }
     execDispatcher() {
         return;

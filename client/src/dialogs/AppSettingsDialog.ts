@@ -12,6 +12,7 @@ export class AppSettingsDialog extends Dialog {
     // signalRed: Signal2CanvasElement;
     // signalGreen: Signal2CanvasElement;
     intervalElement: InputNumber;
+    showGrid: Checkbox;
     constructor() {
         super(800, 600, "Settings")
 
@@ -52,7 +53,12 @@ export class AppSettingsDialog extends Dialog {
         this.intervalElement.value = Globals.Settings.Dispacher.interval
         tab1.addComponent(this.intervalElement)
 
+        this.showGrid = new Checkbox("Show Grid")
+        this.showGrid.checked = Globals.Settings.EditorSettings.ShowGrid
+        tab1.addComponent(this.showGrid)
+
         this.showAddress = new Checkbox("Show address")
+        this.showAddress.checked = Globals.Settings.EditorSettings.ShowAddress
         tab1.addComponent(this.showAddress)
 
         // ======= LOCO ================

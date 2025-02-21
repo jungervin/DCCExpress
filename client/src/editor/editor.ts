@@ -463,10 +463,11 @@ export class CustomCanvas extends HTMLElement {
         this.toolbar!.btnAppSettings.onclick = (e: MouseEvent) => {
             const d = new AppSettingsDialog()
             //d.gridSize.value = settings.GridSizeX;
-            d.showAddress.checked = Globals.Settings.EditorSettings.ShowAddress;
-            d.intervalElement.value = Globals.Settings.Dispacher.interval
+            // d.showAddress.checked = Globals.Settings.EditorSettings.ShowAddress;
+            // d.intervalElement.value = Globals.Settings.Dispacher.interval
             d.onclose = (sender) => {
                 if (d.dialogResult == DialogResult.ok) {
+                    Globals.Settings.EditorSettings.ShowGrid = d.showGrid.checked
                     Globals.Settings.EditorSettings.ShowAddress = d.showAddress.checked
                     Globals.Settings.Dispacher.interval = d.intervalElement.value
                     Globals.saveJson("/settings.json", Globals.Settings)
@@ -665,7 +666,10 @@ export class CustomCanvas extends HTMLElement {
         this.ctx!.translate(this.originX, this.originY)
         this.ctx!.scale(this.scale, this.scale)
 
-        this.drawGrid()
+        if(Globals.Settings.EditorSettings.ShowGrid) {
+            this.drawGrid()
+        }
+        //this.drawGrid()
 
         this.views.elements.slice().reverse().forEach(elem => {
             elem.draw(this.ctx!)

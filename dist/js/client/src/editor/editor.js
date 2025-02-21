@@ -381,10 +381,11 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             this.toolbar.btnAppSettings.onclick = (e) => {
                 const d = new AppSettingsDialog_1.AppSettingsDialog();
                 //d.gridSize.value = settings.GridSizeX;
-                d.showAddress.checked = globals_1.Globals.Settings.EditorSettings.ShowAddress;
-                d.intervalElement.value = globals_1.Globals.Settings.Dispacher.interval;
+                // d.showAddress.checked = Globals.Settings.EditorSettings.ShowAddress;
+                // d.intervalElement.value = Globals.Settings.Dispacher.interval
                 d.onclose = (sender) => {
                     if (d.dialogResult == dialog_1.DialogResult.ok) {
+                        globals_1.Globals.Settings.EditorSettings.ShowGrid = d.showGrid.checked;
                         globals_1.Globals.Settings.EditorSettings.ShowAddress = d.showAddress.checked;
                         globals_1.Globals.Settings.Dispacher.interval = d.intervalElement.value;
                         globals_1.Globals.saveJson("/settings.json", globals_1.Globals.Settings);
@@ -548,7 +549,10 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             //this.ctx!.setTransform(this.scale, 0, 0, this.scale, 0, 0);
             this.ctx.translate(this.originX, this.originY);
             this.ctx.scale(this.scale, this.scale);
-            this.drawGrid();
+            if (globals_1.Globals.Settings.EditorSettings.ShowGrid) {
+                this.drawGrid();
+            }
+            //this.drawGrid()
             this.views.elements.slice().reverse().forEach(elem => {
                 elem.draw(this.ctx);
             });
