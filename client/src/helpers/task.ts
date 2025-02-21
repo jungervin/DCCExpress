@@ -69,10 +69,12 @@ export class Task {
                     // }, ms)
 
                     if (this.delayEnd <= 0) {
+                        console.log(`TASK: ${this.name} delay: ${ms} started!`)
                         this.delayEnd = performance.now() + ms
                     } else if (performance.now() > this.delayEnd) {
                         this.index++;
                         this.delayEnd = 0;
+                        console.log(`TASK: ${this.name} delay finished!`)
                     }
 
 
@@ -81,9 +83,11 @@ export class Task {
                 case StepTypes.waitForSensor:
                     const sensor = (this.step.data as iWaitForSensor)
                     console.log(`TASK: ${this.name} waitForSensor:${sensor.address} value: ${sensor.on}!`)
-                    if (this.num++ == 50) {
+                    this.num++
+                    if (this.num == 100) {
                         this.index++;
                         this.num = 0;
+                        console.log(`TASK: ${this.name} waitForSensor:${sensor.address} finished!`)
                     }
                     break;
                 case StepTypes.function:

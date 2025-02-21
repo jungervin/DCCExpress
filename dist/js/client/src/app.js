@@ -87,6 +87,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 // task.setLoco(18)
                 // task.delay(5000)
                 // task.waitForSensor(12, true)
+                // task.delay(5000)
                 // task.start()
             });
             ws_1.wsClient.onConnected = () => {

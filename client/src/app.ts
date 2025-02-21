@@ -123,6 +123,7 @@ export class App {
             // task.setLoco(18)
             // task.delay(5000)
             // task.waitForSensor(12, true)
+            // task.delay(5000)
             // task.start()
 
 
