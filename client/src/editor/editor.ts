@@ -31,6 +31,7 @@ import { LocoControlPanel } from "../components/controlPanel";
 import { ButtonShapeElement } from "./button";
 import { AudioButtonShapeElement } from "./audioButton";
 import { getDistance } from "../helpers/math";
+import { FastClock } from "./clock";
 
 console.log(PropertyPanel)
 
@@ -110,6 +111,7 @@ export class CustomCanvas extends HTMLElement {
 
     private pointerMap = new Map<number, { x: number; y: number }>(); // Pointer ID-k mentése
     private lastDistance = 0;
+    clock?: FastClock | null;
 
     constructor() {
         super();
@@ -151,18 +153,21 @@ export class CustomCanvas extends HTMLElement {
         this.canvas.width = this.parentElement!.offsetWidth;
         this.canvas.height = this.parentElement!.offsetHeight;
         this.ctx = this.canvas.getContext('2d')!;
+        this.clock = new FastClock(this.ctx!)
         this.drawGrid();
         this.propertyPanel = document.getElementById("EditorPropertyPanel") as PropertyPanel
     }
 
     init() {
 
+        
+
         this.statusbar = document.getElementById("statusbar") as HTMLDivElement
 
         this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
-        this.canvas.addEventListener('mouseup', (e) =>   this.handleMouseUp(e));
+        this.canvas.addEventListener('mouseup', (e) => this.handleMouseUp(e));
         this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
-        this.canvas.addEventListener('wheel', (e) =>     this.handleMouseWheel(e));
+        this.canvas.addEventListener('wheel', (e) => this.handleMouseWheel(e));
 
         this.cursorTrackElement = new TrackElement("", 0, 0, "cursor");
         this.cursorTrackElement.isSelected = true
@@ -657,29 +662,29 @@ export class CustomCanvas extends HTMLElement {
     }
 
     draw() {
-        this.ctx!.reset()
-        this.ctx!.resetTransform();
+        requestAnimationFrame(() => {
+            this.ctx!.reset()
+            this.ctx!.resetTransform();
+            this.ctx!.translate(this.originX, this.originY)
+            this.ctx!.scale(this.scale, this.scale)
 
+            if (Globals.Settings.EditorSettings.ShowGrid) {
+                this.drawGrid()
+            }
 
-        // this.ctx!.setTransform(this.scale, 0, 0, this.scale, this.originX, this.originY);
-        //this.ctx!.setTransform(this.scale, 0, 0, this.scale, 0, 0);
-        this.ctx!.translate(this.originX, this.originY)
-        this.ctx!.scale(this.scale, this.scale)
+            this.views.elements.slice().reverse().forEach(elem => {
+                elem.draw(this.ctx!)
+            });
 
-        if(Globals.Settings.EditorSettings.ShowGrid) {
-            this.drawGrid()
-        }
-        //this.drawGrid()
+            if (this.cursorElement) {
+                this.cursorElement.draw(this.ctx!)
+            }
 
-        this.views.elements.slice().reverse().forEach(elem => {
-            elem.draw(this.ctx!)
-        });
-
-        if (this.cursorElement) {
-            this.cursorElement.draw(this.ctx!)
-        }
-
-        this.drawStatus()
+            this.drawStatus()
+            
+            this.ctx!.setTransform(1, 0, 0, 1, 0, 0);
+            this.clock!.draw()
+        })
 
     }
 
@@ -1311,10 +1316,11 @@ export class CustomCanvas extends HTMLElement {
                 //     break;
                 case 'button':
                     var b = elem as ButtonShapeElement
-                    elems.push({ uuid: b.UUID, type: b.type, address: b.address, x: b.x, y: b.y, name: b.name,
+                    elems.push({
+                        uuid: b.UUID, type: b.type, address: b.address, x: b.x, y: b.y, name: b.name,
                         valueOn: b.valueOn,
                         valueOff: b.valueOff
-                     })
+                    })
                     break;
                 case 'audiobutton':
                     var ab = elem as AudioButtonShapeElement

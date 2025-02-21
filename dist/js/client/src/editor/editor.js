@@ -21,7 +21,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "./views", "bootstrap", "./curve", "./corner", "./signals", "./trackend", "./route", "../controls/dialog", "../../../common/src/dcc", "../dialogs/propertiyPanel", "./block", "../helpers/globals", "../dialogs/AppSettingsDialog", "../dialogs/dlgSignal2Select", "../dialogs/turnoutsPopup", "./label", "../helpers/utility", "../dialogs/codeEditor", "./dispatcher", "./button", "./audioButton"], function (require, exports, track_1, rectangle_1, turnout_1, view_1, views_1, bootstrap, curve_1, corner_1, signals_1, trackend_1, route_1, dialog_1, dcc_1, propertiyPanel_1, block_1, globals_1, AppSettingsDialog_1, dlgSignal2Select_1, turnoutsPopup_1, label_1, utility_1, codeEditor_1, dispatcher_1, button_1, audioButton_1) {
+define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "./views", "bootstrap", "./curve", "./corner", "./signals", "./trackend", "./route", "../controls/dialog", "../../../common/src/dcc", "../dialogs/propertiyPanel", "./block", "../helpers/globals", "../dialogs/AppSettingsDialog", "../dialogs/dlgSignal2Select", "../dialogs/turnoutsPopup", "./label", "../helpers/utility", "../dialogs/codeEditor", "./dispatcher", "./button", "./audioButton", "./clock"], function (require, exports, track_1, rectangle_1, turnout_1, view_1, views_1, bootstrap, curve_1, corner_1, signals_1, trackend_1, route_1, dialog_1, dcc_1, propertiyPanel_1, block_1, globals_1, AppSettingsDialog_1, dlgSignal2Select_1, turnoutsPopup_1, label_1, utility_1, codeEditor_1, dispatcher_1, button_1, audioButton_1, clock_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CustomCanvas = exports.drawModes = void 0;
@@ -100,6 +100,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             this.canvas.width = this.parentElement.offsetWidth;
             this.canvas.height = this.parentElement.offsetHeight;
             this.ctx = this.canvas.getContext('2d');
+            this.clock = new clock_1.FastClock(this.ctx);
             this.drawGrid();
             this.propertyPanel = document.getElementById("EditorPropertyPanel");
         }
@@ -543,23 +544,24 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             }
         }
         draw() {
-            this.ctx.reset();
-            this.ctx.resetTransform();
-            // this.ctx!.setTransform(this.scale, 0, 0, this.scale, this.originX, this.originY);
-            //this.ctx!.setTransform(this.scale, 0, 0, this.scale, 0, 0);
-            this.ctx.translate(this.originX, this.originY);
-            this.ctx.scale(this.scale, this.scale);
-            if (globals_1.Globals.Settings.EditorSettings.ShowGrid) {
-                this.drawGrid();
-            }
-            //this.drawGrid()
-            this.views.elements.slice().reverse().forEach(elem => {
-                elem.draw(this.ctx);
+            requestAnimationFrame(() => {
+                this.ctx.reset();
+                this.ctx.resetTransform();
+                this.ctx.translate(this.originX, this.originY);
+                this.ctx.scale(this.scale, this.scale);
+                if (globals_1.Globals.Settings.EditorSettings.ShowGrid) {
+                    this.drawGrid();
+                }
+                this.views.elements.slice().reverse().forEach(elem => {
+                    elem.draw(this.ctx);
+                });
+                if (this.cursorElement) {
+                    this.cursorElement.draw(this.ctx);
+                }
+                this.drawStatus();
+                this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+                this.clock.draw();
             });
-            if (this.cursorElement) {
-                this.cursorElement.draw(this.ctx);
-            }
-            this.drawStatus();
         }
         getMouseX(e) {
             return e.offsetX - this.originX;
@@ -1139,7 +1141,8 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                     //     break;
                     case 'button':
                         var b = elem;
-                        elems.push({ uuid: b.UUID, type: b.type, address: b.address, x: b.x, y: b.y, name: b.name,
+                        elems.push({
+                            uuid: b.UUID, type: b.type, address: b.address, x: b.x, y: b.y, name: b.name,
                             valueOn: b.valueOn,
                             valueOff: b.valueOff
                         });

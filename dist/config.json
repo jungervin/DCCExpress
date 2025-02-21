@@ -1,9 +1,9 @@
 {
     "settings": {
-        "scale": 1.3920816167864063,
-        "origX": 347,
-        "origY": -125,
-        "locoPanelVisible": true,
+        "scale": 1.1338591773826325,
+        "origX": 122,
+        "origY": -166,
+        "locoPanelVisible": false,
         "propertyPanelVisible": false
     },
     "pages": [
@@ -1109,8 +1109,8 @@
                     "uuid": "8a1d0862-b2b3-4a4e-afdd-4f5fc31c13c6",
                     "type": "button",
                     "address": 100,
-                    "x": 7,
-                    "y": 5,
+                    "x": 6,
+                    "y": 14,
                     "name": "button118",
                     "valueOn": true,
                     "valueOff": false
@@ -1119,8 +1119,8 @@
                     "uuid": "881bf289-b58f-4551-9357-76c9610196a7",
                     "type": "button",
                     "address": 101,
-                    "x": 10,
-                    "y": 5,
+                    "x": 9,
+                    "y": 14,
                     "name": "button119",
                     "valueOn": false,
                     "valueOff": true
@@ -1344,8 +1344,8 @@
                     "uuid": "fbbf319d-4605-4412-96e3-a5f1949d967e",
                     "type": "label2",
                     "name": "label175",
-                    "x": 8,
-                    "y": 5,
+                    "x": 7,
+                    "y": 14,
                     "angle": 0,
                     "text": "Világítás 1",
                     "valign": "center"
@@ -1354,8 +1354,8 @@
                     "uuid": "2034f167-0da3-4196-b390-811ca198c5b7",
                     "type": "label2",
                     "name": "label176",
-                    "x": 11,
-                    "y": 5,
+                    "x": 10,
+                    "y": 14,
                     "angle": 0,
                     "text": "Teszt 1",
                     "valign": "center"
