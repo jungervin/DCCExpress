@@ -368,8 +368,8 @@ define(["require", "exports"], function (require, exports) {
         getElement() {
             return this.textarea;
         }
-        setHeight(v) {
-            this.textarea.style.height = `${v}px`;
+        setHeight(h) {
+            this.textarea.style.height = h;
         }
     }
     exports.TextArea = TextArea;

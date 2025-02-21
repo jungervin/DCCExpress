@@ -450,8 +450,8 @@ export class TextArea extends UIComponent {
         return this.textarea;
     }
 
-    setHeight(v: number) {
-        this.textarea.style.height = `${v}px`;
+    setHeight(h: string) {
+        this.textarea.style.height = h;
     }
 }
 

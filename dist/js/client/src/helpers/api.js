@@ -27,6 +27,9 @@ define(["require", "exports"], function (require, exports) {
                 }
             }
         }
+        static getTurnout(address) {
+            return Api.app.editor.views.getTurnoutElements().find(t => t.address === address);
+        }
     }
     exports.Api = Api;
 });

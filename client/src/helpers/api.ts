@@ -3,6 +3,7 @@ import { iLocomotive, Z21Directions } from "../../../common/src/dcc";
 
 export class Api {
     static app : App
+
     static getLoco(address: number): iLocomotive | undefined {
         return Api.app.locoControlPanel.locomotives.find(l => l.address === address)
     }
@@ -27,5 +28,9 @@ export class Api {
                 func.isOn = isOn
             }
         }
+    }
+
+    static getTurnout(address: number)  {
+        return Api.app.editor.views.getTurnoutElements().find(t => t.address === address)
     }
 }
