@@ -70,7 +70,7 @@ export class AppSettingsDialog extends Dialog {
         this.showClock.checked = Globals.Settings.EditorSettings.ShowClock ?? false
         fastClockGroup.add(this.showClock)
 
-        const label1 = new Label("Factor")
+        const label1 = new Label("Factor (x1..x10)")
         fastClockGroup.add(label1)
 
         this.fastClockFactor = new InputNumber()
