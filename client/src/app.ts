@@ -4,7 +4,7 @@ import { TurnoutDoubleElement, TurnoutElement, TurnoutLeftElement, TurnoutRightE
 import { Signal1Element } from "./editor/signals";
 import { RailView } from "./editor/view";
 import { Locos } from "./editor/loco";
-import { ApiCommands, iData, iGetTurnout, iLoco, iPowerInfo, iRBus, iSettings, iSetPower, iSetTurnout, iSystemStatus, setDecoder, Z21Directions, Z21POWERINFO, defaultSettings } from "../../common/src/dcc";
+import { ApiCommands, iData, iGetTurnout, iLoco, iPowerInfo, iRBus, iSettings, iSetPower, iSetTurnout, iSystemStatus, setDecoder, Z21Directions, Z21POWERINFO, defaultSettings, iLocomotive } from "../../common/src/dcc";
 import { Globals } from "./helpers/globals";
 import { Dialog } from "./controls/dialog";
 import { wsClient } from "./helpers/ws";
@@ -23,7 +23,8 @@ console.log(LocoControlPanel)
 export class App {
     editor: CustomCanvas;
     toolbar: Toolbar;
-    locos: Locos | undefined;
+    //locos: Locos | undefined;
+    locos: iLocomotive[] = []
     sensors: { [key: number]: boolean } = {}
     decoders: { [key: number]: boolean } = {}
     locoControlPanel: LocoControlPanel;
@@ -183,7 +184,7 @@ export class App {
         // A settings betöltése után
 
         this.locoControlPanel = document.getElementById("locoControlPanel") as LocoControlPanel
-
+        this.locos = this.locoControlPanel.locomotives
         Dispatcher.App = this
     }
     execDispatcher() {
@@ -429,4 +430,10 @@ export class App {
 
     }
 
+    getLoco(addr    : number) {
+        if(this.locoControlPanel.locomotives) {
+        return this.locoControlPanel.locomotives.find((l) => l.address == addr)
+        }
+        return undefined
+    }
 }

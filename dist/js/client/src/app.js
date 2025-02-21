@@ -28,6 +28,8 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             }
         }
         constructor() {
+            //locos: Locos | undefined;
+            this.locos = [];
             this.sensors = {};
             this.decoders = {};
             this.powerInfo = {
@@ -138,6 +140,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             };
             // A settings betöltése után
             this.locoControlPanel = document.getElementById("locoControlPanel");
+            this.locos = this.locoControlPanel.locomotives;
             dispatcher_1.Dispatcher.App = this;
         }
         execDispatcher() {
@@ -357,6 +360,12 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             //     window.powerChanged(this.powerOn)
             //     this.prevPower = this.powerOn;
             // }
+        }
+        getLoco(addr) {
+            if (this.locoControlPanel.locomotives) {
+                return this.locoControlPanel.locomotives.find((l) => l.address == addr);
+            }
+            return undefined;
         }
     }
     exports.App = App;

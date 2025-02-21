@@ -31,6 +31,9 @@ const rb15 = App.sensors[15]
 const rb24 = App.sensors[24]
 
 
+const l18 = App.getLoco(18)
+console.log(l18)
+
 // ======================================
 // The train has reached the station
 // ======================================

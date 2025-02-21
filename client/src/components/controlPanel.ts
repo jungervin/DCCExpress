@@ -9,7 +9,7 @@ interface FunctionButton extends HTMLButtonElement {
 
 
 export class LocoControlPanel extends HTMLElement {
-    private locomotives: iLocomotive[] = [];
+    locomotives: iLocomotive[] = [];
     locoImage: HTMLImageElement;
     btnReverse: HTMLButtonElement;
     btnForward: HTMLButtonElement;
