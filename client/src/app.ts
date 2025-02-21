@@ -63,7 +63,7 @@ export class App {
 
     constructor() {
 
-        this.loadCanvasState(); 
+        this.loadCanvasState();
 
         window.addEventListener("beforeunload", this.saveCanvasState);
 
@@ -104,13 +104,13 @@ export class App {
             Globals.Settings.Dispacher = s.Dispacher ?? defaultSettings.Dispacher
             Globals.Settings.EditorSettings = s.EditorSettings ?? defaultSettings.EditorSettings
 
-            
+
             this.editor.fastClock!.setScaleFactor(Globals.Settings.EditorSettings.fastClockFactor)
             this.editor.fastClock!.visible = Globals.Settings.EditorSettings.ShowClock
 
             Globals.fetchJsonData('/config.json').then((conf: any) => {
                 this.configLoaded(conf)
-                wsClient.send({ type: ApiCommands.getRBusInfo, data: "" })                
+                wsClient.send({ type: ApiCommands.getRBusInfo, data: "" })
             }).catch((reason) => {
                 alert("Config Error:\n" + reason)
             })
@@ -119,20 +119,48 @@ export class App {
             alert("Settings Error:\n" + reason)
         }).finally(() => {
 
-            // const task = new Task("Task1")
-            // task.setLoco(18)
-            // task.delay(5000)
-            // task.waitForSensor(12, true)
-            // task.delay(5000)
-            // task.start()
+            if (false) {
+                const task = new Task("Task1")
+                task.setLoco(3)
 
+                task.delay(3000)
+                task.setFunction(3, true)
+                task.delay(500)
+                task.setFunction(3, false)
+
+                task.reverse(20)
+                task.waitForSensor(16, true)
+                task.setFunction(3, true)
+                task.delay(500)
+                task.setFunction(3, false)
+                task.delay(3000)
+                task.stop()
+
+                task.delay(5000)
+
+                task.foward(20)
+                task.setFunction(3, false)
+                task.delay(500)
+                task.setFunction(3, true)
+                task.waitForSensor(24, true)
+                task.setFunction(3, false)
+                task.delay(500)
+                task.setFunction(3, true)
+                task.delay(3000)
+                task.stop()
+
+                task.delay(5000)
+                task.restart()
+
+                task.taskStart()
+            }
 
         })
 
         wsClient.onConnected = () => {
             this.toolbar.wsStatus!.classList.remove("error")
             this.toolbar.wsStatus!.classList.add("success")
-            
+
             this.locoControlPanel.init()
 
         }
@@ -291,7 +319,7 @@ export class App {
 
         var accessories = this.editor.views.getAccessoryElements()
         accessories.forEach((s) => {
-                wsClient.send({ type: ApiCommands.getTurnout, data: { address: s.address} as iGetTurnout } as iData)
+            wsClient.send({ type: ApiCommands.getTurnout, data: { address: s.address } as iGetTurnout } as iData)
         })
 
     }
@@ -336,7 +364,7 @@ export class App {
                 }
             }
         })
-        
+
         const accessories = this.editor.views.getAccessoryElements()
         accessories.forEach((elem: AccessoryDecoderElement) => {
             if (elem.address == data.address) {
@@ -446,9 +474,9 @@ export class App {
 
     }
 
-    getLoco(addr    : number) {
-        if(this.locoControlPanel.locomotives) {
-        return this.locoControlPanel.locomotives.find((l) => l.address == addr)
+    getLoco(addr: number) {
+        if (this.locoControlPanel.locomotives) {
+            return this.locoControlPanel.locomotives.find((l) => l.address == addr)
         }
         return undefined
     }

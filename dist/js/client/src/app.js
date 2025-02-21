@@ -1,4 +1,4 @@
-define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/view", "../../common/src/dcc", "./helpers/globals", "./controls/dialog", "./helpers/ws", "./controls/toastManager", "./editor/dispatcher", "./components/controlPanel", "./editor/audioButton", "./helpers/api"], function (require, exports, editor_1, turnout_1, view_1, dcc_1, globals_1, dialog_1, ws_1, toastManager_1, dispatcher_1, controlPanel_1, audioButton_1, api_1) {
+define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/view", "../../common/src/dcc", "./helpers/globals", "./controls/dialog", "./helpers/ws", "./controls/toastManager", "./editor/dispatcher", "./components/controlPanel", "./editor/audioButton", "./helpers/api", "./helpers/task"], function (require, exports, editor_1, turnout_1, view_1, dcc_1, globals_1, dialog_1, ws_1, toastManager_1, dispatcher_1, controlPanel_1, audioButton_1, api_1, task_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.App = void 0;
@@ -83,12 +83,35 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             }).catch((reason) => {
                 alert("Settings Error:\n" + reason);
             }).finally(() => {
-                // const task = new Task("Task1")
-                // task.setLoco(18)
-                // task.delay(5000)
-                // task.waitForSensor(12, true)
-                // task.delay(5000)
-                // task.start()
+                if (false) {
+                    const task = new task_1.Task("Task1");
+                    task.setLoco(3);
+                    task.delay(3000);
+                    task.setFunction(3, true);
+                    task.delay(500);
+                    task.setFunction(3, false);
+                    task.reverse(20);
+                    task.waitForSensor(16, true);
+                    task.setFunction(3, true);
+                    task.delay(500);
+                    task.setFunction(3, false);
+                    task.delay(3000);
+                    task.stop();
+                    task.delay(5000);
+                    task.foward(20);
+                    task.setFunction(3, false);
+                    task.delay(500);
+                    task.setFunction(3, true);
+                    task.waitForSensor(24, true);
+                    task.setFunction(3, false);
+                    task.delay(500);
+                    task.setFunction(3, true);
+                    task.delay(3000);
+                    task.stop();
+                    task.delay(5000);
+                    task.restart();
+                    task.taskStart();
+                }
             });
             ws_1.wsClient.onConnected = () => {
                 this.toolbar.wsStatus.classList.remove("error");

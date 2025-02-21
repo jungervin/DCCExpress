@@ -483,7 +483,7 @@ export class Z21CommandCenter extends CommandCenter {
                 // this.udp.connect(this.port, this.ip, () => {
                 //     log("Z21 Connected")
                 // })
-                this.LAN_LOGOFF()
+                //this.LAN_LOGOFF()
                 this.LAN_SET_BROADCASTFLAGS()
                 this.LAN_SYSTEMSTATE_GETDATA()
 
