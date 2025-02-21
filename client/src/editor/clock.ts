@@ -84,11 +84,11 @@ export class FastClock {
             ctx.fill()
             ctx.stroke();
 
-            ctx.shadowBlur = 10;
+            ctx.shadowBlur = 5;
             ctx.shadowOffsetX = 3;
             ctx.shadowOffsetY = 3;
 
-            // Számok (órajelölések)
+            // Számok
             for (let i = 1; i <= 12; i++) {
                 const angle = (i * 30 - 90) * (Math.PI / 180);
                 const x = centerX + Math.cos(angle) * (radius - 12);
@@ -100,7 +100,7 @@ export class FastClock {
                 ctx.fillText(i.toString(), x, y+2);
             }
 
-            // Mutatók szögének kiszámítása
+            // Mutatók
             const hours = this.currentTime.getHours() % 12;
             const minutes = this.currentTime.getMinutes();
             const seconds = this.currentTime.getSeconds();
@@ -138,7 +138,7 @@ export class FastClock {
 
     public setScaleFactor(factor: number) {
         this.scaleFactor = factor;
-        this.start(); // Frissítjük az intervallumot
+        this.start(); 
     }
 }
 
