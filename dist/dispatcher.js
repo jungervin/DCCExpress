@@ -10,6 +10,7 @@ if (!App.num) {
 if (!App.init) {
     App.init = "true"
     App.status = {}
+
     return
 }
 
