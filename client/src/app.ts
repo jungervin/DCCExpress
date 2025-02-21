@@ -14,6 +14,7 @@ import { LocoControlPanel } from "./components/controlPanel";
 import { audioManager, AudioManager } from "./editor/audioButton";
 import { AccessoryDecoderElement } from "./editor/button";
 import { Api } from "./helpers/api";
+import { Task } from "./helpers/task";
 
 console.log(Dispatcher)
 console.log(ApiCommands)
@@ -117,6 +118,14 @@ export class App {
         }).catch((reason: any) => {
             alert("Settings Error:\n" + reason)
         }).finally(() => {
+
+            // const task = new Task("Task1")
+            // task.setLoco(18)
+            // task.delay(5000)
+            // task.waitForSensor(12, true)
+            // task.start()
+
+
         })
 
         wsClient.onConnected = () => {

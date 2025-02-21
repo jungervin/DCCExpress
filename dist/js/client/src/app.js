@@ -83,6 +83,11 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             }).catch((reason) => {
                 alert("Settings Error:\n" + reason);
             }).finally(() => {
+                // const task = new Task("Task1")
+                // task.setLoco(18)
+                // task.delay(5000)
+                // task.waitForSensor(12, true)
+                // task.start()
             });
             ws_1.wsClient.onConnected = () => {
                 this.toolbar.wsStatus.classList.remove("error");

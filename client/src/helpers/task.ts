@@ -2,6 +2,7 @@
 enum StepTypes {
     loco,
     delay,
+    waitForSensor,
     function
 }
 interface iStep {
@@ -17,6 +18,11 @@ interface iDelayStep {
     ms: number
 }
 
+interface iWaitForSensor {
+    address: number;
+    on: boolean;
+}
+
 export class Task {
     name: string;
     index: number = 0;
@@ -25,58 +31,86 @@ export class Task {
     delayTimer?: NodeJS.Timeout | undefined;
     timer?: NodeJS.Timeout | undefined;
     locoAddress: number = 0;
+    num: number = 0;
+    step: iStep | undefined;
+    delayEnd: number = 0;
     constructor(name: string) {
         this.name = name
     }
 
-    addLoco(address: number) {
+    setLoco(address: number) {
         this.steps.push({ type: StepTypes.loco, data: { address: address } as iLocoStep } as iStep)
     }
-    addDelay(ms: number) {
+    delay(ms: number) {
         this.steps.push({ type: StepTypes.delay, data: { ms: ms } as iDelayStep } as iStep)
     }
 
-    private delay(ms: number) {
-        this.delayTimer = setTimeout(() => {
-            this.index++
-        }, ms)
+    waitForSensor(address: number, on: boolean) {
+        this.steps.push({ type: StepTypes.waitForSensor, data: { address: address, on: on } as iWaitForSensor } as iStep)
     }
 
-    procStep(step: iStep) {
-        switch (step.type) {
-            case StepTypes.loco:
-               
-                this.locoAddress = (step.data as iLocoStep).address
-                console.log(`TASK: ${this.name} loco: ${this.locoAddress} added!`)
-                this.index++
-                break;
-            case StepTypes.delay:
-                const ms = (step.data as iDelayStep).ms
-                console.log(`TASK: ${this.name} delay: ${ms} started!`)
-                this.delayTimer = setTimeout(() => {
-                    this.index++;
-                    console.log(`TASK: ${this.name} delay finished!`)
-                }, ms)
+    procStep() {
+        if (this.step) {
+            switch (this.step.type) {
+                case StepTypes.loco:
+                    this.locoAddress = (this.step.data as iLocoStep).address
+                    console.log(`TASK: ${this.name} loco: ${this.locoAddress} added!`)
+                    this.index++
+                    break;
+                case StepTypes.delay:
+                    // Ez helyett inkább 
+                    //  delayEnd = now() + ms használj!
+                    // amikor defejeződik a delayEnd pedig null legyen
+                    const ms = (this.step.data as iDelayStep).ms
+                    // console.log(`TASK: ${this.name} delay: ${ms} started!`)
+                    // this.delayTimer = setTimeout(() => {
+                    //     this.index++;
+                    //     console.log(`TASK: ${this.name} delay finished!`)
+                    // }, ms)
 
-                break;
-            case StepTypes.function:
-                this.index++;
-                break;
+                    if (this.delayEnd <= 0) {
+                        this.delayEnd = performance.now() + ms
+                    } else if (performance.now() > this.delayEnd) {
+                        this.index++;
+                        this.delayEnd = 0;
+                    }
+
+
+                    break;
+
+                case StepTypes.waitForSensor:
+                    const sensor = (this.step.data as iWaitForSensor)
+                    console.log(`TASK: ${this.name} waitForSensor:${sensor.address} value: ${sensor.on}!`)
+                    if (this.num++ == 50) {
+                        this.index++;
+                        this.num = 0;
+                    }
+                    break;
+                case StepTypes.function:
+                    this.index++;
+                    break;
+            }
         }
     }
     proc() {
-        if (this.index != this.prevIndex) {
-            if (this.index < this.steps.length) {
-                const step = this.steps[this.index]
-                this.procStep(step)
+        if (this.index < this.steps.length) {
+            if (this.index != this.prevIndex) {
                 this.prevIndex = this.index;
+                this.step = this.steps[this.index]
+
             } else {
-                console.log(`TASK: ${this.name} finished!`)
             }
+            this.procStep()
+
+            this.timer = setTimeout(() => {
+                this.proc()
+            }, 50)
+
+
+        } else {
+            console.log(`TASK: ${this.name} finished! Exit!`)
+
         }
-        this.timer = setTimeout(() => {
-            this.proc()
-        }, 50)
     }
     start() {
         console.log(`TASK: ${this.name} started!`)
