@@ -187,6 +187,9 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 if (!this.tasks.getTask("Task1")) {
                     const task = this.tasks.addTask("Task1");
                     task.setLoco(3);
+                    // ==========================================
+                    //  Szfvár P3 <=== P2 <== Szabadbattyán P3
+                    // ==========================================
                     task.setTurnout(16, false);
                     task.delay(500);
                     task.setTurnout(12, false);
@@ -197,6 +200,13 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                     task.delay(500);
                     task.setTurnout(21, true);
                     task.delay(3000);
+                    // Kalauz síp
+                    task.setFunction(17, true);
+                    task.delay(500);
+                    task.setFunction(17, false);
+                    task.delay(3000);
+                    // Kürt
+                    task.reverse(0);
                     task.setFunction(3, true);
                     task.delay(500);
                     task.setFunction(3, false);
@@ -207,8 +217,10 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                     task.setFunction(3, false);
                     task.delay(3000);
                     task.stop();
-                    task.delay(10000);
-                    // => P3
+                    task.delay(10000 + Math.random() * 10000);
+                    // ==========================================
+                    //  Szfvár P3 ==> P1 ==> Szabadbattyán P3
+                    // ==========================================
                     task.setTurnout(21, true);
                     task.delay(500);
                     task.setTurnout(20, false);
@@ -222,6 +234,14 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                     task.setTurnout(13, true);
                     task.delay(500);
                     task.setTurnout(16, false);
+                    task.delay(3000);
+                    // Kalauz síp
+                    task.setFunction(17, true);
+                    task.delay(500);
+                    task.setFunction(17, false);
+                    task.delay(3000);
+                    // Kürt
+                    task.foward(0);
                     task.setFunction(3, true);
                     task.delay(500);
                     task.setFunction(3, false);
@@ -234,9 +254,6 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                     task.stop();
                     task.delay(10000);
                     task.restart();
-                    // task.delay(10000)
-                    // task.delay(10000)
-                    // task.restart()
                 }
             }
         }
