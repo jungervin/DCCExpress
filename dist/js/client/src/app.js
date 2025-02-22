@@ -83,35 +83,6 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             }).catch((reason) => {
                 alert("Settings Error:\n" + reason);
             }).finally(() => {
-                if (false) {
-                    const task = new task_1.Task("Task1");
-                    task.setLoco(3);
-                    task.delay(3000);
-                    task.setFunction(3, true);
-                    task.delay(500);
-                    task.setFunction(3, false);
-                    task.reverse(20);
-                    task.waitForSensor(16, true);
-                    task.setFunction(3, true);
-                    task.delay(500);
-                    task.setFunction(3, false);
-                    task.delay(3000);
-                    task.stop();
-                    task.delay(5000);
-                    task.foward(20);
-                    task.setFunction(3, false);
-                    task.delay(500);
-                    task.setFunction(3, true);
-                    task.waitForSensor(24, true);
-                    task.setFunction(3, false);
-                    task.delay(500);
-                    task.setFunction(3, true);
-                    task.delay(3000);
-                    task.stop();
-                    task.delay(5000);
-                    task.restart();
-                    task.taskStart();
-                }
             });
             ws_1.wsClient.onConnected = () => {
                 this.toolbar.wsStatus.classList.remove("error");
@@ -172,8 +143,21 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             // A settings betöltése után
             this.locoControlPanel = document.getElementById("locoControlPanel");
             this.locos = this.locoControlPanel.locomotives;
+            this.tasks = new task_1.Tasks();
             dispatcher_1.Dispatcher.App = this;
             api_1.Api.app = this;
+            this.toolbar.btnTasks.onclick = (e) => {
+                this.toolbar.tasks = !this.toolbar.tasks;
+                if (this.toolbar.tasks) {
+                    this.tasks.stopAllTask();
+                    this.tasks.tasks.length = 0;
+                    this.task1();
+                    this.tasks.startAllTask();
+                }
+                else {
+                    this.tasks.stopAllTask();
+                }
+            };
         }
         execDispatcher() {
             return;
@@ -196,6 +180,64 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             }
             else {
                 signal50 === null || signal50 === void 0 ? void 0 : signal50.sendRed();
+            }
+        }
+        task1() {
+            if (true) {
+                if (!this.tasks.getTask("Task1")) {
+                    const task = this.tasks.addTask("Task1");
+                    task.setLoco(3);
+                    task.setTurnout(16, false);
+                    task.delay(500);
+                    task.setTurnout(12, false);
+                    task.delay(500);
+                    task.setTurnout(13, true);
+                    task.delay(500);
+                    task.setTurnout(20, true);
+                    task.delay(500);
+                    task.setTurnout(21, true);
+                    task.delay(3000);
+                    task.setFunction(3, true);
+                    task.delay(500);
+                    task.setFunction(3, false);
+                    task.reverse(30);
+                    task.waitForSensor(16, true);
+                    task.setFunction(3, true);
+                    task.delay(500);
+                    task.setFunction(3, false);
+                    task.delay(3000);
+                    task.stop();
+                    task.delay(10000);
+                    // => P3
+                    task.setTurnout(21, true);
+                    task.delay(500);
+                    task.setTurnout(20, false);
+                    task.delay(500);
+                    task.setTurnout(24, false);
+                    task.delay(500);
+                    task.setTurnout(25, false);
+                    task.delay(500);
+                    task.setTurnout(12, true);
+                    task.delay(500);
+                    task.setTurnout(13, true);
+                    task.delay(500);
+                    task.setTurnout(16, false);
+                    task.setFunction(3, true);
+                    task.delay(500);
+                    task.setFunction(3, false);
+                    task.foward(30);
+                    task.waitForSensor(24, true);
+                    task.setFunction(3, true);
+                    task.delay(500);
+                    task.setFunction(3, false);
+                    task.delay(3000);
+                    task.stop();
+                    task.delay(10000);
+                    task.restart();
+                    // task.delay(10000)
+                    // task.delay(10000)
+                    // task.restart()
+                }
             }
         }
         systemInfo(ss) {

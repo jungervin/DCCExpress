@@ -2,14 +2,15 @@ import { Z21Directions } from "../../../common/src/dcc";
 import { Api } from "./api";
 
 enum StepTypes {
-    loco,
-    foward,
-    reverse,
-    stop,
-    delay,
-    waitForSensor,
-    function,
-    restart
+    loco = "loco",
+    setTurnout = "setTurnout",
+    foward = "foward",
+    reverse = "reverse",
+    stop = "stop",
+    delay = "delay",
+    waitForSensor = "waitForSensor",
+    function = "function",
+    restart = "restart"
 }
 interface iStep {
     type: StepTypes,
@@ -18,6 +19,11 @@ interface iStep {
 
 interface iLocoStep {
     address: number
+}
+
+interface iSetTurnoutStep {
+    address: number,
+    closed: boolean
 }
 
 interface iDelayStep {
@@ -47,13 +53,101 @@ export enum TaskStatus {
     stopped,
     finished
 }
+
+export class Tasks {
+
+    tasks: Task[] = []
+    timer: NodeJS.Timeout;
+    constructor() {
+        this.timer = setInterval(() => {
+            this.tasks.forEach(t => { t.proc() })
+        }, 50)
+    }
+
+    exec() {
+
+    }
+    addTask(name: string) {
+        console.log(`addTask: ${name}`)
+        const task = new Task(name)
+        this.tasks.push(task)
+        return task
+    }
+
+    startTask(name: string) {
+        console.log(`startTask: ${name}`)
+        const task = this.getTask(name)
+        if (task) {
+            task.taskStart()
+        }
+    }
+
+    stopTask(name: string) {
+        console.log(`stopTask: ${name}`)
+        const task = this.getTask(name)
+        if (task) {
+            task.taskStop()
+        }
+    }
+
+    getTask(name: string) {
+        console.log(`getTask: ${name}`)
+        return this.tasks.find(t => t.name == name)
+    }
+
+    getTasks() {
+        return this.tasks
+    }
+
+    getTaskNames() {
+        return this.tasks.map(t => t.name)
+    }
+
+    // restartTask(name: string) {
+    //     const task = this.getTask(name)
+    //     if (task) {
+    //         task.restart()
+    //     }
+    // }   
+
+    // deleteTask(name: string) {
+    //     const task = this.getTask(name)
+    //     if (task) {
+    //         task.taskStop()
+    //         const index = this.tasks.indexOf(task)
+    //         this.tasks.splice(index, 1)
+    //     }
+    // }   
+
+    stopAllTask() {
+        console.log('stopAllTask()')
+        this.tasks.forEach(t => {
+            t.taskStop()
+        })
+    }
+
+    startAllTask() {
+        console.log('startAllTask()')
+        this.tasks.forEach(t => {
+            t.taskStart()
+        })
+    }
+
+    restartAllTask() {
+        console.log('restartAllTask()')
+        this.tasks.forEach(t => {
+            t.restart()
+        })
+    }
+}
+
 export class Task {
     name: string;
     index: number = 0;
     prevIndex: number = -1;
     steps: any[] = []
-    delayTimer?: NodeJS.Timeout | undefined;
-    timer?: NodeJS.Timeout | undefined;
+    //delayTimer?: NodeJS.Timeout | undefined;
+    // timer?: NodeJS.Timeout | undefined;
     locoAddress: number = 0;
     num: number = 0;
     step: iStep | undefined;
@@ -63,8 +157,14 @@ export class Task {
         this.name = name
     }
 
+
+
     setLoco(address: number) {
         this.steps.push({ type: StepTypes.loco, data: { address: address } as iLocoStep } as iStep)
+    }
+
+    setTurnout(address: number, closed: boolean) {
+        this.steps.push({ type: StepTypes.setTurnout, data: { address: address, closed: closed } as iSetTurnoutStep } as iStep)
     }
 
     foward(speed: number) {
@@ -74,7 +174,7 @@ export class Task {
         this.steps.push({ type: StepTypes.reverse, data: { speed: speed } as iForwardStep } as iStep)
     }
     stop() {
-        this.steps.push({ type: StepTypes.stop, data: {speed: 0} } as iStep)
+        this.steps.push({ type: StepTypes.stop, data: { speed: 0 } } as iStep)
     }
 
     setFunction(fn: number, on: boolean) {
@@ -94,26 +194,32 @@ export class Task {
             switch (this.step.type) {
                 case StepTypes.loco:
                     this.locoAddress = (this.step.data as iLocoStep).address
-                    console.log(`TASK: ${this.name} loco: ${this.locoAddress} added!`)
+                    //console.log(`TASK: ${this.name} loco: ${this.locoAddress} added!`)
                     this.index++
+                    break;
+
+                case StepTypes.setTurnout:
+                    const turnout = (this.step.data as iSetTurnoutStep)
+                    Api.setTurnout(turnout.address, turnout.closed)
+                    this.index++;
                     break;
 
                 case StepTypes.foward:
                     const speed = (this.step.data as iForwardStep).speed
-                    console.log(`TASK: ${this.name} foward: ${speed} started!`)
+                    //console.log(`TASK: ${this.name} foward: ${speed} started!`)
                     Api.setLoco(this.locoAddress, speed, Z21Directions.forward)
                     this.index++;
                     break;
 
                 case StepTypes.reverse:
-                    const rspeed = (this.step.data as iForwardStep).speed   
-                    console.log(`TASK: ${this.name} reverse: ${rspeed} started!`)
+                    const rspeed = (this.step.data as iForwardStep).speed
+                    //console.log(`TASK: ${this.name} reverse: ${rspeed} started!`)
                     Api.setLoco(this.locoAddress, rspeed, Z21Directions.reverse)
                     this.index++;
                     break;
 
                 case StepTypes.stop:
-                    console.log(`TASK: ${this.name} stop started!`)
+                    //console.log(`TASK: ${this.name} stop started!`)
                     Api.setLocoSpeed(this.locoAddress, 0)
                     this.index++;
                     break;
@@ -129,20 +235,17 @@ export class Task {
                     // }, ms)
 
                     if (this.delayEnd <= 0) {
-                        console.log(`TASK: ${this.name} delay: ${ms} started!`)
+                        //console.log(`TASK: ${this.name} delay: ${ms} started!`)
                         this.delayEnd = performance.now() + ms
                     } else if (performance.now() > this.delayEnd) {
                         this.index++;
                         this.delayEnd = 0;
-                        console.log(`TASK: ${this.name} delay finished!`)
+                        //console.log(`TASK: ${this.name} delay finished!`)
                     }
-
-
                     break;
 
                 case StepTypes.waitForSensor:
                     const sensor = (this.step.data as iWaitForSensor)
-                    console.log(`TASK: ${this.name} waitForSensor:${sensor.address} value: ${sensor.on}!`)
                     if (Api.getSensor(sensor.address) == sensor.on) {
                         this.index++;
                         console.log(`TASK: ${this.name} waitForSensor:${sensor.address} finished!`)
@@ -154,36 +257,66 @@ export class Task {
                     this.index++;
                     break;
                 case StepTypes.restart:
-                    console.log(`TASK: ${this.name} restart!`)
+                    //console.log(`TASK: ${this.name} restart!`)
                     this.index = 0;
                     this.prevIndex = -1;
                     break;
             }
         }
     }
+
+    logStep(step: iStep) {
+        switch (step.type) {
+            case StepTypes.loco:
+                console.log(`TASK: ${this.name} index: ${this.index} loco: ${(step.data as iLocoStep).address}`)
+                break;
+            case StepTypes.setTurnout:
+                console.log(`TASK: ${this.name} index: ${this.index} setTurnout: ${(step.data as iSetTurnoutStep).address} closed: ${(step.data as iSetTurnoutStep).closed}`)   
+                break;
+            case StepTypes.foward:
+                console.log(`TASK: ${this.name} index: ${this.index} foward: ${(step.data as iForwardStep).speed}`)
+                break;
+            case StepTypes.reverse:
+                console.log(`TASK: ${this.name} index: ${this.index} reverse: ${(step.data as iForwardStep).speed}`)
+                break;
+            case StepTypes.stop:
+                console.log(`TASK: ${this.name} index: ${this.index} stop`)
+                break;
+            case StepTypes.delay:
+                console.log(`TASK: ${this.name} index: ${this.index} delay: ${(step.data as iDelayStep).ms}`)
+                break;
+            case StepTypes.waitForSensor:
+                console.log(`TASK: ${this.name} index: ${this.index} waitForSensor: ${(step.data as iWaitForSensor).address}`)
+                break;
+            case StepTypes.function:
+                console.log(`TASK: ${this.name} index: ${this.index} function: ${(step.data as iFunctionStep).fn}`)
+                break;
+            case StepTypes.restart:
+                console.log(`TASK: ${this.name} index: ${this.index} restart`)
+                break;
+        }
+    }
     proc() {
-        if (this.index < this.steps.length) {
-            if (this.index != this.prevIndex) {
-                this.prevIndex = this.index;
-                this.step = this.steps[this.index]
-
+        if (this.status == TaskStatus.running) {
+            if (this.index < this.steps.length) {
+                if (this.index != this.prevIndex) {
+                    this.prevIndex = this.index;
+                    this.step = this.steps[this.index]
+                    this.logStep(this.step!)
+                    //console.log(`TASK: ${this.name} index: ${this.index} step: ${this.step!.type}`)
+                }
+                if (this.status == TaskStatus.running) {
+                    this.procStep()
+                }
             } else {
+                console.log(`TASK: ${this.name} finished! Exit!`)
+                this.status = TaskStatus.finished
             }
-            this.procStep()
-
-            this.timer = setTimeout(() => {
-                this.proc()
-            }, 50)
-
-
-        } else {
-            console.log(`TASK: ${this.name} finished! Exit!`)
-
         }
     }
 
     restart() {
-        this.steps.push({type: StepTypes.restart, data: {}})
+        this.steps.push({ type: StepTypes.restart, data: {} })
     }
 
     taskStart() {
@@ -192,21 +325,13 @@ export class Task {
         this.index = 0;
         this.prevIndex = -1;
         this.status = TaskStatus.running
-        this.proc();
+        //this.proc();
     }
 
     taskStop() {
         this.status = TaskStatus.stopped
-        // Ez lehet kellene
-        //this.stop()
-        
-        if (this.timer) {
-            clearTimeout(this.timer)
-            this.timer = undefined
-        }
-        if (this.delayTimer) {
-            clearTimeout(this.delayTimer)
-            this.delayTimer = undefined
-        }
+        // stop the loco
+        this.stop()
+
     }
 }

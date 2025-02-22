@@ -1,17 +1,18 @@
 define(["require", "exports", "../../../common/src/dcc", "./api"], function (require, exports, dcc_1, api_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Task = exports.TaskStatus = void 0;
+    exports.Task = exports.Tasks = exports.TaskStatus = void 0;
     var StepTypes;
     (function (StepTypes) {
-        StepTypes[StepTypes["loco"] = 0] = "loco";
-        StepTypes[StepTypes["foward"] = 1] = "foward";
-        StepTypes[StepTypes["reverse"] = 2] = "reverse";
-        StepTypes[StepTypes["stop"] = 3] = "stop";
-        StepTypes[StepTypes["delay"] = 4] = "delay";
-        StepTypes[StepTypes["waitForSensor"] = 5] = "waitForSensor";
-        StepTypes[StepTypes["function"] = 6] = "function";
-        StepTypes[StepTypes["restart"] = 7] = "restart";
+        StepTypes["loco"] = "loco";
+        StepTypes["setTurnout"] = "setTurnout";
+        StepTypes["foward"] = "foward";
+        StepTypes["reverse"] = "reverse";
+        StepTypes["stop"] = "stop";
+        StepTypes["delay"] = "delay";
+        StepTypes["waitForSensor"] = "waitForSensor";
+        StepTypes["function"] = "function";
+        StepTypes["restart"] = "restart";
     })(StepTypes || (StepTypes = {}));
     var TaskStatus;
     (function (TaskStatus) {
@@ -20,11 +21,86 @@ define(["require", "exports", "../../../common/src/dcc", "./api"], function (req
         TaskStatus[TaskStatus["stopped"] = 2] = "stopped";
         TaskStatus[TaskStatus["finished"] = 3] = "finished";
     })(TaskStatus || (exports.TaskStatus = TaskStatus = {}));
+    class Tasks {
+        constructor() {
+            this.tasks = [];
+            this.timer = setInterval(() => {
+                this.tasks.forEach(t => { t.proc(); });
+            }, 50);
+        }
+        exec() {
+        }
+        addTask(name) {
+            console.log(`addTask: ${name}`);
+            const task = new Task(name);
+            this.tasks.push(task);
+            return task;
+        }
+        startTask(name) {
+            console.log(`startTask: ${name}`);
+            const task = this.getTask(name);
+            if (task) {
+                task.taskStart();
+            }
+        }
+        stopTask(name) {
+            console.log(`stopTask: ${name}`);
+            const task = this.getTask(name);
+            if (task) {
+                task.taskStop();
+            }
+        }
+        getTask(name) {
+            console.log(`getTask: ${name}`);
+            return this.tasks.find(t => t.name == name);
+        }
+        getTasks() {
+            return this.tasks;
+        }
+        getTaskNames() {
+            return this.tasks.map(t => t.name);
+        }
+        // restartTask(name: string) {
+        //     const task = this.getTask(name)
+        //     if (task) {
+        //         task.restart()
+        //     }
+        // }   
+        // deleteTask(name: string) {
+        //     const task = this.getTask(name)
+        //     if (task) {
+        //         task.taskStop()
+        //         const index = this.tasks.indexOf(task)
+        //         this.tasks.splice(index, 1)
+        //     }
+        // }   
+        stopAllTask() {
+            console.log('stopAllTask()');
+            this.tasks.forEach(t => {
+                t.taskStop();
+            });
+        }
+        startAllTask() {
+            console.log('startAllTask()');
+            this.tasks.forEach(t => {
+                t.taskStart();
+            });
+        }
+        restartAllTask() {
+            console.log('restartAllTask()');
+            this.tasks.forEach(t => {
+                t.restart();
+            });
+        }
+    }
+    exports.Tasks = Tasks;
     class Task {
         constructor(name) {
             this.index = 0;
             this.prevIndex = -1;
             this.steps = [];
+            //delayTimer?: NodeJS.Timeout | undefined;
+            // timer?: NodeJS.Timeout | undefined;
             this.locoAddress = 0;
             this.num = 0;
             this.delayEnd = 0;
@@ -33,6 +109,9 @@ define(["require", "exports", "../../../common/src/dcc", "./api"], function (req
         }
         setLoco(address) {
             this.steps.push({ type: StepTypes.loco, data: { address: address } });
+        }
+        setTurnout(address, closed) {
+            this.steps.push({ type: StepTypes.setTurnout, data: { address: address, closed: closed } });
         }
         foward(speed) {
             this.steps.push({ type: StepTypes.foward, data: { speed: speed } });
@@ -57,23 +136,28 @@ define(["require", "exports", "../../../common/src/dcc", "./api"], function (req
                 switch (this.step.type) {
                     case StepTypes.loco:
                         this.locoAddress = this.step.data.address;
-                        console.log(`TASK: ${this.name} loco: ${this.locoAddress} added!`);
+                        //console.log(`TASK: ${this.name} loco: ${this.locoAddress} added!`)
+                        this.index++;
+                        break;
+                    case StepTypes.setTurnout:
+                        const turnout = this.step.data;
+                        api_1.Api.setTurnout(turnout.address, turnout.closed);
                         this.index++;
                         break;
                     case StepTypes.foward:
                         const speed = this.step.data.speed;
-                        console.log(`TASK: ${this.name} foward: ${speed} started!`);
+                        //console.log(`TASK: ${this.name} foward: ${speed} started!`)
                         api_1.Api.setLoco(this.locoAddress, speed, dcc_1.Z21Directions.forward);
                         this.index++;
                         break;
                     case StepTypes.reverse:
                         const rspeed = this.step.data.speed;
-                        console.log(`TASK: ${this.name} reverse: ${rspeed} started!`);
+                        //console.log(`TASK: ${this.name} reverse: ${rspeed} started!`)
                         api_1.Api.setLoco(this.locoAddress, rspeed, dcc_1.Z21Directions.reverse);
                         this.index++;
                         break;
                     case StepTypes.stop:
-                        console.log(`TASK: ${this.name} stop started!`);
+                        //console.log(`TASK: ${this.name} stop started!`)
                         api_1.Api.setLocoSpeed(this.locoAddress, 0);
                         this.index++;
                         break;
@@ -88,18 +172,17 @@ define(["require", "exports", "../../../common/src/dcc", "./api"], function (req
                         //     console.log(`TASK: ${this.name} delay finished!`)
                         // }, ms)
                         if (this.delayEnd <= 0) {
-                            console.log(`TASK: ${this.name} delay: ${ms} started!`);
+                            //console.log(`TASK: ${this.name} delay: ${ms} started!`)
                             this.delayEnd = performance.now() + ms;
                         }
                         else if (performance.now() > this.delayEnd) {
                             this.index++;
                             this.delayEnd = 0;
-                            console.log(`TASK: ${this.name} delay finished!`);
+                            //console.log(`TASK: ${this.name} delay finished!`)
                         }
                         break;
                     case StepTypes.waitForSensor:
                         const sensor = this.step.data;
-                        console.log(`TASK: ${this.name} waitForSensor:${sensor.address} value: ${sensor.on}!`);
                         if (api_1.Api.getSensor(sensor.address) == sensor.on) {
                             this.index++;
                             console.log(`TASK: ${this.name} waitForSensor:${sensor.address} finished!`);
@@ -111,28 +194,61 @@ define(["require", "exports", "../../../common/src/dcc", "./api"], function (req
                         this.index++;
                         break;
                     case StepTypes.restart:
-                        console.log(`TASK: ${this.name} restart!`);
+                        //console.log(`TASK: ${this.name} restart!`)
                         this.index = 0;
                         this.prevIndex = -1;
                         break;
                 }
             }
         }
+        logStep(step) {
+            switch (step.type) {
+                case StepTypes.loco:
+                    console.log(`TASK: ${this.name} index: ${this.index} loco: ${step.data.address}`);
+                    break;
+                case StepTypes.setTurnout:
+                    console.log(`TASK: ${this.name} index: ${this.index} setTurnout: ${step.data.address} closed: ${step.data.closed}`);
+                    break;
+                case StepTypes.foward:
+                    console.log(`TASK: ${this.name} index: ${this.index} foward: ${step.data.speed}`);
+                    break;
+                case StepTypes.reverse:
+                    console.log(`TASK: ${this.name} index: ${this.index} reverse: ${step.data.speed}`);
+                    break;
+                case StepTypes.stop:
+                    console.log(`TASK: ${this.name} index: ${this.index} stop`);
+                    break;
+                case StepTypes.delay:
+                    console.log(`TASK: ${this.name} index: ${this.index} delay: ${step.data.ms}`);
+                    break;
+                case StepTypes.waitForSensor:
+                    console.log(`TASK: ${this.name} index: ${this.index} waitForSensor: ${step.data.address}`);
+                    break;
+                case StepTypes.function:
+                    console.log(`TASK: ${this.name} index: ${this.index} function: ${step.data.fn}`);
+                    break;
+                case StepTypes.restart:
+                    console.log(`TASK: ${this.name} index: ${this.index} restart`);
+                    break;
+            }
+        }
         proc() {
-            if (this.index < this.steps.length) {
-                if (this.index != this.prevIndex) {
-                    this.prevIndex = this.index;
-                    this.step = this.steps[this.index];
+            if (this.status == TaskStatus.running) {
+                if (this.index < this.steps.length) {
+                    if (this.index != this.prevIndex) {
+                        this.prevIndex = this.index;
+                        this.step = this.steps[this.index];
+                        this.logStep(this.step);
+                        //console.log(`TASK: ${this.name} index: ${this.index} step: ${this.step!.type}`)
+                    }
+                    if (this.status == TaskStatus.running) {
+                        this.procStep();
+                    }
                 }
                 else {
+                    console.log(`TASK: ${this.name} finished! Exit!`);
+                    this.status = TaskStatus.finished;
                 }
-                this.procStep();
-                this.timer = setTimeout(() => {
-                    this.proc();
-                }, 50);
-            }
-            else {
-                console.log(`TASK: ${this.name} finished! Exit!`);
             }
         }
         restart() {
@@ -144,20 +260,12 @@ define(["require", "exports", "../../../common/src/dcc", "./api"], function (req
             this.index = 0;
             this.prevIndex = -1;
             this.status = TaskStatus.running;
-            this.proc();
+            //this.proc();
         }
         taskStop() {
             this.status = TaskStatus.stopped;
-            // Ez lehet kellene
-            //this.stop()
-            if (this.timer) {
-                clearTimeout(this.timer);
-                this.timer = undefined;
-            }
-            if (this.delayTimer) {
-                clearTimeout(this.delayTimer);
-                this.delayTimer = undefined;
-            }
+            // stop the loco
+            this.stop();
         }
     }
     exports.Task = Task;
