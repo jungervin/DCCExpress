@@ -249,86 +249,64 @@ export class App {
                 // ==========================================
                 //  Szfvár P3 <=== P2 <== Szabadbattyán P3
                 // ==========================================
-                task.setTurnout(16, false)
-                task.delay(500)
-                task.setTurnout(12, false)                
-                task.delay(500)
-                task.setTurnout(13, true)
-                task.delay(500)
-                task.setTurnout(20, true)
-                task.delay(500)
-                task.setTurnout(21, true)
+                task.setTurnoutMs(16, false, 500)
+                task.setTurnoutMs(12, false, 500)                
+                task.setTurnoutMs(13, true, 500)
+                task.setTurnoutMs(20, true, 500)
+                task.setTurnoutMs(21, true, 500)
 
-                task.delay(3000)
+                task.waitMs(3000, 5000)
 
                 // Kalauz síp
-                task.setFunction(17, true)
-                task.delay(500)
-                task.setFunction(17, false)
-
-                task.delay(3000)
+                task.setFunctionMs(17, true, 500)
+                task.waitMs(3000, 5000)
 
                 // Kürt
                 task.reverse(0)
-                task.setFunction(3, true)
-                task.delay(500)
-                task.setFunction(3, false)
+                task.setFunctionMs(3, true, 500)
+                task.waitMs(3000, 5000)
                 task.reverse(30)
 
                 task.waitForSensor(16, true)
 
-                task.setFunction(3, true)
-                task.delay(500)
-                task.setFunction(3, false)
+                task.setFunctionMs(3, true, 500)
                 task.delay(3000)
                 task.stop()
 
 
-                task.delay(10000 + Math.random() * 10000)
+                task.waitMs(10000, 20000)
 
                 // ==========================================
                 //  Szfvár P3 ==> P1 ==> Szabadbattyán P3
                 // ==========================================
-                task.setTurnout(21, true)
-                task.delay(500)                
-                task.setTurnout(20, false)
-                task.delay(500)
-                task.setTurnout(24, false)
-                task.delay(500)
-                task.setTurnout(25, false)
-                task.delay(500)
-                task.setTurnout(12, true)
-                task.delay(500)
-                task.setTurnout(13, true)
-                task.delay(500)
-                task.setTurnout(16, false)
+                task.setTurnoutMs(21, true, 500)
+                task.setTurnoutMs(20, false, 500)
+                task.setTurnoutMs(24, false, 500)
+                task.setTurnoutMs(25, false, 500)
+                task.setTurnoutMs(12, true,500)
+                task.setTurnoutMs(13, true, 500)
+                task.setTurnoutMs(16, false, 500)
 
-                task.delay(3000)
+                task.waitMs(3000, 5000)
 
                 // Kalauz síp
-                task.setFunction(17, true)
-                task.delay(500)
-                task.setFunction(17, false)
+                task.setFunctionMs(17, true, 500)
 
-                task.delay(3000)
+                task.waitMs(3000, 5000)
 
                 // Kürt
                 task.foward(0)
-                task.setFunction(3, true)
-                task.delay(500)
-                task.setFunction(3, false)
+                task.setFunctionMs(3, true, 500)
                 task.foward(30)
 
                 task.waitForSensor(24, true)
                 
-                task.setFunction(3, true)
-                task.delay(500)
-                task.setFunction(3, false)
+                task.setFunctionMs(3, true, 500)
 
                 task.delay(3000)
                 task.stop()
 
-                task.delay(10000)
+                task.waitMs(10000, 20000)
 
                 task.restart()
                 

@@ -58,10 +58,21 @@ export class Tasks {
 
     tasks: Task[] = []
     timer: NodeJS.Timeout;
+    //private worker: Worker;
     constructor() {
         this.timer = setInterval(() => {
             this.tasks.forEach(t => { t.proc() })
         }, 50)
+        //this.worker = new Worker(new URL("./worker.ts", import.meta.url));
+        // this.worker = new Worker(new URL("./worker.js", import.meta.url), { type: "module" });
+
+        // // Fogadjuk a Worker által küldött Tick eseményeket
+        // this.worker.onmessage = () => {
+        //     this.tasks.forEach(t => t.proc());
+        // };
+
+        // // Küldjük a workernek a kívánt intervallumot
+        // this.worker.postMessage({ interval: 50 });
     }
 
     exec() {
@@ -157,14 +168,17 @@ export class Task {
         this.name = name
     }
 
-
-
     setLoco(address: number) {
         this.steps.push({ type: StepTypes.loco, data: { address: address } as iLocoStep } as iStep)
     }
 
     setTurnout(address: number, closed: boolean) {
         this.steps.push({ type: StepTypes.setTurnout, data: { address: address, closed: closed } as iSetTurnoutStep } as iStep)
+    }
+
+    setTurnoutMs(address: number, closed: boolean, wait: number) {
+        this.setTurnout(address, closed)
+        this.delay(wait)
     }
 
     foward(speed: number) {
@@ -177,12 +191,28 @@ export class Task {
         this.steps.push({ type: StepTypes.stop, data: { speed: 0 } } as iStep)
     }
 
-    setFunction(fn: number, on: boolean) {
+    setFunction(fn: number, on: boolean): void {
         this.steps.push({ type: StepTypes.function, data: { fn: fn, on: on } as iFunctionStep } as iStep)
+    }
+
+    setFunctionMs(fn: number, on: boolean, wait: number): void {
+        this.setFunction(fn, on)
+        this.delay(wait)
+        this.setFunction(fn, !on)
     }
 
     delay(ms: number) {
         this.steps.push({ type: StepTypes.delay, data: { ms: ms } as iDelayStep } as iStep)
+    }
+
+    waitMs(min: number, max: number) {
+        const ms = Math.floor(Math.random() * (max - min + 1) + min)
+        this.delay(ms)
+    }
+
+    waitSec(min: number, max: number) {
+        const ms = Math.floor(Math.random() * (max - min + 1) + min) * 1000
+        this.delay(ms)
     }
 
     waitForSensor(address: number, on: boolean) {
@@ -271,7 +301,7 @@ export class Task {
                 console.log(`TASK: ${this.name} index: ${this.index} loco: ${(step.data as iLocoStep).address}`)
                 break;
             case StepTypes.setTurnout:
-                console.log(`TASK: ${this.name} index: ${this.index} setTurnout: ${(step.data as iSetTurnoutStep).address} closed: ${(step.data as iSetTurnoutStep).closed}`)   
+                console.log(`TASK: ${this.name} index: ${this.index} setTurnout: ${(step.data as iSetTurnoutStep).address} closed: ${(step.data as iSetTurnoutStep).closed}`)
                 break;
             case StepTypes.foward:
                 console.log(`TASK: ${this.name} index: ${this.index} foward: ${(step.data as iForwardStep).speed}`)

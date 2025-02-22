@@ -22,11 +22,20 @@ define(["require", "exports", "../../../common/src/dcc", "./api"], function (req
         TaskStatus[TaskStatus["finished"] = 3] = "finished";
     })(TaskStatus || (exports.TaskStatus = TaskStatus = {}));
     class Tasks {
+        //private worker: Worker;
         constructor() {
             this.tasks = [];
             this.timer = setInterval(() => {
                 this.tasks.forEach(t => { t.proc(); });
             }, 50);
+            //this.worker = new Worker(new URL("./worker.ts", import.meta.url));
+            // this.worker = new Worker(new URL("./worker.js", import.meta.url), { type: "module" });
+            // // Fogadjuk a Worker által küldött Tick eseményeket
+            // this.worker.onmessage = () => {
+            //     this.tasks.forEach(t => t.proc());
+            // };
+            // // Küldjük a workernek a kívánt intervallumot
+            // this.worker.postMessage({ interval: 50 });
         }
         exec() {
         }
@@ -113,6 +122,10 @@ define(["require", "exports", "../../../common/src/dcc", "./api"], function (req
         setTurnout(address, closed) {
             this.steps.push({ type: StepTypes.setTurnout, data: { address: address, closed: closed } });
         }
+        setTurnoutMs(address, closed, wait) {
+            this.setTurnout(address, closed);
+            this.delay(wait);
+        }
         foward(speed) {
             this.steps.push({ type: StepTypes.foward, data: { speed: speed } });
         }
@@ -125,8 +138,21 @@ define(["require", "exports", "../../../common/src/dcc", "./api"], function (req
         setFunction(fn, on) {
             this.steps.push({ type: StepTypes.function, data: { fn: fn, on: on } });
         }
+        setFunctionMs(fn, on, wait) {
+            this.setFunction(fn, on);
+            this.delay(wait);
+            this.setFunction(fn, !on);
+        }
         delay(ms) {
             this.steps.push({ type: StepTypes.delay, data: { ms: ms } });
+        }
+        waitMs(min, max) {
+            const ms = Math.floor(Math.random() * (max - min + 1) + min);
+            this.delay(ms);
+        }
+        waitSec(min, max) {
+            const ms = Math.floor(Math.random() * (max - min + 1) + min) * 1000;
+            this.delay(ms);
         }
         waitForSensor(address, on) {
             this.steps.push({ type: StepTypes.waitForSensor, data: { address: address, on: on } });
