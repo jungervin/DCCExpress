@@ -74,6 +74,15 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
         static getSensor(address) {
             return Api.app.sensors[address];
         }
+        static getRoute(name) {
+            return Api.app.editor.views.getRouteSwitchElements().find(r => r.name === name);
+        }
+        static setRoute(name) {
+            const route = Api.getRoute(name);
+            if (route) {
+                route.setRoute(0, Api.app.editor.views.getTurnoutElements());
+            }
+        }
     }
     exports.Api = Api;
 });

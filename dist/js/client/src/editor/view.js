@@ -223,7 +223,7 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/math", "../
         get stateColor() {
             if (this.isRoute) {
                 if (this.occupied) {
-                    return "orange";
+                    return "lime";
                 }
                 return Colors.TrackSelectedColor;
             }

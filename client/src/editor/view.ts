@@ -290,7 +290,7 @@ export abstract class RailView extends View {
     get stateColor(): string {
         if (this.isRoute) {
             if (this.occupied) {
-                return "orange"
+                return "lime"
             }
             return Colors.TrackSelectedColor
         }

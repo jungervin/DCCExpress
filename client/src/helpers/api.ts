@@ -2,6 +2,7 @@ import { App } from "../app";
 import { iSetLocoFunction, iLocomotive, Z21Directions, iData, ApiCommands, iLoco, iSetTurnout } from "../../../common/src/dcc";
 import { wsClient } from "./ws";
 import { TurnoutDoubleElement, TurnoutElement } from "../editor/turnout";
+import { RouteSwitchElement } from "../editor/route";
 
 export class Api {
     static app : App
@@ -87,5 +88,18 @@ export class Api {
 
     static getSensor(address: number): boolean {
         return Api.app.sensors[address]
+    }
+
+    static getRoute(name: string) : RouteSwitchElement | undefined {
+        return Api.app.editor.views.getRouteSwitchElements().find(r => r.name === name)
+    }
+
+    static setRoute(name: string) {
+        const route = Api.getRoute(name)
+        if(route) {
+            
+            route.setRoute(0, Api.app.editor.views.getTurnoutElements())
+        }
+        
     }
 }

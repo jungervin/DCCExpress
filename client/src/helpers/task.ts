@@ -10,7 +10,8 @@ enum StepTypes {
     delay = "delay",
     waitForSensor = "waitForSensor",
     function = "function",
-    restart = "restart"
+    restart = "restart",
+    route = "route"
 }
 interface iStep {
     type: StepTypes,
@@ -44,6 +45,9 @@ interface iForwardStep {
     speed: number
 }
 
+interface iRouteStep {
+    routeName: string
+}
 interface iRestart {
 
 }
@@ -219,6 +223,9 @@ export class Task {
         this.steps.push({ type: StepTypes.waitForSensor, data: { address: address, on: on } as iWaitForSensor } as iStep)
     }
 
+    setRoute(route: string) {
+        this.steps.push({ type: StepTypes.route, data: { routeName: route } as iRouteStep } as iStep)
+    }
     procStep() {
         if (this.step) {
             switch (this.step.type) {
@@ -284,6 +291,11 @@ export class Task {
                 case StepTypes.function:
                     const f = (this.step.data as iFunctionStep)
                     Api.setLocoFunction(this.locoAddress, f.fn, f.on)
+                    this.index++;
+                    break;
+                case StepTypes.route:
+                    const route = (this.step.data as iRouteStep)
+                    Api.setRoute(route.routeName)
                     this.index++;
                     break;
                 case StepTypes.restart:

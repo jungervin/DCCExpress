@@ -1,8 +1,8 @@
 {
     "settings": {
-        "scale": 1.489354729435628,
-        "origX": 287,
-        "origY": -145,
+        "scale": 1.5521230946496134,
+        "origX": 274,
+        "origY": -177,
         "locoPanelVisible": true,
         "propertyPanelVisible": false
     },
@@ -54,12 +54,8 @@
                             "isClosed": false
                         },
                         {
-                            "address": 20,
-                            "isClosed": false
-                        },
-                        {
                             "address": 21,
-                            "isClosed": false
+                            "isClosed": true
                         },
                         {
                             "address": 24,
@@ -963,53 +959,23 @@
                     "turnouts": [
                         {
                             "address": 12,
-                            "isClosed": false,
-                            "cc": {
-                                "uuid": "ffb58431-8fdb-4acb-8d21-49e6cb797656",
-                                "name": "z21",
-                                "type": 0,
-                                "isDefault": false
-                            }
+                            "isClosed": false
                         },
                         {
                             "address": 13,
-                            "isClosed": true,
-                            "cc": {
-                                "uuid": "ffb58431-8fdb-4acb-8d21-49e6cb797656",
-                                "name": "z21",
-                                "type": 0,
-                                "isDefault": false
-                            }
+                            "isClosed": true
                         },
                         {
                             "address": 16,
-                            "isClosed": false,
-                            "cc": {
-                                "uuid": "ffb58431-8fdb-4acb-8d21-49e6cb797656",
-                                "name": "z21",
-                                "type": 0,
-                                "isDefault": false
-                            }
+                            "isClosed": false
                         },
                         {
                             "address": 20,
-                            "isClosed": true,
-                            "cc": {
-                                "uuid": "ffb58431-8fdb-4acb-8d21-49e6cb797656",
-                                "name": "z21",
-                                "type": 0,
-                                "isDefault": false
-                            }
+                            "isClosed": true
                         },
                         {
                             "address": 21,
-                            "isClosed": false,
-                            "cc": {
-                                "uuid": "ffb58431-8fdb-4acb-8d21-49e6cb797656",
-                                "name": "z21",
-                                "type": 0,
-                                "isDefault": false
-                            }
+                            "isClosed": true
                         }
                     ]
                 },
@@ -1020,7 +986,7 @@
                     "x": 18,
                     "y": 15,
                     "angle": 0,
-                    "text": "P4 == P2 == P3",
+                    "text": "P3 == P2 == P3",
                     "valign": "center"
                 },
                 {
@@ -1030,7 +996,7 @@
                     "x": 18,
                     "y": 14,
                     "angle": 0,
-                    "text": "P4 == P1 == P3",
+                    "text": "P3 == P1 == P3",
                     "valign": "center"
                 },
                 {

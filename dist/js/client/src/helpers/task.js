@@ -13,6 +13,7 @@ define(["require", "exports", "../../../common/src/dcc", "./api"], function (req
         StepTypes["waitForSensor"] = "waitForSensor";
         StepTypes["function"] = "function";
         StepTypes["restart"] = "restart";
+        StepTypes["route"] = "route";
     })(StepTypes || (StepTypes = {}));
     var TaskStatus;
     (function (TaskStatus) {
@@ -157,6 +158,9 @@ define(["require", "exports", "../../../common/src/dcc", "./api"], function (req
         waitForSensor(address, on) {
             this.steps.push({ type: StepTypes.waitForSensor, data: { address: address, on: on } });
         }
+        setRoute(route) {
+            this.steps.push({ type: StepTypes.route, data: { routeName: route } });
+        }
         procStep() {
             if (this.step) {
                 switch (this.step.type) {
@@ -217,6 +221,11 @@ define(["require", "exports", "../../../common/src/dcc", "./api"], function (req
                     case StepTypes.function:
                         const f = this.step.data;
                         api_1.Api.setLocoFunction(this.locoAddress, f.fn, f.on);
+                        this.index++;
+                        break;
+                    case StepTypes.route:
+                        const route = this.step.data;
+                        api_1.Api.setRoute(route.routeName);
                         this.index++;
                         break;
                     case StepTypes.restart:

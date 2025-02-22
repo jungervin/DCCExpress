@@ -15,6 +15,7 @@ import { audioManager, AudioManager } from "./editor/audioButton";
 import { AccessoryDecoderElement } from "./editor/button";
 import { Api } from "./helpers/api";
 import { Task, Tasks } from "./helpers/task";
+import { RouteSwitchElement } from "./editor/route";
 
 console.log(Dispatcher)
 console.log(ApiCommands)
@@ -239,78 +240,65 @@ export class App {
     }
 
     task1() {
-        if (true) {
-            if (!this.tasks.getTask("Task1")) {
 
-                const task = this.tasks.addTask("Task1")
+        if (!this.tasks.getTask("Task1")) {
 
-                task.setLoco(3)
+            const task = this.tasks.addTask("Task1")
 
-                // ==========================================
-                //  Szfvár P3 <=== P2 <== Szabadbattyán P3
-                // ==========================================
-                task.setTurnoutMs(16, false, 500)
-                task.setTurnoutMs(12, false, 500)                
-                task.setTurnoutMs(13, true, 500)
-                task.setTurnoutMs(20, true, 500)
-                task.setTurnoutMs(21, true, 500)
+            task.setLoco(3)
 
-                task.waitMs(3000, 5000)
+            // ==========================================
+            //  Szfvár P3 <=== P2 <== Szabadbattyán P3
+            // ==========================================
+            task.setRoute("routeSwitch112")
+            task.waitMs(3000, 5000)
 
-                // Kalauz síp
-                task.setFunctionMs(17, true, 500)
-                task.waitMs(3000, 5000)
+            // Kalauz síp
+            task.setFunctionMs(17, true, 500)
+            task.waitMs(3000, 5000)
 
-                // Kürt
-                task.reverse(0)
-                task.setFunctionMs(3, true, 500)
-                task.waitMs(3000, 5000)
-                task.reverse(30)
+            // Kürt
+            task.reverse(0)
+            task.setFunctionMs(3, true, 500)
+            task.waitMs(3000, 5000)
+            task.reverse(30)
 
-                task.waitForSensor(16, true)
+            task.waitForSensor(16, true)
 
-                task.setFunctionMs(3, true, 500)
-                task.delay(3000)
-                task.stop()
+            task.setFunctionMs(3, true, 500)
+            task.delay(3000)
+            task.stop()
 
 
-                task.waitMs(10000, 20000)
+            task.waitMs(10000, 20000)
 
-                // ==========================================
-                //  Szfvár P3 ==> P1 ==> Szabadbattyán P3
-                // ==========================================
-                task.setTurnoutMs(21, true, 500)
-                task.setTurnoutMs(20, false, 500)
-                task.setTurnoutMs(24, false, 500)
-                task.setTurnoutMs(25, false, 500)
-                task.setTurnoutMs(12, true,500)
-                task.setTurnoutMs(13, true, 500)
-                task.setTurnoutMs(16, false, 500)
+            // ==========================================
+            //  Szfvár P3 ==> P1 ==> Szabadbattyán P3
+            // ==========================================
+            task.setRoute("routeSwitch113")
+            task.waitMs(3000, 5000)
 
-                task.waitMs(3000, 5000)
+            // Kalauz síp
+            task.setFunctionMs(17, true, 500)
 
-                // Kalauz síp
-                task.setFunctionMs(17, true, 500)
+            task.waitMs(3000, 5000)
 
-                task.waitMs(3000, 5000)
+            // Kürt
+            task.foward(0)
+            task.setFunctionMs(3, true, 500)
+            task.foward(30)
 
-                // Kürt
-                task.foward(0)
-                task.setFunctionMs(3, true, 500)
-                task.foward(30)
+            task.waitForSensor(24, true)
 
-                task.waitForSensor(24, true)
-                
-                task.setFunctionMs(3, true, 500)
+            task.setFunctionMs(3, true, 500)
 
-                task.delay(3000)
-                task.stop()
+            task.delay(3000)
+            task.stop()
 
-                task.waitMs(10000, 20000)
+            task.waitMs(10000, 20000)
 
-                task.restart()
-                
-            }
+            task.restart()
+
         }
     }
 
