@@ -3,6 +3,7 @@ import { iSetLocoFunction, iLocomotive, Z21Directions, iData, ApiCommands, iLoco
 import { wsClient } from "./ws";
 import { TurnoutDoubleElement, TurnoutElement } from "../editor/turnout";
 import { RouteSwitchElement } from "../editor/route";
+import { FastClock } from "../editor/clock";
 
 export class Api {
     static app : App
@@ -102,5 +103,17 @@ export class Api {
             route.setRoute(0, Api.app.editor.views.getTurnoutElements())
         }
         
+    }
+
+    static getClock() : FastClock | undefined {
+        return Api.app.editor.fastClock!
+    }
+
+    static getClockMinutes() : number {
+        const clock = Api.getClock()
+        if(clock) {
+            return clock.currentTime.getMinutes()
+        }
+        return -1
     }
 }

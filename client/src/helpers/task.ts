@@ -2,16 +2,18 @@ import { Z21Directions } from "../../../common/src/dcc";
 import { Api } from "./api";
 
 enum StepTypes {
-    loco = "loco",
+    setLocoloco = "setLoco",
     setTurnout = "setTurnout",
     foward = "foward",
     reverse = "reverse",
     stop = "stop",
     delay = "delay",
     waitForSensor = "waitForSensor",
-    function = "function",
+    setFunction = "setFunction",
     restart = "restart",
-    route = "route"
+    setRoute = "setRoute",
+    waitForMinutes = "waitForMinutes",
+    startAtMinutes = "startAtMinutes"
 }
 interface iStep {
     type: StepTypes,
@@ -51,6 +53,15 @@ interface iRouteStep {
 interface iRestart {
 
 }
+
+interface iWaitForMinute {
+    minute: number,
+}
+
+interface iStartAtMinutes {
+    minutes: number[]
+}
+
 export enum TaskStatus {
     running,
     paused,
@@ -173,7 +184,7 @@ export class Task {
     }
 
     setLoco(address: number) {
-        this.steps.push({ type: StepTypes.loco, data: { address: address } as iLocoStep } as iStep)
+        this.steps.push({ type: StepTypes.setLocoloco, data: { address: address } as iLocoStep } as iStep)
     }
 
     setTurnout(address: number, closed: boolean) {
@@ -196,7 +207,7 @@ export class Task {
     }
 
     setFunction(fn: number, on: boolean): void {
-        this.steps.push({ type: StepTypes.function, data: { fn: fn, on: on } as iFunctionStep } as iStep)
+        this.steps.push({ type: StepTypes.setFunction, data: { fn: fn, on: on } as iFunctionStep } as iStep)
     }
 
     setFunctionMs(fn: number, on: boolean, wait: number): void {
@@ -224,12 +235,20 @@ export class Task {
     }
 
     setRoute(route: string) {
-        this.steps.push({ type: StepTypes.route, data: { routeName: route } as iRouteStep } as iStep)
+        this.steps.push({ type: StepTypes.setRoute, data: { routeName: route } as iRouteStep } as iStep)
+    }
+
+    waitForMinutes(minute: number) {
+        this.steps.push({ type: StepTypes.waitForMinutes, data: { minute: minute } as iWaitForMinute } as iStep)
+    }
+
+    startAtMinutes(minutes: number[]) {
+        this.steps.push({type: StepTypes.startAtMinutes, data: {minutes: minutes}})
     }
     procStep() {
         if (this.step) {
             switch (this.step.type) {
-                case StepTypes.loco:
+                case StepTypes.setLocoloco:
                     this.locoAddress = (this.step.data as iLocoStep).address
                     //console.log(`TASK: ${this.name} loco: ${this.locoAddress} added!`)
                     this.index++
@@ -288,12 +307,12 @@ export class Task {
                         console.log(`TASK: ${this.name} waitForSensor:${sensor.address} finished!`)
                     }
                     break;
-                case StepTypes.function:
+                case StepTypes.setFunction:
                     const f = (this.step.data as iFunctionStep)
                     Api.setLocoFunction(this.locoAddress, f.fn, f.on)
                     this.index++;
                     break;
-                case StepTypes.route:
+                case StepTypes.setRoute:
                     const route = (this.step.data as iRouteStep)
                     Api.setRoute(route.routeName)
                     this.index++;
@@ -303,13 +322,33 @@ export class Task {
                     this.index = 0;
                     this.prevIndex = -1;
                     break;
+                case StepTypes.waitForMinutes:
+                    const minute = (this.step.data as iWaitForMinute).minute
+                    const clock = Api.getClock()
+                    if (clock && clock.currentTime.getMinutes() % minute == 0) {
+                        this.index++;
+                        console.log(`TASK: ${this.name} waitForMinute:${minute} finished!`)
+                    }
+                    break;
+                case StepTypes.startAtMinutes:
+                    const minutes = (this.step.data as iStartAtMinutes).minutes
+                    const clocka = Api.getClock()
+                    if(clocka) {
+                        const min = clocka.currentTime.getMinutes()
+                        if(minutes.includes(min)) {
+                            this.index++;
+                            console.log(`TASK: ${this.name} startAtMinutes:${min} finished!`)
+                        }
+                    }
+
+                break;
             }
         }
     }
 
     logStep(step: iStep) {
         switch (step.type) {
-            case StepTypes.loco:
+            case StepTypes.setLocoloco:
                 console.log(`TASK: ${this.name} index: ${this.index} loco: ${(step.data as iLocoStep).address}`)
                 break;
             case StepTypes.setTurnout:
@@ -330,7 +369,7 @@ export class Task {
             case StepTypes.waitForSensor:
                 console.log(`TASK: ${this.name} index: ${this.index} waitForSensor: ${(step.data as iWaitForSensor).address}`)
                 break;
-            case StepTypes.function:
+            case StepTypes.setFunction:
                 console.log(`TASK: ${this.name} index: ${this.index} function: ${(step.data as iFunctionStep).fn}`)
                 break;
             case StepTypes.restart:

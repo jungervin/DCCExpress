@@ -2,7 +2,7 @@ export class FastClock {
     private canvas?: HTMLCanvasElement | null;
     private ctx: CanvasRenderingContext2D;
     private scaleFactor: number;
-    private currentTime: Date;
+    currentTime: Date;
     interval?: NodeJS.Timeout | null;
     visible: boolean = false;
     // bufferCanvas: HTMLCanvasElement;
@@ -48,7 +48,7 @@ export class FastClock {
             const radius = Math.min(width, height) / 2 - 10;
 
             ctx.shadowBlur = 0;
-            ctx.shadowColor = "white";    
+            ctx.shadowColor = "white";
             ctx.shadowOffsetX = 0;
             ctx.shadowOffsetY = 0;
 
@@ -58,16 +58,16 @@ export class FastClock {
             ctx.lineWidth = 1;
             ctx.strokeStyle = "#ccc";
             ctx.fillStyle = "#f0f0f0"
-            ctx.fillRect(x , y , width + 3, height + 3);
-            ctx.strokeRect(x , y, width + 3, height + 3);
-            
+            ctx.fillRect(x, y, width + 3, height + 3);
+            ctx.strokeRect(x, y, width + 3, height + 3);
+
 
             y += 4
             // ctx.beginPath();
             // ctx.arc(centerX, centerY, radius+8, 0, Math.PI * 2);
             // ctx.fillStyle = "white"
             // ctx.fill()
-            
+
 
             // Árnyék beállítása
             ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
@@ -97,7 +97,7 @@ export class FastClock {
                 ctx.fillStyle = "black";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
-                ctx.fillText(i.toString(), x, y+2);
+                ctx.fillText(i.toString(), x, y + 2);
             }
 
             // Mutatók
@@ -108,6 +108,13 @@ export class FastClock {
             const hourAngle = ((hours + minutes / 60) * 30 - 90) * (Math.PI / 180);
             const minuteAngle = ((minutes + seconds / 60) * 6 - 90) * (Math.PI / 180);
             const secondAngle = (seconds * 6 - 90) * (Math.PI / 180);
+
+
+            // Óra középpont
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 5, 0, Math.PI * 2);
+            ctx.fillStyle = "black";
+            ctx.fill();
 
             // Óramutató
             this.drawHand(centerX, centerY, hourAngle, radius * 0.5, 6, "black");
@@ -120,8 +127,8 @@ export class FastClock {
 
             // Óra középpont
             ctx.beginPath();
-            ctx.arc(centerX, centerY, 5, 0, Math.PI * 2);
-            ctx.fillStyle = "black";
+            ctx.arc(centerX, centerY, 2, 0, Math.PI * 2);
+            ctx.fillStyle = "red";
             ctx.fill();
         }
         //this.ctx.restore();
@@ -138,7 +145,7 @@ export class FastClock {
 
     public setScaleFactor(factor: number) {
         this.scaleFactor = factor;
-        this.start(); 
+        this.start();
     }
 }
 

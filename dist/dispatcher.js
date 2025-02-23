@@ -59,6 +59,12 @@ if (rb24 != App.status.rb24) {
 // SIGNAL #50
 //======================================
 {
+    // if(rb12) {
+    //     if (!s50.isRed) {
+    //         s50.sendRed()
+    //     }
+    // } 
+    // else 
     if (!t10.t1Closed && (rb12 || !t16.t1Closed || !t12.t2Closed)) {
         if (!s50.isRed) {
             s50.sendRed()

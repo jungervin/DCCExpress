@@ -84,6 +84,16 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
                 route.setRoute(0, Api.app.editor.views.getTurnoutElements());
             }
         }
+        static getClock() {
+            return Api.app.editor.fastClock;
+        }
+        static getClockMinutes() {
+            const clock = Api.getClock();
+            if (clock) {
+                return clock.currentTime.getMinutes();
+            }
+            return -1;
+        }
     }
     exports.Api = Api;
 });

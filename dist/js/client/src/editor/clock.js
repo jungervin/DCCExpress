@@ -87,6 +87,11 @@ define(["require", "exports"], function (require, exports) {
                 const hourAngle = ((hours + minutes / 60) * 30 - 90) * (Math.PI / 180);
                 const minuteAngle = ((minutes + seconds / 60) * 6 - 90) * (Math.PI / 180);
                 const secondAngle = (seconds * 6 - 90) * (Math.PI / 180);
+                // Óra középpont
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, 5, 0, Math.PI * 2);
+                ctx.fillStyle = "black";
+                ctx.fill();
                 // Óramutató
                 this.drawHand(centerX, centerY, hourAngle, radius * 0.5, 6, "black");
                 // Percmutató
@@ -95,8 +100,8 @@ define(["require", "exports"], function (require, exports) {
                 this.drawHand(centerX, centerY, secondAngle, radius * 0.85, 2, "red");
                 // Óra középpont
                 ctx.beginPath();
-                ctx.arc(centerX, centerY, 5, 0, Math.PI * 2);
-                ctx.fillStyle = "black";
+                ctx.arc(centerX, centerY, 2, 0, Math.PI * 2);
+                ctx.fillStyle = "red";
                 ctx.fill();
             }
             //this.ctx.restore();

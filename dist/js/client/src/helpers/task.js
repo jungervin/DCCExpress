@@ -4,16 +4,18 @@ define(["require", "exports", "../../../common/src/dcc", "./api"], function (req
     exports.Task = exports.Tasks = exports.TaskStatus = void 0;
     var StepTypes;
     (function (StepTypes) {
-        StepTypes["loco"] = "loco";
+        StepTypes["setLocoloco"] = "setLoco";
         StepTypes["setTurnout"] = "setTurnout";
         StepTypes["foward"] = "foward";
         StepTypes["reverse"] = "reverse";
         StepTypes["stop"] = "stop";
         StepTypes["delay"] = "delay";
         StepTypes["waitForSensor"] = "waitForSensor";
-        StepTypes["function"] = "function";
+        StepTypes["setFunction"] = "setFunction";
         StepTypes["restart"] = "restart";
-        StepTypes["route"] = "route";
+        StepTypes["setRoute"] = "setRoute";
+        StepTypes["waitForMinutes"] = "waitForMinutes";
+        StepTypes["startAtMinutes"] = "startAtMinutes";
     })(StepTypes || (StepTypes = {}));
     var TaskStatus;
     (function (TaskStatus) {
@@ -118,7 +120,7 @@ define(["require", "exports", "../../../common/src/dcc", "./api"], function (req
             this.name = name;
         }
         setLoco(address) {
-            this.steps.push({ type: StepTypes.loco, data: { address: address } });
+            this.steps.push({ type: StepTypes.setLocoloco, data: { address: address } });
         }
         setTurnout(address, closed) {
             this.steps.push({ type: StepTypes.setTurnout, data: { address: address, closed: closed } });
@@ -137,7 +139,7 @@ define(["require", "exports", "../../../common/src/dcc", "./api"], function (req
             this.steps.push({ type: StepTypes.stop, data: { speed: 0 } });
         }
         setFunction(fn, on) {
-            this.steps.push({ type: StepTypes.function, data: { fn: fn, on: on } });
+            this.steps.push({ type: StepTypes.setFunction, data: { fn: fn, on: on } });
         }
         setFunctionMs(fn, on, wait) {
             this.setFunction(fn, on);
@@ -159,12 +161,18 @@ define(["require", "exports", "../../../common/src/dcc", "./api"], function (req
             this.steps.push({ type: StepTypes.waitForSensor, data: { address: address, on: on } });
         }
         setRoute(route) {
-            this.steps.push({ type: StepTypes.route, data: { routeName: route } });
+            this.steps.push({ type: StepTypes.setRoute, data: { routeName: route } });
+        }
+        waitForMinutes(minute) {
+            this.steps.push({ type: StepTypes.waitForMinutes, data: { minute: minute } });
+        }
+        startAtMinutes(minutes) {
+            this.steps.push({ type: StepTypes.startAtMinutes, data: { minutes: minutes } });
         }
         procStep() {
             if (this.step) {
                 switch (this.step.type) {
-                    case StepTypes.loco:
+                    case StepTypes.setLocoloco:
                         this.locoAddress = this.step.data.address;
                         //console.log(`TASK: ${this.name} loco: ${this.locoAddress} added!`)
                         this.index++;
@@ -218,12 +226,12 @@ define(["require", "exports", "../../../common/src/dcc", "./api"], function (req
                             console.log(`TASK: ${this.name} waitForSensor:${sensor.address} finished!`);
                         }
                         break;
-                    case StepTypes.function:
+                    case StepTypes.setFunction:
                         const f = this.step.data;
                         api_1.Api.setLocoFunction(this.locoAddress, f.fn, f.on);
                         this.index++;
                         break;
-                    case StepTypes.route:
+                    case StepTypes.setRoute:
                         const route = this.step.data;
                         api_1.Api.setRoute(route.routeName);
                         this.index++;
@@ -233,12 +241,31 @@ define(["require", "exports", "../../../common/src/dcc", "./api"], function (req
                         this.index = 0;
                         this.prevIndex = -1;
                         break;
+                    case StepTypes.waitForMinutes:
+                        const minute = this.step.data.minute;
+                        const clock = api_1.Api.getClock();
+                        if (clock && clock.currentTime.getMinutes() % minute == 0) {
+                            this.index++;
+                            console.log(`TASK: ${this.name} waitForMinute:${minute} finished!`);
+                        }
+                        break;
+                    case StepTypes.startAtMinutes:
+                        const minutes = this.step.data.minutes;
+                        const clocka = api_1.Api.getClock();
+                        if (clocka) {
+                            const min = clocka.currentTime.getMinutes();
+                            if (minutes.includes(min)) {
+                                this.index++;
+                                console.log(`TASK: ${this.name} startAtMinutes:${min} finished!`);
+                            }
+                        }
+                        break;
                 }
             }
         }
         logStep(step) {
             switch (step.type) {
-                case StepTypes.loco:
+                case StepTypes.setLocoloco:
                     console.log(`TASK: ${this.name} index: ${this.index} loco: ${step.data.address}`);
                     break;
                 case StepTypes.setTurnout:
@@ -259,7 +286,7 @@ define(["require", "exports", "../../../common/src/dcc", "./api"], function (req
                 case StepTypes.waitForSensor:
                     console.log(`TASK: ${this.name} index: ${this.index} waitForSensor: ${step.data.address}`);
                     break;
-                case StepTypes.function:
+                case StepTypes.setFunction:
                     console.log(`TASK: ${this.name} index: ${this.index} function: ${step.data.fn}`);
                     break;
                 case StepTypes.restart:
