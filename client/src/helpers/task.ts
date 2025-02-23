@@ -59,7 +59,7 @@ interface iWaitForMinute {
 }
 
 interface iStartAtMinutes {
-    minutes: number[]
+    minutes: number[] 
 }
 
 export enum TaskStatus {
