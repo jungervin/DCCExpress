@@ -20,10 +20,17 @@ define(["require", "exports", "../editor/turnout", "../helpers/graphics"], funct
         </style>
     
         <div class="container">
+            <div class="igroup">
+                <div>Name</div>
+                <div>
+                    <input id="name" type="text" value="" readonly disabled>
+                </div>
+            </div>
             <div id="listPanel" class="igroup">
             </div>                
         </div>
         `;
+            this.nameElement = shadow.getElementById("name");
             this.listPanel = shadow.getElementById("listPanel");
             this.listPanel.innerHTML = "LISTPANEL";
             this.listPanel.style.overflow = 'auto';
@@ -33,6 +40,10 @@ define(["require", "exports", "../editor/turnout", "../helpers/graphics"], funct
         connectedCallback() {
         }
         setRouteSwitch(rs) {
+            this.nameElement.value = rs.name;
+            this.nameElement.onchange = (e) => {
+                rs.name = this.nameElement.value;
+            };
             this.routeSwitch = rs;
             this.listPanel.innerHTML = '';
             var turnouts = rs.tag;

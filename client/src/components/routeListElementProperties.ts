@@ -12,6 +12,7 @@ import { ExtendedHTMLInputElement } from "../editor/view";
 export class RouteListElementProperties extends HTMLElement {
     listPanel: HTMLDivElement;
     routeSwitch?: RouteSwitchElement;
+    nameElement: HTMLInputElement;
 
     constructor() {
         super()
@@ -31,10 +32,17 @@ export class RouteListElementProperties extends HTMLElement {
         </style>
     
         <div class="container">
+            <div class="igroup">
+                <div>Name</div>
+                <div>
+                    <input id="name" type="text" value="" readonly disabled>
+                </div>
+            </div>
             <div id="listPanel" class="igroup">
             </div>                
         </div>
         `
+        this.nameElement = shadow.getElementById("name") as HTMLInputElement
         this.listPanel = shadow.getElementById("listPanel") as HTMLDivElement
         this.listPanel.innerHTML = "LISTPANEL"
         this.listPanel.style.overflow = 'auto'
@@ -48,6 +56,12 @@ export class RouteListElementProperties extends HTMLElement {
     }
 
     setRouteSwitch(rs: RouteSwitchElement) {
+
+        this.nameElement.value = rs.name
+        this.nameElement.onchange = (e: Event) => {
+            rs.name = this.nameElement.value
+        }
+
         this.routeSwitch = rs
         this.listPanel.innerHTML = ''
         var turnouts = rs.tag as TurnoutElement[]
