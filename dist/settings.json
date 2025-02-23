@@ -27,8 +27,8 @@
     "EditorSettings": {
         "ShowAddress": false,
         "Orientation": 1,
-        "ShowGrid": true,
+        "ShowGrid": false,
         "ShowClock": true,
-        "fastClockFactor": 1
+        "fastClockFactor": 4
     }
 }
