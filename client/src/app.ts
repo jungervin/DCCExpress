@@ -30,6 +30,7 @@ export class App {
     locos: iLocomotive[] = []
     sensors: { [key: number]: boolean } = {}
     decoders: { [key: number]: boolean } = {}
+    turnouts: { [key: number]: boolean } = {}
     locoControlPanel: LocoControlPanel;
     powerInfo: iPowerInfo = {
         info: undefined,
@@ -388,14 +389,16 @@ export class App {
             if (Object.getPrototypeOf(elem) == TurnoutRightElement.prototype) {
                 var a = elem as TurnoutRightElement
                 if (a.address == data.address) {
-                    a.t1Closed = data.isClosed == a.t1ClosedValue;// : a.t1OpenValue
+                    a.t1Closed = data.isClosed == a.t1ClosedValue;
+                    this.turnouts[data.address] = a.t1Closed
                     redraw = true
                 }
             }
             else if (Object.getPrototypeOf(elem) == TurnoutLeftElement.prototype) {
                 var la = elem as TurnoutLeftElement
                 if (la.address == data.address) {
-                    la.t1Closed = data.isClosed == la.t1ClosedValue; // : la.t1OpenValue
+                    la.t1Closed = data.isClosed == la.t1ClosedValue; 
+                    this.turnouts[data.address] = la.t1Closed
                     redraw = true
                 }
             }
@@ -403,10 +406,12 @@ export class App {
                 var td = elem as TurnoutDoubleElement
                 if (td.address == data.address) {
                     td.t1Closed = data.isClosed == td.t1ClosedValue; // : td.t1OpenValue
+                    this.turnouts[data.address] = td.t1Closed
                     redraw = true
                 }
                 if (td.address2 == data.address) {
                     td.t2Closed = data.isClosed == td.t2ClosedValue; // : td.t2OpenValue
+                    this.turnouts[data.address] = td.t2Closed
                     redraw = true
                 }
             }

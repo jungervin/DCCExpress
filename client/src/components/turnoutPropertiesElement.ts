@@ -114,6 +114,7 @@ export class TurnoutLeftPropertiesElement extends HTMLElement {
         // this.canvas1Element.turnout!.cc = turnout.cc
         this.canvas1Element.draw()
         this.canvas1Element.onclick = (e: MouseEvent) => {
+            this.canvas1Element.turnout!.address = turnout.address
             this.canvas1Element.turnout!.t1ClosedValue = this.turnout!.t1ClosedValue
             this.canvas1Element.turnout!.send()
         }
@@ -129,6 +130,7 @@ export class TurnoutLeftPropertiesElement extends HTMLElement {
         // this.canvas2Element.turnout!.cc = turnout.cc
         this.canvas2Element.draw()
         this.canvas2Element.onclick = (e: MouseEvent) => {
+            this.canvas2Element.turnout!.address = turnout.address
             this.canvas2Element.turnout!.t1OpenValue = this.turnout!.t1OpenValue
             this.canvas2Element.turnout!.send()
         }
@@ -245,6 +247,7 @@ export class TurnoutRightPropertiesElement extends HTMLElement {
         // this.canvas1Element.turnout!.cc = turnout.cc
         this.canvas1Element.draw()
         this.canvas1Element.onclick = (e: MouseEvent) => {
+            this.canvas1Element.turnout!.address = turnout.address
             this.canvas1Element.turnout!.t1ClosedValue = this.turnout!.t1ClosedValue
             this.canvas1Element.turnout!.send()
         }
@@ -260,6 +263,7 @@ export class TurnoutRightPropertiesElement extends HTMLElement {
         // this.canvas2Element.turnout!.cc = turnout.cc
         this.canvas2Element.draw()
         this.canvas2Element.onclick = (e: MouseEvent) => {
+            this.canvas2Element.turnout!.address = turnout.address
             this.canvas2Element.turnout!.t1OpenValue = this.turnout!.t1OpenValue
             this.canvas2Element.turnout!.send()
         }
@@ -446,6 +450,9 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
             // this.canvas1Element.turnout!.cc = this.turnout.cc
             this.canvas1Element.draw()
             this.canvas1Element.onclick = (e: MouseEvent) => {
+                this.canvas1Element.turnout!.address = this.turnout!.address
+                this.canvas1Element.turnout!.address2 = this.turnout!.address2
+   
                 this.canvas1Element.turnout!.t1ClosedValue = this.turnout!.t1ClosedValue
                 this.canvas1Element.turnout!.t2OpenValue = this.turnout!.t2OpenValue
                 this.canvas1Element.turnout!.send()
@@ -474,7 +481,9 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
             // this.canvas2Element.turnout!.cc = this.turnout.cc
             this.canvas2Element.draw()
             this.canvas2Element.onclick = (e: MouseEvent) => {
-                this.canvas2Element.turnout!.t1ClosedValue = this.turnout!.t1ClosedValue
+                this.canvas2Element.turnout!.address = this.turnout!.address
+                this.canvas2Element.turnout!.address2 = this.turnout!.address2
+                    this.canvas2Element.turnout!.t1ClosedValue = this.turnout!.t1ClosedValue
                 this.canvas2Element.turnout!.t2ClosedValue = this.turnout!.t2ClosedValue
                 this.canvas2Element.turnout!.send()
             }
@@ -501,6 +510,8 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
             // this.canvas3Element.turnout!.cc = this.turnout.cc
             this.canvas3Element.draw()
             this.canvas3Element.onclick = (e: MouseEvent) => {
+                this.canvas3Element.turnout!.address = this.turnout!.address
+                this.canvas3Element.turnout!.address2 = this.turnout!.address2   
                 this.canvas3Element.turnout!.t1OpenValue = this.turnout!.t1OpenValue
                 this.canvas3Element.turnout!.t2ClosedValue = this.turnout!.t2ClosedValue
                 this.canvas3Element.turnout!.send()
@@ -528,6 +539,8 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
             // this.canvas4Element.turnout!.cc = this.turnout.cc
             this.canvas4Element.draw()
             this.canvas4Element.onclick = (e: MouseEvent) => {
+                this.canvas4Element.turnout!.address = this.turnout!.address
+                this.canvas4Element.turnout!.address2 = this.turnout!.address2
                 this.canvas4Element.turnout!.t1OpenValue = this.turnout!.t1OpenValue
                 this.canvas4Element.turnout!.t2OpenValue = this.turnout!.t2OpenValue
                 this.canvas4Element.turnout!.send()

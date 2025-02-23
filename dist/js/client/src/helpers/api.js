@@ -19,13 +19,13 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
             const turnout = Api.getTurnout(address);
             if (turnout) {
                 if (Object.getPrototypeOf(turnout) == turnout_1.TurnoutDoubleElement.prototype) {
-                    const to = turnout;
-                    if (to.address === address) {
-                        var t = { address: address, isClosed: isClosed ? to.t1ClosedValue : to.t1OpenValue };
+                    const td = turnout;
+                    if (td.address === address) {
+                        var t = { address: address, isClosed: isClosed ? td.t1ClosedValue : td.t1OpenValue };
                         ws_1.wsClient.send({ type: dcc_1.ApiCommands.setTurnout, data: t });
                     }
-                    else if (to.address2 === address) {
-                        var t = { address: address, isClosed: isClosed ? to.t2ClosedValue : to.t2OpenValue };
+                    else if (td.address2 === address) {
+                        var t = { address: address, isClosed: isClosed ? td.t2ClosedValue : td.t2OpenValue };
                         ws_1.wsClient.send({ type: dcc_1.ApiCommands.setTurnout, data: t });
                     }
                 }
@@ -58,6 +58,7 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
             }
         }
         static getTurnout(address) {
+            //return Api.app.turnouts[address]
             for (let t of Api.app.editor.views.getTurnoutElements()) {
                 if (t.address === address) {
                     return t;

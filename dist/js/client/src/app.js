@@ -32,6 +32,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             this.locos = [];
             this.sensors = {};
             this.decoders = {};
+            this.turnouts = {};
             this.powerInfo = {
                 info: undefined,
                 current: undefined,
@@ -301,14 +302,16 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 if (Object.getPrototypeOf(elem) == turnout_1.TurnoutRightElement.prototype) {
                     var a = elem;
                     if (a.address == data.address) {
-                        a.t1Closed = data.isClosed == a.t1ClosedValue; // : a.t1OpenValue
+                        a.t1Closed = data.isClosed == a.t1ClosedValue;
+                        this.turnouts[data.address] = a.t1Closed;
                         redraw = true;
                     }
                 }
                 else if (Object.getPrototypeOf(elem) == turnout_1.TurnoutLeftElement.prototype) {
                     var la = elem;
                     if (la.address == data.address) {
-                        la.t1Closed = data.isClosed == la.t1ClosedValue; // : la.t1OpenValue
+                        la.t1Closed = data.isClosed == la.t1ClosedValue;
+                        this.turnouts[data.address] = la.t1Closed;
                         redraw = true;
                     }
                 }
@@ -316,10 +319,12 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                     var td = elem;
                     if (td.address == data.address) {
                         td.t1Closed = data.isClosed == td.t1ClosedValue; // : td.t1OpenValue
+                        this.turnouts[data.address] = td.t1Closed;
                         redraw = true;
                     }
                     if (td.address2 == data.address) {
                         td.t2Closed = data.isClosed == td.t2ClosedValue; // : td.t2OpenValue
+                        this.turnouts[data.address] = td.t2Closed;
                         redraw = true;
                     }
                 }

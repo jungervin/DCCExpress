@@ -28,13 +28,13 @@ export class Api {
         const turnout = Api.getTurnout(address) 
         if (turnout) {
             if(Object.getPrototypeOf(turnout) == TurnoutDoubleElement.prototype) {
-                const to = turnout as TurnoutDoubleElement   
-                if(to.address === address) {
-                var t: iSetTurnout = { address: address, isClosed: isClosed ? to.t1ClosedValue : to.t1OpenValue }
+                const td = turnout as TurnoutDoubleElement   
+                if(td.address === address) {
+                var t: iSetTurnout = { address: address, isClosed: isClosed ? td.t1ClosedValue : td.t1OpenValue }
                 wsClient.send({type: ApiCommands.setTurnout, data: t} as iData)
                 }
-                else if(to.address2 === address) {
-                    var t: iSetTurnout = { address: address, isClosed: isClosed ? to.t2ClosedValue : to.t2OpenValue }
+                else if(td.address2 === address) {
+                    var t: iSetTurnout = { address: address, isClosed: isClosed ? td.t2ClosedValue : td.t2OpenValue }
                     wsClient.send({type: ApiCommands.setTurnout, data: t} as iData)
                 }
             } else {
@@ -71,6 +71,7 @@ export class Api {
 
     static getTurnout(address: number)  {
 
+        //return Api.app.turnouts[address]
         for(let t of Api.app.editor.views.getTurnoutElements()) {
          
             if(t.address === address) {
