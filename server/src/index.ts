@@ -10,7 +10,7 @@ console.log('2025.02.03  v.0.1')
 console.log('');
 
 
-
+import os from "os";
 import http from "http";
 import * as fs from "fs";
 import path from "path";
@@ -134,49 +134,18 @@ if (wsServer) {
 }
 
 server.listen(PORT, () => {
-  console.log(`Szerver fut a http://localhost:${PORT} címen`);
-});
+  console.log("🚀 Server started on:");
+  console.log("===============================");
 
+  // Lekérdezzük a hálózati interfészeket
+  const interfaces = os.networkInterfaces();
+  Object.keys(interfaces).forEach((iface) => {
+      interfaces[iface]?.forEach((details) => {
+          if (details.family === "IPv4" && !details.internal) {
+              console.log(`🌍 Accessible at: http://${details.address}:${PORT}`);
+          }
+      });
+  });
 
+  console.log("===============================");});
 
-
-
-
-
-
-
-// Minden egyéb útvonal
-
-// Socket.IO események kezelése
-
-//=========================================
-// LOCO EDTOR
-//=========================================
-{
-
-  // // Multer konfiguráció
-  // const storage: StorageEngine = multer.diskStorage({
-  //   destination: (req: Request, file: Express.Multer.File, cb: (error: Error | null, destination: string) => void) => {
-
-  //       if (!fs.existsSync(uploadDir)) {
-  //           fs.mkdirSync(uploadDir);
-  //       }
-  //       cb(null, uploadDir);
-  //   },
-  //   filename: (req: Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) => {
-  //       cb(null, `${Date.now()}-${file.originalname}`);
-  //   },
-  // });
-  // const upload = multer({ storage });
-
-
-}
-
-
-
-
-
-// // Szerver indítása
-// server.listen(PORT, () => {
-//   console.log(`Szerver fut a http://localhost:${PORT} címen`);
-// });
