@@ -1,4 +1,4 @@
-define(["require", "exports", "../../../common/src/dcc", "./api"], function (require, exports, dcc_1, api_1) {
+define(["require", "exports", "../../../common/src/dcc", "./api", "./globals"], function (require, exports, dcc_1, api_1, globals_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Task = exports.Tasks = exports.TaskStatus = void 0;
@@ -103,6 +103,9 @@ define(["require", "exports", "../../../common/src/dcc", "./api"], function (req
             this.tasks.forEach(t => {
                 t.restart();
             });
+        }
+        save() {
+            globals_1.Globals.saveJson("tasks.json", this.tasks);
         }
     }
     exports.Tasks = Tasks;

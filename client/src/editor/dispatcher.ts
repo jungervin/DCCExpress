@@ -1,4 +1,4 @@
-import { Globals } from "../helpers/globals";
+import { Api } from "../helpers/api";
 
 export class Dispatcher {
     static App: any;
@@ -30,11 +30,6 @@ export class Dispatcher {
         }
     }
 
-    /**
-     * Betölt és futtat egy JavaScript fájlt, majd periodikusan hívogatja azt.
-     * @param filePath A betöltendő JavaScript fájl elérési útja.
-     * @param interval Hívogatás időköze (ms)
-     */
     static async start(filePath: string): Promise<void> {
         if (this.isRunning) {
             console.warn("⚠️ Már fut egy script. Állítsd le először a stop() metódussal.");
@@ -44,59 +39,45 @@ export class Dispatcher {
         try {
             const response = await fetch(filePath);
             if (!response.ok) {
-                throw new Error(`Nem sikerült betölteni a fájlt: ${filePath}`);
+                throw new Error(`Dispatcher: Nem sikerült betölteni a fájlt: ${filePath}`);
                 //Hiba a script betöltése közben:
             }
 
             this.scriptContent = await response.text();
-            console.log(`📥 Betöltött fájl: ${filePath}`);
+            console.log(`📥Dispatcher: Betöltött fájl: ${filePath}`);
 
-            // Dinamikus függvény létrehozása az App és egyéni környezet számára
-            // this.scriptContext =  Dispatcher.App; // Lokális környezet létrehozása
-            // this.currentScriptFunction = new Function("context", `
-            //     with (context) { 
-            //         ${scriptContent} 
-            //     }
-            // `);
+           this.currentScriptFunction = new Function("App", "Api", "with (App, Api) { " + this.scriptContent + " }");
 
-            this.currentScriptFunction = new Function("App", "with (App) { " + this.scriptContent + " }");
-
-            // Először egyszer lefuttatjuk
-            this.currentScriptFunction(Dispatcher.App);
-
-            // Majd időzítve folyamatosan hívogatjuk
+            this.currentScriptFunction(Dispatcher.App, Api);
             
             this.intervalId = setInterval(() => {
                 if (this.currentScriptFunction) {
                     try {
-                        this.currentScriptFunction(Dispatcher.App);
+                        this.currentScriptFunction(Dispatcher.App, Api);
                     } catch (error) {
-                        console.error("❌ Hiba a script futtatása közben:", error);
+                        console.error("❌Dispatcher: Hiba a script futtatása közben:", error);
                         if (Dispatcher.onerror) {
-                            Dispatcher.onerror('Hiba a script futtatása közben:', error)
+                            Dispatcher.onerror('Dispatcher: Hiba a script futtatása közben:', error)
                         }
                     }
                 }
             }, Dispatcher.interval);
 
             this.isRunning = true;
-            console.log("✅ Script sikeresen elindult és folyamatosan fut!");
+            console.log("✅Dispatcher: Script sikeresen elindult és folyamatosan fut!");
 
         } catch (error) {
-            console.error("❌ Hiba a script betöltése közben:", error);
+            console.error("❌Dispatcher: Hiba a script betöltése közben:", error);
             if (Dispatcher.onerror) {
-                Dispatcher.onerror('Hiba a script betöltése közben:', error)
+                Dispatcher.onerror('Dispatcher: Hiba a script betöltése közben:', error)
             }
 
         }
     }
 
-    /**
-     * Leállítja az éppen futó scriptet.
-     */
-    static stop(): void {
+        static stop(): void {
         if (!this.isRunning) {
-            console.warn("⚠️ Nincs futó script.");
+            console.warn("⚠️Dispatcher: Nincs futó script.");
             return;
         }
 
@@ -106,8 +87,7 @@ export class Dispatcher {
         }
 
         this.currentScriptFunction = null;
-        //this.scriptContext = {};
         this.isRunning = false;
-        console.log("⏹ Script leállítva.");
+        console.log("⏹Dispatcher: Script leállítva.");
     }
 }

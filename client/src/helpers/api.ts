@@ -4,6 +4,7 @@ import { wsClient } from "./ws";
 import { TurnoutDoubleElement, TurnoutElement } from "../editor/turnout";
 import { RouteSwitchElement } from "../editor/route";
 import { FastClock } from "../editor/clock";
+import { Tasks } from "./task";
 
 export class Api {
     static app : App
@@ -115,5 +116,9 @@ export class Api {
             return clock.currentTime.getMinutes()
         }
         return -1
+    }
+
+    static get tasks() : Tasks{
+        return Api.app.tasks
     }
 }

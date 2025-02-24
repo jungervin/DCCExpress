@@ -94,6 +94,9 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
             }
             return -1;
         }
+        static get tasks() {
+            return Api.app.tasks;
+        }
     }
     exports.Api = Api;
 });

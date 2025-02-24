@@ -16,6 +16,7 @@ import { AccessoryDecoderElement } from "./editor/button";
 import { Api } from "./helpers/api";
 import { Task, Tasks } from "./helpers/task";
 import { RouteSwitchElement } from "./editor/route";
+import { Scheduler } from "./helpers/scheduler";
 
 console.log(Dispatcher)
 console.log(ApiCommands)
@@ -209,8 +210,10 @@ export class App {
             if (this.toolbar.tasks) {
                 this.tasks.stopAllTask()
                 this.tasks.tasks.length = 0
-                this.task1()
-                this.tasks.startAllTask()
+                Scheduler.start("scheduler.js")
+                //this.task1()
+                //this.tasks.startAllTask()
+                //this.tasks.save()
             } else {
                 this.tasks.stopAllTask()
             }

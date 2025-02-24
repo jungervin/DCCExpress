@@ -1,5 +1,6 @@
 import { Z21Directions } from "../../../common/src/dcc";
 import { Api } from "./api";
+import { Globals } from "./globals";
 
 enum StepTypes {
     setLocoloco = "setLoco",
@@ -164,6 +165,9 @@ export class Tasks {
         this.tasks.forEach(t => {
             t.restart()
         })
+    }
+    save() {
+        Globals.saveJson("tasks.json", this.tasks)
     }
 }
 

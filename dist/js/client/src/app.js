@@ -1,4 +1,4 @@
-define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/view", "../../common/src/dcc", "./helpers/globals", "./controls/dialog", "./helpers/ws", "./controls/toastManager", "./editor/dispatcher", "./components/controlPanel", "./editor/audioButton", "./helpers/api", "./helpers/task"], function (require, exports, editor_1, turnout_1, view_1, dcc_1, globals_1, dialog_1, ws_1, toastManager_1, dispatcher_1, controlPanel_1, audioButton_1, api_1, task_1) {
+define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/view", "../../common/src/dcc", "./helpers/globals", "./controls/dialog", "./helpers/ws", "./controls/toastManager", "./editor/dispatcher", "./components/controlPanel", "./editor/audioButton", "./helpers/api", "./helpers/task", "./helpers/scheduler"], function (require, exports, editor_1, turnout_1, view_1, dcc_1, globals_1, dialog_1, ws_1, toastManager_1, dispatcher_1, controlPanel_1, audioButton_1, api_1, task_1, scheduler_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.App = void 0;
@@ -152,8 +152,10 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 if (this.toolbar.tasks) {
                     this.tasks.stopAllTask();
                     this.tasks.tasks.length = 0;
-                    this.task1();
-                    this.tasks.startAllTask();
+                    scheduler_1.Scheduler.start("scheduler.js");
+                    //this.task1()
+                    //this.tasks.startAllTask()
+                    //this.tasks.save()
                 }
                 else {
                     this.tasks.stopAllTask();
