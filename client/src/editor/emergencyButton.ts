@@ -1,3 +1,4 @@
+import { Api } from "../helpers/api";
 import { View } from "./view";
 
 export class EmergencyButtonShapeElement extends View {
@@ -60,6 +61,7 @@ export class EmergencyButtonShapeElement extends View {
 
     mouseDown(e: MouseEvent): void {
         this.toggle()
+        Api.emergencyStop()
         // const data: iSetBasicAccessory = {address: this.address, value: this.on ? this.valueOn : this.valueOff} as iSetBasicAccessory
         // wsClient.send({type: ApiCommands.setBasicAccessory, data: data } as iData)
         // if (this.mouseDownHandler) {
