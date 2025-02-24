@@ -1,8 +1,8 @@
 {
     "settings": {
-        "scale": 1.1030188532477665,
-        "origX": 262,
-        "origY": -98,
+        "scale": 1.183051040178918,
+        "origX": -5,
+        "origY": -162,
         "locoPanelVisible": false,
         "propertyPanelVisible": false
     },
@@ -35,7 +35,7 @@
                     "type": "routeSwitch",
                     "name": "routeSwitch112",
                     "x": 17,
-                    "y": 14,
+                    "y": 13,
                     "turnouts": [
                         {
                             "address": 12,
@@ -955,7 +955,7 @@
                     "type": "routeSwitch",
                     "name": "routeSwitch113",
                     "x": 17,
-                    "y": 15,
+                    "y": 14,
                     "turnouts": [
                         {
                             "address": 12,
@@ -984,7 +984,7 @@
                     "type": "label2",
                     "name": "label115",
                     "x": 18,
-                    "y": 15,
+                    "y": 14,
                     "angle": 0,
                     "text": "P3 == P2 == P3",
                     "valign": "center"
@@ -994,7 +994,7 @@
                     "type": "label2",
                     "name": "label116",
                     "x": 18,
-                    "y": 14,
+                    "y": 13,
                     "angle": 0,
                     "text": "P3 == P1 == P3",
                     "valign": "center"
@@ -1932,8 +1932,8 @@
                 {
                     "uuid": "b0535fbf-6215-4eee-a899-6ebca7d4f026",
                     "type": "emergencybutton",
-                    "x": 14,
-                    "y": 14,
+                    "x": 15,
+                    "y": 13,
                     "name": "emergencybutton196"
                 }
             ]
