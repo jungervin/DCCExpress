@@ -3,6 +3,7 @@ if (!Api.tasks.getTask("Task1")) {
 
     const task = Api.tasks.addTask("Task1")
     task.setLoco(3)
+    
     // ==========================================
     //  Szfvár P3 <=== P2 <== Szabadbattyán P3
     // ==========================================

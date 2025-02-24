@@ -1,8 +1,8 @@
+import { Globals } from "../helpers/globals";
 import { Api } from "../helpers/api";
 import { View } from "./view";
 
 export class EmergencyButtonShapeElement extends View {
-    on: boolean = false;
 
     constructor(uuid: string, x: number, y: number, name: string) {
         super(uuid, x, y, name)
@@ -24,14 +24,14 @@ export class EmergencyButtonShapeElement extends View {
         ctx.stroke();
 
         ctx.beginPath()
-        if (!this.on) {
+        if (!Globals.power.emergencyStop) {
             ctx.shadowBlur = 5;
-            ctx.shadowColor = "gray";
+            ctx.shadowColor = "black";
             ctx.shadowOffsetX = 2;
             ctx.shadowOffsetY = 2;
         }
         ctx.strokeStyle = "black";
-        ctx.fillStyle = this.on ? "red" : "#fd5c63"
+        ctx.fillStyle = Globals.power.emergencyStop ? "red" : "#ff7f8f"
 
         ctx.arc(this.centerX, this.centerY, this.width / 2 - 4, 0, Math.PI * 2);
         ctx.fill();
@@ -45,7 +45,7 @@ export class EmergencyButtonShapeElement extends View {
 
         ctx.fillStyle = "white";
         //ctx.fillStyle = this.on ? "black" : "white";
-        ctx.font = this.on ? "7px Arial" : "8px Arial";
+        ctx.font = Globals.power.emergencyStop ? "7px Arial" : "8px Arial";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText("STOP", this.centerX, this.centerY + 1);
@@ -55,17 +55,7 @@ export class EmergencyButtonShapeElement extends View {
         super.draw(ctx)
     }
 
-    toggle() {
-        this.on = !this.on;
-    }
-
     mouseDown(e: MouseEvent): void {
-        this.toggle()
         Api.emergencyStop()
-        // const data: iSetBasicAccessory = {address: this.address, value: this.on ? this.valueOn : this.valueOff} as iSetBasicAccessory
-        // wsClient.send({type: ApiCommands.setBasicAccessory, data: data } as iData)
-        // if (this.mouseDownHandler) {
-        //     this.mouseDownHandler(this)
-        // }
     }
 }

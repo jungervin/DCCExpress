@@ -211,7 +211,9 @@ export class App {
             if (this.toolbar.tasks) {
                 this.tasks.stopAllTask()
                 this.tasks.tasks.length = 0
-                Scheduler.start("scheduler.js")
+                Scheduler.start("scheduler.js").then(() => {
+                    this.tasks.startAllTask()
+                })
                 //this.task1()
                 //this.tasks.startAllTask()
                 //this.tasks.save()

@@ -254,13 +254,6 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                 this.cursorElement = this.cursorTreeShapeElement;
                 this.cursorElement.draw(this.ctx);
             };
-            document.getElementById("tbTree").onclick = (e) => {
-                this.shapesModal.hide();
-                this.unselectAll();
-                this.drawMode = drawModes.emergencybutton;
-                this.cursorElement = this.cursorTreeShapeElement;
-                this.cursorElement.draw(this.ctx);
-            };
             document.getElementById("tbBlock").onclick = (e) => {
                 this.shapesModal.hide();
                 this.unselectAll();

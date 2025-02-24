@@ -25,28 +25,50 @@ export class TreeShapeElement extends View {
 
         var x = this.centerX
         var y = this.centerY
-        var size = this.width / 2 - 2
+        var r = this.width / 2 - 8
 
-        ctx.fillStyle = "red";
-        ctx.beginPath();
-        ctx.fillStyle = "#4F8A10";
-        ctx.arc(x + 3, y + 3, size, 0, Math.PI * 2);
-        ctx.fill();
+        var colors = ["#4F8A10", "#5CA420",  "#6EC13C"]
 
-        ctx.beginPath();
-        ctx.fillStyle = "#5CA420";
-        ctx.arc(x + 2 , y + 2, size - 7, 0, Math.PI * 2);
-        ctx.fill();
+        this.drawTree(ctx, x, y, this.width / 2 -3 , colors)
 
-        ctx.beginPath();
-        ctx.fillStyle = "#6EC13C";
-        ctx.arc(x + 4, y +4, 6, 0, Math.PI * 2);
-        ctx.fill();
+        // var colors2 = ["#5CA420", "#4F8A10", "#6EC13C"]
+        // this.drawTree(ctx, x +8, y-10, r -2, colors2)
 
+        // ctx.translate(this.centerX, this.centerY);
+        // ctx.rotate(degreesToRadians(this.angle + 90));
+        // ctx.translate(-this.centerX, -this.centerY);
+        // this.drawTree(ctx, x +8, y-5, r, colors)
         ctx.restore();
         super.draw(ctx)
     }
 
+    drawTree(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, colors: string[]) {
+        
+        
+        ctx.beginPath();
+        ctx.shadowBlur = 12
+        ctx.shadowColor = "gray"
+        ctx.shadowOffsetX = 3
+        ctx.shadowOffsetY = 3
+
+        ctx.fillStyle = colors[0];
+        ctx.arc(x , y, r, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.shadowBlur = 0
+        ctx.shadowOffsetX = 0
+        ctx.shadowOffsetY = 0
+        ctx.fillStyle = colors[1];
+        ctx.arc(x + 3 , y + 3, r - 7, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.fillStyle = colors[2];
+        ctx.arc(x + 5, y +5, 5, 0, Math.PI * 2);
+        ctx.fill();
+
+    }
     toggle() {
         this.on = !this.on;
     }

@@ -1,11 +1,10 @@
-define(["require", "exports", "../helpers/api", "./view"], function (require, exports, api_1, view_1) {
+define(["require", "exports", "../helpers/globals", "../helpers/api", "./view"], function (require, exports, globals_1, api_1, view_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.EmergencyButtonShapeElement = void 0;
     class EmergencyButtonShapeElement extends view_1.View {
         constructor(uuid, x, y, name) {
             super(uuid, x, y, name);
-            this.on = false;
         }
         get type() {
             return 'emergencybutton';
@@ -20,14 +19,14 @@ define(["require", "exports", "../helpers/api", "./view"], function (require, ex
             ctx.fill();
             ctx.stroke();
             ctx.beginPath();
-            if (!this.on) {
+            if (!globals_1.Globals.power.emergencyStop) {
                 ctx.shadowBlur = 5;
-                ctx.shadowColor = "gray";
+                ctx.shadowColor = "black";
                 ctx.shadowOffsetX = 2;
                 ctx.shadowOffsetY = 2;
             }
             ctx.strokeStyle = "black";
-            ctx.fillStyle = this.on ? "red" : "#fd5c63";
+            ctx.fillStyle = globals_1.Globals.power.emergencyStop ? "red" : "#ff7f8f";
             ctx.arc(this.centerX, this.centerY, this.width / 2 - 4, 0, Math.PI * 2);
             ctx.fill();
             ctx.shadowBlur = 0;
@@ -37,7 +36,7 @@ define(["require", "exports", "../helpers/api", "./view"], function (require, ex
             ctx.beginPath();
             ctx.fillStyle = "white";
             //ctx.fillStyle = this.on ? "black" : "white";
-            ctx.font = this.on ? "7px Arial" : "8px Arial";
+            ctx.font = globals_1.Globals.power.emergencyStop ? "7px Arial" : "8px Arial";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             ctx.fillText("STOP", this.centerX, this.centerY + 1);
@@ -45,17 +44,8 @@ define(["require", "exports", "../helpers/api", "./view"], function (require, ex
             ctx.restore();
             super.draw(ctx);
         }
-        toggle() {
-            this.on = !this.on;
-        }
         mouseDown(e) {
-            this.toggle();
             api_1.Api.emergencyStop();
-            // const data: iSetBasicAccessory = {address: this.address, value: this.on ? this.valueOn : this.valueOff} as iSetBasicAccessory
-            // wsClient.send({type: ApiCommands.setBasicAccessory, data: data } as iData)
-            // if (this.mouseDownHandler) {
-            //     this.mouseDownHandler(this)
-            // }
         }
     }
     exports.EmergencyButtonShapeElement = EmergencyButtonShapeElement;

@@ -1,17 +1,5 @@
 const elems = App.editor.views
 
-if (!App.num) {
-    App.num = 0;
-}
-
-//==================================
-// INIT
-//==================================
-if (!App.init) {
-    App.init = true
-    App.status = {}
-    return
-}
 
 
 const t10 = elems.getTurnout(10)
@@ -30,9 +18,21 @@ const rb12 = App.sensors[12]
 const rb15 = App.sensors[15]
 const rb24 = App.sensors[24]
 
-
 const l18 = App.getLoco(18)
 console.log(l18)
+
+//==================================
+// INIT
+//==================================
+if (!App.init) {
+    App.init = true
+    App.num = 0;
+    App.status = {}
+    App.status.rb15 = rb15
+    App.status.rb24 = rb24
+    return
+}
+
 
 // ======================================
 // The train has reached the station

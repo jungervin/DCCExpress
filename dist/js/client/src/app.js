@@ -152,7 +152,9 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 if (this.toolbar.tasks) {
                     this.tasks.stopAllTask();
                     this.tasks.tasks.length = 0;
-                    scheduler_1.Scheduler.start("scheduler.js");
+                    scheduler_1.Scheduler.start("scheduler.js").then(() => {
+                        this.tasks.startAllTask();
+                    });
                     //this.task1()
                     //this.tasks.startAllTask()
                     //this.tasks.save()
