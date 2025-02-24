@@ -33,6 +33,7 @@ import { AudioButtonShapeElement } from "./audioButton";
 import { getDistance } from "../helpers/math";
 import { FastClock } from "./clock";
 import { EmergencyButtonShapeElement } from "./emergencyButton";
+import { TreeShapeElement } from "./tree";
 
 console.log(PropertyPanel)
 
@@ -58,6 +59,7 @@ export enum drawModes {
     button,
     audiobutton,
     emergencybutton,
+    tree,
 }
 
 export class CustomCanvas extends HTMLElement {
@@ -111,10 +113,11 @@ export class CustomCanvas extends HTMLElement {
     locoControlPanel?: LocoControlPanel;
     cursorAudioButtonElement?: AudioButtonShapeElement;
     cursorEmergencyButtonElement: EmergencyButtonShapeElement | undefined;
-
+    cursorTreeShapeElement: TreeShapeElement | undefined;
     private pointerMap = new Map<number, { x: number; y: number }>(); // Pointer ID-k mentése
     private lastDistance = 0;
     fastClock?: FastClock | null;
+
 
 
     constructor() {
@@ -212,6 +215,8 @@ export class CustomCanvas extends HTMLElement {
         this.cursorLabel2Element = new Label2Element("", 0, 0, "cursor")
         this.cursorLabel2Element.text = "LABEL"
         this.cursorLabel2Element.isSelected = true
+        this.cursorTreeShapeElement = new TreeShapeElement("", 0, 0, "cursor")
+        this.cursorTreeShapeElement.isSelected = true
 
 
         const shapesModalElement = document.getElementById("shapesModal") as HTMLElement;
@@ -315,6 +320,21 @@ export class CustomCanvas extends HTMLElement {
             this.unselectAll()
             this.drawMode = drawModes.emergencybutton
             this.cursorElement = this.cursorEmergencyButtonElement
+            this.cursorElement!.draw(this.ctx!)
+        }
+        document.getElementById("tbTree")!.onclick = (e: MouseEvent) => {
+            this.shapesModal!.hide()
+            this.unselectAll()
+            this.drawMode = drawModes.tree
+            this.cursorElement = this.cursorTreeShapeElement
+            this.cursorElement!.draw(this.ctx!)
+        }
+
+        document.getElementById("tbTree")!.onclick = (e: MouseEvent) => {
+            this.shapesModal!.hide()
+            this.unselectAll()
+            this.drawMode = drawModes.tree
+            this.cursorElement = this.cursorTreeShapeElement
             this.cursorElement!.draw(this.ctx!)
         }
 
@@ -962,6 +982,12 @@ export class CustomCanvas extends HTMLElement {
                     var l = new Label2Element(getUUID(), x, y, "label" + this.views.elements.length);
                     this.add(l)
                     break;
+                case drawModes.tree:
+                    //this.removeIfExists(x, y)
+                    this.unselectAll()
+                    var tree = new TreeShapeElement(getUUID(), x, y, "tree" + this.views.elements.length);
+                    this.add(tree)
+                    break;
             }
 
             this.draw()
@@ -1357,6 +1383,10 @@ export class CustomCanvas extends HTMLElement {
                     var eb = elem as EmergencyButtonShapeElement
                     elems.push({ uuid: eb.UUID, type: eb.type, x: eb.x, y: eb.y, name: eb.name })
                     break;
+                case 'tree':
+                    var tree = elem as TreeShapeElement
+                    elems.push({ uuid: tree.UUID, type: tree.type, x: tree.x, y: tree.y, name: tree.name })
+                    break;
 
 
             }
@@ -1558,6 +1588,10 @@ export class CustomCanvas extends HTMLElement {
                         case "emergencybutton":
                             var eb = new EmergencyButtonShapeElement(elem.uuid, elem.x, elem.y, elem.name);
                             this.add(eb)
+                            break;
+                        case "tree":
+                            var tree = new TreeShapeElement(elem.uuid, elem.x, elem.y, elem.name);
+                            this.add(tree)
                             break;
 
                     }

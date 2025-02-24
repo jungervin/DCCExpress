@@ -1935,6 +1935,20 @@
                     "x": 1,
                     "y": 6,
                     "name": "emergencybutton196"
+                },
+                {
+                    "uuid": "1dfb962c-58a6-4f16-88fa-bfb6adf6a420",
+                    "type": "tree",
+                    "x": 1,
+                    "y": 11,
+                    "name": "tree197"
+                },
+                {
+                    "uuid": "aaa51c20-9042-4bf2-8e60-d4ee9f3e3e51",
+                    "type": "tree",
+                    "x": -1,
+                    "y": 11,
+                    "name": "tree198"
                 }
             ]
         }

@@ -21,7 +21,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "./views", "bootstrap", "./curve", "./corner", "./signals", "./trackend", "./route", "../controls/dialog", "../../../common/src/dcc", "../dialogs/propertiyPanel", "./block", "../helpers/globals", "../dialogs/AppSettingsDialog", "../dialogs/dlgSignal2Select", "../dialogs/turnoutsPopup", "./label", "../helpers/utility", "../dialogs/codeEditor", "./dispatcher", "./button", "./audioButton", "./clock", "./emergencyButton"], function (require, exports, track_1, rectangle_1, turnout_1, view_1, views_1, bootstrap, curve_1, corner_1, signals_1, trackend_1, route_1, dialog_1, dcc_1, propertiyPanel_1, block_1, globals_1, AppSettingsDialog_1, dlgSignal2Select_1, turnoutsPopup_1, label_1, utility_1, codeEditor_1, dispatcher_1, button_1, audioButton_1, clock_1, emergencyButton_1) {
+define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "./views", "bootstrap", "./curve", "./corner", "./signals", "./trackend", "./route", "../controls/dialog", "../../../common/src/dcc", "../dialogs/propertiyPanel", "./block", "../helpers/globals", "../dialogs/AppSettingsDialog", "../dialogs/dlgSignal2Select", "../dialogs/turnoutsPopup", "./label", "../helpers/utility", "../dialogs/codeEditor", "./dispatcher", "./button", "./audioButton", "./clock", "./emergencyButton", "./tree"], function (require, exports, track_1, rectangle_1, turnout_1, view_1, views_1, bootstrap, curve_1, corner_1, signals_1, trackend_1, route_1, dialog_1, dcc_1, propertiyPanel_1, block_1, globals_1, AppSettingsDialog_1, dlgSignal2Select_1, turnoutsPopup_1, label_1, utility_1, codeEditor_1, dispatcher_1, button_1, audioButton_1, clock_1, emergencyButton_1, tree_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CustomCanvas = exports.drawModes = void 0;
@@ -50,6 +50,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
         drawModes[drawModes["button"] = 19] = "button";
         drawModes[drawModes["audiobutton"] = 20] = "audiobutton";
         drawModes[drawModes["emergencybutton"] = 21] = "emergencybutton";
+        drawModes[drawModes["tree"] = 22] = "tree";
     })(drawModes || (exports.drawModes = drawModes = {}));
     class CustomCanvas extends HTMLElement {
         constructor() {
@@ -148,6 +149,8 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             this.cursorLabel2Element = new label_1.Label2Element("", 0, 0, "cursor");
             this.cursorLabel2Element.text = "LABEL";
             this.cursorLabel2Element.isSelected = true;
+            this.cursorTreeShapeElement = new tree_1.TreeShapeElement("", 0, 0, "cursor");
+            this.cursorTreeShapeElement.isSelected = true;
             const shapesModalElement = document.getElementById("shapesModal");
             this.shapesModal = new bootstrap.Modal(shapesModalElement);
             if (this.toolbar) {
@@ -241,6 +244,20 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                 this.unselectAll();
                 this.drawMode = drawModes.emergencybutton;
                 this.cursorElement = this.cursorEmergencyButtonElement;
+                this.cursorElement.draw(this.ctx);
+            };
+            document.getElementById("tbTree").onclick = (e) => {
+                this.shapesModal.hide();
+                this.unselectAll();
+                this.drawMode = drawModes.tree;
+                this.cursorElement = this.cursorTreeShapeElement;
+                this.cursorElement.draw(this.ctx);
+            };
+            document.getElementById("tbTree").onclick = (e) => {
+                this.shapesModal.hide();
+                this.unselectAll();
+                this.drawMode = drawModes.tree;
+                this.cursorElement = this.cursorTreeShapeElement;
                 this.cursorElement.draw(this.ctx);
             };
             document.getElementById("tbBlock").onclick = (e) => {
@@ -817,6 +834,12 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         var l = new label_1.Label2Element((0, dcc_1.getUUID)(), x, y, "label" + this.views.elements.length);
                         this.add(l);
                         break;
+                    case drawModes.tree:
+                        //this.removeIfExists(x, y)
+                        this.unselectAll();
+                        var tree = new tree_1.TreeShapeElement((0, dcc_1.getUUID)(), x, y, "tree" + this.views.elements.length);
+                        this.add(tree);
+                        break;
                 }
                 this.draw();
             }
@@ -1179,6 +1202,10 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         var eb = elem;
                         elems.push({ uuid: eb.UUID, type: eb.type, x: eb.x, y: eb.y, name: eb.name });
                         break;
+                    case 'tree':
+                        var tree = elem;
+                        elems.push({ uuid: tree.UUID, type: tree.type, x: tree.x, y: tree.y, name: tree.name });
+                        break;
                 }
             });
             var config = {
@@ -1368,6 +1395,10 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                             case "emergencybutton":
                                 var eb = new emergencyButton_1.EmergencyButtonShapeElement(elem.uuid, elem.x, elem.y, elem.name);
                                 this.add(eb);
+                                break;
+                            case "tree":
+                                var tree = new tree_1.TreeShapeElement(elem.uuid, elem.x, elem.y, elem.name);
+                                this.add(tree);
                                 break;
                         }
                     });
