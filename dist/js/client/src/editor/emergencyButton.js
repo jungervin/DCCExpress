@@ -1,4 +1,4 @@
-define(["require", "exports", "./view"], function (require, exports, view_1) {
+define(["require", "exports", "../helpers/api", "./view"], function (require, exports, api_1, view_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.EmergencyButtonShapeElement = void 0;
@@ -50,6 +50,7 @@ define(["require", "exports", "./view"], function (require, exports, view_1) {
         }
         mouseDown(e) {
             this.toggle();
+            api_1.Api.emergencyStop();
             // const data: iSetBasicAccessory = {address: this.address, value: this.on ? this.valueOn : this.valueOff} as iSetBasicAccessory
             // wsClient.send({type: ApiCommands.setBasicAccessory, data: data } as iData)
             // if (this.mouseDownHandler) {

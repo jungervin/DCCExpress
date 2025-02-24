@@ -41,8 +41,8 @@ define(["require", "exports", "../helpers/api"], function (require, exports, api
                     }
                     this.scriptContent = yield response.text();
                     console.log(`📥Dispatcher: Betöltött fájl: ${filePath}`);
-                    this.currentScriptFunction = new Function("App", "Api", "with (App, Api) { " + this.scriptContent + " }");
-                    this.currentScriptFunction(Dispatcher.App, api_1.Api);
+                    this.currentScriptFunction = new Function("App", "with (App) { " + this.scriptContent + " }");
+                    this.currentScriptFunction(Dispatcher.App);
                     this.intervalId = setInterval(() => {
                         if (this.currentScriptFunction) {
                             try {
