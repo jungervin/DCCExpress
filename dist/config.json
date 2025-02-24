@@ -1928,6 +1928,13 @@
                     "y": 26,
                     "angle": 0,
                     "rbusAddress": 0
+                },
+                {
+                    "uuid": "b0535fbf-6215-4eee-a899-6ebca7d4f026",
+                    "type": "emergencybutton",
+                    "x": 1,
+                    "y": 6,
+                    "name": "emergencybutton196"
                 }
             ]
         }

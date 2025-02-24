@@ -32,6 +32,7 @@ import { ButtonShapeElement } from "./button";
 import { AudioButtonShapeElement } from "./audioButton";
 import { getDistance } from "../helpers/math";
 import { FastClock } from "./clock";
+import { EmergencyButtonShapeElement } from "./emergencyButton";
 
 console.log(PropertyPanel)
 
@@ -56,6 +57,7 @@ export enum drawModes {
     label2,
     button,
     audiobutton,
+    emergencybutton,
 }
 
 export class CustomCanvas extends HTMLElement {
@@ -108,10 +110,12 @@ export class CustomCanvas extends HTMLElement {
     cursorLabel2Element?: Label2Element;
     locoControlPanel?: LocoControlPanel;
     cursorAudioButtonElement?: AudioButtonShapeElement;
+    cursorEmergencyButtonElement: EmergencyButtonShapeElement | undefined;
 
     private pointerMap = new Map<number, { x: number; y: number }>(); // Pointer ID-k mentése
     private lastDistance = 0;
     fastClock?: FastClock | null;
+
 
     constructor() {
         super();
@@ -154,7 +158,7 @@ export class CustomCanvas extends HTMLElement {
         this.canvas.height = this.parentElement!.offsetHeight;
         this.ctx = this.canvas.getContext('2d')!;
         this.fastClock = new FastClock(this.ctx!)
-        
+
         this.drawGrid();
         this.propertyPanel = document.getElementById("EditorPropertyPanel") as PropertyPanel
     }
@@ -195,6 +199,8 @@ export class CustomCanvas extends HTMLElement {
         this.cursorButtonElement.isSelected = true;
         this.cursorAudioButtonElement = new AudioButtonShapeElement("", 0, 0, "cursor");
         this.cursorAudioButtonElement.isSelected = true;
+        this.cursorEmergencyButtonElement = new EmergencyButtonShapeElement("", 0, 0, "cursor");
+        this.cursorEmergencyButtonElement.isSelected = true;
 
         // this.cursorSignal5Element = new Signal5Element("", 10, 0, 0, "cursor");
         // this.cursorSignal5Element.isSelected = true
@@ -302,6 +308,13 @@ export class CustomCanvas extends HTMLElement {
             this.unselectAll()
             this.drawMode = drawModes.audiobutton
             this.cursorElement = this.cursorAudioButtonElement!
+            this.cursorElement!.draw(this.ctx!)
+        }
+        document.getElementById("tbEmergencyButton")!.onclick = (e: MouseEvent) => {
+            this.shapesModal!.hide()
+            this.unselectAll()
+            this.drawMode = drawModes.emergencybutton
+            this.cursorElement = this.cursorEmergencyButtonElement
             this.cursorElement!.draw(this.ctx!)
         }
 
@@ -937,6 +950,12 @@ export class CustomCanvas extends HTMLElement {
                     var abtn = new AudioButtonShapeElement(getUUID(), x, y, "audiobutton" + this.views.elements.length);
                     this.add(abtn)
                     break;
+                case drawModes.emergencybutton:
+                    this.removeIfExists(x, y)
+                    this.unselectAll()
+                    var ebtn = new EmergencyButtonShapeElement(getUUID(), x, y, "emergencybutton" + this.views.elements.length);
+                    this.add(ebtn)
+                    break;
                 case drawModes.label2:
                     //this.removeIfExists(x, y)
                     this.unselectAll()
@@ -1334,6 +1353,10 @@ export class CustomCanvas extends HTMLElement {
                     var ab = elem as AudioButtonShapeElement
                     elems.push({ uuid: ab.UUID, type: ab.type, x: ab.x, y: ab.y, name: ab.name, filename: ab.filename })
                     break;
+                case 'emergencybutton':
+                    var eb = elem as EmergencyButtonShapeElement
+                    elems.push({ uuid: eb.UUID, type: eb.type, x: eb.x, y: eb.y, name: eb.name })
+                    break;
 
 
             }
@@ -1531,6 +1554,10 @@ export class CustomCanvas extends HTMLElement {
                             var ab = new AudioButtonShapeElement(elem.uuid, elem.x, elem.y, elem.name);
                             ab.filename = elem.filename
                             this.add(ab)
+                            break;
+                        case "emergencybutton":
+                            var eb = new EmergencyButtonShapeElement(elem.uuid, elem.x, elem.y, elem.name);
+                            this.add(eb)
                             break;
 
                     }

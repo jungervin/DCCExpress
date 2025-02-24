@@ -9,8 +9,9 @@ import { Tasks } from "./task";
 export class Api {
     static app : App
 
-
-
+    static emergencyStop() {
+        wsClient.send({ type: ApiCommands.emergencyStop, data: "" } as iData)
+    }
 
     static getLoco(address: number): iLocomotive | undefined {
         return Api.app.locoControlPanel.locomotives.find(l => l.address === address)

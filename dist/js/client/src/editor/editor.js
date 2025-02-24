@@ -21,7 +21,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "./views", "bootstrap", "./curve", "./corner", "./signals", "./trackend", "./route", "../controls/dialog", "../../../common/src/dcc", "../dialogs/propertiyPanel", "./block", "../helpers/globals", "../dialogs/AppSettingsDialog", "../dialogs/dlgSignal2Select", "../dialogs/turnoutsPopup", "./label", "../helpers/utility", "../dialogs/codeEditor", "./dispatcher", "./button", "./audioButton", "./clock"], function (require, exports, track_1, rectangle_1, turnout_1, view_1, views_1, bootstrap, curve_1, corner_1, signals_1, trackend_1, route_1, dialog_1, dcc_1, propertiyPanel_1, block_1, globals_1, AppSettingsDialog_1, dlgSignal2Select_1, turnoutsPopup_1, label_1, utility_1, codeEditor_1, dispatcher_1, button_1, audioButton_1, clock_1) {
+define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "./views", "bootstrap", "./curve", "./corner", "./signals", "./trackend", "./route", "../controls/dialog", "../../../common/src/dcc", "../dialogs/propertiyPanel", "./block", "../helpers/globals", "../dialogs/AppSettingsDialog", "../dialogs/dlgSignal2Select", "../dialogs/turnoutsPopup", "./label", "../helpers/utility", "../dialogs/codeEditor", "./dispatcher", "./button", "./audioButton", "./clock", "./emergencyButton"], function (require, exports, track_1, rectangle_1, turnout_1, view_1, views_1, bootstrap, curve_1, corner_1, signals_1, trackend_1, route_1, dialog_1, dcc_1, propertiyPanel_1, block_1, globals_1, AppSettingsDialog_1, dlgSignal2Select_1, turnoutsPopup_1, label_1, utility_1, codeEditor_1, dispatcher_1, button_1, audioButton_1, clock_1, emergencyButton_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CustomCanvas = exports.drawModes = void 0;
@@ -49,6 +49,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
         drawModes[drawModes["label2"] = 18] = "label2";
         drawModes[drawModes["button"] = 19] = "button";
         drawModes[drawModes["audiobutton"] = 20] = "audiobutton";
+        drawModes[drawModes["emergencybutton"] = 21] = "emergencybutton";
     })(drawModes || (exports.drawModes = drawModes = {}));
     class CustomCanvas extends HTMLElement {
         constructor() {
@@ -135,6 +136,8 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             this.cursorButtonElement.isSelected = true;
             this.cursorAudioButtonElement = new audioButton_1.AudioButtonShapeElement("", 0, 0, "cursor");
             this.cursorAudioButtonElement.isSelected = true;
+            this.cursorEmergencyButtonElement = new emergencyButton_1.EmergencyButtonShapeElement("", 0, 0, "cursor");
+            this.cursorEmergencyButtonElement.isSelected = true;
             // this.cursorSignal5Element = new Signal5Element("", 10, 0, 0, "cursor");
             // this.cursorSignal5Element.isSelected = true
             this.routeSwitchElement = new route_1.RouteSwitchElement("", 0, 0, "cursor");
@@ -231,6 +234,13 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                 this.unselectAll();
                 this.drawMode = drawModes.audiobutton;
                 this.cursorElement = this.cursorAudioButtonElement;
+                this.cursorElement.draw(this.ctx);
+            };
+            document.getElementById("tbEmergencyButton").onclick = (e) => {
+                this.shapesModal.hide();
+                this.unselectAll();
+                this.drawMode = drawModes.emergencybutton;
+                this.cursorElement = this.cursorEmergencyButtonElement;
                 this.cursorElement.draw(this.ctx);
             };
             document.getElementById("tbBlock").onclick = (e) => {
@@ -795,6 +805,12 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         var abtn = new audioButton_1.AudioButtonShapeElement((0, dcc_1.getUUID)(), x, y, "audiobutton" + this.views.elements.length);
                         this.add(abtn);
                         break;
+                    case drawModes.emergencybutton:
+                        this.removeIfExists(x, y);
+                        this.unselectAll();
+                        var ebtn = new emergencyButton_1.EmergencyButtonShapeElement((0, dcc_1.getUUID)(), x, y, "emergencybutton" + this.views.elements.length);
+                        this.add(ebtn);
+                        break;
                     case drawModes.label2:
                         //this.removeIfExists(x, y)
                         this.unselectAll();
@@ -1159,6 +1175,10 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         var ab = elem;
                         elems.push({ uuid: ab.UUID, type: ab.type, x: ab.x, y: ab.y, name: ab.name, filename: ab.filename });
                         break;
+                    case 'emergencybutton':
+                        var eb = elem;
+                        elems.push({ uuid: eb.UUID, type: eb.type, x: eb.x, y: eb.y, name: eb.name });
+                        break;
                 }
             });
             var config = {
@@ -1344,6 +1364,10 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                                 var ab = new audioButton_1.AudioButtonShapeElement(elem.uuid, elem.x, elem.y, elem.name);
                                 ab.filename = elem.filename;
                                 this.add(ab);
+                                break;
+                            case "emergencybutton":
+                                var eb = new emergencyButton_1.EmergencyButtonShapeElement(elem.uuid, elem.x, elem.y, elem.name);
+                                this.add(eb);
                                 break;
                         }
                     });

@@ -20,23 +20,25 @@
 <body>
     <!-- <div class="container22 no-select"> -->
 
-        <custom-toolbar id="toolbar"></custom-toolbar>
-        <div id="uiContainer" class="ui-container">
-            <custom-canvas id="editorCanvas"></custom-canvas>
-            <div id="sidePanelLeft" class="scrollable">
-                <div style="width: 100%;background-color: #333;float: left;">
-                    <svg id="btnSidePanelLeftClose" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
-                        <path
-                            d="M19,3H16.3H7.7H5A2,2 0 0,0 3,5V7.7V16.4V19A2,2 0 0,0 5,21H7.7H16.4H19A2,2 0 0,0 21,19V16.3V7.7V5A2,2 0 0,0 19,3M15.6,17L12,13.4L8.4,17L7,15.6L10.6,12L7,8.4L8.4,7L12,10.6L15.6,7L17,8.4L13.4,12L17,15.6L15.6,17Z" />
-                    </svg>
-                </div>
-                <div style="margin-top: 40px;">
-                    <loco-control-panel id="locoControlPanel"></loco-control-panel>
-                </div>
-                
+    <custom-toolbar id="toolbar"></custom-toolbar>
+    <div id="uiContainer" class="ui-container">
+        <custom-canvas id="editorCanvas"></custom-canvas>
+        <div id="sidePanelLeft" class="scrollable">
+            <div style="width: 100%;background-color: #333;float: left;">
+                <svg id="btnSidePanelLeftClose" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+                    <path
+                        d="M19,3H16.3H7.7H5A2,2 0 0,0 3,5V7.7V16.4V19A2,2 0 0,0 5,21H7.7H16.4H19A2,2 0 0,0 21,19V16.3V7.7V5A2,2 0 0,0 19,3M15.6,17L12,13.4L8.4,17L7,15.6L10.6,12L7,8.4L8.4,7L12,10.6L15.6,7L17,8.4L13.4,12L17,15.6L15.6,17Z" />
+                </svg>
             </div>
-            <property-panel id="EditorPropertyPanel" class="scrollable"></property-panel>
-            <!-- <div id="sidePanelRight">
+            <div style="margin-top: 40px;">
+                <loco-control-panel id="locoControlPanel"></loco-control-panel>
+            </div>
+
+        </div>
+        <property-panel id="EditorPropertyPanel" class="scrollable"></property-panel>
+        <!-- Modal -->
+
+        <!-- <div id="sidePanelRight">
                  <div style="width: 100%;background-color: #333;float: left;">
                     <svg id="btnSidePanelRightClose" xmlns=" http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                         fill="white">
@@ -45,16 +47,17 @@
                     </svg>
                 </div>
                 <div id="sidePanelRightBody" ></div> -->
-        </div>
+    </div>
     <!-- </div> -->
 
-    
+
     <!-- <div id="pages">
         <button class="btn">PAGE1</button>
         <button class="btn">PAGE2</button>
     </div> -->
-    
-    <div id="statusbar" style="height: 30px; background-color:#f0f0f0;;color: #333;border-top: solid 1px black">Status:</div>
+
+    <div id="statusbar" style="height: 30px; background-color:#f0f0f0;;color: #333;border-top: solid 1px black">Status:
+    </div>
     <!-- <div id="systemstatus">System</div> -->
 
     <!-- Button trigger modal -->
@@ -66,7 +69,7 @@
             <div></div>
             <div></div>
             <div></div>
-        </div>        
+        </div>
         <p class="loading-text">Set route, please wait...</p>
     </div>
 
@@ -148,11 +151,11 @@
                             <div>Signal 2</div>
                         </div>
                         <div class="col-2 text-center">
-                            <signal3-canvas-element id="tbSignal3" lightsAll="true"></signal3-canvas-element>                            
+                            <signal3-canvas-element id="tbSignal3" lightsAll="true"></signal3-canvas-element>
                             <div>Signal 3</div>
                         </div>
                         <div class="col-2 text-center">
-                            <signal4-canvas-element  id="tbSignal4" lightsAll="true"></signal4-canvas-element>
+                            <signal4-canvas-element id="tbSignal4" lightsAll="true"></signal4-canvas-element>
                             <div>Signal 4</div>
                         </div>
                     </div>
@@ -160,7 +163,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-2 text-center">
-                            <route-switch-canvas-element  id="tbRouteSwitch"></route-switch-canvas-element>
+                            <route-switch-canvas-element id="tbRouteSwitch"></route-switch-canvas-element>
                             <div>Route Switch</div>
                         </div>
                     </div>
@@ -175,6 +178,7 @@
                         <div class="col-auto">
                             <button id="tbButton" class="btn btn-light">Button</button>
                             <button id="tbAudioButton" class="btn btn-light">AudioButton</button>
+                            <button id="tbEmergencyButton" class="btn btn-light">Emergency Button</button>
                         </div>
                     </div>
                     <div class="row">
@@ -182,7 +186,7 @@
                             <button id="tbLabel2" class="btn btn-light">Label</button>
                         </div>
                     </div>
-                    
+
 
                 </div>
                 <div class="modal-footer">

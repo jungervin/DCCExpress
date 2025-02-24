@@ -3,6 +3,9 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Api = void 0;
     class Api {
+        static emergencyStop() {
+            ws_1.wsClient.send({ type: dcc_1.ApiCommands.emergencyStop, data: "" });
+        }
         static getLoco(address) {
             return Api.app.locoControlPanel.locomotives.find(l => l.address === address);
         }
