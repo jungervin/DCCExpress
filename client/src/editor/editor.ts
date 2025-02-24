@@ -141,6 +141,7 @@ export class CustomCanvas extends HTMLElement {
 
         window.powerChanged = (power) => {
             this.locoControlPanel!.power = power
+            this.draw()
         }
 
         window.addEventListener("mousemove", (e: MouseEvent) => {
@@ -333,7 +334,7 @@ export class CustomCanvas extends HTMLElement {
         document.getElementById("tbTree")!.onclick = (e: MouseEvent) => {
             this.shapesModal!.hide()
             this.unselectAll()
-            this.drawMode = drawModes.tree
+            this.drawMode = drawModes.emergencybutton
             this.cursorElement = this.cursorTreeShapeElement
             this.cursorElement!.draw(this.ctx!)
         }

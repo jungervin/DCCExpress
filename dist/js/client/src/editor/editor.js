@@ -87,6 +87,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             };
             window.powerChanged = (power) => {
                 this.locoControlPanel.power = power;
+                this.draw();
             };
             window.addEventListener("mousemove", (e) => {
                 this.globalX = e.clientX;
@@ -256,7 +257,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             document.getElementById("tbTree").onclick = (e) => {
                 this.shapesModal.hide();
                 this.unselectAll();
-                this.drawMode = drawModes.tree;
+                this.drawMode = drawModes.emergencybutton;
                 this.cursorElement = this.cursorTreeShapeElement;
                 this.cursorElement.draw(this.ctx);
             };

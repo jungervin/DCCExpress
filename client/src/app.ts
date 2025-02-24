@@ -183,6 +183,7 @@ export class App {
                     this.systemInfo(msg.data as iSystemStatus)
                     break;
                 case ApiCommands.powerInfo:
+                    
                     this.procPowerInfo(msg.data as iPowerInfo)
                     break;
                 case ApiCommands.UnsuccessfulOperation:
@@ -484,6 +485,7 @@ export class App {
     }
     procPowerInfo(pi: iPowerInfo) {
 
+        Globals.power = pi
         if (this.powerInfo.emergencyStop != pi.emergencyStop) {
             window.powerChanged(pi)
             if (pi.emergencyStop) {

@@ -15,7 +15,14 @@ export class Globals {
     static TrackWidth3 = 3
 
     static Settings = defaultSettings 
-
+    static power: iPowerInfo = {
+        current: 0,
+        emergencyStop: false,
+        info: 0,
+        programmingModeActive: false,
+        shortCircuit: false,
+        trackVoltageOn: false
+    }
     static async fetchJsonData(url: string) {
         try {
             const response = await fetch(url);

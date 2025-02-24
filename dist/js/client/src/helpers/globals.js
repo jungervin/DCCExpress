@@ -62,6 +62,14 @@ define(["require", "exports", "../../../common/src/dcc"], function (require, exp
     Globals.TrackWidth7 = 7;
     Globals.TrackWidth3 = 3;
     Globals.Settings = dcc_1.defaultSettings;
+    Globals.power = {
+        current: 0,
+        emergencyStop: false,
+        info: 0,
+        programmingModeActive: false,
+        shortCircuit: false,
+        trackVoltageOn: false
+    };
 });
 // export let commandCenters: iCommandCenter[] = []
 // export function setCommandCenters(data: any) {

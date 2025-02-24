@@ -11,9 +11,9 @@ export class EmergencyButtonShapeElement extends View {
     }
 
     draw(ctx: CanvasRenderingContext2D) {
-        
+
         ctx.save();
-        
+
         ctx.beginPath()
         ctx.strokeStyle = "black";
         ctx.fillStyle = "yellow"
@@ -23,15 +23,16 @@ export class EmergencyButtonShapeElement extends View {
         ctx.stroke();
 
         ctx.beginPath()
-        ctx.shadowBlur = 5;
-        ctx.shadowColor = "black";
-        ctx.shadowOffsetX = 2;
-        ctx.shadowOffsetY = 2;
-        
+        if (!this.on) {
+            ctx.shadowBlur = 5;
+            ctx.shadowColor = "gray";
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
+        }
         ctx.strokeStyle = "black";
-        ctx.fillStyle = "red"
-        
-        ctx.arc(this.centerX, this.centerY, this.width / 2 -4, 0, Math.PI * 2);
+        ctx.fillStyle = this.on ? "red" : "#fd5c63"
+
+        ctx.arc(this.centerX, this.centerY, this.width / 2 - 4, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
         ctx.shadowOffsetX = 0;
@@ -40,10 +41,10 @@ export class EmergencyButtonShapeElement extends View {
         ctx.stroke();
 
         ctx.beginPath()
-        
+
         ctx.fillStyle = "white";
         //ctx.fillStyle = this.on ? "black" : "white";
-        ctx.font = "8px Arial";
+        ctx.font = this.on ? "7px Arial" : "8px Arial";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText("STOP", this.centerX, this.centerY + 1);

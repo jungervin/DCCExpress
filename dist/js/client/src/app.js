@@ -389,6 +389,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             this.editor.draw();
         }
         procPowerInfo(pi) {
+            globals_1.Globals.power = pi;
             if (this.powerInfo.emergencyStop != pi.emergencyStop) {
                 window.powerChanged(pi);
                 if (pi.emergencyStop) {
