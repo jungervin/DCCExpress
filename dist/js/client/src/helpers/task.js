@@ -92,6 +92,12 @@ define(["require", "exports", "../../../common/src/dcc", "./api", "./globals"], 
                 t.taskStop();
             });
         }
+        stopOnCompletion() {
+            console.log('stopAllTask()');
+            this.tasks.forEach(t => {
+                t.stopOnComplete = true;
+            });
+        }
         startAllTask() {
             console.log('startAllTask()');
             this.tasks.forEach(t => {
@@ -120,6 +126,7 @@ define(["require", "exports", "../../../common/src/dcc", "./api", "./globals"], 
             this.num = 0;
             this.delayEnd = 0;
             this.status = TaskStatus.stopped;
+            this.stopOnComplete = true;
             this.name = name;
         }
         setLoco(address) {
@@ -241,8 +248,10 @@ define(["require", "exports", "../../../common/src/dcc", "./api", "./globals"], 
                         break;
                     case StepTypes.restart:
                         //console.log(`TASK: ${this.name} restart!`)
-                        this.index = 0;
-                        this.prevIndex = -1;
+                        if (!this.stopOnComplete) {
+                            this.index = 0;
+                            this.prevIndex = -1;
+                        }
                         break;
                     case StepTypes.waitForMinutes:
                         const minute = this.step.data.minute;
@@ -325,6 +334,7 @@ define(["require", "exports", "../../../common/src/dcc", "./api", "./globals"], 
             this.index = 0;
             this.prevIndex = -1;
             this.status = TaskStatus.running;
+            this.stopOnComplete = false;
             //this.proc();
         }
         taskStop() {

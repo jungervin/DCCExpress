@@ -98,6 +98,7 @@ define(["require", "exports"], function (require, exports) {
     class Dialog {
         constructor(width, height, title) {
             this.dialogResult = DialogResult.cancel;
+            this.dialogResultText = "";
             this.overlayElement = document.createElement("div");
             this.overlayElement.style.position = "fixed";
             this.overlayElement.style.top = "0";
@@ -383,14 +384,24 @@ define(["require", "exports"], function (require, exports) {
             this.button.style.padding = "4px 10px";
             this.button.style.border = "none";
             this.button.style.backgroundColor = "#007bff";
+            this.button.style.backgroundColor = exports.ThemeColors.primary;
             this.button.style.color = "white";
             this.button.style.borderRadius = "4px";
             this.button.style.cursor = "pointer";
             this.button.style.marginRight = "8px";
+            this.button.style.opacity = "0.85";
             this.button.addEventListener("click", () => {
                 if (this.onclick) {
                     this.onclick();
                 }
+            });
+            this.originalBackground = this.button.style.backgroundColor;
+            this.button.addEventListener("mouseenter", () => {
+                this.button.style.opacity = "1";
+            });
+            this.button.addEventListener("mouseleave", () => {
+                this.button.style.backgroundColor = this.originalBackground;
+                this.button.style.opacity = "0.85";
             });
         }
         get foreground() {
@@ -406,6 +417,7 @@ define(["require", "exports"], function (require, exports) {
         set backround(v) {
             this._backround = v;
             this.button.style.backgroundColor = v;
+            this.originalBackground = v;
         }
         getElement() {
             return this.button;

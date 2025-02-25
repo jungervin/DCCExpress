@@ -60,7 +60,7 @@ interface iWaitForMinute {
 }
 
 interface iStartAtMinutes {
-    minutes: number[] 
+    minutes: number[]
 }
 
 export enum TaskStatus {
@@ -152,6 +152,12 @@ export class Tasks {
             t.taskStop()
         })
     }
+    stopOnCompletion() {
+        console.log('stopAllTask()')
+        this.tasks.forEach(t => {
+            t.stopOnComplete = true;
+        })
+    }
 
     startAllTask() {
         console.log('startAllTask()')
@@ -183,6 +189,7 @@ export class Task {
     step: iStep | undefined;
     delayEnd: number = 0;
     status: TaskStatus = TaskStatus.stopped;
+    stopOnComplete: boolean = true;
     constructor(name: string) {
         this.name = name
     }
@@ -247,7 +254,7 @@ export class Task {
     }
 
     startAtMinutes(minutes: number[]) {
-        this.steps.push({type: StepTypes.startAtMinutes, data: {minutes: minutes}})
+        this.steps.push({ type: StepTypes.startAtMinutes, data: { minutes: minutes } })
     }
     procStep() {
         if (this.step) {
@@ -323,8 +330,10 @@ export class Task {
                     break;
                 case StepTypes.restart:
                     //console.log(`TASK: ${this.name} restart!`)
-                    this.index = 0;
-                    this.prevIndex = -1;
+                    if (!this.stopOnComplete) {
+                        this.index = 0;
+                        this.prevIndex = -1;
+                    }
                     break;
                 case StepTypes.waitForMinutes:
                     const minute = (this.step.data as iWaitForMinute).minute
@@ -337,15 +346,15 @@ export class Task {
                 case StepTypes.startAtMinutes:
                     const minutes = (this.step.data as iStartAtMinutes).minutes
                     const clocka = Api.getClock()
-                    if(clocka) {
+                    if (clocka) {
                         const min = clocka.currentTime.getMinutes()
-                        if(minutes.includes(min)) {
+                        if (minutes.includes(min)) {
                             this.index++;
                             console.log(`TASK: ${this.name} startAtMinutes:${min} finished!`)
                         }
                     }
 
-                break;
+                    break;
             }
         }
     }
@@ -410,6 +419,7 @@ export class Task {
         this.index = 0;
         this.prevIndex = -1;
         this.status = TaskStatus.running
+        this.stopOnComplete = false;
         //this.proc();
     }
 

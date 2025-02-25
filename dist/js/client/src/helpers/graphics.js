@@ -87,14 +87,3 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.drawPolarLine = drawPolarLine;
 });
-// export class ViewImages {
-//     static turnoutLeftClosedCanvas: HTMLCanvasElement = new HTMLCanvasElement()
-//     static turnoutLeftOpenCanvas: HTMLCanvasElement = new HTMLCanvasElement()
-//     static turnoutLeftClosed: TurnoutLeftElement;
-//     static turnoutLeftOpen: TurnoutLeftElement;
-//     constructor() {
-//         const turnoutLeftClosed = new TurnoutLeftElement('0', 0, ViewImages.turnoutLeftClosedCanvas.getContext('2d')!, 0, 0, "")
-//         turnout
-//         this.turnoutLeftOpen = new TurnoutLeftElement('0', 0, this.turnoutLeftClosedCanvas.getContext('2d')!, 0, 0, "")
-//     }
-// }

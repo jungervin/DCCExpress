@@ -46,7 +46,7 @@ export function drawTextWithRoundedBackground(
     borderRadius: number = 2 // Lekerekítés sugara
 ) {
     ctx.save();
-    
+
     // Szöveg méretezése
     const textMetrics = ctx.measureText(text);
     const padding = 2; // Párnázás a szöveg körül
@@ -81,55 +81,42 @@ export function drawTextWithRoundedBackground(
     ctx.restore()
 }
 
-export function drawRectangle(    ctx: CanvasRenderingContext2D,
+export function drawRectangle(ctx: CanvasRenderingContext2D,
     x: number,
     y: number,
     w: number, h: number,
     borderColor: string = 'black',
     fillColor: string = 'lightgray') {
-        ctx.beginPath()
-        ctx.fillStyle = fillColor;
-        ctx.fillRect(x, y, w, h);
-        ctx.strokeStyle = borderColor
-        ctx.lineWidth = 1
-        ctx.rect(x, y, w, h);
-        ctx.stroke()
-    }
+    ctx.beginPath()
+    ctx.fillStyle = fillColor;
+    ctx.fillRect(x, y, w, h);
+    ctx.strokeStyle = borderColor
+    ctx.lineWidth = 1
+    ctx.rect(x, y, w, h);
+    ctx.stroke()
+}
 
 export function getPolarXy(cx: number, cy: number, r: number, theta: number): iPoint {
-    return {x: cx + r * Math.cos(theta * rad), y:  cy + r * Math.sin(theta * rad)}
+    return { x: cx + r * Math.cos(theta * rad), y: cy + r * Math.sin(theta * rad) }
 }
 export function drawPolarLine(
-        ctx: CanvasRenderingContext2D,
-        centerX: number, centerY: number, 
-        r: number, theta: number, 
-        color: string = "black", lineWidth: number = 1
-    ): void {
-        // Polar koordináták átalakítása derékszögű koordinátákká
-        const x1 = centerX //+ r1 * Math.cos(theta1);
-        const y1 = centerY //+ r1 * Math.sin(theta1);
-        const x2 = centerX + r * Math.cos(theta * rad);
-        const y2 = centerY + r * Math.sin(theta * rad);
-    
-        // Rajzolás
-        ctx.beginPath();
-        ctx.moveTo(x1, y1); // Kiindulási pont
-        ctx.lineTo(x2, y2); // Végpont
-        ctx.strokeStyle = color;
-        ctx.lineWidth = lineWidth;
-        ctx.stroke();
-        ctx.closePath();
-    }
+    ctx: CanvasRenderingContext2D,
+    centerX: number, centerY: number,
+    r: number, theta: number,
+    color: string = "black", lineWidth: number = 1
+): void {
+    // Polar koordináták átalakítása derékszögű koordinátákká
+    const x1 = centerX //+ r1 * Math.cos(theta1);
+    const y1 = centerY //+ r1 * Math.sin(theta1);
+    const x2 = centerX + r * Math.cos(theta * rad);
+    const y2 = centerY + r * Math.sin(theta * rad);
 
-    // export class ViewImages {
-    //     static turnoutLeftClosedCanvas: HTMLCanvasElement = new HTMLCanvasElement()
-    //     static turnoutLeftOpenCanvas: HTMLCanvasElement = new HTMLCanvasElement()
-    //     static turnoutLeftClosed: TurnoutLeftElement;
-    //     static turnoutLeftOpen: TurnoutLeftElement;
-    //     constructor() {
-
-    //         const turnoutLeftClosed = new TurnoutLeftElement('0', 0, ViewImages.turnoutLeftClosedCanvas.getContext('2d')!, 0, 0, "")
-    //         turnout
-    //         this.turnoutLeftOpen = new TurnoutLeftElement('0', 0, this.turnoutLeftClosedCanvas.getContext('2d')!, 0, 0, "")
-    //     }
-    // }
+    // Rajzolás
+    ctx.beginPath();
+    ctx.moveTo(x1, y1); // Kiindulási pont
+    ctx.lineTo(x2, y2); // Végpont
+    ctx.strokeStyle = color;
+    ctx.lineWidth = lineWidth;
+    ctx.stroke();
+    ctx.closePath();
+}

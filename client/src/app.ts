@@ -17,6 +17,8 @@ import { Api } from "./helpers/api";
 import { Task, Tasks } from "./helpers/task";
 import { RouteSwitchElement } from "./editor/route";
 import { Scheduler } from "./helpers/scheduler";
+import { MessageDialog } from "./dialogs/messageDialog";
+import { send } from "process";
 
 console.log(Dispatcher)
 console.log(ApiCommands)
@@ -207,6 +209,8 @@ export class App {
         Api.app = this
 
         this.toolbar.btnTasks.onclick = (e: MouseEvent) => {
+
+
             this.toolbar.tasks = !this.toolbar.tasks
             if (this.toolbar.tasks) {
                 this.tasks.stopAllTask()
@@ -218,7 +222,15 @@ export class App {
                 //this.tasks.startAllTask()
                 //this.tasks.save()
             } else {
+                // const msg = new MessageDialog("Error", "Choose an action!", ["STOP NOW", "STOP ON COMPLETION", "CANCEL"], "")
+                // msg.onclose = (sender) => {
+                //     if(sender.dialogResultText == "STOP NOW") {
+                //     } else if(sender.dialogResultText == "STOP ON COMPLETION") {
+                //         this.tasks.stopOnCompletion()
+                //     }
+                // }
                 this.tasks.stopAllTask()
+                
             }
         }
 

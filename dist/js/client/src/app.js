@@ -160,6 +160,13 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                     //this.tasks.save()
                 }
                 else {
+                    // const msg = new MessageDialog("Error", "Choose an action!", ["STOP NOW", "STOP ON COMPLETION", "CANCEL"], "")
+                    // msg.onclose = (sender) => {
+                    //     if(sender.dialogResultText == "STOP NOW") {
+                    //     } else if(sender.dialogResultText == "STOP ON COMPLETION") {
+                    //         this.tasks.stopOnCompletion()
+                    //     }
+                    // }
                     this.tasks.stopAllTask();
                 }
             };

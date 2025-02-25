@@ -133,19 +133,19 @@ define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "
             //     tab3.addComponent(fieldSerialPort)
             //     fieldCombobox.value = settings.fieldCommandCenter.type.toString()
             // }
-            const btnCancel = new dialog_1.Button("Cancel");
-            btnCancel.backround = "gray";
-            btnCancel.onclick = () => {
-                this.dialogResult = dialog_1.DialogResult.cancel;
-                this.close();
-            };
-            this.addFooter(btnCancel);
             const btnOk = new dialog_1.Button("OK");
             btnOk.onclick = () => {
                 this.dialogResult = dialog_1.DialogResult.ok;
                 this.close();
             };
             this.addFooter(btnOk);
+            const btnCancel = new dialog_1.Button("CANCEL");
+            btnCancel.backround = dialog_1.ThemeColors.secondary;
+            btnCancel.onclick = () => {
+                this.dialogResult = dialog_1.DialogResult.cancel;
+                this.close();
+            };
+            this.addFooter(btnCancel);
         }
     }
     exports.AppSettingsDialog = AppSettingsDialog;

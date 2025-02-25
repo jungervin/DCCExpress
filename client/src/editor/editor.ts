@@ -323,13 +323,14 @@ export class CustomCanvas extends HTMLElement {
             this.cursorElement = this.cursorEmergencyButtonElement
             this.cursorElement!.draw(this.ctx!)
         }
-        document.getElementById("tbTree")!.onclick = (e: MouseEvent) => {
-            this.shapesModal!.hide()
-            this.unselectAll()
-            this.drawMode = drawModes.tree
-            this.cursorElement = this.cursorTreeShapeElement
-            this.cursorElement!.draw(this.ctx!)
-        }
+
+        // document.getElementById("tbTree")!.onclick = (e: MouseEvent) => {
+        //     this.shapesModal!.hide()
+        //     this.unselectAll()
+        //     this.drawMode = drawModes.tree
+        //     this.cursorElement = this.cursorTreeShapeElement
+        //     this.cursorElement!.draw(this.ctx!)
+        // }
 
         document.getElementById("tbBlock")!.onclick = (e: MouseEvent) => {
             this.shapesModal!.hide()

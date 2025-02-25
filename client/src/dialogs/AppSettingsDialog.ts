@@ -1,6 +1,6 @@
 import { SignalStates } from "../editor/signals";
 import { Signal2CanvasElement } from "../components/canvasElement";
-import { Checkbox, Dialog, Input, Button, InputNumber, DialogResult, TabControl, Combobox, Label, GroupBox } from "../controls/dialog";
+import { Checkbox, Dialog, Input, Button, InputNumber, DialogResult, TabControl, Combobox, Label, GroupBox, ThemeColors } from "../controls/dialog";
 import { Dispatcher } from "../editor/dispatcher";
 
 import { CommandCenterTypes } from "../../../common/src/dcc";
@@ -182,14 +182,6 @@ export class AppSettingsDialog extends Dialog {
 
         // }
 
-        const btnCancel = new Button("Cancel")
-        btnCancel.backround = "gray"
-        btnCancel.onclick = () => {
-            this.dialogResult = DialogResult.cancel
-            this.close()
-        }
-
-        this.addFooter(btnCancel)
 
         const btnOk = new Button("OK")
         btnOk.onclick = () => {
@@ -197,6 +189,16 @@ export class AppSettingsDialog extends Dialog {
             this.close()
         }
         this.addFooter(btnOk)
+
+        const btnCancel = new Button("CANCEL")
+        btnCancel.backround = ThemeColors.secondary
+        btnCancel.onclick = () => {
+            this.dialogResult = DialogResult.cancel
+            this.close()
+        }
+
+        this.addFooter(btnCancel)
+
     }
 
     // signal(signal: any) {
