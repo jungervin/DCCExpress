@@ -27,9 +27,22 @@ define(["require", "exports", "../helpers/api"], function (require, exports, api
                 Dispatcher.onchange();
             }
         }
+        static exec() {
+            if (Dispatcher.currentScriptFunction) {
+                try {
+                    Dispatcher.currentScriptFunction(Dispatcher.App, api_1.Api);
+                }
+                catch (error) {
+                    console.error("❌Dispatcher: Hiba a script futtatása közben:", error);
+                    if (Dispatcher.onerror) {
+                        Dispatcher.onerror('Dispatcher: Hiba a script futtatása közben:', error);
+                    }
+                }
+            }
+        }
         static start(filePath) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (this.isRunning) {
+                if (Dispatcher.isRunning) {
                     console.warn("⚠️ Már fut egy script. Állítsd le először a stop() metódussal.");
                     return;
                 }
@@ -39,24 +52,14 @@ define(["require", "exports", "../helpers/api"], function (require, exports, api
                         throw new Error(`Dispatcher: Nem sikerült betölteni a fájlt: ${filePath}`);
                         //Hiba a script betöltése közben:
                     }
-                    this.scriptContent = yield response.text();
+                    Dispatcher.scriptContent = yield response.text();
                     console.log(`📥Dispatcher: Betöltött fájl: ${filePath}`);
                     this.currentScriptFunction = new Function("App", "with (App) { " + this.scriptContent + " }");
                     this.currentScriptFunction(Dispatcher.App);
                     this.intervalId = setInterval(() => {
-                        if (this.currentScriptFunction) {
-                            try {
-                                this.currentScriptFunction(Dispatcher.App, api_1.Api);
-                            }
-                            catch (error) {
-                                console.error("❌Dispatcher: Hiba a script futtatása közben:", error);
-                                if (Dispatcher.onerror) {
-                                    Dispatcher.onerror('Dispatcher: Hiba a script futtatása közben:', error);
-                                }
-                            }
-                        }
+                        Dispatcher.exec();
                     }, Dispatcher.interval);
-                    this.isRunning = true;
+                    Dispatcher.isRunning = true;
                     console.log("✅Dispatcher: Script sikeresen elindult és folyamatosan fut!");
                 }
                 catch (error) {
@@ -68,16 +71,16 @@ define(["require", "exports", "../helpers/api"], function (require, exports, api
             });
         }
         static stop() {
-            if (!this.isRunning) {
+            if (!Dispatcher.isRunning) {
                 console.warn("⚠️Dispatcher: Nincs futó script.");
                 return;
             }
-            if (this.intervalId) {
-                clearInterval(this.intervalId);
-                this.intervalId = null;
+            if (Dispatcher.intervalId) {
+                clearInterval(Dispatcher.intervalId);
+                Dispatcher.intervalId = null;
             }
-            this.currentScriptFunction = null;
-            this.isRunning = false;
+            Dispatcher.currentScriptFunction = null;
+            Dispatcher.isRunning = false;
             console.log("⏹Dispatcher: Script leállítva.");
         }
     }

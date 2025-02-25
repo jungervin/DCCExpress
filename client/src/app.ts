@@ -157,15 +157,17 @@ export class App {
                 case ApiCommands.turnoutInfo:
                     const t = msg.data as iSetTurnout
                     this.turnoutInfo(t)
-                    const turnout = this.editor.views.getTurnout(t.address)
-                    if (turnout) {
-                        this.execDispatcher()
-                    }
+                    Dispatcher.exec()
+                    // const turnout = this.editor.views.getTurnout(t.address)
+                    // if (turnout) {
+                    //     this.execDispatcher()
+                    // }
                     break;
 
                 case ApiCommands.rbusInfo:
                     this.rbusInfo(msg.data as iRBus)
-                    this.execDispatcher()
+                    // this.execDispatcher()
+                    Dispatcher.exec()
                     break;
 
                 // case ApiCommands.configLoaded:

@@ -107,14 +107,16 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                     case dcc_1.ApiCommands.turnoutInfo:
                         const t = msg.data;
                         this.turnoutInfo(t);
-                        const turnout = this.editor.views.getTurnout(t.address);
-                        if (turnout) {
-                            this.execDispatcher();
-                        }
+                        dispatcher_1.Dispatcher.exec();
+                        // const turnout = this.editor.views.getTurnout(t.address)
+                        // if (turnout) {
+                        //     this.execDispatcher()
+                        // }
                         break;
                     case dcc_1.ApiCommands.rbusInfo:
                         this.rbusInfo(msg.data);
-                        this.execDispatcher();
+                        // this.execDispatcher()
+                        dispatcher_1.Dispatcher.exec();
                         break;
                     // case ApiCommands.configLoaded:
                     //     // this.configLoaded(msg.data)

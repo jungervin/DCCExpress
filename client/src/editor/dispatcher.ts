@@ -30,8 +30,21 @@ export class Dispatcher {
         }
     }
 
+    static exec() {
+        if (Dispatcher.currentScriptFunction) {
+            try {
+                Dispatcher.currentScriptFunction(Dispatcher.App, Api);
+            } catch (error) {
+                console.error("❌Dispatcher: Hiba a script futtatása közben:", error);
+                if (Dispatcher.onerror) {
+                    Dispatcher.onerror('Dispatcher: Hiba a script futtatása közben:', error)
+                }
+            }
+        }        
+    }
+
     static async start(filePath: string): Promise<void> {
-        if (this.isRunning) {
+        if (Dispatcher.isRunning) {
             console.warn("⚠️ Már fut egy script. Állítsd le először a stop() metódussal.");
             return;
         }
@@ -43,7 +56,7 @@ export class Dispatcher {
                 //Hiba a script betöltése közben:
             }
 
-            this.scriptContent = await response.text();
+            Dispatcher.scriptContent = await response.text();
             console.log(`📥Dispatcher: Betöltött fájl: ${filePath}`);
 
            this.currentScriptFunction = new Function("App", "with (App) { " + this.scriptContent + " }");
@@ -51,19 +64,10 @@ export class Dispatcher {
             this.currentScriptFunction(Dispatcher.App);
             
             this.intervalId = setInterval(() => {
-                if (this.currentScriptFunction) {
-                    try {
-                        this.currentScriptFunction(Dispatcher.App, Api);
-                    } catch (error) {
-                        console.error("❌Dispatcher: Hiba a script futtatása közben:", error);
-                        if (Dispatcher.onerror) {
-                            Dispatcher.onerror('Dispatcher: Hiba a script futtatása közben:', error)
-                        }
-                    }
-                }
+                Dispatcher.exec()
             }, Dispatcher.interval);
 
-            this.isRunning = true;
+            Dispatcher.isRunning = true;
             console.log("✅Dispatcher: Script sikeresen elindult és folyamatosan fut!");
 
         } catch (error) {
@@ -76,18 +80,18 @@ export class Dispatcher {
     }
 
         static stop(): void {
-        if (!this.isRunning) {
+        if (!Dispatcher.isRunning) {
             console.warn("⚠️Dispatcher: Nincs futó script.");
             return;
         }
 
-        if (this.intervalId) {
-            clearInterval(this.intervalId);
-            this.intervalId = null;
+        if (Dispatcher.intervalId) {
+            clearInterval(Dispatcher.intervalId);
+            Dispatcher.intervalId = null;
         }
 
-        this.currentScriptFunction = null;
-        this.isRunning = false;
+        Dispatcher.currentScriptFunction = null;
+        Dispatcher.isRunning = false;
         console.log("⏹Dispatcher: Script leállítva.");
     }
 }
