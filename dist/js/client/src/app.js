@@ -43,6 +43,9 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             };
             this.loadCanvasState();
             window.addEventListener("beforeunload", this.saveCanvasState);
+            window.addEventListener("schedulerCompleted", () => {
+                alert("schedulerCompleted");
+            });
             this.audioManager = audioButton_1.audioManager;
             this.toolbar = document.getElementById("toolbar");
             this.editor = document.getElementById("editorCanvas");

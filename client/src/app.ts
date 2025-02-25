@@ -73,6 +73,9 @@ export class App {
         this.loadCanvasState();
 
         window.addEventListener("beforeunload", this.saveCanvasState);
+        window.addEventListener("schedulerCompleted", () => {
+            alert("schedulerCompleted")
+        })
 
         this.audioManager = audioManager
 

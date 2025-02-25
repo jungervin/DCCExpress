@@ -405,16 +405,16 @@ export class TextArea extends UIComponent {
 
         this.textarea = document.createElement("textarea");
         this.textarea.style.width = "100%";
-        this.textarea.style.height = "150px"; // Alapértelmezett magasság
+        this.textarea.style.height = "150px"; 
         this.textarea.style.padding = "4px";
         this.textarea.style.marginBottom = "8px";
         this.textarea.style.border = "1px solid #ccc";
         this.textarea.style.borderRadius = "4px";
-        this.textarea.style.fontFamily = "monospace"; // Kódhoz jobban illik
+        this.textarea.style.fontFamily = "monospace";
 
         this.textarea.addEventListener("keydown", (event) => {
             if (event.key === "Tab") {
-                event.preventDefault(); // Ne váltson fókuszt
+                event.preventDefault(); 
                 this.insertTab();
             }
         });

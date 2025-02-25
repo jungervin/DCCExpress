@@ -1,7 +1,8 @@
 define(["require", "exports", "../../../common/src/dcc", "./api", "./globals"], function (require, exports, dcc_1, api_1, globals_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Task = exports.Tasks = exports.TaskStatus = void 0;
+    exports.Task = exports.Tasks = exports.TaskStatus = exports.tasksCompleteEvent = void 0;
+    exports.tasksCompleteEvent = new Event("tasksCompleteEvent");
     var StepTypes;
     (function (StepTypes) {
         StepTypes["setLocoloco"] = "setLoco";
@@ -28,8 +29,18 @@ define(["require", "exports", "../../../common/src/dcc", "./api", "./globals"], 
         //private worker: Worker;
         constructor() {
             this.tasks = [];
+            this.running = false;
+            this.prevRuning = false;
             this.timer = setInterval(() => {
-                this.tasks.forEach(t => { t.proc(); });
+                var running = false;
+                this.tasks.forEach(t => {
+                    t.proc();
+                    this.running || (this.running = t.status == TaskStatus.running);
+                });
+                if (!this.running != running) {
+                    this.running = running;
+                    window.dispatchEvent(exports.tasksCompleteEvent);
+                }
             }, 50);
             //this.worker = new Worker(new URL("./worker.ts", import.meta.url));
             // this.worker = new Worker(new URL("./worker.js", import.meta.url), { type: "module" });

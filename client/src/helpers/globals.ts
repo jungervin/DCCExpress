@@ -4,6 +4,7 @@ declare global {
     interface Window {
         invalidate: () => void;
         powerChanged: (pi: iPowerInfo) => void;
+        
     }
 }
 
@@ -30,6 +31,21 @@ export class Globals {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const data = await response.json();
+            //console.log("Received JSON:", data);
+            return data;
+        } catch (error) {
+            alert("Error fetching JSON:\n" + error);
+            return null;
+        }
+    }
+
+    static async fetchTextData(url: string) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.text();
             //console.log("Received JSON:", data);
             return data;
         } catch (error) {

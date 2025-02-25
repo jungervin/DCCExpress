@@ -23,6 +23,7 @@ export class Colors {
 // }
 
 export const propertiesChangedEvent = new Event("propertiesChanged");
+
 // new CustomEvent("locomotiveSelected", {
 //     detail: { locomotive },
 //     bubbles: true,

@@ -2,6 +2,9 @@ import { Z21Directions } from "../../../common/src/dcc";
 import { Api } from "./api";
 import { Globals } from "./globals";
 
+
+export const tasksCompleteEvent = new Event("tasksCompleteEvent");
+
 enum StepTypes {
     setLocoloco = "setLoco",
     setTurnout = "setTurnout",
@@ -74,10 +77,22 @@ export class Tasks {
 
     tasks: Task[] = []
     timer: NodeJS.Timeout;
+    running: boolean = false;
+    prevRuning: boolean = false;
     //private worker: Worker;
     constructor() {
         this.timer = setInterval(() => {
-            this.tasks.forEach(t => { t.proc() })
+            var running = false;
+            this.tasks.forEach(t => {
+                t.proc()
+                this.running ||= t.status ==  TaskStatus.running
+            })
+
+            if(!this.running != running) {
+                this.running = running
+                window.dispatchEvent(tasksCompleteEvent)
+            }
+
         }, 50)
         //this.worker = new Worker(new URL("./worker.ts", import.meta.url));
         // this.worker = new Worker(new URL("./worker.js", import.meta.url), { type: "module" });

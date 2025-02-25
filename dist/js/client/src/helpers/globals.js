@@ -29,6 +29,23 @@ define(["require", "exports", "../../../common/src/dcc"], function (require, exp
                 }
             });
         }
+        static fetchTextData(url) {
+            return __awaiter(this, void 0, void 0, function* () {
+                try {
+                    const response = yield fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    const data = yield response.text();
+                    //console.log("Received JSON:", data);
+                    return data;
+                }
+                catch (error) {
+                    alert("Error fetching JSON:\n" + error);
+                    return null;
+                }
+            });
+        }
         static saveJson(fileName, data) {
             return __awaiter(this, void 0, void 0, function* () {
                 try {
