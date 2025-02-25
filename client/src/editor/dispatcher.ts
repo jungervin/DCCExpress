@@ -59,9 +59,9 @@ export class Dispatcher {
             Dispatcher.scriptContent = await response.text();
             console.log(`📥Dispatcher: Betöltött fájl: ${filePath}`);
 
-           this.currentScriptFunction = new Function("App", "with (App) { " + this.scriptContent + " }");
+           this.currentScriptFunction = new Function("App", 'Api', "with (App, Api) { " + this.scriptContent + " }");
 
-            this.currentScriptFunction(Dispatcher.App);
+            this.currentScriptFunction(Dispatcher.App, Api);
             
             this.intervalId = setInterval(() => {
                 Dispatcher.exec()

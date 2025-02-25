@@ -43,7 +43,7 @@ export class App {
         programmingModeActive: undefined,
         shortCircuit: undefined,
     }
-    audioManager: AudioManager;
+    
     currentTask: Task | undefined;
     tasks: Tasks;
 
@@ -70,6 +70,7 @@ export class App {
 
     constructor() {
 
+        Api.init(this)
         this.loadCanvasState();
 
         window.addEventListener("beforeunload", this.saveCanvasState);
@@ -77,7 +78,7 @@ export class App {
             alert("schedulerCompleted")
         })
 
-        this.audioManager = audioManager
+        
 
         this.toolbar = document.getElementById("toolbar") as Toolbar
         this.editor = document.getElementById("editorCanvas") as CustomCanvas

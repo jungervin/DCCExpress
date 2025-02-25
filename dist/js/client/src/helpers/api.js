@@ -1,8 +1,38 @@
-define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turnout"], function (require, exports, dcc_1, ws_1, turnout_1) {
+define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turnout", "../editor/audioButton"], function (require, exports, dcc_1, ws_1, turnout_1, audioButton_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Api = void 0;
     class Api {
+        static init(app) {
+            Api.app = app;
+            //Api.audioManager = audioManager
+        }
+        static playSound(filename) {
+            audioButton_1.audioManager.play(filename);
+        }
+        //===================================================
+        // EDGES
+        //===================================================
+        static detectRisingEdge(address) {
+            const currentState = Api.getSensor(address);
+            if (!(address in Api.edges)) {
+                Api.edges[address] = currentState;
+                return false;
+            }
+            const rising = !Api.edges[address] && currentState;
+            Api.edges[address] = currentState;
+            return rising;
+        }
+        static detectFallingEdge(address) {
+            const currentState = Api.getSensor(address);
+            if (!(address in Api.edges)) {
+                Api.edges[address] = currentState;
+                return false;
+            }
+            const falling = Api.edges[address] && !currentState;
+            Api.edges[address] = currentState;
+            return falling;
+        }
         static emergencyStop() {
             ws_1.wsClient.send({ type: dcc_1.ApiCommands.emergencyStop, data: "" });
         }
@@ -102,4 +132,6 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
         }
     }
     exports.Api = Api;
+    //static audioManager: AudioManager | undefined;
+    Api.edges = {};
 });
