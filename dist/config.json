@@ -1,10 +1,10 @@
 {
     "settings": {
-        "scale": 1.114071813009994,
-        "origX": 33,
-        "origY": -92,
+        "scale": 2.0007129130369408,
+        "origX": -83,
+        "origY": -287,
         "locoPanelVisible": false,
-        "propertyPanelVisible": true
+        "propertyPanelVisible": false
     },
     "pages": [
         {
@@ -23,7 +23,7 @@
                     "uuid": "1440aef7-b22c-4d82-8c4d-ad3e89095481",
                     "type": "block",
                     "name": "block202",
-                    "x": 16,
+                    "x": 15,
                     "y": 9,
                     "angle": 0,
                     "locoAddress": 0
@@ -42,7 +42,7 @@
                     "type": "block",
                     "name": "block199",
                     "x": 7,
-                    "y": 10,
+                    "y": 9,
                     "angle": 0,
                     "locoAddress": 11
                 },

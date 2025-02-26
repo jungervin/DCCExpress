@@ -9,6 +9,10 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
         static playSound(filename) {
             audioButton_1.audioManager.play(filename);
         }
+        static setBlock(blockName, locoAddress) {
+            const b = { blockName: blockName, locoAddress: locoAddress };
+            ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBlock, data: b });
+        }
         static getSensor(address) {
             return Api.app.sensors[address];
         }

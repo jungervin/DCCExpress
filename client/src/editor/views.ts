@@ -10,6 +10,7 @@ import { Point } from "../helpers/math"
 // import { SignalElement } from "../components/signalElement"
 import { Signal1Element, Signal2Element } from "./signals"
 import { AccessoryDecoderElement } from "./button"
+import { BlockElement } from "./block"
 
 
 export class Views {
@@ -62,6 +63,16 @@ export class Views {
 
     getElement(name: string) {
         return this.elements.find((e) => { return e.name === name})
+    }
+
+    getBlockElements(): BlockElement[] {
+        var items: BlockElement[] = []
+        this.elements.forEach((elem: View) => {
+            if (elem instanceof BlockElement) {
+                items.push(elem)
+            }
+        })
+        return items
     }
 
     getSignal(addr: number) {

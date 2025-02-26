@@ -23,8 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.wsServer = void 0;
-exports.broadcastAll = broadcastAll;
+exports.broadcastAll = exports.wsServer = void 0;
 const ws_1 = __importStar(require("ws"));
 const server_1 = require("./server");
 const dcc_1 = require("../../common/src/dcc");
@@ -40,6 +39,7 @@ function broadcastAll(msg) {
         }
     });
 }
+exports.broadcastAll = broadcastAll;
 function send(s, type, data) {
     s.send(JSON.stringify({ type: type, data: data }));
 }
@@ -121,6 +121,27 @@ exports.wsServer.on("connection", (ws, req) => {
                     catch (error) {
                         (0, utility_1.log)("WS ApiCommands.saveSettings:", error);
                     }
+                    break;
+                case dcc_1.ApiCommands.setBlock:
+                    const sb = data;
+                    if (!sb.blockName) {
+                        (0, utility_1.logError)("❌ Error: Invalid block name received!", sb);
+                        break;
+                    }
+                    for (const k of Object.keys(dcc_1.blocks)) {
+                        if (dcc_1.blocks[k].locoAddress == sb.locoAddress) {
+                            dcc_1.blocks[k].locoAddress = 0;
+                        }
+                    }
+                    (0, utility_1.log)("BEFORE BROADCAST BLOCKS");
+                    try {
+                        dcc_1.blocks[sb.blockName] = { blockName: sb.blockName, locoAddress: sb.locoAddress };
+                    }
+                    catch (error) {
+                        (0, utility_1.logError)(error);
+                    }
+                    (0, utility_1.log)("BROADCAST BLOCKS", dcc_1.blocks);
+                    broadcastAll({ type: dcc_1.ApiCommands.blockInfo, data: { blocks: dcc_1.blocks } });
                     break;
                 default:
                     (0, utility_1.log)("WS Unknown command:", type);

@@ -2,7 +2,7 @@ define(["require", "exports", "../helpers/globals", "../../../common/src/dcc", "
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.BlockElement = void 0;
-    class BlockElement extends view_1.RailView {
+    class BlockElement extends view_1.View {
         constructor(uuid, x, y, name) {
             super(uuid, x, y, name);
             this.text = 'HELLO';
@@ -43,11 +43,11 @@ define(["require", "exports", "../helpers/globals", "../../../common/src/dcc", "
             }
             ctx.closePath();
             ctx.fill();
-            let text = "undef";
+            let text = "";
             if (this.loco) {
                 const loco = api_1.Api.getLoco((_a = this.loco) === null || _a === void 0 ? void 0 : _a.address);
                 if (loco) {
-                    text = `${loco.address} ${loco.name}`;
+                    text = `#${loco.address} ${loco.name}`;
                 }
             }
             // if (this.text) 
@@ -59,7 +59,7 @@ define(["require", "exports", "../helpers/globals", "../../../common/src/dcc", "
                 ctx.font = "8px Arial";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
-                ctx.fillText("#" + text, this.centerX, this.centerY + 1);
+                ctx.fillText(text, this.centerX, this.centerY + 1);
             }
             super.draw(ctx);
             ctx.restore();

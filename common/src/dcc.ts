@@ -41,6 +41,10 @@ export enum ApiCommands {
     setBasicAccessory = "setBasicAccessory",
     basicAccessoryInfo = "basicAccessoryInfo",
     
+    setBlock = "setBlock",
+    getBlock = "getBlock",
+    blockInfo = "blockInfo",
+
     //turnoutClicked = "turnoutClicked",
     // turnoutStates = "turnoutStates",
     // setCommandCenters = "setCommandCenters",
@@ -178,6 +182,18 @@ export interface iRBus {
     bytes: number[]
 }
 
+export interface iSetBlock {
+    blockName: string,
+    locoAddress: number
+}
+export interface iGetBlock {
+    blockName: string,
+    locoAddress: number
+}
+export interface iBlockInfo {
+    blockName: string,
+    locoAddress: number
+}
 
 export enum Z21POWERINFO {
     poweroff =0,
@@ -281,6 +297,7 @@ export let accessories: { [address: number]: iSetBasicAccessory } = {};
 export let ext_accessories: { [address: number]: iExtAccessory } = {};
 export let turnouts: { [address: number]: iTurnoutInfo } = {};
 export let rbus: { [address: number]: iRBus } = {};
+export let blocks: { [name: string]: iBlockInfo } = {};
 
 
 export function getUUID() {

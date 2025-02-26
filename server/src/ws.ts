@@ -1,6 +1,6 @@
 import WebSocket, { WebSocketServer } from "ws";
 import { CONFIG_FILE, server, SETTINGS_FILE } from "./server";
-import { ApiCommands, iData, iLoco, iLocoData, locos } from "../../common/src/dcc";
+import { ApiCommands, blocks, iBlockInfo, iData, iLoco, iLocoData, iSetBlock, locos } from "../../common/src/dcc";
 import { commandCenters } from "./commandcenters";
 import * as fs from "fs";
 import { config } from "process";
@@ -103,10 +103,36 @@ wsServer.on("connection", (ws, req) => {
                 case ApiCommands.getSettings:
                     try {
                         const settings = JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8'));
-                        broadcastAll({type: ApiCommands.settingsInfo, data: settings})
+                        broadcastAll({ type: ApiCommands.settingsInfo, data: settings })
                     } catch (error) {
                         log("WS ApiCommands.saveSettings:", error)
                     }
+                    break;
+
+                case ApiCommands.setBlock:
+
+                    const sb = data as iSetBlock
+
+                    if (!sb.blockName) {
+                        logError("❌ Error: Invalid block name received!", sb);
+                        break;
+                    }
+                    for (const k of Object.keys(blocks)) {
+                        if (blocks[k].locoAddress == sb.locoAddress) {
+                            blocks[k].locoAddress = 0;
+                        }
+                    }
+
+                    log("BEFORE BROADCAST BLOCKS")
+                    try {
+                        blocks[sb.blockName] = { blockName: sb.blockName, locoAddress: sb.locoAddress }    
+                    } catch (error) {
+                        logError(error)
+                    }
+                    
+
+                    log("BROADCAST BLOCKS", blocks)
+                    broadcastAll({ type: ApiCommands.blockInfo, data: { blocks } } as iData)
                     break;
 
                 default:

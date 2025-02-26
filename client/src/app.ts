@@ -4,7 +4,7 @@ import { TurnoutDoubleElement, TurnoutElement, TurnoutLeftElement, TurnoutRightE
 import { Signal1Element } from "./editor/signals";
 import { RailView } from "./editor/view";
 import { Locos } from "./editor/loco";
-import { ApiCommands, iData, iGetTurnout, iLoco, iPowerInfo, iRBus, iSettings, iSetPower, iSetTurnout, iSystemStatus, setDecoder, Z21Directions, Z21POWERINFO, defaultSettings, iLocomotive } from "../../common/src/dcc";
+import { ApiCommands, iData, iGetTurnout, iLoco, iPowerInfo, iRBus, iSettings, iSetPower, iSetTurnout, iSystemStatus, setDecoder, Z21Directions, Z21POWERINFO, defaultSettings, iLocomotive, iBlockInfo } from "../../common/src/dcc";
 import { Globals } from "./helpers/globals";
 import { Dialog } from "./controls/dialog";
 import { wsClient } from "./helpers/ws";
@@ -44,7 +44,7 @@ export class App {
         programmingModeActive: undefined,
         shortCircuit: undefined,
     }
-    
+
     currentTask: Task | undefined;
     tasks: Tasks;
 
@@ -79,7 +79,7 @@ export class App {
             alert("schedulerCompleted")
         })
 
-        
+
 
         this.toolbar = document.getElementById("toolbar") as Toolbar
         this.editor = document.getElementById("editorCanvas") as CustomCanvas
@@ -125,6 +125,8 @@ export class App {
                 this.configLoaded(conf)
                 wsClient.send({ type: ApiCommands.getRBusInfo, data: "" })
 
+                Api.setBlock("block199", 3)
+
             }).catch((reason) => {
                 alert("Config Error:\n" + reason)
             }).finally(() => {
@@ -142,6 +144,8 @@ export class App {
 
             this.locoControlPanel.init()
 
+
+
         }
         wsClient.onError = () => {
             this.toolbar.wsStatus!.classList.remove("success")
@@ -154,7 +158,7 @@ export class App {
                 case ApiCommands.locoInfo:
                     if (this.locoControlPanel) {
                         this.locoControlPanel.processMessage(msg.data as iLoco)
-       
+
                     }
                     break
                 // case ApiCommands.commandCenterInfos:
@@ -177,10 +181,37 @@ export class App {
                     Dispatcher.exec()
                     break;
 
-                // case ApiCommands.configLoaded:
-                //     // this.configLoaded(msg.data)
-                //     break;
+                case ApiCommands.blockInfo:
+                    // const blocks = msg.data;
+                    // Object.entries(blocks).forEach(([blockName, blockData]) => {
+                    //     console.log("📌 blockInfo", blockName, blockData.locoAddress);
 
+                    //     this.editor.views.getBlockElements().forEach((b) => {
+                    //         if (b.name === blockName) { // ✅ `blockName` már a helyes kulcs!
+                    //             b.setLoco(blockData.locoAddress);
+                    //         }
+                    //     });
+                    // });
+                    const blocks = msg.data as { [name: string]: iBlockInfo } ;
+                    Object.values(blocks).forEach((block) => {
+                        Object.values(block).forEach((bb) => {
+                            this.editor.views.getBlockElements().forEach((b) => {
+                                if (b.name === bb.blockName) {
+                                    b.setLoco(bb.locoAddress);
+                                }
+                            })
+                        })
+                    })
+                    // for (const [key, block] of Object.entries(blocks)) {
+
+
+                    //     this.editor.views.getBlockElements().forEach((b) => {
+                    //         if (b.name == block[key].blockName) { // 🔹 A `blockName` már a kulcsból jön, nem kell `blockData.blockName`
+                    //             b.setLoco(block[key].locoAddress);
+                    //         }
+                    //     });
+                    // }
+                    break;
                 case ApiCommands.settingsInfo:
                     //setSettings(msg.data)
                     const d = msg.data as iSettings;
@@ -194,7 +225,7 @@ export class App {
                     this.systemInfo(msg.data as iSystemStatus)
                     break;
                 case ApiCommands.powerInfo:
-                    
+
                     this.procPowerInfo(msg.data as iPowerInfo)
                     break;
                 case ApiCommands.UnsuccessfulOperation:
@@ -239,7 +270,7 @@ export class App {
                 //     }
                 // }
                 this.tasks.stopAllTask()
-                
+
             }
         }
 
@@ -278,7 +309,7 @@ export class App {
             // ==========================================
             //  Szfvár P3 <=== P2 <== Szabadbattyán P3
             // ==========================================
-            
+
             //task.waitForMinute(5)
             task.startAtMinutes([5, 15, 25, 35, 45, 55])
             task.setRoute("routeSwitch112")
@@ -430,7 +461,7 @@ export class App {
             else if (Object.getPrototypeOf(elem) == TurnoutLeftElement.prototype) {
                 var la = elem as TurnoutLeftElement
                 if (la.address == data.address) {
-                    la.t1Closed = data.isClosed == la.t1ClosedValue; 
+                    la.t1Closed = data.isClosed == la.t1ClosedValue;
                     this.turnouts[data.address] = la.t1Closed
                     redraw = true
                 }

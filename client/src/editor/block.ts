@@ -2,10 +2,10 @@ import { Globals } from "../helpers/globals";
 import { DCCExDirections, iLocomotive } from "../../../common/src/dcc";
 import { drawTextWithRoundedBackground } from "../helpers/graphics";
 import { degreesToRadians, getDirection, getDirectionXy, Point } from "../helpers/math";
-import { RailView } from "./view";
+import { RailView, View } from "./view";
 import { Api } from "../helpers/api";
 
-export class BlockElement extends RailView {
+export class BlockElement extends View {
     text: string = 'HELLO';
     textColor: string = 'black';
     locoAddress: number = 0;
@@ -55,11 +55,11 @@ export class BlockElement extends RailView {
         ctx.closePath();
         ctx.fill();
 
-        let text = "undef"
+        let text = ""
         if(this.loco) {
             const loco = Api.getLoco(this.loco?.address)
             if(loco) {
-                text = `${loco.address} ${loco.name}`
+                text = `#${loco.address} ${loco.name}`
             }
 
         }
@@ -72,7 +72,7 @@ export class BlockElement extends RailView {
             ctx.font = "8px Arial";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
-            ctx.fillText("#" + text, this.centerX, this.centerY + 1);
+            ctx.fillText( text, this.centerX, this.centerY + 1);
         }
 
         

@@ -1,5 +1,5 @@
 import { App } from "../app";
-import { iSetLocoFunction, iLocomotive, Z21Directions, iData, ApiCommands, iLoco, iSetTurnout } from "../../../common/src/dcc";
+import { iSetLocoFunction, iLocomotive, Z21Directions, iData, ApiCommands, iLoco, iSetTurnout, iSetBlock } from "../../../common/src/dcc";
 import { wsClient } from "./ws";
 import { TurnoutDoubleElement, TurnoutElement } from "../editor/turnout";
 import { RouteSwitchElement } from "../editor/route";
@@ -19,6 +19,10 @@ export class Api {
         audioManager.play(filename)
     }
 
+    static setBlock(blockName: string, locoAddress: number) {
+        const b: iSetBlock = {blockName: blockName, locoAddress: locoAddress}
+        wsClient.send({type: ApiCommands.setBlock, data: b} as iData)
+    }
     static getSensor(address: number): boolean {
         return Api.app.sensors[address]
     }
