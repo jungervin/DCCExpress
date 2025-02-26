@@ -295,7 +295,7 @@ export class App {
 
             task.setFunctionMs(3, true, 500)
             task.delay(3000)
-            task.stop()
+            task.stopLoco()
 
             task.waitMs(10000, 20000)
 
@@ -324,7 +324,7 @@ export class App {
             task.setFunctionMs(3, true, 500)
 
             task.delay(3000)
-            task.stop()
+            task.stopLoco()
 
             task.waitMs(10000, 20000)
 

@@ -26,7 +26,7 @@ if (!Api.tasks.getTask("Task1")) {
 
     task.setFunctionMs(3, true, 500)
     task.delay(3000)
-    task.stop()
+    task.stopLoco()
 
     task.waitMs(10000, 20000)
 
@@ -54,7 +54,7 @@ if (!Api.tasks.getTask("Task1")) {
     task.setFunctionMs(3, true, 500)
 
     task.delay(3000)
-    task.stop()
+    task.stopLoco()
 
     task.waitMs(10000, 20000)
 

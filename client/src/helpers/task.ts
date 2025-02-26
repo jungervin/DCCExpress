@@ -6,11 +6,11 @@ import { Globals } from "./globals";
 export const tasksCompleteEvent = new Event("tasksCompleteEvent");
 
 enum StepTypes {
-    setLocoloco = "setLoco",
+    setLoco = "setLoco",
     setTurnout = "setTurnout",
     forward = "foward",
     reverse = "reverse",
-    stop = "stop",
+    stopLoco = "stop",
     delay = "delay",
     waitForSensor = "waitForSensor",
     setFunction = "setFunction",
@@ -210,7 +210,7 @@ export class Task {
     }
 
     setLoco(address: number) {
-        this.steps.push({ type: StepTypes.setLocoloco, data: { address: address } as iLocoStep } as iStep)
+        this.steps.push({ type: StepTypes.setLoco, data: { address: address } as iLocoStep } as iStep)
     }
 
     setTurnout(address: number, closed: boolean) {
@@ -228,8 +228,8 @@ export class Task {
     reverse(speed: number) {
         this.steps.push({ type: StepTypes.reverse, data: { speed: speed } as iForwardStep } as iStep)
     }
-    stop() {
-        this.steps.push({ type: StepTypes.stop, data: { speed: 0 } } as iStep)
+    stopLoco() {
+        this.steps.push({ type: StepTypes.stopLoco, data: { speed: 0 } } as iStep)
     }
 
     setFunction(fn: number, on: boolean): void {
@@ -274,7 +274,7 @@ export class Task {
     procStep() {
         if (this.step) {
             switch (this.step.type) {
-                case StepTypes.setLocoloco:
+                case StepTypes.setLoco:
                     this.locoAddress = (this.step.data as iLocoStep).address
                     //console.log(`TASK: ${this.name} loco: ${this.locoAddress} added!`)
                     this.index++
@@ -300,29 +300,18 @@ export class Task {
                     this.index++;
                     break;
 
-                case StepTypes.stop:
+                case StepTypes.stopLoco:
                     //console.log(`TASK: ${this.name} stop started!`)
                     Api.setLocoSpeed(this.locoAddress, 0)
                     this.index++;
                     break;
                 case StepTypes.delay:
-                    // Ez helyett inkább 
-                    //  delayEnd = now() + ms használj!
-                    // amikor defejeződik a delayEnd pedig null legyen
                     const ms = (this.step.data as iDelayStep).ms
-                    // console.log(`TASK: ${this.name} delay: ${ms} started!`)
-                    // this.delayTimer = setTimeout(() => {
-                    //     this.index++;
-                    //     console.log(`TASK: ${this.name} delay finished!`)
-                    // }, ms)
-
                     if (this.delayEnd <= 0) {
-                        //console.log(`TASK: ${this.name} delay: ${ms} started!`)
                         this.delayEnd = performance.now() + ms
                     } else if (performance.now() > this.delayEnd) {
                         this.index++;
                         this.delayEnd = 0;
-                        //console.log(`TASK: ${this.name} delay finished!`)
                     }
                     break;
 
@@ -344,7 +333,6 @@ export class Task {
                     this.index++;
                     break;
                 case StepTypes.restart:
-                    //console.log(`TASK: ${this.name} restart!`)
                     if (!this.stopOnComplete) {
                         this.index = 0;
                         this.prevIndex = -1;
@@ -368,7 +356,6 @@ export class Task {
                             console.log(`TASK: ${this.name} startAtMinutes:${min} finished!`)
                         }
                     }
-
                     break;
             }
         }
@@ -376,7 +363,7 @@ export class Task {
 
     logStep(step: iStep) {
         switch (step.type) {
-            case StepTypes.setLocoloco:
+            case StepTypes.setLoco:
                 console.log(`TASK: ${this.name} index: ${this.index} loco: ${(step.data as iLocoStep).address}`)
                 break;
             case StepTypes.setTurnout:
@@ -388,7 +375,7 @@ export class Task {
             case StepTypes.reverse:
                 console.log(`TASK: ${this.name} index: ${this.index} reverse: ${(step.data as iForwardStep).speed}`)
                 break;
-            case StepTypes.stop:
+            case StepTypes.stopLoco:
                 console.log(`TASK: ${this.name} index: ${this.index} stop`)
                 break;
             case StepTypes.delay:
@@ -430,18 +417,17 @@ export class Task {
 
     taskStart() {
         console.log(`TASK: ${this.name} started!`)
-        this.stop()
+        this.stopLoco()
         this.index = 0;
         this.prevIndex = -1;
         this.status = TaskStatus.running
         this.stopOnComplete = false;
-        //this.proc();
+
     }
 
     taskStop() {
         this.status = TaskStatus.stopped
-        // stop the loco
-        this.stop()
+        this.stopLoco()
 
     }
 }

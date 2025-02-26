@@ -1,7 +1,11 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.drawPolarLine = exports.getPolarXy = exports.drawRectangle = exports.drawTextWithRoundedBackground = exports.drawTextWithBackground = void 0;
+    exports.drawTextWithBackground = drawTextWithBackground;
+    exports.drawTextWithRoundedBackground = drawTextWithRoundedBackground;
+    exports.drawRectangle = drawRectangle;
+    exports.getPolarXy = getPolarXy;
+    exports.drawPolarLine = drawPolarLine;
     const rad = Math.PI / 180.0;
     function drawTextWithBackground(ctx, x, y, text, textColor = 'black', rectColor = 'lightgray') {
         // Szöveg méretezése
@@ -21,7 +25,6 @@ define(["require", "exports"], function (require, exports) {
         const textY = y + padding + textMetrics.actualBoundingBoxAscent;
         ctx.fillText(text, textX, textY);
     }
-    exports.drawTextWithBackground = drawTextWithBackground;
     function drawTextWithRoundedBackground(ctx, x, y, text, textColor = 'black', rectColor = 'lightgray', borderRadius = 2 // Lekerekítés sugara
     ) {
         ctx.save();
@@ -55,7 +58,6 @@ define(["require", "exports"], function (require, exports) {
         ctx.fillText(text, textX, textY);
         ctx.restore();
     }
-    exports.drawTextWithRoundedBackground = drawTextWithRoundedBackground;
     function drawRectangle(ctx, x, y, w, h, borderColor = 'black', fillColor = 'lightgray') {
         ctx.beginPath();
         ctx.fillStyle = fillColor;
@@ -65,11 +67,9 @@ define(["require", "exports"], function (require, exports) {
         ctx.rect(x, y, w, h);
         ctx.stroke();
     }
-    exports.drawRectangle = drawRectangle;
     function getPolarXy(cx, cy, r, theta) {
         return { x: cx + r * Math.cos(theta * rad), y: cy + r * Math.sin(theta * rad) };
     }
-    exports.getPolarXy = getPolarXy;
     function drawPolarLine(ctx, centerX, centerY, r, theta, color = "black", lineWidth = 1) {
         // Polar koordináták átalakítása derékszögű koordinátákká
         const x1 = centerX; //+ r1 * Math.cos(theta1);
@@ -85,5 +85,4 @@ define(["require", "exports"], function (require, exports) {
         ctx.stroke();
         ctx.closePath();
     }
-    exports.drawPolarLine = drawPolarLine;
 });

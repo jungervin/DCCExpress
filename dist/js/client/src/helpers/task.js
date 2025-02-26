@@ -5,11 +5,11 @@ define(["require", "exports", "../../../common/src/dcc", "./api", "./globals"], 
     exports.tasksCompleteEvent = new Event("tasksCompleteEvent");
     var StepTypes;
     (function (StepTypes) {
-        StepTypes["setLocoloco"] = "setLoco";
+        StepTypes["setLoco"] = "setLoco";
         StepTypes["setTurnout"] = "setTurnout";
         StepTypes["forward"] = "foward";
         StepTypes["reverse"] = "reverse";
-        StepTypes["stop"] = "stop";
+        StepTypes["stopLoco"] = "stop";
         StepTypes["delay"] = "delay";
         StepTypes["waitForSensor"] = "waitForSensor";
         StepTypes["setFunction"] = "setFunction";
@@ -141,7 +141,7 @@ define(["require", "exports", "../../../common/src/dcc", "./api", "./globals"], 
             this.name = name;
         }
         setLoco(address) {
-            this.steps.push({ type: StepTypes.setLocoloco, data: { address: address } });
+            this.steps.push({ type: StepTypes.setLoco, data: { address: address } });
         }
         setTurnout(address, closed) {
             this.steps.push({ type: StepTypes.setTurnout, data: { address: address, closed: closed } });
@@ -156,8 +156,8 @@ define(["require", "exports", "../../../common/src/dcc", "./api", "./globals"], 
         reverse(speed) {
             this.steps.push({ type: StepTypes.reverse, data: { speed: speed } });
         }
-        stop() {
-            this.steps.push({ type: StepTypes.stop, data: { speed: 0 } });
+        stopLoco() {
+            this.steps.push({ type: StepTypes.stopLoco, data: { speed: 0 } });
         }
         setFunction(fn, on) {
             this.steps.push({ type: StepTypes.setFunction, data: { fn: fn, on: on } });
@@ -193,7 +193,7 @@ define(["require", "exports", "../../../common/src/dcc", "./api", "./globals"], 
         procStep() {
             if (this.step) {
                 switch (this.step.type) {
-                    case StepTypes.setLocoloco:
+                    case StepTypes.setLoco:
                         this.locoAddress = this.step.data.address;
                         //console.log(`TASK: ${this.name} loco: ${this.locoAddress} added!`)
                         this.index++;
@@ -215,29 +215,19 @@ define(["require", "exports", "../../../common/src/dcc", "./api", "./globals"], 
                         api_1.Api.setLoco(this.locoAddress, rspeed, dcc_1.Z21Directions.reverse);
                         this.index++;
                         break;
-                    case StepTypes.stop:
+                    case StepTypes.stopLoco:
                         //console.log(`TASK: ${this.name} stop started!`)
                         api_1.Api.setLocoSpeed(this.locoAddress, 0);
                         this.index++;
                         break;
                     case StepTypes.delay:
-                        // Ez helyett inkább 
-                        //  delayEnd = now() + ms használj!
-                        // amikor defejeződik a delayEnd pedig null legyen
                         const ms = this.step.data.ms;
-                        // console.log(`TASK: ${this.name} delay: ${ms} started!`)
-                        // this.delayTimer = setTimeout(() => {
-                        //     this.index++;
-                        //     console.log(`TASK: ${this.name} delay finished!`)
-                        // }, ms)
                         if (this.delayEnd <= 0) {
-                            //console.log(`TASK: ${this.name} delay: ${ms} started!`)
                             this.delayEnd = performance.now() + ms;
                         }
                         else if (performance.now() > this.delayEnd) {
                             this.index++;
                             this.delayEnd = 0;
-                            //console.log(`TASK: ${this.name} delay finished!`)
                         }
                         break;
                     case StepTypes.waitForSensor:
@@ -258,7 +248,6 @@ define(["require", "exports", "../../../common/src/dcc", "./api", "./globals"], 
                         this.index++;
                         break;
                     case StepTypes.restart:
-                        //console.log(`TASK: ${this.name} restart!`)
                         if (!this.stopOnComplete) {
                             this.index = 0;
                             this.prevIndex = -1;
@@ -288,7 +277,7 @@ define(["require", "exports", "../../../common/src/dcc", "./api", "./globals"], 
         }
         logStep(step) {
             switch (step.type) {
-                case StepTypes.setLocoloco:
+                case StepTypes.setLoco:
                     console.log(`TASK: ${this.name} index: ${this.index} loco: ${step.data.address}`);
                     break;
                 case StepTypes.setTurnout:
@@ -300,7 +289,7 @@ define(["require", "exports", "../../../common/src/dcc", "./api", "./globals"], 
                 case StepTypes.reverse:
                     console.log(`TASK: ${this.name} index: ${this.index} reverse: ${step.data.speed}`);
                     break;
-                case StepTypes.stop:
+                case StepTypes.stopLoco:
                     console.log(`TASK: ${this.name} index: ${this.index} stop`);
                     break;
                 case StepTypes.delay:
@@ -341,17 +330,15 @@ define(["require", "exports", "../../../common/src/dcc", "./api", "./globals"], 
         }
         taskStart() {
             console.log(`TASK: ${this.name} started!`);
-            this.stop();
+            this.stopLoco();
             this.index = 0;
             this.prevIndex = -1;
             this.status = TaskStatus.running;
             this.stopOnComplete = false;
-            //this.proc();
         }
         taskStop() {
             this.status = TaskStatus.stopped;
-            // stop the loco
-            this.stop();
+            this.stopLoco();
         }
     }
     exports.Task = Task;
