@@ -204,6 +204,7 @@ export class Signal1Element extends RailView {
             this.sendYellow();
         }
     }    
+    
     sendWhiteIfNotWhite() {
         if (!this.isWhite) {
             this.sendWhite();
