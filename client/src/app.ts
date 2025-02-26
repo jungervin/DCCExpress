@@ -125,7 +125,7 @@ export class App {
                 this.configLoaded(conf)
                 wsClient.send({ type: ApiCommands.getRBusInfo, data: "" })
 
-                Api.setBlock("block199", 3)
+                
 
             }).catch((reason) => {
                 alert("Config Error:\n" + reason)

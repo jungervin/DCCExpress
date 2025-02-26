@@ -24,7 +24,26 @@ export class BlockElement extends View {
     }
 
     public draw(ctx: CanvasRenderingContext2D) {
+        let bg = "#eee";  // A színe lehet más is
+        let fg = "black";
+
+
         ctx.save()
+
+        let text = ""
+        if(this.loco) {
+            const loco = Api.getLoco(this.loco?.address)
+            if(loco) {
+                text = `#${loco.address} ${loco.name}`
+                bg = "lime";  // A színe lehet más is
+                fg = "black";
+                }
+
+        } else {
+    
+        }
+
+
 
         var w = Globals.GridSizeX / 2.0
         var h = Globals.GridSizeY / 6.0
@@ -33,11 +52,13 @@ export class BlockElement extends View {
         ctx.rotate(degreesToRadians(this.angle));
         ctx.translate(-this.centerX, -this.centerY);
 
-        ctx.fillStyle = "#eee";  // A színe lehet más is
+        ctx.fillStyle = bg;  // A színe lehet más is
+        ctx.strokeStyle = fg;
+
         ctx.fillRect(this.posLeft + 10, this.centerY - h, this.width - 20, 2 * h);
 
         ctx.lineWidth = 1
-        ctx.strokeStyle = "black";
+        ctx.strokeStyle = 'black';
         ctx.strokeRect(this.posLeft + 10, this.centerY - h, this.width - 20, 2 * h);
 
         // Triangle
@@ -55,20 +76,14 @@ export class BlockElement extends View {
         ctx.closePath();
         ctx.fill();
 
-        let text = ""
-        if(this.loco) {
-            const loco = Api.getLoco(this.loco?.address)
-            if(loco) {
-                text = `#${loco.address} ${loco.name}`
-            }
-
-        }
         // if (this.text) 
         {
             if (this.angle == 180) {
                 ctx.restore()
             }
-            ctx.fillStyle = this.textColor;
+            
+
+            ctx.fillStyle = fg;
             ctx.font = "8px Arial";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";

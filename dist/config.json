@@ -1,9 +1,9 @@
 {
     "settings": {
-        "scale": 2.0007129130369408,
-        "origX": -83,
-        "origY": -287,
-        "locoPanelVisible": false,
+        "scale": 1.4707078378421756,
+        "origX": 386,
+        "origY": -61,
+        "locoPanelVisible": true,
         "propertyPanelVisible": false
     },
     "pages": [
@@ -23,7 +23,7 @@
                     "uuid": "1440aef7-b22c-4d82-8c4d-ad3e89095481",
                     "type": "block",
                     "name": "block202",
-                    "x": 15,
+                    "x": 16,
                     "y": 9,
                     "angle": 0,
                     "locoAddress": 0

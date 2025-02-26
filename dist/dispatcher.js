@@ -1,3 +1,4 @@
+
 const t10 = Api.getTurnout(10)
 const t11 = Api.getTurnout(11)
 const t12 = Api.getTurnout(12)
@@ -12,6 +13,7 @@ const s65 = Api.getSignal(65)
 
 const rb12 = Api.getSensor(12)
 const rb13 = Api.getSensor(13)
+const rb14 = Api.getSensor(14)
 const rb15 = Api.getSensor(15)
 const rb16 = Api.getSensor(16)
 const rb24 = Api.getSensor(24)
@@ -21,6 +23,8 @@ console.log(l18)
 
 const block198 = Api.getElement("block198")
 const block199 = Api.getElement("block199")
+const block202 = Api.getElement("block202")
+const block203 = Api.getElement("block203")
 
 //==================================
 // INIT
@@ -28,29 +32,46 @@ const block199 = Api.getElement("block199")
 if (!App.init) {
     App.init = true
     App.num = 0;
+
+    if (block198) {
+        Api.setBlock("block198", 3)
+    }
+   
+
     return
 }
 
 // =====================================
 // BLOCK
 // =====================================
-if (block198) {
-    block198.setLoco(3)
-}
-if (block199) {
-    block199.setLoco(11)
-}
 
 
 //======================================
 // A train is approaching the station
 //======================================
-if (Api.detectFallingEdge(13) && Api.getSensor(12)) {
+
+const re13 = Api.detectRisingEdge(13)
+
+if (Api.detectRisingEdge(24) && Api.getSensor(12)) {
+    if (block198) {
+        Api.setBlock("block198", 3)
+    }
     Api.playSound("mav_szignal.mp3")
 }
 
 if (Api.detectRisingEdge(16) && Api.getSensor(13)) {
+    if (block199) {
+        Api.setBlock("block199", 3)
+    }
     Api.playSound("mav_szignal.mp3")
+}
+
+if(Api.detectRisingEdge(14)) {
+    Api.setBlock("block203", 3)
+}
+
+if(re13) {
+    Api.setBlock("block202", 3)
 }
 
 //======================================

@@ -81,7 +81,6 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 globals_1.Globals.fetchJsonData('/config.json').then((conf) => {
                     this.configLoaded(conf);
                     ws_1.wsClient.send({ type: dcc_1.ApiCommands.getRBusInfo, data: "" });
-                    api_1.Api.setBlock("block199", 3);
                 }).catch((reason) => {
                     alert("Config Error:\n" + reason);
                 }).finally(() => {
