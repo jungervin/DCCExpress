@@ -19,6 +19,7 @@ import { RouteSwitchElement } from "./editor/route";
 import { Scheduler } from "./helpers/scheduler";
 import { MessageDialog } from "./dialogs/messageDialog";
 import { send } from "process";
+import { BlockElement } from "./editor/block";
 
 console.log(Dispatcher)
 console.log(ApiCommands)
@@ -123,14 +124,15 @@ export class App {
             Globals.fetchJsonData('/config.json').then((conf: any) => {
                 this.configLoaded(conf)
                 wsClient.send({ type: ApiCommands.getRBusInfo, data: "" })
+
             }).catch((reason) => {
                 alert("Config Error:\n" + reason)
+            }).finally(() => {
             })
 
         }).catch((reason: any) => {
             alert("Settings Error:\n" + reason)
         }).finally(() => {
-
 
         })
 
@@ -152,6 +154,7 @@ export class App {
                 case ApiCommands.locoInfo:
                     if (this.locoControlPanel) {
                         this.locoControlPanel.processMessage(msg.data as iLoco)
+       
                     }
                     break
                 // case ApiCommands.commandCenterInfos:

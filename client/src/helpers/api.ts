@@ -150,6 +150,11 @@ export class Api {
         return -1
     }
 
+    static getElement(name: string) {
+        return Api.app.editor.views.getElement(name)
+    }
+
+    
     static get tasks(): Tasks {
         return Api.app.tasks
     }

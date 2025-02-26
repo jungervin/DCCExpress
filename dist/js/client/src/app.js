@@ -83,6 +83,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                     ws_1.wsClient.send({ type: dcc_1.ApiCommands.getRBusInfo, data: "" });
                 }).catch((reason) => {
                     alert("Config Error:\n" + reason);
+                }).finally(() => {
                 });
             }).catch((reason) => {
                 alert("Settings Error:\n" + reason);

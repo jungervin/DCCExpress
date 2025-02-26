@@ -1,13 +1,15 @@
 import { Globals } from "../helpers/globals";
-import { DCCExDirections } from "../../../common/src/dcc";
+import { DCCExDirections, iLocomotive } from "../../../common/src/dcc";
 import { drawTextWithRoundedBackground } from "../helpers/graphics";
 import { degreesToRadians, getDirection, getDirectionXy, Point } from "../helpers/math";
 import { RailView } from "./view";
+import { Api } from "../helpers/api";
 
 export class BlockElement extends RailView {
     text: string = 'HELLO';
     textColor: string = 'black';
     locoAddress: number = 0;
+    loco: iLocomotive | undefined;
 
     constructor(uuid: string, x: number, y: number, name: string) {
         super(uuid, x, y, name)
@@ -25,7 +27,7 @@ export class BlockElement extends RailView {
         ctx.save()
 
         var w = Globals.GridSizeX / 2.0
-        var h = Globals.GridSizeY / 4.0
+        var h = Globals.GridSizeY / 6.0
 
         ctx.translate(this.centerX, this.centerY);
         ctx.rotate(degreesToRadians(this.angle));
@@ -53,17 +55,24 @@ export class BlockElement extends RailView {
         ctx.closePath();
         ctx.fill();
 
+        let text = "undef"
+        if(this.loco) {
+            const loco = Api.getLoco(this.loco?.address)
+            if(loco) {
+                text = `${loco.address} ${loco.name}`
+            }
 
+        }
         // if (this.text) 
         {
             if (this.angle == 180) {
                 ctx.restore()
             }
             ctx.fillStyle = this.textColor;
-            ctx.font = "10px Arial";
+            ctx.font = "8px Arial";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
-            ctx.fillText('#' + this.locoAddress.toString() + ' ' + this.text, this.centerX, this.centerY + 1);
+            ctx.fillText("#" + text, this.centerX, this.centerY + 1);
         }
 
         
@@ -112,10 +121,16 @@ export class BlockElement extends RailView {
         const d = getDirection(this.angle + 180);
         var p = new Point(this.x + d.x * 2, this.y + d.y * 2)
         return p
-
-
         // var d = getDirectionXy(this.pos, this.angle + 180);
         // return new Point(d.x * 2, d.y * 2)
     }
 
+    setLoco(address: number) {
+        this.loco = Api.getLoco(address)
+        window.invalidate()
+    }
+
+    getLoco(): iLocomotive | undefined {
+        return this.loco
+    }
 }

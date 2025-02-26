@@ -1,4 +1,4 @@
-define(["require", "exports", "../helpers/globals", "../../../common/src/dcc", "../helpers/math", "./view"], function (require, exports, globals_1, dcc_1, math_1, view_1) {
+define(["require", "exports", "../helpers/globals", "../../../common/src/dcc", "../helpers/math", "./view", "../helpers/api"], function (require, exports, globals_1, dcc_1, math_1, view_1, api_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.BlockElement = void 0;
@@ -16,9 +16,10 @@ define(["require", "exports", "../helpers/globals", "../../../common/src/dcc", "
             return 'block';
         }
         draw(ctx) {
+            var _a;
             ctx.save();
             var w = globals_1.Globals.GridSizeX / 2.0;
-            var h = globals_1.Globals.GridSizeY / 4.0;
+            var h = globals_1.Globals.GridSizeY / 6.0;
             ctx.translate(this.centerX, this.centerY);
             ctx.rotate((0, math_1.degreesToRadians)(this.angle));
             ctx.translate(-this.centerX, -this.centerY);
@@ -42,16 +43,23 @@ define(["require", "exports", "../helpers/globals", "../../../common/src/dcc", "
             }
             ctx.closePath();
             ctx.fill();
+            let text = "undef";
+            if (this.loco) {
+                const loco = api_1.Api.getLoco((_a = this.loco) === null || _a === void 0 ? void 0 : _a.address);
+                if (loco) {
+                    text = `${loco.address} ${loco.name}`;
+                }
+            }
             // if (this.text) 
             {
                 if (this.angle == 180) {
                     ctx.restore();
                 }
                 ctx.fillStyle = this.textColor;
-                ctx.font = "10px Arial";
+                ctx.font = "8px Arial";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
-                ctx.fillText('#' + this.locoAddress.toString() + ' ' + this.text, this.centerX, this.centerY + 1);
+                ctx.fillText("#" + text, this.centerX, this.centerY + 1);
             }
             super.draw(ctx);
             ctx.restore();
@@ -95,6 +103,13 @@ define(["require", "exports", "../helpers/globals", "../../../common/src/dcc", "
             return p;
             // var d = getDirectionXy(this.pos, this.angle + 180);
             // return new Point(d.x * 2, d.y * 2)
+        }
+        setLoco(address) {
+            this.loco = api_1.Api.getLoco(address);
+            window.invalidate();
+        }
+        getLoco() {
+            return this.loco;
         }
     }
     exports.BlockElement = BlockElement;

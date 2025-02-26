@@ -125,6 +125,9 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
             }
             return -1;
         }
+        static getElement(name) {
+            return Api.app.editor.views.getElement(name);
+        }
         static get tasks() {
             return Api.app.tasks;
         }

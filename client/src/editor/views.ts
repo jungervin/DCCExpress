@@ -60,6 +60,9 @@ export class Views {
         return this.elements
     }
 
+    getElement(name: string) {
+        return this.elements.find((e) => { return e.name === name})
+    }
 
     getSignal(addr: number) {
         return this.getSignalElements().find((s) => s.address == addr)

@@ -37,6 +37,9 @@ define(["require", "exports", "./turnout", "./view", "./route", "./signals", "./
             // })
             return this.elements;
         }
+        getElement(name) {
+            return this.elements.find((e) => { return e.name === name; });
+        }
         getSignal(addr) {
             return this.getSignalElements().find((s) => s.address == addr);
         }

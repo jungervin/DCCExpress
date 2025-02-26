@@ -8,6 +8,17 @@ define(["require", "exports"], function (require, exports) {
             const shadow = this.attachShadow({ mode: 'open' });
             shadow.innerHTML = `
         <style>
+           @import url("/bootstrap.css");
+            @import url("/css/properties.css");
+            label {
+                display: inline-block;
+                white-space: nowrap;
+            }
+            .row {
+                margin: 0;
+            }                
+
+
             div {
                 color: white;
             }
@@ -20,17 +31,32 @@ define(["require", "exports"], function (require, exports) {
             }
         </style>
     
-        <div>
-            <div>Loco</div>
-            <div>
-            <locomotive-combo-box id="loco"></locomotive-combo-box>
+        <div class="container">
+            <div class="igroup">
+                <div>Name</div>
+                <div>
+                    <input id="name" type="text" value="" readonly disabled>
+                </div>
             </div>
+            
+            <div class="igroup">
+                <div>Loco</div>
+                <div>
+                    <locomotive-combo-box id="loco"></locomotive-combo-box>
+                </div>
+            </div>
+
         </div>
     `;
+            this.nameElement = shadow.getElementById("name");
             this.loco = shadow.getElementById("loco");
         }
         setBlock(block) {
             this.block = block;
+            this.nameElement.value = block.name;
+            this.nameElement.onchange = (e) => {
+                block.name = this.nameElement.value;
+            };
             const locomotives = [
                 { id: "1", name: "M41 2182", address: 10, imageUrl: "./images/locos/csorgo.png" },
                 { id: "2", name: "M41 2169", address: 11, imageUrl: "./images/locos/csorgo.png" },

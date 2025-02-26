@@ -4,12 +4,21 @@
         "origX": 348,
         "origY": -66,
         "locoPanelVisible": true,
-        "propertyPanelVisible": false
+        "propertyPanelVisible": true
     },
     "pages": [
         {
             "name": "page1",
             "elems": [
+                {
+                    "uuid": "53da7658-0cd5-44bb-a5e5-8448bddacaff",
+                    "type": "block",
+                    "name": "block198",
+                    "x": 7,
+                    "y": 9,
+                    "angle": 0,
+                    "locoAddress": 11
+                },
                 {
                     "uuid": "02322788-7690-4d34-a716-97118a479664",
                     "type": "label2",
@@ -126,15 +135,6 @@
                     "type": "track",
                     "name": "track13",
                     "x": 6,
-                    "y": 9,
-                    "angle": 0,
-                    "rbusAddress": 16
-                },
-                {
-                    "uuid": "c99ebd03-b790-435d-944e-2e29543b823e",
-                    "type": "track",
-                    "name": "track14",
-                    "x": 7,
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 16

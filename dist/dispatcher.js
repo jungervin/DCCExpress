@@ -19,6 +19,8 @@ const rb24 = Api.getSensor(24)
 const l18 = Api.getLoco(18)
 console.log(l18)
 
+const block = Api.getElement("block198")
+
 //==================================
 // INIT
 //==================================
@@ -28,14 +30,22 @@ if (!App.init) {
     return
 }
 
+// =====================================
+// BLOCK
+// =====================================
+if (block) {
+        block.setLoco(3)
+}
+
+
 //======================================
 // A train is approaching the station
 //======================================
-if(Api.detectFallingEdge(13) && Api.getSensor(12)) {
+if (Api.detectFallingEdge(13) && Api.getSensor(12)) {
     Api.playSound("mav_szignal.mp3")
 }
 
-if(Api.detectRisingEdge(16) && Api.getSensor(13)) {
+if (Api.detectRisingEdge(16) && Api.getSensor(13)) {
     Api.playSound("mav_szignal.mp3")
 }
 
@@ -47,7 +57,7 @@ if(Api.detectRisingEdge(16) && Api.getSensor(13)) {
         // if (!s50.isRed) {
         //     s50.sendRed()
         // }
-        s50.sendRedIfNotRed();        
+        s50.sendRedIfNotRed();
     } else {
         if (t10.t1Closed) {
             if (!s50.isGreen) {
