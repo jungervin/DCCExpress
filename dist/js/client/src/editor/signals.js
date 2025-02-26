@@ -38,7 +38,6 @@ define(["require", "exports", "../helpers/math", "./track", "./view", "../../../
             this.angleStep = 90;
             this.trackElem = new track_1.TrackElement("", x1, y1, "");
             this.trackElem.angleStep = 90;
-            //this.trackElem.angle = 90
         }
         connectedCallback() {
         }
@@ -289,14 +288,6 @@ define(["require", "exports", "../helpers/math", "./track", "./view", "../../../
         set state(v) {
             this._state = v;
         }
-        // rotateRight() {
-        //     super.rotateRight()
-        //     this.trackElem.rotateRight()
-        // }
-        // rotateLeft() {
-        //     super.rotateLeft()
-        //     this.trackElem.rotateLeft()
-        // }
         send(bits) {
             var addr = this.address;
             var len = this.addressLength & 5;

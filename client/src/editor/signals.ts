@@ -47,21 +47,20 @@ export class Signal1Element extends RailView {
 
         this.trackElem = new TrackElement("", x1, y1, "")
         this.trackElem.angleStep = 90
-        //this.trackElem.angle = 90
-
     }
 
     connectedCallback() {
 
     }
+
     static observedAttributes = ["lightsAll"];
     attributeChangedCallback(name: string, oldValue: string, newValue: string) {
         switch (name) {
             case 'lightsAll': this.lightsAll = newValue == 'true'
                 break
         }
-
     }
+
     get type(): string {
         return 'signal2'
     }
@@ -107,7 +106,6 @@ export class Signal1Element extends RailView {
             i = 0
         }
         this.send(this.lights[i].value)
-
     }
 
     sendGreen() {
@@ -177,6 +175,7 @@ export class Signal1Element extends RailView {
     setGreen(): void {
         this.state = SignalStates.green
     }
+
     setRed(): void {
         this.state = SignalStates.red
     }
@@ -204,7 +203,7 @@ export class Signal1Element extends RailView {
             this.sendYellow();
         }
     }    
-    
+
     sendWhiteIfNotWhite() {
         if (!this.isWhite) {
             this.sendWhite();
@@ -242,7 +241,6 @@ export class Signal1Element extends RailView {
     public set valueWhite(v: number) {
         this.lights[3].value = v;
     }
-
 
     drawCircle(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, color: string) {
         ctx.beginPath();
@@ -283,7 +281,6 @@ export class Signal1Element extends RailView {
         ctx.fill();
         ctx.stroke()
 
-
         ctx.beginPath()
         ctx.lineWidth = 1;
         ctx.strokeStyle = "white";
@@ -298,15 +295,12 @@ export class Signal1Element extends RailView {
         ctx.fill();
         ctx.stroke()
 
-
-
         x += this.aspect == 1 ? 3 : 1
         if (this.aspect == 1) {
             this.drawCircle(ctx,
                 x, y,
                 r,
                 this.lights[this.state].color)
-
         } else {
             for (var i = 0; i < this.aspect; i++) {
 
@@ -324,7 +318,6 @@ export class Signal1Element extends RailView {
             }
         }
 
-
         ctx.restore();
         if (this.trackElem.visible) {
             this.trackElem.x = this.x;
@@ -338,6 +331,7 @@ export class Signal1Element extends RailView {
        // super.draw(ctx)
 
     }
+
     drawAddress(ctx: CanvasRenderingContext2D) {
         if (this.showAddress) {
             var addr= "#" + this.address
@@ -353,15 +347,6 @@ export class Signal1Element extends RailView {
         this._state = v;
     }
 
-    // rotateRight() {
-    //     super.rotateRight()
-    //     this.trackElem.rotateRight()
-    // }
-    // rotateLeft() {
-    //     super.rotateLeft()
-    //     this.trackElem.rotateLeft()
-    // }
-
     send(bits: number) {
 
         var addr = this.address;
@@ -369,23 +354,11 @@ export class Signal1Element extends RailView {
         for (var i = 0; i < len; i++) {
             var d: iSetBasicAccessory = { address: this.address + i, value: ((bits >> i) & 1) == 1}
             wsClient.send({type: ApiCommands.setBasicAccessory, data: d} as iData);
-
         }
-
     }
-
-
-    // public get occupied(): boolean {
-    //     return this._occupied;
-    // }
-    // public set occupied(v: boolean) {
-    //     this._occupied = v;
-    //     this.trackElem.occupied = v;
-    // }
 }
 
 export class Signal2Element extends Signal1Element {
-
 
     constructor(uuid: string, address: number, x1: number, y1: number, name: string) {
         super(uuid, address, x1, y1, name)
@@ -396,7 +369,6 @@ export class Signal2Element extends Signal1Element {
     get type(): string {
         return 'signal2'
     }
-
 }
 
 export class Signal3Element extends Signal1Element {
