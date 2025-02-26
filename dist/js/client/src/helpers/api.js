@@ -5,14 +5,13 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
     class Api {
         static init(app) {
             Api.app = app;
-            //Api.audioManager = audioManager
         }
         static playSound(filename) {
             audioButton_1.audioManager.play(filename);
         }
-        //===================================================
-        // EDGES
-        //===================================================
+        static getSensor(address) {
+            return Api.app.sensors[address];
+        }
         static detectRisingEdge(address) {
             const currentState = Api.getSensor(address);
             if (!(address in Api.edges)) {
@@ -48,27 +47,6 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
                 ws_1.wsClient.send({ type: dcc_1.ApiCommands.setLoco, data: l });
             }
         }
-        static setTurnout(address, isClosed) {
-            const turnout = Api.getTurnout(address);
-            if (turnout) {
-                if (Object.getPrototypeOf(turnout) == turnout_1.TurnoutDoubleElement.prototype) {
-                    const td = turnout;
-                    if (td.address === address) {
-                        var t = { address: address, isClosed: isClosed ? td.t1ClosedValue : td.t1OpenValue };
-                        ws_1.wsClient.send({ type: dcc_1.ApiCommands.setTurnout, data: t });
-                    }
-                    else if (td.address2 === address) {
-                        var t = { address: address, isClosed: isClosed ? td.t2ClosedValue : td.t2OpenValue };
-                        ws_1.wsClient.send({ type: dcc_1.ApiCommands.setTurnout, data: t });
-                    }
-                }
-                else {
-                    const to = turnout;
-                    var t = { address: address, isClosed: isClosed ? to.t1ClosedValue : to.t1OpenValue };
-                    ws_1.wsClient.send({ type: dcc_1.ApiCommands.setTurnout, data: t });
-                }
-            }
-        }
         static setLocoSpeed(address, speed) {
             const loco = Api.getLoco(address);
             if (loco) {
@@ -90,8 +68,28 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
                 ws_1.wsClient.send({ type: dcc_1.ApiCommands.setLocoFunction, data: data });
             }
         }
+        static setTurnout(address, isClosed) {
+            const turnout = Api.getTurnout(address);
+            if (turnout) {
+                if (Object.getPrototypeOf(turnout) == turnout_1.TurnoutDoubleElement.prototype) {
+                    const td = turnout;
+                    if (td.address === address) {
+                        var t = { address: address, isClosed: isClosed ? td.t1ClosedValue : td.t1OpenValue };
+                        ws_1.wsClient.send({ type: dcc_1.ApiCommands.setTurnout, data: t });
+                    }
+                    else if (td.address2 === address) {
+                        var t = { address: address, isClosed: isClosed ? td.t2ClosedValue : td.t2OpenValue };
+                        ws_1.wsClient.send({ type: dcc_1.ApiCommands.setTurnout, data: t });
+                    }
+                }
+                else {
+                    const to = turnout;
+                    var t = { address: address, isClosed: isClosed ? to.t1ClosedValue : to.t1OpenValue };
+                    ws_1.wsClient.send({ type: dcc_1.ApiCommands.setTurnout, data: t });
+                }
+            }
+        }
         static getTurnout(address) {
-            //return Api.app.turnouts[address]
             for (let t of Api.app.editor.views.getTurnoutElements()) {
                 if (t.address === address) {
                     return t;
@@ -107,9 +105,6 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
         }
         static getSignal(address) {
             return Api.app.editor.views.getSignal(address);
-        }
-        static getSensor(address) {
-            return Api.app.sensors[address];
         }
         static getRoute(name) {
             return Api.app.editor.views.getRouteSwitchElements().find(r => r.name === name);
@@ -135,6 +130,5 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
         }
     }
     exports.Api = Api;
-    //static audioManager: AudioManager | undefined;
     Api.edges = {};
 });

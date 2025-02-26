@@ -234,10 +234,10 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 task.setFunctionMs(17, true, 500);
                 task.waitMs(3000, 5000);
                 // Előre és Kürt
-                task.foward(0);
+                task.forward(0);
                 task.setFunctionMs(3, true, 500);
                 task.waitMs(3000, 5000);
-                task.foward(30);
+                task.forward(30);
                 task.waitForSensor(24, true);
                 task.setFunctionMs(3, true, 500);
                 task.delay(3000);

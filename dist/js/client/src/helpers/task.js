@@ -7,7 +7,7 @@ define(["require", "exports", "../../../common/src/dcc", "./api", "./globals"], 
     (function (StepTypes) {
         StepTypes["setLocoloco"] = "setLoco";
         StepTypes["setTurnout"] = "setTurnout";
-        StepTypes["foward"] = "foward";
+        StepTypes["forward"] = "foward";
         StepTypes["reverse"] = "reverse";
         StepTypes["stop"] = "stop";
         StepTypes["delay"] = "delay";
@@ -150,8 +150,8 @@ define(["require", "exports", "../../../common/src/dcc", "./api", "./globals"], 
             this.setTurnout(address, closed);
             this.delay(wait);
         }
-        foward(speed) {
-            this.steps.push({ type: StepTypes.foward, data: { speed: speed } });
+        forward(speed) {
+            this.steps.push({ type: StepTypes.forward, data: { speed: speed } });
         }
         reverse(speed) {
             this.steps.push({ type: StepTypes.reverse, data: { speed: speed } });
@@ -203,7 +203,7 @@ define(["require", "exports", "../../../common/src/dcc", "./api", "./globals"], 
                         api_1.Api.setTurnout(turnout.address, turnout.closed);
                         this.index++;
                         break;
-                    case StepTypes.foward:
+                    case StepTypes.forward:
                         const speed = this.step.data.speed;
                         //console.log(`TASK: ${this.name} foward: ${speed} started!`)
                         api_1.Api.setLoco(this.locoAddress, speed, dcc_1.Z21Directions.forward);
@@ -294,7 +294,7 @@ define(["require", "exports", "../../../common/src/dcc", "./api", "./globals"], 
                 case StepTypes.setTurnout:
                     console.log(`TASK: ${this.name} index: ${this.index} setTurnout: ${step.data.address} closed: ${step.data.closed}`);
                     break;
-                case StepTypes.foward:
+                case StepTypes.forward:
                     console.log(`TASK: ${this.name} index: ${this.index} foward: ${step.data.speed}`);
                     break;
                 case StepTypes.reverse:

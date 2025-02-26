@@ -8,7 +8,7 @@ export const tasksCompleteEvent = new Event("tasksCompleteEvent");
 enum StepTypes {
     setLocoloco = "setLoco",
     setTurnout = "setTurnout",
-    foward = "foward",
+    forward = "foward",
     reverse = "reverse",
     stop = "stop",
     delay = "delay",
@@ -222,8 +222,8 @@ export class Task {
         this.delay(wait)
     }
 
-    foward(speed: number) {
-        this.steps.push({ type: StepTypes.foward, data: { speed: speed } as iForwardStep } as iStep)
+    forward(speed: number) {
+        this.steps.push({ type: StepTypes.forward, data: { speed: speed } as iForwardStep } as iStep)
     }
     reverse(speed: number) {
         this.steps.push({ type: StepTypes.reverse, data: { speed: speed } as iForwardStep } as iStep)
@@ -286,7 +286,7 @@ export class Task {
                     this.index++;
                     break;
 
-                case StepTypes.foward:
+                case StepTypes.forward:
                     const speed = (this.step.data as iForwardStep).speed
                     //console.log(`TASK: ${this.name} foward: ${speed} started!`)
                     Api.setLoco(this.locoAddress, speed, Z21Directions.forward)
@@ -382,7 +382,7 @@ export class Task {
             case StepTypes.setTurnout:
                 console.log(`TASK: ${this.name} index: ${this.index} setTurnout: ${(step.data as iSetTurnoutStep).address} closed: ${(step.data as iSetTurnoutStep).closed}`)
                 break;
-            case StepTypes.foward:
+            case StepTypes.forward:
                 console.log(`TASK: ${this.name} index: ${this.index} foward: ${(step.data as iForwardStep).speed}`)
                 break;
             case StepTypes.reverse:

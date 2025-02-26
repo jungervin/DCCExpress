@@ -1,8 +1,8 @@
 {
     "settings": {
         "scale": 1.5155544867496398,
-        "origX": 294,
-        "origY": -87,
+        "origX": 348,
+        "origY": -66,
         "locoPanelVisible": true,
         "propertyPanelVisible": false
     },
@@ -1075,8 +1075,8 @@
                     "uuid": "8a1d0862-b2b3-4a4e-afdd-4f5fc31c13c6",
                     "type": "button",
                     "address": 100,
-                    "x": 6,
-                    "y": 14,
+                    "x": 5,
+                    "y": 13,
                     "name": "button118",
                     "valueOn": true,
                     "valueOff": false
@@ -1085,7 +1085,7 @@
                     "uuid": "881bf289-b58f-4551-9357-76c9610196a7",
                     "type": "button",
                     "address": 101,
-                    "x": 9,
+                    "x": 5,
                     "y": 14,
                     "name": "button119",
                     "valueOn": false,
@@ -1255,7 +1255,7 @@
                 {
                     "uuid": "8c79e536-364f-448c-a48c-42241915d313",
                     "type": "audiobutton",
-                    "x": 25,
+                    "x": 26,
                     "y": 7,
                     "name": "audiobutton173",
                     "filename": "mav_szignal.mp3"
@@ -1264,7 +1264,7 @@
                     "uuid": "3eb3b969-4c20-4ec2-bc27-440895349ea3",
                     "type": "label2",
                     "name": "label174",
-                    "x": 26,
+                    "x": 27,
                     "y": 7,
                     "angle": 0,
                     "text": "MÁV SZIGNÁL",
@@ -1310,8 +1310,8 @@
                     "uuid": "fbbf319d-4605-4412-96e3-a5f1949d967e",
                     "type": "label2",
                     "name": "label175",
-                    "x": 7,
-                    "y": 14,
+                    "x": 6,
+                    "y": 13,
                     "angle": 0,
                     "text": "Világítás 1",
                     "valign": "center"
@@ -1320,7 +1320,7 @@
                     "uuid": "2034f167-0da3-4196-b390-811ca198c5b7",
                     "type": "label2",
                     "name": "label176",
-                    "x": 10,
+                    "x": 6,
                     "y": 14,
                     "angle": 0,
                     "text": "Teszt 1",
@@ -1337,7 +1337,7 @@
                 {
                     "uuid": "794808fd-bbb9-488d-aa66-4529129eda4d",
                     "type": "audiobutton",
-                    "x": 25,
+                    "x": 26,
                     "y": 6,
                     "name": "audiobutton178",
                     "filename": "SzbattyanIndul.mp3"
@@ -1346,7 +1346,7 @@
                     "uuid": "e2447451-f125-4314-a612-7e3b538061d1",
                     "type": "label2",
                     "name": "label179",
-                    "x": 26,
+                    "x": 27,
                     "y": 6,
                     "angle": 0,
                     "text": "Indul",
@@ -1935,6 +1935,26 @@
                     "x": 15,
                     "y": 13,
                     "name": "emergencybutton196"
+                },
+                {
+                    "uuid": "4ae08126-e604-488c-9112-c82fbc3914da",
+                    "type": "label2",
+                    "name": "label197",
+                    "x": 6,
+                    "y": 6,
+                    "angle": 0,
+                    "text": "SZÉKESFEHÉRVÁR",
+                    "valign": "center"
+                },
+                {
+                    "uuid": "f7642a91-6920-4e53-93d9-dfa9cf5ef572",
+                    "type": "label2",
+                    "name": "label198",
+                    "x": 23,
+                    "y": 6,
+                    "angle": 0,
+                    "text": "SZABADBATTYÁN",
+                    "valign": "center"
                 }
             ]
         }

@@ -1,6 +1,3 @@
-//const elems = App.editor.views
-
-
 
 const t10 = Api.getTurnout(10)
 const t11 = Api.getTurnout(11)
@@ -32,6 +29,9 @@ if (!App.init) {
     return
 }
 
+//======================================
+// A train is approaching the station
+//======================================
 if(Api.detectFallingEdge(13) && Api.getSensor(12)) {
     Api.playSound("mav_szignal.mp3")
 }
@@ -78,5 +78,4 @@ if(Api.detectRisingEdge(16) && Api.getSensor(13)) {
 
 App.num += 1;
 console.log(App.num)
-//App.editor.draw()
 

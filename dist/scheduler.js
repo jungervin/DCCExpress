@@ -12,11 +12,11 @@ if (!Api.tasks.getTask("Task1")) {
     task.setRoute("routeSwitch112")
     task.waitMs(3000, 5000)
 
-    // Kalauz síp
+    // Whistle
     task.setFunctionMs(17, true, 500)
     task.waitMs(3000, 5000)
 
-    // Hátra és Kürt
+    // Reverse & Horn
     task.reverse(0)
     task.setFunctionMs(3, true, 500)
     task.waitMs(3000, 5000)
@@ -38,16 +38,16 @@ if (!Api.tasks.getTask("Task1")) {
     task.setRoute("routeSwitch113")
     task.waitMs(3000, 5000)
 
-    // Kalauz síp
+    // Whistle
     task.setFunctionMs(17, true, 500)
 
     task.waitMs(3000, 5000)
 
-    // Előre és Kürt
-    task.foward(0)
+    // Forward & Horn
+    task.forward(0)
     task.setFunctionMs(3, true, 500)
     task.waitMs(3000, 5000)
-    task.foward(30)
+    task.forward(30)
 
     task.waitForSensor(24, true)
 
