@@ -685,6 +685,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                 }
                 this.lastX = x;
                 this.lastY = y;
+                const num = this.views.elements.length + 1;
                 switch (this.drawMode) {
                     case drawModes.pointer:
                         break;
@@ -696,7 +697,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         break;
                     case drawModes.track:
                         this.removeIfExists(x, y);
-                        var te = new track_1.TrackElement((0, dcc_1.getUUID)(), x, y, "track" + this.views.elements.length);
+                        var te = new track_1.TrackElement((0, dcc_1.getUUID)(), x, y, "track" + num);
                         te.angle = this.cursorElement.angle;
                         // te.cc = Globals.defaultDevice!
                         this.unselectAll();
@@ -704,7 +705,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         break;
                     case drawModes.trackEnd:
                         this.removeIfExists(x, y);
-                        var te = new trackend_1.TrackEndElement((0, dcc_1.getUUID)(), x, y, "trackEnd" + this.views.elements.length);
+                        var te = new trackend_1.TrackEndElement((0, dcc_1.getUUID)(), x, y, "trackEnd" + num);
                         te.angle = this.cursorElement.angle;
                         // te.cc = Globals.defaultDevice!
                         this.unselectAll();
@@ -712,7 +713,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         break;
                     case drawModes.trackCorner:
                         this.removeIfExists(x, y);
-                        var tc = new corner_1.TrackCornerElement((0, dcc_1.getUUID)(), x, y, "corner" + this.views.elements.length);
+                        var tc = new corner_1.TrackCornerElement((0, dcc_1.getUUID)(), x, y, "corner" + num);
                         tc.angle = this.cursorElement.angle;
                         // tc.cc = Globals.defaultDevice!
                         this.unselectAll();
@@ -720,7 +721,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         break;
                     case drawModes.trackCurve:
                         this.removeIfExists(x, y);
-                        var tc = new curve_1.TrackCurveElement((0, dcc_1.getUUID)(), x, y, "curve" + this.views.elements.length);
+                        var tc = new curve_1.TrackCurveElement((0, dcc_1.getUUID)(), x, y, "curve" + num);
                         tc.angle = this.cursorElement.angle;
                         // tc.cc = Globals.defaultDevice!
                         this.unselectAll();
@@ -728,7 +729,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         break;
                     case drawModes.rect:
                         this.removeIfExists(x, y);
-                        var rectangle = new rectangle_1.RectangleElement((0, dcc_1.getUUID)(), x, y, "rect" + this.views.elements.length);
+                        var rectangle = new rectangle_1.RectangleElement((0, dcc_1.getUUID)(), x, y, "rect" + num);
                         this.unselectAll();
                         rectangle.isSelected = true;
                         this.add(rectangle);
@@ -736,7 +737,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                     case drawModes.turnoutRight:
                         this.removeIfExists(x, y);
                         this.unselectAll();
-                        var tor = new turnout_1.TurnoutRightElement((0, dcc_1.getUUID)(), 14, x, y, "turnoutRight" + this.views.elements.length);
+                        var tor = new turnout_1.TurnoutRightElement((0, dcc_1.getUUID)(), 14, x, y, "turnoutRight" + num);
                         tor.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
                         tor.angle = this.cursorElement.angle;
                         // tor.cc = Globals.defaultDevice!
@@ -745,7 +746,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                     case drawModes.turnoutLeft:
                         this.removeIfExists(x, y);
                         this.unselectAll();
-                        var tol = new turnout_1.TurnoutLeftElement((0, dcc_1.getUUID)(), 14, x, y, "turnoutleft" + this.views.elements.length);
+                        var tol = new turnout_1.TurnoutLeftElement((0, dcc_1.getUUID)(), 14, x, y, "turnoutleft" + num);
                         tol.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
                         tol.angle = this.cursorElement.angle;
                         // tol.cc = Globals.defaultDevice!
@@ -754,7 +755,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                     case drawModes.turnoutDouble:
                         this.removeIfExists(x, y);
                         this.unselectAll();
-                        var tod = new turnout_1.TurnoutDoubleElement((0, dcc_1.getUUID)(), 0, 0, x, y, "turnoutdouble" + this.views.elements.length);
+                        var tod = new turnout_1.TurnoutDoubleElement((0, dcc_1.getUUID)(), 0, 0, x, y, "turnoutdouble" + num);
                         tod.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
                         tod.angle = this.cursorElement.angle;
                         // tod.cc = Globals.defaultDevice!
@@ -763,13 +764,13 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                     case drawModes.routeSwitch:
                         this.removeIfExists(x, y);
                         this.unselectAll();
-                        var rs = new route_1.RouteSwitchElement((0, dcc_1.getUUID)(), x, y, "routeSwitch" + this.views.elements.length);
+                        var rs = new route_1.RouteSwitchElement((0, dcc_1.getUUID)(), x, y, "routeSwitch" + num);
                         this.add(rs);
                         break;
                     case drawModes.signal2:
                         this.removeIfExists(x, y);
                         this.unselectAll();
-                        var s2 = new signals_1.Signal2Element((0, dcc_1.getUUID)(), 14, x, y, "turnoutleft" + this.views.elements.length);
+                        var s2 = new signals_1.Signal2Element((0, dcc_1.getUUID)(), 14, x, y, "turnoutleft" + num);
                         s2.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
                         s2.angle = this.cursorElement.angle;
                         // s2.cc = Globals.defaultDevice!
@@ -779,7 +780,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                     case drawModes.signal3:
                         this.removeIfExists(x, y);
                         this.unselectAll();
-                        var s3 = new signals_1.Signal3Element((0, dcc_1.getUUID)(), 14, x, y, "turnoutleft" + this.views.elements.length);
+                        var s3 = new signals_1.Signal3Element((0, dcc_1.getUUID)(), 14, x, y, "turnoutleft" + num);
                         s3.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
                         s3.angle = this.cursorElement.angle;
                         // s3.cc = Globals.defaultDevice!
@@ -789,7 +790,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                     case drawModes.signal4:
                         this.removeIfExists(x, y);
                         this.unselectAll();
-                        var s4 = new signals_1.Signal4Element((0, dcc_1.getUUID)(), 14, x, y, "turnoutleft" + this.views.elements.length);
+                        var s4 = new signals_1.Signal4Element((0, dcc_1.getUUID)(), 14, x, y, "turnoutleft" + num);
                         s4.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
                         s4.angle = this.cursorElement.angle;
                         // s4.cc = Globals.defaultDevice!
@@ -799,39 +800,39 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                     case drawModes.block:
                         this.removeIfExists(x, y);
                         this.unselectAll();
-                        var b = new block_1.BlockElement((0, dcc_1.getUUID)(), x, y, "block" + this.views.elements.length);
+                        var b = new block_1.BlockElement((0, dcc_1.getUUID)(), x, y, "block" + num);
                         b.angle = this.cursorElement.angle;
                         this.add(b);
                         break;
                     case drawModes.button:
                         this.removeIfExists(x, y);
                         this.unselectAll();
-                        var btn = new button_1.ButtonShapeElement((0, dcc_1.getUUID)(), 0, x, y, "button" + this.views.elements.length);
+                        var btn = new button_1.ButtonShapeElement((0, dcc_1.getUUID)(), 0, x, y, "button" + num);
                         //b.angle = this.cursorElement!.angle
                         this.add(btn);
                         break;
                     case drawModes.audiobutton:
                         this.removeIfExists(x, y);
                         this.unselectAll();
-                        var abtn = new audioButton_1.AudioButtonShapeElement((0, dcc_1.getUUID)(), x, y, "audiobutton" + this.views.elements.length);
+                        var abtn = new audioButton_1.AudioButtonShapeElement((0, dcc_1.getUUID)(), x, y, "audiobutton" + num);
                         this.add(abtn);
                         break;
                     case drawModes.emergencybutton:
                         this.removeIfExists(x, y);
                         this.unselectAll();
-                        var ebtn = new emergencyButton_1.EmergencyButtonShapeElement((0, dcc_1.getUUID)(), x, y, "emergencybutton" + this.views.elements.length);
+                        var ebtn = new emergencyButton_1.EmergencyButtonShapeElement((0, dcc_1.getUUID)(), x, y, "emergencybutton" + num);
                         this.add(ebtn);
                         break;
                     case drawModes.label2:
                         //this.removeIfExists(x, y)
                         this.unselectAll();
-                        var l = new label_1.Label2Element((0, dcc_1.getUUID)(), x, y, "label" + this.views.elements.length);
+                        var l = new label_1.Label2Element((0, dcc_1.getUUID)(), x, y, "label" + num);
                         this.add(l);
                         break;
                     case drawModes.tree:
                         //this.removeIfExists(x, y)
                         this.unselectAll();
-                        var tree = new tree_1.TreeShapeElement((0, dcc_1.getUUID)(), x, y, "tree" + this.views.elements.length);
+                        var tree = new tree_1.TreeShapeElement((0, dcc_1.getUUID)(), x, y, "tree" + num);
                         this.add(tree);
                         break;
                 }

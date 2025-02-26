@@ -830,7 +830,7 @@ export class CustomCanvas extends HTMLElement {
             }
             this.lastX = x;
             this.lastY = y;
-
+            const num = this.views.elements.length + 1
             switch (this.drawMode) {
                 case drawModes.pointer:
                     break
@@ -842,7 +842,7 @@ export class CustomCanvas extends HTMLElement {
                     break
                 case drawModes.track:
                     this.removeIfExists(x, y)
-                    var te = new TrackElement(getUUID(), x, y, "track" + this.views.elements.length);
+                    var te = new TrackElement(getUUID(), x, y, "track" + num);
                     te.angle = this.cursorElement!.angle
                     // te.cc = Globals.defaultDevice!
                     this.unselectAll()
@@ -850,7 +850,7 @@ export class CustomCanvas extends HTMLElement {
                     break
                 case drawModes.trackEnd:
                     this.removeIfExists(x, y)
-                    var te = new TrackEndElement(getUUID(), x, y, "trackEnd" + this.views.elements.length);
+                    var te = new TrackEndElement(getUUID(), x, y, "trackEnd" + num);
                     te.angle = this.cursorElement!.angle
                     // te.cc = Globals.defaultDevice!
                     this.unselectAll()
@@ -858,7 +858,7 @@ export class CustomCanvas extends HTMLElement {
                     break
                 case drawModes.trackCorner:
                     this.removeIfExists(x, y)
-                    var tc = new TrackCornerElement(getUUID(), x, y, "corner" + this.views.elements.length);
+                    var tc = new TrackCornerElement(getUUID(), x, y, "corner" + num);
                     tc.angle = this.cursorElement!.angle
                     // tc.cc = Globals.defaultDevice!
                     this.unselectAll()
@@ -866,7 +866,7 @@ export class CustomCanvas extends HTMLElement {
                     break
                 case drawModes.trackCurve:
                     this.removeIfExists(x, y)
-                    var tc = new TrackCurveElement(getUUID(), x, y, "curve" + this.views.elements.length);
+                    var tc = new TrackCurveElement(getUUID(), x, y, "curve" + num);
                     tc.angle = this.cursorElement!.angle
                     // tc.cc = Globals.defaultDevice!
                     this.unselectAll()
@@ -874,7 +874,7 @@ export class CustomCanvas extends HTMLElement {
                     break
                 case drawModes.rect:
                     this.removeIfExists(x, y)
-                    var rectangle = new RectangleElement(getUUID(), x, y, "rect" + this.views.elements.length);
+                    var rectangle = new RectangleElement(getUUID(), x, y, "rect" + num);
                     this.unselectAll()
                     rectangle.isSelected = true
                     this.add(rectangle)
@@ -882,7 +882,7 @@ export class CustomCanvas extends HTMLElement {
                 case drawModes.turnoutRight:
                     this.removeIfExists(x, y)
                     this.unselectAll()
-                    var tor = new TurnoutRightElement(getUUID(), 14, x, y, "turnoutRight" + this.views.elements.length);
+                    var tor = new TurnoutRightElement(getUUID(), 14, x, y, "turnoutRight" + num);
                     tor.showAddress = Globals.Settings.EditorSettings.ShowAddress
                     tor.angle = this.cursorElement!.angle
                     // tor.cc = Globals.defaultDevice!
@@ -891,7 +891,7 @@ export class CustomCanvas extends HTMLElement {
                 case drawModes.turnoutLeft:
                     this.removeIfExists(x, y)
                     this.unselectAll()
-                    var tol = new TurnoutLeftElement(getUUID(), 14, x, y, "turnoutleft" + this.views.elements.length);
+                    var tol = new TurnoutLeftElement(getUUID(), 14, x, y, "turnoutleft" + num);
                     tol.showAddress = Globals.Settings.EditorSettings.ShowAddress
                     tol.angle = this.cursorElement!.angle
                     // tol.cc = Globals.defaultDevice!
@@ -900,7 +900,7 @@ export class CustomCanvas extends HTMLElement {
                 case drawModes.turnoutDouble:
                     this.removeIfExists(x, y)
                     this.unselectAll()
-                    var tod = new TurnoutDoubleElement(getUUID(), 0, 0, x, y, "turnoutdouble" + this.views.elements.length);
+                    var tod = new TurnoutDoubleElement(getUUID(), 0, 0, x, y, "turnoutdouble" + num);
                     tod.showAddress = Globals.Settings.EditorSettings.ShowAddress
                     tod.angle = this.cursorElement!.angle
                     // tod.cc = Globals.defaultDevice!
@@ -909,13 +909,13 @@ export class CustomCanvas extends HTMLElement {
                 case drawModes.routeSwitch:
                     this.removeIfExists(x, y)
                     this.unselectAll()
-                    var rs = new RouteSwitchElement(getUUID(), x, y, "routeSwitch" + this.views.elements.length);
+                    var rs = new RouteSwitchElement(getUUID(), x, y, "routeSwitch" + num);
                     this.add(rs)
                     break;
                 case drawModes.signal2:
                     this.removeIfExists(x, y)
                     this.unselectAll()
-                    var s2 = new Signal2Element(getUUID(), 14, x, y, "turnoutleft" + this.views.elements.length);
+                    var s2 = new Signal2Element(getUUID(), 14, x, y, "turnoutleft" + num);
                     s2.showAddress = Globals.Settings.EditorSettings.ShowAddress
                     s2.angle = this.cursorElement!.angle
                     // s2.cc = Globals.defaultDevice!
@@ -925,7 +925,7 @@ export class CustomCanvas extends HTMLElement {
                 case drawModes.signal3:
                     this.removeIfExists(x, y)
                     this.unselectAll()
-                    var s3 = new Signal3Element(getUUID(), 14, x, y, "turnoutleft" + this.views.elements.length);
+                    var s3 = new Signal3Element(getUUID(), 14, x, y, "turnoutleft" + num);
                     s3.showAddress = Globals.Settings.EditorSettings.ShowAddress
                     s3.angle = this.cursorElement!.angle
                     // s3.cc = Globals.defaultDevice!
@@ -935,7 +935,7 @@ export class CustomCanvas extends HTMLElement {
                 case drawModes.signal4:
                     this.removeIfExists(x, y)
                     this.unselectAll()
-                    var s4 = new Signal4Element(getUUID(), 14, x, y, "turnoutleft" + this.views.elements.length);
+                    var s4 = new Signal4Element(getUUID(), 14, x, y, "turnoutleft" + num);
                     s4.showAddress = Globals.Settings.EditorSettings.ShowAddress
                     s4.angle = this.cursorElement!.angle
                     // s4.cc = Globals.defaultDevice!
@@ -945,39 +945,39 @@ export class CustomCanvas extends HTMLElement {
                 case drawModes.block:
                     this.removeIfExists(x, y)
                     this.unselectAll()
-                    var b = new BlockElement(getUUID(), x, y, "block" + this.views.elements.length);
+                    var b = new BlockElement(getUUID(), x, y, "block" + num);
                     b.angle = this.cursorElement!.angle
                     this.add(b)
                     break;
                 case drawModes.button:
                     this.removeIfExists(x, y)
                     this.unselectAll()
-                    var btn = new ButtonShapeElement(getUUID(), 0, x, y, "button" + this.views.elements.length);
+                    var btn = new ButtonShapeElement(getUUID(), 0, x, y, "button" + num);
                     //b.angle = this.cursorElement!.angle
                     this.add(btn)
                     break;
                 case drawModes.audiobutton:
                     this.removeIfExists(x, y)
                     this.unselectAll()
-                    var abtn = new AudioButtonShapeElement(getUUID(), x, y, "audiobutton" + this.views.elements.length);
+                    var abtn = new AudioButtonShapeElement(getUUID(), x, y, "audiobutton" + num);
                     this.add(abtn)
                     break;
                 case drawModes.emergencybutton:
                     this.removeIfExists(x, y)
                     this.unselectAll()
-                    var ebtn = new EmergencyButtonShapeElement(getUUID(), x, y, "emergencybutton" + this.views.elements.length);
+                    var ebtn = new EmergencyButtonShapeElement(getUUID(), x, y, "emergencybutton" + num);
                     this.add(ebtn)
                     break;
                 case drawModes.label2:
                     //this.removeIfExists(x, y)
                     this.unselectAll()
-                    var l = new Label2Element(getUUID(), x, y, "label" + this.views.elements.length);
+                    var l = new Label2Element(getUUID(), x, y, "label" + num);
                     this.add(l)
                     break;
                 case drawModes.tree:
                     //this.removeIfExists(x, y)
                     this.unselectAll()
-                    var tree = new TreeShapeElement(getUUID(), x, y, "tree" + this.views.elements.length);
+                    var tree = new TreeShapeElement(getUUID(), x, y, "tree" + num);
                     this.add(tree)
                     break;
             }

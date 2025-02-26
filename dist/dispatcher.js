@@ -19,7 +19,8 @@ const rb24 = Api.getSensor(24)
 const l18 = Api.getLoco(18)
 console.log(l18)
 
-const block = Api.getElement("block198")
+const block198 = Api.getElement("block198")
+const block199 = Api.getElement("block199")
 
 //==================================
 // INIT
@@ -33,8 +34,11 @@ if (!App.init) {
 // =====================================
 // BLOCK
 // =====================================
-if (block) {
-        block.setLoco(3)
+if (block198) {
+    block198.setLoco(3)
+}
+if (block199) {
+    block199.setLoco(11)
 }
 
 

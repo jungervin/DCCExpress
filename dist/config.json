@@ -1,9 +1,9 @@
 {
     "settings": {
-        "scale": 1.5155544867496398,
-        "origX": 348,
-        "origY": -66,
-        "locoPanelVisible": true,
+        "scale": 1.114071813009994,
+        "origX": 33,
+        "origY": -92,
+        "locoPanelVisible": false,
         "propertyPanelVisible": true
     },
     "pages": [
@@ -11,11 +11,38 @@
             "name": "page1",
             "elems": [
                 {
-                    "uuid": "53da7658-0cd5-44bb-a5e5-8448bddacaff",
+                    "uuid": "7a525b59-035c-4bae-a579-fae6d5a5013f",
+                    "type": "block",
+                    "name": "block203",
+                    "x": 16,
+                    "y": 8,
+                    "angle": 0,
+                    "locoAddress": 0
+                },
+                {
+                    "uuid": "1440aef7-b22c-4d82-8c4d-ad3e89095481",
+                    "type": "block",
+                    "name": "block202",
+                    "x": 16,
+                    "y": 9,
+                    "angle": 0,
+                    "locoAddress": 0
+                },
+                {
+                    "uuid": "52e18bcc-3d9d-4ab4-b1f9-e940cbe04419",
                     "type": "block",
                     "name": "block198",
+                    "x": 25,
+                    "y": 10,
+                    "angle": 0,
+                    "locoAddress": 0
+                },
+                {
+                    "uuid": "53da7658-0cd5-44bb-a5e5-8448bddacaff",
+                    "type": "block",
+                    "name": "block199",
                     "x": 7,
-                    "y": 9,
+                    "y": 10,
                     "angle": 0,
                     "locoAddress": 11
                 },
@@ -321,15 +348,6 @@
                     "type": "track",
                     "name": "track53",
                     "x": 24,
-                    "y": 10,
-                    "angle": 0,
-                    "rbusAddress": 24
-                },
-                {
-                    "uuid": "6945696d-767b-4526-93b0-44c58be4bc2e",
-                    "type": "track",
-                    "name": "track54",
-                    "x": 25,
                     "y": 10,
                     "angle": 0,
                     "rbusAddress": 24
@@ -1244,15 +1262,6 @@
                     "rbusAddress": 14
                 },
                 {
-                    "uuid": "32d1828d-2506-4dad-892f-4887071085fa",
-                    "type": "track",
-                    "name": "track34",
-                    "x": 15,
-                    "y": 9,
-                    "angle": 0,
-                    "rbusAddress": 13
-                },
-                {
                     "uuid": "8c79e536-364f-448c-a48c-42241915d313",
                     "type": "audiobutton",
                     "x": 26,
@@ -1955,6 +1964,33 @@
                     "angle": 0,
                     "text": "SZABADBATTYÁN",
                     "valign": "center"
+                },
+                {
+                    "uuid": "9e839ddc-4e32-470f-b5ac-f06822645452",
+                    "type": "track",
+                    "name": "track200",
+                    "x": 7,
+                    "y": 9,
+                    "angle": 0,
+                    "rbusAddress": 16
+                },
+                {
+                    "uuid": "92f9ac6c-4a0b-4f84-a062-c74a009b490d",
+                    "type": "track",
+                    "name": "track201",
+                    "x": 25,
+                    "y": 10,
+                    "angle": 0,
+                    "rbusAddress": 24
+                },
+                {
+                    "uuid": "95656b85-0cde-4a31-b8f6-222028a2bdcf",
+                    "type": "track",
+                    "name": "track202",
+                    "x": 15,
+                    "y": 9,
+                    "angle": 0,
+                    "rbusAddress": 13
                 }
             ]
         }

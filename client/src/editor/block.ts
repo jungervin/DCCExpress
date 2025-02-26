@@ -34,23 +34,23 @@ export class BlockElement extends RailView {
         ctx.translate(-this.centerX, -this.centerY);
 
         ctx.fillStyle = "#eee";  // A színe lehet más is
-        ctx.fillRect(this.posLeft, this.centerY - h, this.width, 2 * h);
+        ctx.fillRect(this.posLeft + 10, this.centerY - h, this.width - 20, 2 * h);
 
         ctx.lineWidth = 1
         ctx.strokeStyle = "black";
-        ctx.strokeRect(this.posLeft, this.centerY - h, this.width, 2 * h);
+        ctx.strokeRect(this.posLeft + 10, this.centerY - h, this.width - 20, 2 * h);
 
         // Triangle
         ctx.fillStyle = 'black';
         ctx.beginPath();
         if (Globals.Settings.EditorSettings.Orientation == DCCExDirections.forward) {
-            ctx.moveTo(this.posRight - 5, this.centerY);
-            ctx.lineTo(this.posRight - 10, this.centerY - 3);
-            ctx.lineTo(this.posRight - 10, this.centerY + 3);
+            ctx.moveTo(this.posRight - 15, this.centerY);
+            ctx.lineTo(this.posRight - 20, this.centerY - 3);
+            ctx.lineTo(this.posRight - 20, this.centerY + 3);
         } else {
-            ctx.moveTo(this.posLeft + 5, this.centerY);
-            ctx.lineTo(this.posLeft + 10, this.centerY - 3);
-            ctx.lineTo(this.posLeft + 10, this.centerY + 3);
+            ctx.moveTo(this.posLeft + 15, this.centerY);
+            ctx.lineTo(this.posLeft + 20, this.centerY - 3);
+            ctx.lineTo(this.posLeft + 20, this.centerY + 3);
         }
         ctx.closePath();
         ctx.fill();
