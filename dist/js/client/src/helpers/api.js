@@ -105,6 +105,9 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
             }
             return undefined;
         }
+        static getSignal(address) {
+            return Api.app.editor.views.getSignal(address);
+        }
         static getSensor(address) {
             return Api.app.sensors[address];
         }

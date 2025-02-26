@@ -91,7 +91,6 @@ export class Api {
                 wsClient.send({ type: ApiCommands.setTurnout, data: t } as iData)
 
             }
-
         }
     }
     static setLocoSpeed(address: number, speed: number) {
@@ -135,6 +134,9 @@ export class Api {
         return undefined
     }
 
+    static getSignal(address: number) {
+        return Api.app.editor.views.getSignal(address)
+    }
     static getSensor(address: number): boolean {
         return Api.app.sensors[address]
     }
