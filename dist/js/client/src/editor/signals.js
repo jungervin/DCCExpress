@@ -145,6 +145,7 @@ define(["require", "exports", "../helpers/math", "./track", "./view", "../../../
         get isWhite() {
             return this.state == SignalStates.white;
         }
+        // Api functions
         setGreen() {
             this.state = SignalStates.green;
         }
@@ -156,6 +157,26 @@ define(["require", "exports", "../helpers/math", "./track", "./view", "../../../
         }
         setWhite() {
             this.state = SignalStates.white;
+        }
+        sendRedIfNotRed() {
+            if (!this.isRed) {
+                this.sendRed();
+            }
+        }
+        sendGreenIfNotGreen() {
+            if (!this.isGreen) {
+                this.sendGreen();
+            }
+        }
+        sendYellowIfNotYellow() {
+            if (!this.isYellow) {
+                this.sendYellow();
+            }
+        }
+        sendWhiteIfNotWhite() {
+            if (!this.isWhite) {
+                this.sendWhite();
+            }
         }
         get canRotate() {
             return true;

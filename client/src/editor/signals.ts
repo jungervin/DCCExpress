@@ -173,6 +173,7 @@ export class Signal1Element extends RailView {
         return this.state == SignalStates.white
     }
 
+    // Api functions
     setGreen(): void {
         this.state = SignalStates.green
     }
@@ -185,6 +186,30 @@ export class Signal1Element extends RailView {
     setWhite(): void {
         this.state = SignalStates.white
     }    
+
+    sendRedIfNotRed() {
+        if (!this.isRed) {
+            this.sendRed();
+        }
+    }
+
+    sendGreenIfNotGreen() {
+        if (!this.isGreen) {
+            this.sendGreen();
+        }
+    }
+
+    sendYellowIfNotYellow() {
+        if (!this.isYellow) {
+            this.sendYellow();
+        }
+    }    
+    sendWhiteIfNotWhite() {
+        if (!this.isWhite) {
+            this.sendWhite();
+        }
+    }    
+
     public get canRotate(): boolean {
         return true
     }

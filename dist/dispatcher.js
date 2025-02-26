@@ -1,4 +1,3 @@
-
 const t10 = Api.getTurnout(10)
 const t11 = Api.getTurnout(11)
 const t12 = Api.getTurnout(12)
@@ -45,9 +44,10 @@ if(Api.detectRisingEdge(16) && Api.getSensor(13)) {
 //======================================
 {
     if (!t10.t1Closed && (rb12 || !t16.t1Closed || !t12.t2Closed)) {
-        if (!s50.isRed) {
-            s50.sendRed()
-        }
+        // if (!s50.isRed) {
+        //     s50.sendRed()
+        // }
+        s50.sendRedIfNotRed();        
     } else {
         if (t10.t1Closed) {
             if (!s50.isGreen) {
