@@ -72,7 +72,7 @@ define(["require", "exports", "../helpers/globals", "../../../common/src/dcc", "
                 ctx.font = "8px Arial";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
-                ctx.fillText("#" + text, this.centerX, this.centerY + 1);
+                ctx.fillText(text, this.centerX, this.centerY + 1);
             }
             super.draw(ctx);
             ctx.restore();
