@@ -10,7 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.defaultSettings = exports.fetchDevices = exports.getUUID = exports.blocks = exports.rbus = exports.turnouts = exports.ext_accessories = exports.accessories = exports.locos = exports.setDecoder = exports.getCommandCenterType = exports.CommandCenterTypes = exports.iZ21STATUS = exports.Z21POWERINFO = exports.ApiCommands = exports.DCCExTurnout = exports.DCCExDirections = exports.Z21Directions = exports.SpeedModes = void 0;
+    exports.defaultSettings = exports.blocks = exports.rbus = exports.turnouts = exports.ext_accessories = exports.accessories = exports.locos = exports.setDecoder = exports.CommandCenterTypes = exports.iZ21STATUS = exports.Z21POWERINFO = exports.ApiCommands = exports.DCCExTurnout = exports.DCCExDirections = exports.Z21Directions = exports.SpeedModes = void 0;
+    exports.getCommandCenterType = getCommandCenterType;
+    exports.getUUID = getUUID;
+    exports.fetchDevices = fetchDevices;
     var SpeedModes;
     (function (SpeedModes) {
         SpeedModes[SpeedModes["S14"] = 0] = "S14";
@@ -100,7 +103,6 @@ define(["require", "exports"], function (require, exports) {
         const res = Object.keys(CommandCenterTypes).filter(key => isNaN(Number(key)));
         return res ? res[type] : "Unknown";
     }
-    exports.getCommandCenterType = getCommandCenterType;
     // export interface iDCCExTCPCommandCenter extends iCommandCenter{
     //     ip: string,
     //     port: number
@@ -128,7 +130,6 @@ define(["require", "exports"], function (require, exports) {
     function getUUID() {
         return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c => (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16));
     }
-    exports.getUUID = getUUID;
     function fetchDevices() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -141,7 +142,6 @@ define(["require", "exports"], function (require, exports) {
             }
         });
     }
-    exports.fetchDevices = fetchDevices;
     exports.defaultSettings = {
         CommandCenter: {
             type: CommandCenterTypes.Z21,

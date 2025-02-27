@@ -23,7 +23,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.broadcastAll = exports.wsServer = void 0;
+exports.wsServer = void 0;
+exports.broadcastAll = broadcastAll;
 const ws_1 = __importStar(require("ws"));
 const server_1 = require("./server");
 const dcc_1 = require("../../common/src/dcc");
@@ -39,7 +40,6 @@ function broadcastAll(msg) {
         }
     });
 }
-exports.broadcastAll = broadcastAll;
 function send(s, type, data) {
     s.send(JSON.stringify({ type: type, data: data }));
 }

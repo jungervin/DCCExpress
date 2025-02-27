@@ -123,15 +123,6 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                         dispatcher_1.Dispatcher.exec();
                         break;
                     case dcc_1.ApiCommands.blockInfo:
-                        // const blocks = msg.data;
-                        // Object.entries(blocks).forEach(([blockName, blockData]) => {
-                        //     console.log("📌 blockInfo", blockName, blockData.locoAddress);
-                        //     this.editor.views.getBlockElements().forEach((b) => {
-                        //         if (b.name === blockName) { // ✅ `blockName` már a helyes kulcs!
-                        //             b.setLoco(blockData.locoAddress);
-                        //         }
-                        //     });
-                        // });
                         const blocks = msg.data;
                         Object.values(blocks).forEach((block) => {
                             Object.values(block).forEach((bb) => {
@@ -142,13 +133,6 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                                 });
                             });
                         });
-                        // for (const [key, block] of Object.entries(blocks)) {
-                        //     this.editor.views.getBlockElements().forEach((b) => {
-                        //         if (b.name == block[key].blockName) { // 🔹 A `blockName` már a kulcsból jön, nem kell `blockData.blockName`
-                        //             b.setLoco(block[key].locoAddress);
-                        //         }
-                        //     });
-                        // }
                         break;
                     case dcc_1.ApiCommands.settingsInfo:
                         //setSettings(msg.data)
