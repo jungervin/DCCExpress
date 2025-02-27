@@ -1,8 +1,8 @@
 {
     "settings": {
-        "scale": 1.4707078378421756,
-        "origX": 386,
-        "origY": -61,
+        "scale": 1.2297767168554439,
+        "origX": 371,
+        "origY": -81,
         "locoPanelVisible": true,
         "propertyPanelVisible": false
     },
@@ -11,11 +11,11 @@
             "name": "page1",
             "elems": [
                 {
-                    "uuid": "7a525b59-035c-4bae-a579-fae6d5a5013f",
+                    "uuid": "52e18bcc-3d9d-4ab4-b1f9-e940cbe04419",
                     "type": "block",
-                    "name": "block203",
-                    "x": 16,
-                    "y": 8,
+                    "name": "block198",
+                    "x": 25,
+                    "y": 10,
                     "angle": 0,
                     "locoAddress": 0
                 },
@@ -29,15 +29,6 @@
                     "locoAddress": 0
                 },
                 {
-                    "uuid": "52e18bcc-3d9d-4ab4-b1f9-e940cbe04419",
-                    "type": "block",
-                    "name": "block198",
-                    "x": 25,
-                    "y": 10,
-                    "angle": 0,
-                    "locoAddress": 0
-                },
-                {
                     "uuid": "53da7658-0cd5-44bb-a5e5-8448bddacaff",
                     "type": "block",
                     "name": "block199",
@@ -45,6 +36,15 @@
                     "y": 9,
                     "angle": 0,
                     "locoAddress": 11
+                },
+                {
+                    "uuid": "7a525b59-035c-4bae-a579-fae6d5a5013f",
+                    "type": "block",
+                    "name": "block203",
+                    "x": 16,
+                    "y": 8,
+                    "angle": 0,
+                    "locoAddress": 0
                 },
                 {
                     "uuid": "02322788-7690-4d34-a716-97118a479664",
@@ -156,15 +156,6 @@
                     "y": 8,
                     "angle": 0,
                     "rbusAddress": 17
-                },
-                {
-                    "uuid": "71db140c-4c1f-4767-8c3c-0e9f22937645",
-                    "type": "track",
-                    "name": "track13",
-                    "x": 6,
-                    "y": 9,
-                    "angle": 0,
-                    "rbusAddress": 16
                 },
                 {
                     "uuid": "65462367-8178-4e0c-9bbf-20779a068478",
@@ -342,15 +333,6 @@
                     "y": 11,
                     "angle": 0,
                     "rbusAddress": 21
-                },
-                {
-                    "uuid": "719d2b25-d028-44f3-b83d-d623bd7893c3",
-                    "type": "track",
-                    "name": "track53",
-                    "x": 24,
-                    "y": 10,
-                    "angle": 0,
-                    "rbusAddress": 24
                 },
                 {
                     "uuid": "2171ea06-09c0-48e1-98af-0223225dd5e1",
@@ -1150,16 +1132,6 @@
                     "valign": "bottom"
                 },
                 {
-                    "uuid": "d95a6eb8-d055-47ea-ab7f-2048b5fc958e",
-                    "type": "label2",
-                    "name": "label169",
-                    "x": 5,
-                    "y": 9,
-                    "angle": 0,
-                    "text": "P3",
-                    "valign": "bottom"
-                },
-                {
                     "uuid": "76ea2a5e-c65e-4a8c-a1be-040be0ac344e",
                     "type": "label2",
                     "name": "label170",
@@ -1251,15 +1223,6 @@
                     "y": 10,
                     "angle": 0,
                     "rbusAddress": 15
-                },
-                {
-                    "uuid": "cbf3f579-c577-44a2-9d07-5fb16e531cd2",
-                    "type": "track",
-                    "name": "track35",
-                    "x": 15,
-                    "y": 8,
-                    "angle": 0,
-                    "rbusAddress": 14
                 },
                 {
                     "uuid": "8c79e536-364f-448c-a48c-42241915d313",
@@ -1984,6 +1947,34 @@
                     "rbusAddress": 24
                 },
                 {
+                    "uuid": "cbf3f579-c577-44a2-9d07-5fb16e531cd2",
+                    "type": "track",
+                    "name": "track35",
+                    "x": 15,
+                    "y": 8,
+                    "angle": 0,
+                    "rbusAddress": 14
+                },
+                {
+                    "uuid": "71db140c-4c1f-4767-8c3c-0e9f22937645",
+                    "type": "track",
+                    "name": "track13",
+                    "x": 6,
+                    "y": 9,
+                    "angle": 0,
+                    "rbusAddress": 16
+                },
+                {
+                    "uuid": "d95a6eb8-d055-47ea-ab7f-2048b5fc958e",
+                    "type": "label2",
+                    "name": "label169",
+                    "x": 5,
+                    "y": 9,
+                    "angle": 0,
+                    "text": "P3",
+                    "valign": "bottom"
+                },
+                {
                     "uuid": "95656b85-0cde-4a31-b8f6-222028a2bdcf",
                     "type": "track",
                     "name": "track202",
@@ -1991,6 +1982,15 @@
                     "y": 9,
                     "angle": 0,
                     "rbusAddress": 13
+                },
+                {
+                    "uuid": "719d2b25-d028-44f3-b83d-d623bd7893c3",
+                    "type": "track",
+                    "name": "track53",
+                    "x": 24,
+                    "y": 10,
+                    "angle": 0,
+                    "rbusAddress": 24
                 }
             ]
         }

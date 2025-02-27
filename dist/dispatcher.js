@@ -66,11 +66,11 @@ if (Api.detectRisingEdge(16) && Api.getSensor(13)) {
     Api.playSound("mav_szignal.mp3")
 }
 
-if(Api.detectRisingEdge(14)) {
+if(Api.detectRisingEdge(14) && Api.getSensor(12)) {
     Api.setBlock("block203", 3)
 }
 
-if(re13) {
+if(re13 && rb14 ) {
     Api.setBlock("block202", 3)
 }
 
