@@ -468,8 +468,6 @@ export class LocoControlPanel extends HTMLElement {
                 })
                 this.currentLoco = this.locomotives[0]
             }
-
-
         } catch (error) {
             console.error("Error fetching locomotives:", error);
         }

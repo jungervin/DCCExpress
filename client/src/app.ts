@@ -194,9 +194,7 @@ export class App {
                     })
                     break;
                 case ApiCommands.settingsInfo:
-                    //setSettings(msg.data)
                     const d = msg.data as iSettings;
-                    //console.log(d)
                     if (d.CommandCenter && d.Dispacher) {
                         Globals.Settings = d
                     }
@@ -217,9 +215,10 @@ export class App {
             }
         }
 
-
-
         // A settings betöltése után
+        Api.loadLocomotives().then((locos) => {
+
+        })
 
         this.locoControlPanel = document.getElementById("locoControlPanel") as LocoControlPanel
         this.locos = this.locoControlPanel.locomotives
@@ -230,8 +229,6 @@ export class App {
         Api.app = this
 
         this.toolbar.btnTasks.onclick = (e: MouseEvent) => {
-
-
             this.toolbar.tasks = !this.toolbar.tasks
             if (this.toolbar.tasks) {
                 this.tasks.stopAllTask()

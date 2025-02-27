@@ -1,3 +1,12 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turnout", "../editor/audioButton"], function (require, exports, dcc_1, ws_1, turnout_1, audioButton_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -134,6 +143,26 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
         }
         static get tasks() {
             return Api.app.tasks;
+        }
+        static loadLocomotives() {
+            return __awaiter(this, void 0, void 0, function* () {
+                try {
+                    const response = yield fetch(`/locomotives`);
+                    return yield response.json();
+                    //this.render();
+                    // if (locomotives.length > 0) {
+                    //     locomotives.forEach((l: iLocomotive) => {
+                    //         l.speed = 0
+                    //         var loco: iLoco = { address: l.address, direction: 0, funcMap: 0, speed: 0 }
+                    //         wsClient.send({ type: ApiCommands.getLoco, data: loco } as iData)
+                    //     })
+                    //     return locomotives
+                    // }
+                }
+                catch (error) {
+                    console.error("Error fetching locomotives:", error);
+                }
+            });
         }
     }
     exports.Api = Api;

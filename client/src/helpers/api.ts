@@ -162,4 +162,22 @@ export class Api {
     static get tasks(): Tasks {
         return Api.app.tasks
     }
+
+    static async loadLocomotives(): Promise<iLocomotive[] | undefined>{
+        try {
+            const response = await fetch(`/locomotives`);
+            return await response.json();
+            //this.render();
+            // if (locomotives.length > 0) {
+            //     locomotives.forEach((l: iLocomotive) => {
+            //         l.speed = 0
+            //         var loco: iLoco = { address: l.address, direction: 0, funcMap: 0, speed: 0 }
+            //         wsClient.send({ type: ApiCommands.getLoco, data: loco } as iData)
+            //     })
+            //     return locomotives
+            // }
+        } catch (error) {
+            console.error("Error fetching locomotives:", error);
+        }
+    }
 }

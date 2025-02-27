@@ -135,9 +135,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                         });
                         break;
                     case dcc_1.ApiCommands.settingsInfo:
-                        //setSettings(msg.data)
                         const d = msg.data;
-                        //console.log(d)
                         if (d.CommandCenter && d.Dispacher) {
                             globals_1.Globals.Settings = d;
                         }
@@ -157,6 +155,8 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 }
             };
             // A settings betöltése után
+            api_1.Api.loadLocomotives().then((locos) => {
+            });
             this.locoControlPanel = document.getElementById("locoControlPanel");
             this.locos = this.locoControlPanel.locomotives;
             this.tasks = new task_1.Tasks();
