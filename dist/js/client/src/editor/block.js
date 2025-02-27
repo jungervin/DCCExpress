@@ -16,7 +16,7 @@ define(["require", "exports", "../helpers/globals", "../../../common/src/dcc", "
             return 'block';
         }
         draw(ctx) {
-            var _a;
+            var _a, _b;
             let bg = "#eee"; // A színe lehet más is
             let fg = "black";
             ctx.save();
@@ -57,6 +57,12 @@ define(["require", "exports", "../helpers/globals", "../../../common/src/dcc", "
             }
             ctx.closePath();
             ctx.fill();
+            if (this.loco) {
+                const loco = api_1.Api.getLoco((_b = this.loco) === null || _b === void 0 ? void 0 : _b.address);
+                if (loco) {
+                    text = `${loco.address} ${loco.name}`;
+                }
+            }
             // if (this.text) 
             {
                 if (this.angle == 180) {
@@ -66,7 +72,7 @@ define(["require", "exports", "../helpers/globals", "../../../common/src/dcc", "
                 ctx.font = "8px Arial";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
-                ctx.fillText(text, this.centerX, this.centerY + 1);
+                ctx.fillText("#" + text, this.centerX, this.centerY + 1);
             }
             super.draw(ctx);
             ctx.restore();

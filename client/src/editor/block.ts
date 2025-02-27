@@ -76,6 +76,14 @@ export class BlockElement extends View {
         ctx.closePath();
         ctx.fill();
 
+        
+        if(this.loco) {
+            const loco = Api.getLoco(this.loco?.address)
+            if(loco) {
+                text = `${loco.address} ${loco.name}`
+            }
+
+        }
         // if (this.text) 
         {
             if (this.angle == 180) {
@@ -87,7 +95,7 @@ export class BlockElement extends View {
             ctx.font = "8px Arial";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
-            ctx.fillText( text, this.centerX, this.centerY + 1);
+            ctx.fillText("#" + text, this.centerX, this.centerY + 1);
         }
 
         
