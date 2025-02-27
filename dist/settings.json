@@ -29,6 +29,6 @@
         "Orientation": 1,
         "ShowGrid": false,
         "ShowClock": true,
-        "fastClockFactor": 3
+        "fastClockFactor": 1
     }
 }

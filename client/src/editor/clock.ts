@@ -23,8 +23,12 @@ export class FastClock {
     }
 
     private start() {
-        if (this.interval) clearInterval(this.interval);
-        this.interval = setInterval(() => this.update(), 1000 / this.scaleFactor);
+        if (this.interval) {
+            clearInterval(this.interval);
+        }
+        this.interval = setInterval(() =>
+            this.update(), 1000 / this.scaleFactor
+        );
     }
 
     public update() {
@@ -35,7 +39,6 @@ export class FastClock {
     }
 
     public draw() {
-
         if (this.visible) {
             const ctx = this.ctx;
             const width = 120;
@@ -131,7 +134,7 @@ export class FastClock {
             ctx.fillStyle = "red";
             ctx.fill();
         }
-        //this.ctx.restore();
+        
     }
 
     private drawHand(x: number, y: number, angle: number, length: number, width: number, color: string) {
@@ -144,7 +147,7 @@ export class FastClock {
     }
 
     public setScaleFactor(factor: number) {
-        this.scaleFactor = factor;
+        this.scaleFactor = Math.min(factor, 10);
         this.start();
     }
 }

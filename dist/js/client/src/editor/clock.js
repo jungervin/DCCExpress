@@ -17,8 +17,9 @@ define(["require", "exports"], function (require, exports) {
             this.start();
         }
         start() {
-            if (this.interval)
+            if (this.interval) {
                 clearInterval(this.interval);
+            }
             this.interval = setInterval(() => this.update(), 1000 / this.scaleFactor);
         }
         update() {
@@ -104,7 +105,6 @@ define(["require", "exports"], function (require, exports) {
                 ctx.fillStyle = "red";
                 ctx.fill();
             }
-            //this.ctx.restore();
         }
         drawHand(x, y, angle, length, width, color) {
             this.ctx.beginPath();
@@ -115,7 +115,7 @@ define(["require", "exports"], function (require, exports) {
             this.ctx.stroke();
         }
         setScaleFactor(factor) {
-            this.scaleFactor = factor;
+            this.scaleFactor = Math.min(factor, 10);
             this.start();
         }
     }
