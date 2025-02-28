@@ -9,7 +9,7 @@ define(["require", "exports"], function (require, exports) {
         showToast(message, type = "info") {
             const toast = document.createElement("div");
             toast.className = "toast2 " + type;
-            toast.innerText = message;
+            toast.innerHTML = message;
             this.container.appendChild(toast);
             setTimeout(() => {
                 toast.classList.add("fade-out");
@@ -21,5 +21,4 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.ToastManager = ToastManager;
     exports.toastManager = new ToastManager();
-    exports.toastManager.showToast("Started!");
 });

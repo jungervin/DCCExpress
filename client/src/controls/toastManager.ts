@@ -7,7 +7,7 @@ export class ToastManager {
     showToast(message: string, type = "info") {
         const toast = document.createElement("div");
         toast.className = "toast2 " + type;
-        toast.innerText = message;
+        toast.innerHTML = message;
         
         this.container.appendChild(toast);
 
@@ -22,4 +22,3 @@ export class ToastManager {
 
 
 export const toastManager = new ToastManager();
-toastManager.showToast("Started!");

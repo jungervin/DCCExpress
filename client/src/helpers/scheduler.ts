@@ -1,8 +1,8 @@
+import { toastManager } from "../controls/toastManager";
 import { Api } from "../helpers/api";
 
 export class Scheduler {
     static App: any;
-    
     static onchange?: () => void;
     static onerror?: (msg: string, err: any) => void;
 
@@ -22,12 +22,13 @@ export class Scheduler {
             if (!response.ok) {
                 throw new Error(`Scheduler: Nem sikerült betölteni a fájlt: ${filePath}`);
                 //Hiba a script betöltése közben:
+                
             }
 
             this.scriptContent = await response.text();
             console.log(`📥Scheduler: Betöltött fájl: ${filePath}`);
 
-           this.currentScriptFunction = new Function("App", "Api", "with (App, Api) { " + this.scriptContent + " }");
+            this.currentScriptFunction = new Function("App", "Api", "with (App, Api) { " + this.scriptContent + " }");
             this.currentScriptFunction(Api.app, Api);
 
             this.isLoaded = true;
