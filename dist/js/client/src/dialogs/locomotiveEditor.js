@@ -171,7 +171,7 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/ws"], funct
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">${existing ? "Edit Locomotive" : "Add Locomotive"}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button id="locoDialogClose" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form id="locomotive-form">
@@ -215,6 +215,10 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/ws"], funct
             const saveButton = modal === null || modal === void 0 ? void 0 : modal.querySelector("#save-button");
             const imageInputFile = modal === null || modal === void 0 ? void 0 : modal.querySelector("#locomotiveImageFile");
             const locomotiveImage = modal === null || modal === void 0 ? void 0 : modal.querySelector("#locomotiveImage");
+            const locoDialogClose = this.dialogContainer.querySelector("#locoDialogClose");
+            locoDialogClose.onclick = (e) => {
+                this.dialogContainer.remove();
+            };
             imageInputFile.addEventListener("change", (event) => __awaiter(this, void 0, void 0, function* () {
                 var _a;
                 const file = (_a = imageInputFile.files) === null || _a === void 0 ? void 0 : _a[0];
@@ -242,7 +246,7 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/ws"], funct
                 }
             }));
             cancelButton === null || cancelButton === void 0 ? void 0 : cancelButton.addEventListener("click", () => {
-                this.dialogContainer.innerHTML = "";
+                this.dialogContainer.remove();
             });
             saveButton === null || saveButton === void 0 ? void 0 : saveButton.addEventListener("click", () => {
                 const id = existing ? existing === null || existing === void 0 ? void 0 : existing.id : null;
@@ -265,7 +269,7 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/ws"], funct
                         functionMap: 0,
                     };
                     this.saveLocomotive(locomotive);
-                    this.dialogContainer.innerHTML = "";
+                    this.dialogContainer.remove();
                 }
             });
         }
@@ -278,7 +282,7 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/ws"], funct
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Edit Functions for ${locomotive.name}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button id="functionDialogClose" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body" style="max-height: 480px; overflow-y: auto;">
                             <table class="table table-striped">
@@ -321,6 +325,10 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/ws"], funct
             const functionTableBody = functionEditor.querySelector("#functionTableBody");
             const btnTest = functionTableBody.querySelector(".test-function");
             const testelems = functionTableBody.querySelectorAll(".test-function");
+            const functionDialogClose = functionEditor.querySelector("#functionDialogClose");
+            functionDialogClose.onclick = (e) => {
+                functionEditor.remove();
+            };
             testelems.forEach((elem) => {
                 elem.addEventListener("mousedown", (e) => {
                     const clickedButton = e.currentTarget;

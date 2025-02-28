@@ -7,6 +7,7 @@
 import { getUUID } from "../helpers/utility";
 import { ApiCommands, iLocomotive, iSetLocoFunction } from "../../../common/src/dcc";
 import { wsClient } from "../helpers/ws";
+import { remove } from "lodash";
 
 
 class LocomotiveManager {
@@ -183,7 +184,7 @@ class LocomotiveManager {
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">${existing ? "Edit Locomotive" : "Add Locomotive"}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button id="locoDialogClose" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form id="locomotive-form">
@@ -231,6 +232,12 @@ class LocomotiveManager {
         const imageInputFile = modal?.querySelector("#locomotiveImageFile") as HTMLInputElement;
         const locomotiveImage = modal?.querySelector("#locomotiveImage") as HTMLImageElement;
 
+        const locoDialogClose = this.dialogContainer.querySelector("#locoDialogClose") as HTMLElement
+        locoDialogClose.onclick = (e) => {
+            this.dialogContainer.remove()
+        }
+
+
         imageInputFile.addEventListener("change", async (event) => {
             const file = imageInputFile.files?.[0];
             if (file) {
@@ -257,12 +264,8 @@ class LocomotiveManager {
             }
         });
 
-
-
-
-
         cancelButton?.addEventListener("click", () => {
-            this.dialogContainer.innerHTML = "";
+            this.dialogContainer.remove()
         });
 
         saveButton?.addEventListener("click", () => {
@@ -288,11 +291,9 @@ class LocomotiveManager {
                 };
 
                 this.saveLocomotive(locomotive);
-                this.dialogContainer.innerHTML = "";
+                this.dialogContainer.remove()
             }
         });
-
-
     }
 
     private openFunctionEditor(locomotive: iLocomotive): void {
@@ -303,7 +304,7 @@ class LocomotiveManager {
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Edit Functions for ${locomotive.name}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button id="functionDialogClose" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body" style="max-height: 480px; overflow-y: auto;">
                             <table class="table table-striped">
@@ -349,6 +350,11 @@ class LocomotiveManager {
         const functionTableBody = functionEditor.querySelector("#functionTableBody") as HTMLElement;
         const btnTest = functionTableBody.querySelector(".test-function")
         const testelems = functionTableBody.querySelectorAll(".test-function")
+
+        const functionDialogClose = functionEditor.querySelector("#functionDialogClose") as HTMLElement
+        functionDialogClose.onclick = (e) => {
+            functionEditor.remove()
+        }
 
         testelems.forEach((elem) => {
             elem.addEventListener("mousedown", (e) => {
