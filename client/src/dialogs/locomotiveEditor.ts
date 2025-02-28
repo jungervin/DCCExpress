@@ -234,7 +234,7 @@ class LocomotiveManager {
 
         const locoDialogClose = this.dialogContainer.querySelector("#locoDialogClose") as HTMLElement
         locoDialogClose.onclick = (e) => {
-            this.dialogContainer.remove()
+            this.dialogContainer.innerHTML = ""
         }
 
 
@@ -265,7 +265,7 @@ class LocomotiveManager {
         });
 
         cancelButton?.addEventListener("click", () => {
-            this.dialogContainer.remove()
+            this.dialogContainer.innerHTML = ""
         });
 
         saveButton?.addEventListener("click", () => {
@@ -291,7 +291,7 @@ class LocomotiveManager {
                 };
 
                 this.saveLocomotive(locomotive);
-                this.dialogContainer.remove()
+                this.dialogContainer.innerHTML = ""
             }
         });
     }
@@ -353,7 +353,7 @@ class LocomotiveManager {
 
         const functionDialogClose = functionEditor.querySelector("#functionDialogClose") as HTMLElement
         functionDialogClose.onclick = (e) => {
-            functionEditor.remove()
+            functionEditor.innerHTML = ""
         }
 
         testelems.forEach((elem) => {
@@ -438,7 +438,7 @@ class LocomotiveManager {
 
         const cancelFunctionsButton = functionEditor.querySelector("#cancelFunctionsButton") as HTMLButtonElement;
         cancelFunctionsButton.addEventListener("click", () => {
-            functionEditor.remove();
+            functionEditor.innerHTML = ""
         });
 
         const saveFunctionsButton = functionEditor.querySelector("#saveFunctionsButton") as HTMLButtonElement;
@@ -458,7 +458,7 @@ class LocomotiveManager {
             });
 
             this.saveLocomotive(locomotive);
-            functionEditor.remove();
+            functionEditor.innerHTML = ""
         });
 
 

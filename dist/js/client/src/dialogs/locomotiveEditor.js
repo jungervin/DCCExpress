@@ -217,7 +217,7 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/ws"], funct
             const locomotiveImage = modal === null || modal === void 0 ? void 0 : modal.querySelector("#locomotiveImage");
             const locoDialogClose = this.dialogContainer.querySelector("#locoDialogClose");
             locoDialogClose.onclick = (e) => {
-                this.dialogContainer.remove();
+                this.dialogContainer.innerHTML = "";
             };
             imageInputFile.addEventListener("change", (event) => __awaiter(this, void 0, void 0, function* () {
                 var _a;
@@ -246,7 +246,7 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/ws"], funct
                 }
             }));
             cancelButton === null || cancelButton === void 0 ? void 0 : cancelButton.addEventListener("click", () => {
-                this.dialogContainer.remove();
+                this.dialogContainer.innerHTML = "";
             });
             saveButton === null || saveButton === void 0 ? void 0 : saveButton.addEventListener("click", () => {
                 const id = existing ? existing === null || existing === void 0 ? void 0 : existing.id : null;
@@ -269,7 +269,7 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/ws"], funct
                         functionMap: 0,
                     };
                     this.saveLocomotive(locomotive);
-                    this.dialogContainer.remove();
+                    this.dialogContainer.innerHTML = "";
                 }
             });
         }
@@ -327,7 +327,7 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/ws"], funct
             const testelems = functionTableBody.querySelectorAll(".test-function");
             const functionDialogClose = functionEditor.querySelector("#functionDialogClose");
             functionDialogClose.onclick = (e) => {
-                functionEditor.remove();
+                functionEditor.innerHTML = "";
             };
             testelems.forEach((elem) => {
                 elem.addEventListener("mousedown", (e) => {
@@ -401,7 +401,7 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/ws"], funct
             });
             const cancelFunctionsButton = functionEditor.querySelector("#cancelFunctionsButton");
             cancelFunctionsButton.addEventListener("click", () => {
-                functionEditor.remove();
+                functionEditor.innerHTML = "";
             });
             const saveFunctionsButton = functionEditor.querySelector("#saveFunctionsButton");
             saveFunctionsButton.addEventListener("click", () => {
@@ -418,7 +418,7 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/ws"], funct
                     };
                 });
                 this.saveLocomotive(locomotive);
-                functionEditor.remove();
+                functionEditor.innerHTML = "";
             });
         }
     }
