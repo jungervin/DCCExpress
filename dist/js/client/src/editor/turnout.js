@@ -10,6 +10,7 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
             this.t1OpenValue = false;
             this.address = 10;
             this.showAddress = false;
+            this._locked = false;
             this.angleStep = -45;
             this.address = address;
             // var decoder = new Decoder(address)
@@ -50,6 +51,12 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
         }
         toString() {
             return "#" + this.address;
+        }
+        get locked() {
+            return this._locked;
+        }
+        set locked(v) {
+            this._locked = v;
         }
     }
     exports.TurnoutElement = TurnoutElement;
@@ -215,6 +222,13 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
                 }
                 ctx.stroke();
             }
+            ctx.beginPath();
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "black";
+            ctx.fillStyle = this.locked ? "red" : "gainsboro";
+            ctx.arc(this.centerX, this.centerY, 3, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.stroke();
         }
         getNextItemXy() {
             if (this.t1Closed) {
@@ -529,6 +543,13 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
                 }
                 ctx.stroke();
             }
+            ctx.beginPath();
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "black";
+            ctx.fillStyle = this.locked ? "red" : "gainsboro";
+            ctx.arc(this.centerX, this.centerY, 3, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.stroke();
         }
         drawAddress(ctx) {
             if (this.showAddress) {

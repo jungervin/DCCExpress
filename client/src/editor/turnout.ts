@@ -63,6 +63,16 @@ export abstract class TurnoutElement extends RailView {
     toString(): string {
         return "#" + this.address
     }
+
+    
+    private _locked : boolean = false;
+    public get locked() : boolean {
+        return this._locked;
+    }
+    public set locked(v : boolean) {
+        this._locked = v;
+    }
+    
 }
 
 export class TurnoutRightElement extends TurnoutElement {
@@ -238,11 +248,17 @@ export class TurnoutRightElement extends TurnoutElement {
                 ctx.lineTo(this.centerX, this.centerY)
                 ctx.lineTo(this.posLeft + dx2, this.posBottom - dx2)
             }
-
-
             ctx.stroke();
+         }
 
-        }
+         ctx.beginPath();
+         ctx.lineWidth = 1
+         ctx.strokeStyle = "black"
+         ctx.fillStyle = this.locked ? "red" : "gainsboro"
+         ctx.arc(this.centerX, this.centerY, 3, 0, 2 * Math.PI)
+         ctx.fill()
+         ctx.stroke()
+
     }
 
     getNextItemXy(): Point {
@@ -562,6 +578,15 @@ export class TurnoutDoubleElement extends TurnoutElement {
             ctx.stroke()
 
         }
+
+        ctx.beginPath();
+        ctx.lineWidth = 1
+        ctx.strokeStyle = "black"
+        ctx.fillStyle = this.locked ? "red" : "gainsboro"
+        ctx.arc(this.centerX, this.centerY, 3, 0, 2 * Math.PI)
+        ctx.fill()
+        ctx.stroke()
+
     }
 
     drawAddress(ctx: CanvasRenderingContext2D) {
