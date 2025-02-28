@@ -254,7 +254,7 @@ export class TurnoutRightElement extends TurnoutElement {
          ctx.beginPath();
          ctx.lineWidth = 1
          ctx.strokeStyle = "black"
-         ctx.fillStyle = this.locked ? "red" : "gainsboro"
+         ctx.fillStyle = this.locked ? Colors.turnoutLocked : Colors.turnoutUnLocked
          ctx.arc(this.centerX, this.centerY, 3, 0, 2 * Math.PI)
          ctx.fill()
          ctx.stroke()
@@ -582,7 +582,7 @@ export class TurnoutDoubleElement extends TurnoutElement {
         ctx.beginPath();
         ctx.lineWidth = 1
         ctx.strokeStyle = "black"
-        ctx.fillStyle = this.locked ? "red" : "gainsboro"
+        ctx.fillStyle = this.locked ? Colors.turnoutLocked : Colors.turnoutUnLocked
         ctx.arc(this.centerX, this.centerY, 3, 0, 2 * Math.PI)
         ctx.fill()
         ctx.stroke()

@@ -11,6 +11,8 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/math", "../
     Colors.TrackWarningColor = "yellow";
     Colors.TrackDangerColor = "red";
     Colors.TrackSelectedColor = "yellow";
+    Colors.turnoutLocked = "red";
+    Colors.turnoutUnLocked = "white";
     // export interface iDecoder {
     //     getAddress: () => string,
     //     on: boolean

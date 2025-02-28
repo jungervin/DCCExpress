@@ -15,6 +15,8 @@ export class Colors {
     static TrackWarningColor = "yellow"
     static TrackDangerColor = "red"
     static TrackSelectedColor = "yellow"
+    static turnoutLocked = "red"
+    static turnoutUnLocked = "white"
 }
 
 // export interface iDecoder {

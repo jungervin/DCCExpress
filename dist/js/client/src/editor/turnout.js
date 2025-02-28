@@ -225,7 +225,7 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
             ctx.beginPath();
             ctx.lineWidth = 1;
             ctx.strokeStyle = "black";
-            ctx.fillStyle = this.locked ? "red" : "gainsboro";
+            ctx.fillStyle = this.locked ? view_2.Colors.turnoutLocked : view_2.Colors.turnoutUnLocked;
             ctx.arc(this.centerX, this.centerY, 3, 0, 2 * Math.PI);
             ctx.fill();
             ctx.stroke();
@@ -546,7 +546,7 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
             ctx.beginPath();
             ctx.lineWidth = 1;
             ctx.strokeStyle = "black";
-            ctx.fillStyle = this.locked ? "red" : "gainsboro";
+            ctx.fillStyle = this.locked ? view_2.Colors.turnoutLocked : view_2.Colors.turnoutUnLocked;
             ctx.arc(this.centerX, this.centerY, 3, 0, 2 * Math.PI);
             ctx.fill();
             ctx.stroke();
