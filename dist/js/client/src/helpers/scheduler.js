@@ -14,10 +14,10 @@ define(["require", "exports", "../helpers/api"], function (require, exports, api
     class Scheduler {
         static start(filePath) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (this.isLoaded) {
-                    console.warn("⚠️ Scheduler: already loaded.");
-                    return;
-                }
+                // if (this.isLoaded) {
+                //     console.warn("⚠️ Scheduler: already loaded.");
+                //     return;
+                // }
                 try {
                     const response = yield fetch(filePath);
                     if (!response.ok) {

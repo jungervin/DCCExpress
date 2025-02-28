@@ -1,4 +1,6 @@
 
+
+
 const t10 = Api.getTurnout(10)
 const t11 = Api.getTurnout(11)
 const t12 = Api.getTurnout(12)
@@ -30,6 +32,10 @@ const block203 = Api.getElement("block203")
 // INIT
 //==================================
 if (!App.init) {
+    
+    // Uncomment to debug
+    // debugger
+    
     App.init = true
     App.num = 0;
 

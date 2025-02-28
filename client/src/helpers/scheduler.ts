@@ -12,10 +12,10 @@ export class Scheduler {
     static scriptContent: string;
 
     static async start(filePath: string): Promise<void> {
-        if (this.isLoaded) {
-            console.warn("⚠️ Scheduler: already loaded.");
-            return;
-        }
+        // if (this.isLoaded) {
+        //     console.warn("⚠️ Scheduler: already loaded.");
+        //     return;
+        // }
 
         try {
             const response = await fetch(filePath);
