@@ -63,7 +63,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             this.mouseX = 0;
             this.mouseY = 0;
             this.scale = 1;
-            this.drawEnabled = true;
+            //drawEnabled: boolean = true;
             this.width = 0;
             this.height = 0;
             this.dragEnabled = false;
@@ -71,6 +71,9 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             this.globalY = 0;
             this.pointerMap = new Map(); // Pointer ID-k mentése
             this.lastDistance = 0;
+            this._drawEnabled = false;
+            this._locoControlPanelVisibility = false;
+            this._propertyPanaelVisibility = false;
             this._drawMode = drawModes.track;
             this.originX = 0;
             this.originY = 0;
@@ -266,21 +269,9 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                 this.drawMode = drawModes.label2;
                 this.cursorElement = this.cursorLabel2Element;
             };
+            this.drawEnabled = localStorage.getItem("drawEnabled") == "true";
             this.toolbar.btnEdit.onclick = (e) => {
-                var _a;
                 this.drawEnabled = !this.drawEnabled;
-                this.toolbar.toolbarEdit.style.display = this.drawEnabled ? "block" : "none";
-                this.toolbar.toolbarPlay.style.display = !this.drawEnabled ? "block" : "none";
-                if (!this.drawEnabled) {
-                    this.unselectAll();
-                    this.cursorElement = undefined;
-                    this.propertyPanel.visible = false;
-                    (_a = this.toolbar) === null || _a === void 0 ? void 0 : _a.btnProperties.classList.remove("active");
-                    this.toolbar.btnEdit.classList.remove("active");
-                }
-                else {
-                    this.toolbar.btnEdit.classList.add("active");
-                }
             };
             this.toolbar.btnSave.onclick = (e) => {
                 this.save();
@@ -384,28 +375,15 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                     this.drawMode = drawModes.pointer;
                 }
             });
-            //this.propertyPanel!.visible = true;
-            //this.toolbar?.btnProperties.classList.add("active")
             this.propertyPanel.btnClose.onclick = ((e) => {
-                var _a;
-                this.propertyPanel.visible = false;
-                (_a = this.toolbar) === null || _a === void 0 ? void 0 : _a.btnProperties.classList.remove("active");
+                this.propertyPanelVisibility = false;
             });
+            this.propertyPanelVisibility = localStorage.getItem("propertyPanelVisibility") == "true";
             this.toolbar.btnProperties.onclick = (e) => {
-                var _a, _b;
-                this.propertyPanel.visible = !this.propertyPanel.visible;
-                if (this.propertyPanel.visible) {
-                    (_a = this.toolbar) === null || _a === void 0 ? void 0 : _a.btnProperties.classList.add("active");
-                }
-                else {
-                    (_b = this.toolbar) === null || _b === void 0 ? void 0 : _b.btnProperties.classList.remove("active");
-                }
+                this.propertyPanelVisibility = !this.propertyPanelVisibility;
             };
             this.toolbar.btnAppSettings.onclick = (e) => {
                 const d = new AppSettingsDialog_1.AppSettingsDialog();
-                //d.gridSize.value = settings.GridSizeX;
-                // d.showAddress.checked = Globals.Settings.EditorSettings.ShowAddress;
-                // d.intervalElement.value = Globals.Settings.Dispacher.interval
                 d.onclose = (sender) => {
                     if (d.dialogResult == dialog_1.DialogResult.ok) {
                         globals_1.Globals.Settings.EditorSettings.ShowGrid = d.showGrid.checked;
@@ -435,35 +413,20 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             };
             this.toolbar.btnDispatcher.onclick = (e) => {
                 dispatcher_1.Dispatcher.active = !dispatcher_1.Dispatcher.active;
-                // if(Dispatcher.active) {
-                //     Dispatcher.start("dispatcher.js")
-                // } else {
-                //     Dispatcher.stop()
-                // }
             };
             this.toolbar.btnCodeEditor.onclick = (e) => {
                 const codeEditor = new codeEditor_1.CodeEditor();
             };
             this.toolbar.btnLoco.onclick = (e) => {
-                if (this.toolbar.btnLoco.classList.contains('active')) {
-                    this.toolbar.btnLoco.classList.remove("active");
-                    this.sidePanelLeft.classList.remove('show');
-                    this.sidePanelLeft.classList.add('hide');
-                }
-                else {
-                    this.toolbar.btnLoco.classList.add("active");
-                    this.sidePanelLeft.classList.remove('hide');
-                    this.sidePanelLeft.classList.add('show');
-                }
+                this.locoControlPanelVisibility = !this.locoControlPanelVisibility;
             };
             this.sidePanelLeft = document.getElementById('sidePanelLeft');
             this.btnSidePanelLeftClose = document.getElementById('btnSidePanelLeftClose');
             this.btnSidePanelLeftClose.onclick = (e) => {
-                this.sidePanelLeft.classList.remove('show');
-                this.sidePanelLeft.classList.add('hide');
-                this.toolbar.btnLoco.classList.remove("active");
+                this.locoControlPanelVisibility = false;
             };
             this.locoControlPanel = document.getElementById('locoControlPanel');
+            this.locoControlPanelVisibility = localStorage.getItem("locoControlPanelVisibility") == "true";
         }
         showAddresses(show) {
             this.views.getTurnoutElements().forEach((t) => {
@@ -473,6 +436,60 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                 t.showAddress = show;
             });
             this.draw();
+        }
+        get drawEnabled() {
+            return this._drawEnabled;
+        }
+        set drawEnabled(v) {
+            var _a;
+            this._drawEnabled = v;
+            localStorage.setItem("drawEnabled", v ? "true" : "false");
+            this.toolbar.toolbarEdit.style.display = this.drawEnabled ? "block" : "none";
+            this.toolbar.toolbarPlay.style.display = !this.drawEnabled ? "block" : "none";
+            if (!this.drawEnabled) {
+                this.unselectAll();
+                this.cursorElement = undefined;
+                //this.propertyPanel!.visible = false
+                this.propertyPanelVisibility = v;
+                (_a = this.toolbar) === null || _a === void 0 ? void 0 : _a.btnProperties.classList.remove("active");
+                this.toolbar.btnEdit.classList.remove("active");
+            }
+            else {
+                this.toolbar.btnEdit.classList.add("active");
+            }
+        }
+        get locoControlPanelVisibility() {
+            return this._locoControlPanelVisibility;
+        }
+        set locoControlPanelVisibility(v) {
+            this._locoControlPanelVisibility = v;
+            localStorage.setItem("locoControlPanelVisibility", v ? "true" : "false");
+            if (v) {
+                this.toolbar.btnLoco.classList.add("active");
+                this.sidePanelLeft.classList.remove('hide');
+                this.sidePanelLeft.classList.add('show');
+            }
+            else {
+                this.toolbar.btnLoco.classList.remove("active");
+                this.sidePanelLeft.classList.remove('show');
+                this.sidePanelLeft.classList.add('hide');
+            }
+        }
+        get propertyPanelVisibility() {
+            return this._propertyPanaelVisibility;
+        }
+        set propertyPanelVisibility(v) {
+            var _a, _b;
+            this._propertyPanaelVisibility = v;
+            localStorage.setItem("propertyPanelVisibility", v ? 'true' : 'false');
+            if (v) {
+                this.propertyPanel.visible = v;
+                (_a = this.toolbar) === null || _a === void 0 ? void 0 : _a.btnProperties.classList.add("active");
+            }
+            else {
+                this.propertyPanel.visible = v;
+                (_b = this.toolbar) === null || _b === void 0 ? void 0 : _b.btnProperties.classList.remove("active");
+            }
         }
         get selectedElement() {
             return this._selectedElement;
@@ -1222,7 +1239,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             globals_1.Globals.configSave(config);
         }
         load(config) {
-            var _a, _b, _c, _d;
+            var _a, _b, _c;
             this.views.elements.length = 0;
             const defaults = { scale: 1, origX: 0, origY: 0, locoPanelVisible: false };
             try {
@@ -1233,10 +1250,6 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                 }
                 else {
                     config.settings = defaults;
-                }
-                if (config.settings.locoPanelVisible) {
-                    (_d = this.sidePanelLeft) === null || _d === void 0 ? void 0 : _d.classList.add('show');
-                    this.toolbar.btnLoco.classList.add("active");
                 }
                 //var elems = config.elems
                 config.pages.forEach((page) => {

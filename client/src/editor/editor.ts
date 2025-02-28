@@ -98,7 +98,7 @@ export class CustomCanvas extends HTMLElement {
     btnOkTurnout: HTMLElement | undefined;
     originX: number;
     originY: number;
-    drawEnabled: boolean = true;
+    //drawEnabled: boolean = true;
     width: number = 0;
     height: number = 0;
     sidePanelLeft: HTMLDivElement | undefined;
@@ -345,20 +345,9 @@ export class CustomCanvas extends HTMLElement {
             this.cursorElement = this.cursorLabel2Element!
         }
 
+        this.drawEnabled = localStorage.getItem("drawEnabled") == "true"
         this.toolbar!.btnEdit.onclick = (e: MouseEvent) => {
             this.drawEnabled = !this.drawEnabled
-            this.toolbar!.toolbarEdit.style.display = this.drawEnabled ? "block" : "none"
-            this.toolbar!.toolbarPlay.style.display = !this.drawEnabled ? "block" : "none"
-            if (!this.drawEnabled) {
-                this.unselectAll();
-                this.cursorElement = undefined
-                this.propertyPanel!.visible = false
-                this.toolbar?.btnProperties.classList.remove("active")
-                this.toolbar!.btnEdit.classList.remove("active")
-            }
-            else {
-                this.toolbar!.btnEdit.classList.add("active")
-            }
         }
 
 
@@ -474,28 +463,18 @@ export class CustomCanvas extends HTMLElement {
             }
         })
 
-
-        //this.propertyPanel!.visible = true;
-        //this.toolbar?.btnProperties.classList.add("active")
         this.propertyPanel!.btnClose.onclick = ((e: MouseEvent) => {
-            this.propertyPanel!.visible = false
-            this.toolbar?.btnProperties.classList.remove("active")
+            this.propertyPanelVisibility = false
         })
+
+        this.propertyPanelVisibility = localStorage.getItem("propertyPanelVisibility") == "true"
         this.toolbar!.btnProperties!.onclick = (e: MouseEvent) => {
-            this.propertyPanel!.visible = !this.propertyPanel!.visible
-            if (this.propertyPanel!.visible) {
-                this.toolbar?.btnProperties.classList.add("active")
-            } else {
-                this.toolbar?.btnProperties.classList.remove("active")
-            }
+            this.propertyPanelVisibility = !this.propertyPanelVisibility
         }
 
 
         this.toolbar!.btnAppSettings.onclick = (e: MouseEvent) => {
             const d = new AppSettingsDialog()
-            //d.gridSize.value = settings.GridSizeX;
-            // d.showAddress.checked = Globals.Settings.EditorSettings.ShowAddress;
-            // d.intervalElement.value = Globals.Settings.Dispacher.interval
             d.onclose = (sender) => {
                 if (d.dialogResult == DialogResult.ok) {
                     Globals.Settings.EditorSettings.ShowGrid = d.showGrid.checked
@@ -526,38 +505,22 @@ export class CustomCanvas extends HTMLElement {
 
         this.toolbar!.btnDispatcher.onclick = (e: MouseEvent) => {
             Dispatcher.active = !Dispatcher.active;
-            // if(Dispatcher.active) {
-            //     Dispatcher.start("dispatcher.js")
-            // } else {
-            //     Dispatcher.stop()
-            // }
         }
         this.toolbar!.btnCodeEditor.onclick = (e: MouseEvent) => {
             const codeEditor = new CodeEditor()
-
         }
 
         this.toolbar!.btnLoco.onclick = (e: MouseEvent) => {
-            if (this.toolbar!.btnLoco.classList.contains('active')) {
-                this.toolbar!.btnLoco.classList.remove("active")
-                this.sidePanelLeft!.classList.remove('show');
-                this.sidePanelLeft!.classList.add('hide');
-            } else {
-                this.toolbar!.btnLoco.classList.add("active")
-                this.sidePanelLeft!.classList.remove('hide');
-                this.sidePanelLeft!.classList.add('show');
-            }
+            this.locoControlPanelVisibility = !this.locoControlPanelVisibility
         }
-
-
         this.sidePanelLeft = document.getElementById('sidePanelLeft') as HTMLDivElement;
         this.btnSidePanelLeftClose = document.getElementById('btnSidePanelLeftClose') as HTMLDivElement;
         this.btnSidePanelLeftClose.onclick = (e: MouseEvent) => {
-            this.sidePanelLeft!.classList.remove('show');
-            this.sidePanelLeft!.classList.add('hide');
-            this.toolbar!.btnLoco.classList.remove("active")
+            this.locoControlPanelVisibility = false
         }
         this.locoControlPanel = document.getElementById('locoControlPanel') as LocoControlPanel
+        this.locoControlPanelVisibility = localStorage.getItem("locoControlPanelVisibility") == "true"
+
     }
     showAddresses(show: boolean) {
         this.views.getTurnoutElements().forEach((t) => {
@@ -567,6 +530,71 @@ export class CustomCanvas extends HTMLElement {
             t.showAddress = show;
         })
         this.draw()
+    }
+
+
+    private _drawEnabled: boolean = false;
+    public get drawEnabled(): boolean {
+        return this._drawEnabled;
+    }
+    public set drawEnabled(v: boolean) {
+        this._drawEnabled = v;
+        localStorage.setItem("drawEnabled", v ? "true" : "false")
+        this.toolbar!.toolbarEdit.style.display = this.drawEnabled ? "block" : "none"
+        this.toolbar!.toolbarPlay.style.display = !this.drawEnabled ? "block" : "none"
+        if (!this.drawEnabled) {
+            this.unselectAll();
+            this.cursorElement = undefined
+            //this.propertyPanel!.visible = false
+            this.propertyPanelVisibility = v
+            this.toolbar?.btnProperties.classList.remove("active")
+            this.toolbar!.btnEdit.classList.remove("active")
+        }
+        else {
+            this.toolbar!.btnEdit.classList.add("active")
+        }
+
+    }
+
+
+    
+    private _locoControlPanelVisibility : boolean = false;
+    public get locoControlPanelVisibility() : boolean {
+        return this._locoControlPanelVisibility;
+    }
+    public set locoControlPanelVisibility(v : boolean) {
+        this._locoControlPanelVisibility = v;
+        localStorage.setItem("locoControlPanelVisibility", v ? "true" : "false")
+
+        if (v) {
+            this.toolbar!.btnLoco.classList.add("active")
+            this.sidePanelLeft!.classList.remove('hide');
+            this.sidePanelLeft!.classList.add('show');
+        } else {
+            this.toolbar!.btnLoco.classList.remove("active")
+            this.sidePanelLeft!.classList.remove('show');
+            this.sidePanelLeft!.classList.add('hide');
+        }
+
+
+    }
+    
+
+    private _propertyPanaelVisibility: boolean = false;
+    public get propertyPanelVisibility(): boolean {
+        return this._propertyPanaelVisibility;
+    }
+    public set propertyPanelVisibility(v: boolean) {
+        this._propertyPanaelVisibility = v;
+        localStorage.setItem("propertyPanelVisibility", v ? 'true' : 'false')
+        if (v) {
+            this.propertyPanel!.visible = v
+            this.toolbar?.btnProperties.classList.add("active")
+        } else {
+            this.propertyPanel!.visible = v
+            this.toolbar?.btnProperties.classList.remove("active")
+
+        }
     }
 
 
@@ -1421,10 +1449,6 @@ export class CustomCanvas extends HTMLElement {
                 config.settings = defaults;
             }
 
-            if (config.settings.locoPanelVisible) {
-                this.sidePanelLeft?.classList.add('show')
-                this.toolbar!.btnLoco.classList.add("active")
-            }
             //var elems = config.elems
             config.pages.forEach((page: any) => {
                 page.elems.forEach((elem: any) => {
