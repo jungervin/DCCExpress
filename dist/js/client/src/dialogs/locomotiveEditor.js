@@ -12,7 +12,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", "../../../common/src/dcc", "../helpers/ws"], function (require, exports, dcc_1, ws_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class LocomotiveManager {
@@ -63,16 +63,18 @@ define(["require", "exports"], function (require, exports) {
         }
         deleteLocomotive(id) {
             return __awaiter(this, void 0, void 0, function* () {
-                try {
-                    const response = yield fetch(`/locomotives/${id}`, {
-                        method: "DELETE",
-                    });
-                    if (!response.ok)
-                        throw new Error("Failed to delete locomotive");
-                    yield this.fetchLocomotives();
-                }
-                catch (error) {
-                    console.error("Error deleting locomotive:", error);
+                if (confirm("Are you sure you want to delete the locomotive?")) {
+                    try {
+                        const response = yield fetch(`/locomotives/${id}`, {
+                            method: "DELETE",
+                        });
+                        if (!response.ok)
+                            throw new Error("Failed to delete locomotive");
+                        yield this.fetchLocomotives();
+                    }
+                    catch (error) {
+                        console.error("Error deleting locomotive:", error);
+                    }
                 }
             });
         }
@@ -321,9 +323,7 @@ define(["require", "exports"], function (require, exports) {
             const testelems = functionTableBody.querySelectorAll(".test-function");
             testelems.forEach((elem) => {
                 elem.addEventListener("mousedown", (e) => {
-                    // Az esemény kiváltó gomb
                     const clickedButton = e.currentTarget;
-                    // A gomb szülő <tr> elemének megkeresése
                     const parentRow = clickedButton.closest("tr");
                     if (parentRow) {
                         const idInput = parentRow.querySelector("input[type='number']");
@@ -334,6 +334,8 @@ define(["require", "exports"], function (require, exports) {
                             name: nameInput ? nameInput.value : "",
                             momentary: momentaryInput ? momentaryInput.checked : false,
                         };
+                        const data = { address: locomotive.address, id: rowData.id, isOn: true };
+                        ws_1.wsClient.send({ type: dcc_1.ApiCommands.setLocoFunction, data: data });
                         console.log(rowData);
                     }
                     else {

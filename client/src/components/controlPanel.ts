@@ -145,7 +145,7 @@ export class LocoControlPanel extends HTMLElement {
                     transform: none;
                 }
 
-            /* Modal háttér */
+            /* Modal háttér  */
                 #modal {
                     display: none;
                     position: fixed;
@@ -164,6 +164,7 @@ export class LocoControlPanel extends HTMLElement {
                 }
                 /* Modal tartalom */
                 .modal-content {
+                    width: 80%;
                     background: white;
                     padding: 10px;
                     border-radius: 10px;
@@ -174,6 +175,7 @@ export class LocoControlPanel extends HTMLElement {
                 /* Mozdony lista */
                 .loco-item {
                     display: flex;
+                    flex-direction: column;
                     overflow: auto;
                     align-items: center;
                     padding: 10px;
@@ -210,7 +212,7 @@ export class LocoControlPanel extends HTMLElement {
                 }
 
                 #locoList {
-                    height: 300px;
+                    height: 70%;
                     overflow: auto;
                     border-radius: 5px;
                     border: 1px solid #ddd;
@@ -471,7 +473,8 @@ export class LocoControlPanel extends HTMLElement {
     private async fetchLocomotives() {
         try {
             const response = await fetch(`/locomotives`);
-            this.locomotives = await response.json();
+            const locos = await response.json();
+            this.locomotives = locos.sort((a: iLocomotive, b: iLocomotive) => a.address - b.address);
             //this.render();
             if (this.locomotives.length > 0) {
                 this.locomotives.forEach((l) => {
@@ -494,7 +497,7 @@ export class LocoControlPanel extends HTMLElement {
             const locoItem = document.createElement("div");
             locoItem.classList.add("loco-item");
             locoItem.innerHTML = `
-                <div style="width: 60%">
+                <div>
                     <img src="${loco.imageUrl}" alt="${loco.name}">
                 </div>
                 <div>#${loco.address} ${loco.name}</div>

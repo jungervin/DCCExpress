@@ -5,7 +5,8 @@
 // }
 
 import { getUUID } from "../helpers/utility";
-import { iLocomotive } from "../../../common/src/dcc";
+import { ApiCommands, iLocomotive, iSetLocoFunction } from "../../../common/src/dcc";
+import { wsClient } from "../helpers/ws";
 
 
 class LocomotiveManager {
@@ -59,16 +60,18 @@ class LocomotiveManager {
     }
 
     private async deleteLocomotive(id: string) {
-        try {
-            const response = await fetch(`/locomotives/${id}`, {
-                method: "DELETE",
-            });
+        if (confirm("Are you sure you want to delete the locomotive?")) {
+            try {
+                const response = await fetch(`/locomotives/${id}`, {
+                    method: "DELETE",
+                });
 
-            if (!response.ok) throw new Error("Failed to delete locomotive");
+                if (!response.ok) throw new Error("Failed to delete locomotive");
 
-            await this.fetchLocomotives();
-        } catch (error) {
-            console.error("Error deleting locomotive:", error);
+                await this.fetchLocomotives();
+            } catch (error) {
+                console.error("Error deleting locomotive:", error);
+            }
         }
     }
 
@@ -129,7 +132,7 @@ class LocomotiveManager {
                         clone.name = "KLÓN"
                         this.locomotives.push(clone)
                         this.openDialog(clone);
-                        
+
                     }
                 }
             })
@@ -270,7 +273,7 @@ class LocomotiveManager {
             const imageUrl = url.pathname;
             const speedMode = (modal?.querySelector("#speedMode") as HTMLInputElement).value;
             const functions = existing ? existing.functions : [];
-            
+
             if (name && address && imageUrl && speedMode) {
                 const locomotive: iLocomotive = {
                     id,
@@ -279,7 +282,7 @@ class LocomotiveManager {
                     imageUrl,
                     speedMode,
                     functions,
-                    speed:0,
+                    speed: 0,
                     direction: 0,
                     functionMap: 0,
                 };
@@ -349,21 +352,25 @@ class LocomotiveManager {
 
         testelems.forEach((elem) => {
             elem.addEventListener("mousedown", (e) => {
-                // Az esemény kiváltó gomb
+                
                 const clickedButton = e.currentTarget as HTMLButtonElement;
-                // A gomb szülő <tr> elemének megkeresése
+                
                 const parentRow = clickedButton.closest("tr");
 
                 if (parentRow) {
                     const idInput = parentRow.querySelector("input[type='number']") as HTMLInputElement;
                     const nameInput = parentRow.querySelector("input[type='text']") as HTMLInputElement;
                     const momentaryInput = parentRow.querySelector("input[type='checkbox']") as HTMLInputElement;
-                
+
                     const rowData = {
                         id: idInput ? parseInt(idInput.value, 10) : null,
                         name: nameInput ? nameInput.value : "",
                         momentary: momentaryInput ? momentaryInput.checked : false,
                     };
+
+                    const data: iSetLocoFunction = {address: locomotive.address, id: rowData.id!, isOn: true}
+                    wsClient.send({type: ApiCommands.setLocoFunction, data: data})
+
                     console.log(rowData)
                 } else {
                     console.log("No parent <tr> found");
