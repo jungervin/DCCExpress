@@ -1,15 +1,12 @@
 export class ToastManager {
     private container: HTMLElement;
-
     constructor() {
-        this.container = document.createElement("div");
-        this.container.className = "toast-container";
-        document.body.appendChild(this.container);
+        this.container = document.getElementById("toastcontainer")!;
     }
 
-    showToast(message: string) {
+    showToast(message: string, type = "info") {
         const toast = document.createElement("div");
-        toast.className = "toast";
+        toast.className = "toast2 " + type;
         toast.innerText = message;
         
         this.container.appendChild(toast);

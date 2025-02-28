@@ -121,33 +121,76 @@ body {
 }
 
 
-.toast-container {
-    position: fixed;
-    top: 0;
-    left: 0;
+.toastcontainer {
+    position: absolute;
+    display: block;
+    bottom: 0;
+    right: 0;
     width: 400px;
-    height: 100px;
-    display: flex;
     flex-direction: column;
     gap: 10px;
     z-index: 10000;
+    
 }
 
-.toast {
-    background-color: antiquewhite;
-    color: white;
-    padding: 12px 20px;
+.toast2 {
+    min-width: 250px;
+    max-width: 400px;
+    padding: 12px 18px;
+    margin: 4px;
     border-radius: 8px;
     font-size: 14px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-    
+    font-family: Arial, sans-serif;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    transform: translateX(50px);
+    animation: toastIn 0.3s ease-out forwards, toastOut 0.3s ease-in forwards 4s;
     
 }
 
-.toast.fade-out {
-    
+/* 🌟 Különböző típusokhoz színek */
+.toast2.success {
+    background: #2ecc71; /* Zöld */
 }
 
+.toast2.error {
+    background: #e74c3c; /* Piros */
+}
+
+.toast2.warning {
+    background: #f39c12; /* Narancs */
+}
+
+.toast2.info {
+    background: #3498db; /* Kék */
+}
+
+/* 🎬 Animációk */
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes toastOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+}
 #container22 {
     display: block;
     width: 100vw;

@@ -4,13 +4,11 @@ define(["require", "exports"], function (require, exports) {
     exports.toastManager = exports.ToastManager = void 0;
     class ToastManager {
         constructor() {
-            this.container = document.createElement("div");
-            this.container.className = "toast-container";
-            document.body.appendChild(this.container);
+            this.container = document.getElementById("toastcontainer");
         }
-        showToast(message) {
+        showToast(message, type = "info") {
             const toast = document.createElement("div");
-            toast.className = "toast";
+            toast.className = "toast2 " + type;
             toast.innerText = message;
             this.container.appendChild(toast);
             setTimeout(() => {

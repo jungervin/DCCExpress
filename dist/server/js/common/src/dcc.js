@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.defaultSettings = exports.blocks = exports.rbus = exports.turnouts = exports.ext_accessories = exports.accessories = exports.locos = exports.setDecoder = exports.CommandCenterTypes = exports.iZ21STATUS = exports.Z21POWERINFO = exports.ApiCommands = exports.DCCExTurnout = exports.DCCExDirections = exports.Z21Directions = exports.SpeedModes = void 0;
+exports.defaultSettings = exports.blocks = exports.rbus = exports.turnouts = exports.ext_accessories = exports.accessories = exports.locos = exports.CommandCenterTypes = exports.iZ21STATUS = exports.Z21POWERINFO = exports.ApiCommands = exports.DCCExTurnout = exports.DCCExDirections = exports.Z21Directions = exports.SpeedModes = void 0;
 exports.getCommandCenterType = getCommandCenterType;
 exports.getUUID = getUUID;
 exports.fetchDevices = fetchDevices;
@@ -19,10 +19,6 @@ var SpeedModes;
     SpeedModes[SpeedModes["S28"] = 1] = "S28";
     SpeedModes[SpeedModes["S128"] = 2] = "S128";
 })(SpeedModes || (exports.SpeedModes = SpeedModes = {}));
-// export enum Connections {
-//     DCCEx = 0,
-//     Z21 = 1
-// }
 var Z21Directions;
 (function (Z21Directions) {
     Z21Directions[Z21Directions["reverse"] = 0] = "reverse";
@@ -40,10 +36,6 @@ var DCCExTurnout;
 })(DCCExTurnout || (exports.DCCExTurnout = DCCExTurnout = {}));
 var ApiCommands;
 (function (ApiCommands) {
-    // configSave = "configSave",
-    // configSaved = "configSaved",
-    // configLoad = "configLoad",
-    // configLoaded = "configLoaded",
     ApiCommands["getLoco"] = "getLoco";
     ApiCommands["setLoco"] = "setLoco";
     ApiCommands["locoInfo"] = "locoInfo";
@@ -57,15 +49,8 @@ var ApiCommands;
     ApiCommands["setBlock"] = "setBlock";
     ApiCommands["getBlock"] = "getBlock";
     ApiCommands["blockInfo"] = "blockInfo";
-    //turnoutClicked = "turnoutClicked",
-    // turnoutStates = "turnoutStates",
-    // setCommandCenters = "setCommandCenters",
-    // getCommandCenters = "getCommandCenters",
-    // commandCenterInfos = "commandCenterInfos",
     ApiCommands["getRBusInfo"] = "getRBusInfo";
     ApiCommands["rbusInfo"] = "rbusInfo";
-    // getTurnouts = "getTurnouts",
-    // Turnouts = "Turnouts",
     ApiCommands["alert"] = "alert";
     ApiCommands["response"] = "response";
     ApiCommands["systemInfo"] = "systemInfo";
@@ -104,17 +89,13 @@ function getCommandCenterType(type) {
     const res = Object.keys(CommandCenterTypes).filter(key => isNaN(Number(key)));
     return res ? res[type] : "Unknown";
 }
-// export interface iDCCExTCPCommandCenter extends iCommandCenter{
-//     ip: string,
-//     port: number
+// export class setDecoder implements iData {
+//     readonly type = ApiCommands.setBasicAccessory;
+//     data: iSetTurnout
+//     constructor(message: iSetTurnout) {
+//         this.data =  message;
+//     }
 // }
-class setDecoder {
-    constructor(message) {
-        this.type = ApiCommands.setBasicAccessory;
-        this.data = message;
-    }
-}
-exports.setDecoder = setDecoder;
 // export abstract class CommandCenter {
 //     decoders: iBasicAccessory[] = []
 //     locos: iLoco[] = []

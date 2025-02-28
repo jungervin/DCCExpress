@@ -76,17 +76,18 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 globals_1.Globals.Settings.CommandCenterDCCExSerial = (_d = s.CommandCenterDCCExSerial) !== null && _d !== void 0 ? _d : dcc_1.defaultSettings.CommandCenterDCCExSerial;
                 globals_1.Globals.Settings.Dispacher = (_e = s.Dispacher) !== null && _e !== void 0 ? _e : dcc_1.defaultSettings.Dispacher;
                 globals_1.Globals.Settings.EditorSettings = (_f = s.EditorSettings) !== null && _f !== void 0 ? _f : dcc_1.defaultSettings.EditorSettings;
-                //this.editor.fastClock!.setScaleFactor(Globals.Settings.EditorSettings.fastClockFactor)
                 this.editor.fastClock.visible = globals_1.Globals.Settings.EditorSettings.ShowClock;
+                toastManager_1.toastManager.showToast("Settings Loaded", "success");
                 globals_1.Globals.fetchJsonData('/config.json').then((conf) => {
                     this.configLoaded(conf);
                     ws_1.wsClient.send({ type: dcc_1.ApiCommands.getRBusInfo, data: "" });
+                    toastManager_1.toastManager.showToast("Config Loaded", "success");
                 }).catch((reason) => {
-                    alert("Config Error:\n" + reason);
+                    //toastManager.showToast("Config Not Loaded<br>"+ reason, "error")
                 }).finally(() => {
                 });
             }).catch((reason) => {
-                alert("Settings Error:\n" + reason);
+                //toastManager.showToast("Settings Not Loaded<br>"+ reason, "error")
             }).finally(() => {
             });
             ws_1.wsClient.onConnected = () => {

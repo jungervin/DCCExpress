@@ -1,14 +1,8 @@
-
 export enum SpeedModes {
     S14,
     S28,
     S128
 }
-
-// export enum Connections {
-//     DCCEx = 0,
-//     Z21 = 1
-// }
 
 export enum Z21Directions {
     reverse = 0,
@@ -26,10 +20,6 @@ export enum DCCExTurnout {
 }
 
 export enum ApiCommands {
-    // configSave = "configSave",
-    // configSaved = "configSaved",
-    // configLoad = "configLoad",
-    // configLoaded = "configLoaded",
     getLoco = "getLoco",
     setLoco = "setLoco",
     locoInfo = "locoInfo",
@@ -44,17 +34,10 @@ export enum ApiCommands {
     setBlock = "setBlock",
     getBlock = "getBlock",
     blockInfo = "blockInfo",
-
-    //turnoutClicked = "turnoutClicked",
-    // turnoutStates = "turnoutStates",
-    // setCommandCenters = "setCommandCenters",
-    // getCommandCenters = "getCommandCenters",
-    // commandCenterInfos = "commandCenterInfos",
-    
+  
     getRBusInfo = "getRBusInfo",
     rbusInfo = "rbusInfo",
-    // getTurnouts = "getTurnouts",
-    // Turnouts = "Turnouts",
+
     alert = "alert",
     response = "response",
     systemInfo = "systemInfo",
@@ -70,30 +53,15 @@ export enum ApiCommands {
     setTimeSettings = "setTimeSettings",
 }
 
-
 export interface iData {
     type: ApiCommands,
     data: Object,
 }
 
-// export interface iAlertData {
-//     type: ApiCommands,
-//     msg: Object,
-// }
-
 export interface iLocoData {
     type: ApiCommands.getLoco,
     data: iLoco
 }
-
-
-// const gl: iLocoData = {type: ApiCommands.getLoco, data: {address:10, direction: DCCExDirections.forward, speed:10, functions:0}}
-// const sl: iLocoData = {type: ApiCommands.getLoco, data: {address:10, direction: DCCExDirections.forward, speed:10, functions:0}}
-// export interface iSettings {
-//     gridSize: number;
-//     turnoutActiveTimeMs: number;
-// }
-
 
 export interface iLocoFunction {
     id: number,
@@ -120,7 +88,6 @@ export interface iLocomotive {
     functionMap: number
 }
 
-
 export interface iLoco {
     address: number,
     speed: number,
@@ -129,48 +96,34 @@ export interface iLoco {
 }
 
 export interface iSetTurnout {
-    //cc: iCommandCenter,
     address: number,
     isClosed: boolean,
 }
 
 export interface iTurnoutInfo {
-    //cc: iCommandCenter,
     address: number,
     isClosed: boolean,
 }
 
 export interface iGetTurnout {
-    //cc: iCommandCenter,
-    address: number,
+     address: number,
 }
 
-// export interface iGetRBusInfo {
-//     //cc: iCommandCenter,
-// }
-
 export interface iSetBasicAccessory {
-    //cc: iCommandCenter
     address: number;
     value: boolean;
 }
 
 export interface iGetBasicAccessory {
-    //cc: iCommandCenter
     address: number;
 }
 
 export interface iExtAccessory {
-    //cc: iCommandCenter
     address: number;
     value: boolean;
 }
 
-
 export interface iRBus {
-    // on: boolean,
-    // locoAddress: number,
-    // dt: number
     group: number,
     bytes: number[]
 }
@@ -223,7 +176,6 @@ export enum iZ21STATUS {
 
 export interface iZ21Status {
     info: number,
-    //cc: iCommandCenter
 }
 
 export enum CommandCenterTypes {
@@ -238,20 +190,6 @@ export function getCommandCenterType(type: CommandCenterTypes) : string {
     return res ? res[type] : "Unknown"
 }
 
-
-// export interface iCommandCenter {
-//     //uuid?: string
-//     name: string
-//     type: CommandCenterTypes, 
-//     isLocoController: boolean
-// }
-
-
-// export interface iZ21CommandCenter extends iCommandCenter {
-//     ip: string,
-//     port: number
-// }
-
 export interface iSystemStatus {
     MainCurrent: number,
     ProgCurrent: number,
@@ -263,22 +201,16 @@ export interface iSystemStatus {
     CentralStateEx: number,
     Reserved: number,
     Capabilities: number,
-
 }
 
-// export interface iDCCExTCPCommandCenter extends iCommandCenter{
-//     ip: string,
-//     port: number
+
+// export class setDecoder implements iData {
+//     readonly type = ApiCommands.setBasicAccessory;
+//     data: iSetTurnout
+//     constructor(message: iSetTurnout) {
+//         this.data =  message;
+//     }
 // }
-
-export class setDecoder implements iData {
-    readonly type = ApiCommands.setBasicAccessory;
-    data: iSetTurnout
-
-    constructor(message: iSetTurnout) {
-        this.data =  message;
-    }
-}
 
 
 

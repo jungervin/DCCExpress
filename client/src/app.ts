@@ -3,23 +3,17 @@ import { Toolbar } from "./editor/toolbar";
 import { TurnoutDoubleElement, TurnoutElement, TurnoutLeftElement, TurnoutRightElement } from "./editor/turnout";
 import { Signal1Element } from "./editor/signals";
 import { RailView } from "./editor/view";
-import { Locos } from "./editor/loco";
-import { ApiCommands, iData, iGetTurnout, iLoco, iPowerInfo, iRBus, iSettings, iSetPower, iSetTurnout, iSystemStatus, setDecoder, Z21Directions, Z21POWERINFO, defaultSettings, iLocomotive, iBlockInfo, iTimeInfo } from "../../common/src/dcc";
+import { ApiCommands, iData, iGetTurnout, iLoco, iPowerInfo, iRBus, iSettings, iSetPower, iSetTurnout, iSystemStatus, defaultSettings, iLocomotive, iBlockInfo, iTimeInfo } from "../../common/src/dcc";
 import { Globals } from "./helpers/globals";
 import { Dialog } from "./controls/dialog";
 import { wsClient } from "./helpers/ws";
 import { toastManager, ToastManager } from "./controls/toastManager";
 import { Dispatcher } from "./editor/dispatcher";
 import { LocoControlPanel } from "./components/controlPanel";
-import { audioManager, AudioManager } from "./editor/audioButton";
 import { AccessoryDecoderElement } from "./editor/button";
 import { Api } from "./helpers/api";
 import { Task, Tasks } from "./helpers/task";
-import { RouteSwitchElement } from "./editor/route";
 import { Scheduler } from "./helpers/scheduler";
-import { MessageDialog } from "./dialogs/messageDialog";
-import { send } from "process";
-import { BlockElement } from "./editor/block";
 
 console.log(Dispatcher)
 console.log(ApiCommands)
@@ -117,23 +111,22 @@ export class App {
             Globals.Settings.Dispacher = s.Dispacher ?? defaultSettings.Dispacher
             Globals.Settings.EditorSettings = s.EditorSettings ?? defaultSettings.EditorSettings
 
-
-            //this.editor.fastClock!.setScaleFactor(Globals.Settings.EditorSettings.fastClockFactor)
             this.editor.fastClock!.visible = Globals.Settings.EditorSettings.ShowClock
-
+            toastManager.showToast("Settings Loaded", "success")
             Globals.fetchJsonData('/config.json').then((conf: any) => {
                 this.configLoaded(conf)
                 wsClient.send({ type: ApiCommands.getRBusInfo, data: "" })
 
+                toastManager.showToast("Config Loaded", "success")
                 
 
             }).catch((reason) => {
-                alert("Config Error:\n" + reason)
+                //toastManager.showToast("Config Not Loaded<br>"+ reason, "error")
             }).finally(() => {
             })
 
         }).catch((reason: any) => {
-            alert("Settings Error:\n" + reason)
+            //toastManager.showToast("Settings Not Loaded<br>"+ reason, "error")
         }).finally(() => {
 
         })
