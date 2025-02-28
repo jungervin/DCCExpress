@@ -28,6 +28,7 @@ class LocomotiveManager {
 
         //this.serverUrl = serverUrl;
         this.fetchLocomotives();
+        wsClient.connect()
     }
 
     private async fetchLocomotives() {

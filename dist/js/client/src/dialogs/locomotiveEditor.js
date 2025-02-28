@@ -28,6 +28,7 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/ws"], funct
             this.dialogContainer = dialogContainer;
             //this.serverUrl = serverUrl;
             this.fetchLocomotives();
+            ws_1.wsClient.connect();
         }
         fetchLocomotives() {
             return __awaiter(this, void 0, void 0, function* () {
