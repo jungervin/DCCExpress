@@ -66,6 +66,8 @@ export enum ApiCommands {
     saveSettings = "saveSettings",
     getSettings = "getSettings",
     settingsInfo = "settingsInfo",
+    timeInfo = "timeInfo",
+    setTimeSettings = "setTimeSettings",
 }
 
 
@@ -195,6 +197,12 @@ export interface iBlockInfo {
     locoAddress: number
 }
 
+export interface iSetTimeSettings {
+    scale: number
+}
+export interface iTimeInfo {
+    timestamp: number
+}
 export enum Z21POWERINFO {
     poweroff =0,
     poweron = 1,

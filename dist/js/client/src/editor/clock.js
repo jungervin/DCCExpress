@@ -6,6 +6,7 @@ define(["require", "exports"], function (require, exports) {
         // bufferCanvas: HTMLCanvasElement;
         // bufferCtx: CanvasRenderingContext2D;
         constructor(ctx, scaleFactor = 1) {
+            this.currentTime = new Date();
             this.visible = false;
             this.ctx = ctx;
             // this.bufferCanvas = document.createElement("canvas");
@@ -13,17 +14,23 @@ define(["require", "exports"], function (require, exports) {
             // this.bufferCanvas.height = this.ctx.canvas.height;
             // this.bufferCtx = this.bufferCanvas.getContext("2d")!;
             this.scaleFactor = scaleFactor;
-            this.currentTime = new Date();
-            this.start();
+            //this.currentTime = new Date();
+            //this.start();
         }
-        start() {
-            if (this.interval) {
-                clearInterval(this.interval);
-            }
-            this.interval = setInterval(() => this.update(), 1000 / this.scaleFactor);
-        }
+        // private start() {
+        //     if (this.interval) {
+        //         clearInterval(this.interval);
+        //     }
+        //     this.interval = setInterval(() =>
+        //         this.update(), 1000 / this.scaleFactor
+        //     );
+        // }
         update() {
-            this.currentTime.setSeconds(this.currentTime.getSeconds() + 1);
+            //this.currentTime.setSeconds(this.currentTime.getSeconds() + 1);
+            // const now = performance.now();
+            // const elapsedRealTime = now - this.lastUpdateTime;
+            // this.drawTime = new Date(this.currentTime.getTime() + elapsedRealTime * this.scaleFactor);
+            //this.lastUpdateTime = now;
             requestAnimationFrame(() => {
                 this.draw();
             });
@@ -114,9 +121,14 @@ define(["require", "exports"], function (require, exports) {
             this.ctx.lineWidth = width;
             this.ctx.stroke();
         }
-        setScaleFactor(factor) {
-            this.scaleFactor = Math.min(factor, 10);
-            this.start();
+        // public setScaleFactor(factor: number) {
+        //     this.scaleFactor = Math.min(factor, 10);
+        //     this.start();
+        // }
+        setCurrentTime(timestamp) {
+            this.currentTime = new Date(timestamp);
+            //this.lastUpdateTime = performance.now();
+            this.update();
         }
     }
     exports.FastClock = FastClock;

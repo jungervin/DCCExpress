@@ -13,7 +13,7 @@ import { TrackEndElement } from "./trackend";
 // import { GridState, UndoRedoManager } from "./undoman";
 import { RouteSwitchElement } from "./route";
 import { Dialog, DialogResult, Popup, ThemeColors } from "../controls/dialog";
-import { ApiCommands, getUUID, iSetBasicAccessory, iData, iSetTurnout, turnouts } from "../../../common/src/dcc";
+import { ApiCommands, getUUID, iSetBasicAccessory, iData, iSetTurnout, turnouts, iSetTimeSettings } from "../../../common/src/dcc";
 //import { IOConn } from "../helpers/iocon";
 import { PropertyPanel } from "../dialogs/propertiyPanel";
 import { BlockElement } from "./block";
@@ -483,10 +483,12 @@ export class CustomCanvas extends HTMLElement {
                     Globals.Settings.EditorSettings.ShowClock = d.showClock.checked
                     this.fastClock!.visible = d.showClock.checked
                     Globals.Settings.EditorSettings.fastClockFactor = d.fastClockFactor.value
-                    this.fastClock!.setScaleFactor(d.fastClockFactor.value)
+                    
                     Globals.saveJson("/settings.json", Globals.Settings)
                     //this.draw()
                     this.showAddresses(Globals.Settings.EditorSettings.ShowAddress)
+
+                    wsClient.send({type: ApiCommands.setTimeSettings, data: {scale:d.fastClockFactor.value } as iSetTimeSettings})
                 }
             }
         }

@@ -44,11 +44,11 @@ define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "
             this.showClock = new dialog_1.Checkbox("Show Clock");
             this.showClock.checked = (_a = globals_1.Globals.Settings.EditorSettings.ShowClock) !== null && _a !== void 0 ? _a : false;
             fastClockGroup.add(this.showClock);
-            const label1 = new dialog_1.Label("Factor (x1..x10)");
+            const label1 = new dialog_1.Label("Factor x(1..5)");
             fastClockGroup.add(label1);
             this.fastClockFactor = new dialog_1.InputNumber();
             this.fastClockFactor.minValue = 1;
-            this.fastClockFactor.maxValue = 10;
+            this.fastClockFactor.maxValue = 5;
             this.fastClockFactor.value = (_b = globals_1.Globals.Settings.EditorSettings.fastClockFactor) !== null && _b !== void 0 ? _b : 1;
             fastClockGroup.add(this.fastClockFactor);
             // ======= LOCO ================

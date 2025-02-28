@@ -4,7 +4,7 @@ import { TurnoutDoubleElement, TurnoutElement, TurnoutLeftElement, TurnoutRightE
 import { Signal1Element } from "./editor/signals";
 import { RailView } from "./editor/view";
 import { Locos } from "./editor/loco";
-import { ApiCommands, iData, iGetTurnout, iLoco, iPowerInfo, iRBus, iSettings, iSetPower, iSetTurnout, iSystemStatus, setDecoder, Z21Directions, Z21POWERINFO, defaultSettings, iLocomotive, iBlockInfo } from "../../common/src/dcc";
+import { ApiCommands, iData, iGetTurnout, iLoco, iPowerInfo, iRBus, iSettings, iSetPower, iSetTurnout, iSystemStatus, setDecoder, Z21Directions, Z21POWERINFO, defaultSettings, iLocomotive, iBlockInfo, iTimeInfo } from "../../common/src/dcc";
 import { Globals } from "./helpers/globals";
 import { Dialog } from "./controls/dialog";
 import { wsClient } from "./helpers/ws";
@@ -118,7 +118,7 @@ export class App {
             Globals.Settings.EditorSettings = s.EditorSettings ?? defaultSettings.EditorSettings
 
 
-            this.editor.fastClock!.setScaleFactor(Globals.Settings.EditorSettings.fastClockFactor)
+            //this.editor.fastClock!.setScaleFactor(Globals.Settings.EditorSettings.fastClockFactor)
             this.editor.fastClock!.visible = Globals.Settings.EditorSettings.ShowClock
 
             Globals.fetchJsonData('/config.json').then((conf: any) => {
@@ -209,6 +209,13 @@ export class App {
                     break;
                 case ApiCommands.UnsuccessfulOperation:
                     toastManager.showToast("UnsuccessfulOperation")
+                    break;
+                case ApiCommands.timeInfo:
+                    if(this.editor.fastClock) {
+                        const ti = msg.data as iTimeInfo
+                        this.editor.fastClock.setCurrentTime(ti.timestamp);
+                        
+                    }
                     break;
                 default: console.log("Unknow WS message:", msg)
                     break;

@@ -31,6 +31,7 @@ const dcc_1 = require("../../common/src/dcc");
 const commandcenters_1 = require("./commandcenters");
 const fs = __importStar(require("fs"));
 const utility_1 = require("./utility");
+const fastClock_1 = require("./fastClock");
 exports.wsServer = new ws_1.WebSocketServer({ server: server_1.server, path: "/ws" });
 function broadcastAll(msg) {
     exports.wsServer.clients.forEach(client => {
@@ -125,7 +126,7 @@ exports.wsServer.on("connection", (ws, req) => {
                 case dcc_1.ApiCommands.setBlock:
                     const sb = data;
                     if (!sb.blockName) {
-                        (0, utility_1.logError)("❌ Error: Invalid block name received!", sb);
+                        (0, utility_1.logError)("Error: Invalid block name received!", sb);
                         break;
                     }
                     for (const k of Object.keys(dcc_1.blocks)) {
@@ -142,6 +143,10 @@ exports.wsServer.on("connection", (ws, req) => {
                     }
                     (0, utility_1.log)("BROADCAST BLOCKS", dcc_1.blocks);
                     broadcastAll({ type: dcc_1.ApiCommands.blockInfo, data: { blocks: dcc_1.blocks } });
+                    break;
+                case dcc_1.ApiCommands.setTimeSettings:
+                    const ts = data;
+                    fastClock_1.FastClock.setFastClockFactor(ts.scale);
                     break;
                 default:
                     (0, utility_1.log)("WS Unknown command:", type);

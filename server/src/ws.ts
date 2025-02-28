@@ -1,10 +1,11 @@
 import WebSocket, { WebSocketServer } from "ws";
 import { CONFIG_FILE, server, SETTINGS_FILE } from "./server";
-import { ApiCommands, blocks, iBlockInfo, iData, iLoco, iLocoData, iSetBlock, locos } from "../../common/src/dcc";
+import { ApiCommands, blocks, iBlockInfo, iData, iLoco, iLocoData, iSetBlock, iSetTimeSettings, iTimeInfo, locos } from "../../common/src/dcc";
 import { commandCenters } from "./commandcenters";
 import * as fs from "fs";
 import { config } from "process";
 import { log, logError } from "./utility";
+import { FastClock } from "./fastClock";
 export const wsServer = new WebSocketServer({ server, path: "/ws" });
 
 export function broadcastAll(msg: iData) {
@@ -114,7 +115,7 @@ wsServer.on("connection", (ws, req) => {
                     const sb = data as iSetBlock
 
                     if (!sb.blockName) {
-                        logError("❌ Error: Invalid block name received!", sb);
+                        logError("Error: Invalid block name received!", sb);
                         break;
                     }
                     for (const k of Object.keys(blocks)) {
@@ -135,6 +136,10 @@ wsServer.on("connection", (ws, req) => {
                     broadcastAll({ type: ApiCommands.blockInfo, data: { blocks } } as iData)
                     break;
 
+                case ApiCommands.setTimeSettings:
+                    const ts = data as iSetTimeSettings
+                    FastClock.setFastClockFactor(ts.scale)
+                break;
                 default:
                     log("WS Unknown command:", type);
                     ws.send(JSON.stringify({ type: "error", data: "Unknown command" }));

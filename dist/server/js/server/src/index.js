@@ -36,37 +36,26 @@ console.log('');
 console.log('2025.02.03  v.0.1');
 console.log('');
 const os_1 = __importDefault(require("os"));
+// import http from "http";
 const fs = __importStar(require("fs"));
+// import path from "path";
+// import { v4 as uuidv4 } from 'uuid';
+// import express, { Request, Response } from 'express';
+// import { Server as IOServer } from 'socket.io';
 // import { Z21 } from "./z21";
 const dcc_1 = require("../../common/src/dcc");
 const commandcenters_1 = require("./commandcenters");
+// import bodyParser from 'body-parser';
+// import cors from 'cors';
+// import multer, { StorageEngine } from "multer";
 const server_1 = require("./server");
-// import { io } from "./io";
 const locomanager_1 = require("./locomanager");
-// import { DeviceManager, DEVICES_FILE } from "./devicemanager";
 const ws_1 = require("./ws");
 const z21commandcenter_1 = require("./z21commandcenter");
+// import { File, logError } from "./utility";
 // import { DeviceManager } from "./devicemanager";
 const dccExTCPCommandCenter_1 = require("./dccExTCPCommandCenter");
-//  PARAMS:
-//    cc Command Center
-//    ip
-//    port
-//    config
-// const args = process.argv;
-// console.log(args)
-// function getPrm(key: string): string {
-//   for (const a of args) {
-//     if(a.includes(key+"=")) {
-//       console.log("ARG:", a, 'POS:', a.includes(key+"="))
-//       console.log("SPLIT:", a.split("=")[1])
-//       return a.split("=")[1]
-//     }
-//   }
-//   return "NA"
-// }
-// const cc2 = getPrm("cc")
-// console.log("COMMAND CENTER:", cc2)
+const fastClock_1 = require("./fastClock");
 process.on('uncaughtException', function (err) {
     console.log('uncaughtException: ', err);
 });
@@ -104,6 +93,9 @@ try {
         dcc_1.defaultSettings.CommandCenter.serialPort = settings.CommandCenter.serialPort;
         dcc_1.defaultSettings.CommandCenter.turnoutActiveTime = settings.CommandCenter.turnoutActiveTime;
         dcc_1.defaultSettings.CommandCenter.basicAccessoryDecoderActiveTime = settings.CommandCenter.basicAccessoryDecoderActiveTime;
+        dcc_1.defaultSettings.EditorSettings.fastClockFactor = settings.EditorSettings.fastClockFactor;
+        fastClock_1.FastClock.setFastClockFactor(dcc_1.defaultSettings.EditorSettings.fastClockFactor);
+        // FastClock.start()
     }
     if (dcc_1.defaultSettings.CommandCenter.type == dcc_1.CommandCenterTypes.Z21) {
         commandcenters_1.commandCenters.cc = new z21commandcenter_1.Z21CommandCenter("z21", dcc_1.defaultSettings.CommandCenter.ip, dcc_1.defaultSettings.CommandCenter.port);

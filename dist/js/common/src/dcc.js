@@ -77,6 +77,8 @@ define(["require", "exports"], function (require, exports) {
         ApiCommands["saveSettings"] = "saveSettings";
         ApiCommands["getSettings"] = "getSettings";
         ApiCommands["settingsInfo"] = "settingsInfo";
+        ApiCommands["timeInfo"] = "timeInfo";
+        ApiCommands["setTimeSettings"] = "setTimeSettings";
     })(ApiCommands || (exports.ApiCommands = ApiCommands = {}));
     var Z21POWERINFO;
     (function (Z21POWERINFO) {

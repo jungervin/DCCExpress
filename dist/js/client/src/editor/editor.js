@@ -21,7 +21,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "./views", "bootstrap", "./curve", "./corner", "./signals", "./trackend", "./route", "../controls/dialog", "../../../common/src/dcc", "../dialogs/propertiyPanel", "./block", "../helpers/globals", "../dialogs/AppSettingsDialog", "../dialogs/dlgSignal2Select", "../dialogs/turnoutsPopup", "./label", "../helpers/utility", "../dialogs/codeEditor", "./dispatcher", "./button", "./audioButton", "./clock", "./emergencyButton", "./tree"], function (require, exports, track_1, rectangle_1, turnout_1, view_1, views_1, bootstrap, curve_1, corner_1, signals_1, trackend_1, route_1, dialog_1, dcc_1, propertiyPanel_1, block_1, globals_1, AppSettingsDialog_1, dlgSignal2Select_1, turnoutsPopup_1, label_1, utility_1, codeEditor_1, dispatcher_1, button_1, audioButton_1, clock_1, emergencyButton_1, tree_1) {
+define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "./views", "bootstrap", "./curve", "./corner", "./signals", "./trackend", "./route", "../controls/dialog", "../../../common/src/dcc", "../dialogs/propertiyPanel", "./block", "../helpers/globals", "../dialogs/AppSettingsDialog", "../dialogs/dlgSignal2Select", "../dialogs/turnoutsPopup", "../helpers/ws", "./label", "../helpers/utility", "../dialogs/codeEditor", "./dispatcher", "./button", "./audioButton", "./clock", "./emergencyButton", "./tree"], function (require, exports, track_1, rectangle_1, turnout_1, view_1, views_1, bootstrap, curve_1, corner_1, signals_1, trackend_1, route_1, dialog_1, dcc_1, propertiyPanel_1, block_1, globals_1, AppSettingsDialog_1, dlgSignal2Select_1, turnoutsPopup_1, ws_1, label_1, utility_1, codeEditor_1, dispatcher_1, button_1, audioButton_1, clock_1, emergencyButton_1, tree_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CustomCanvas = exports.drawModes = void 0;
@@ -392,10 +392,10 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         globals_1.Globals.Settings.EditorSettings.ShowClock = d.showClock.checked;
                         this.fastClock.visible = d.showClock.checked;
                         globals_1.Globals.Settings.EditorSettings.fastClockFactor = d.fastClockFactor.value;
-                        this.fastClock.setScaleFactor(d.fastClockFactor.value);
                         globals_1.Globals.saveJson("/settings.json", globals_1.Globals.Settings);
                         //this.draw()
                         this.showAddresses(globals_1.Globals.Settings.EditorSettings.ShowAddress);
+                        ws_1.wsClient.send({ type: dcc_1.ApiCommands.setTimeSettings, data: { scale: d.fastClockFactor.value } });
                     }
                 };
             };

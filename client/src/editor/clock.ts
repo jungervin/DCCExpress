@@ -2,9 +2,10 @@ export class FastClock {
     private canvas?: HTMLCanvasElement | null;
     private ctx: CanvasRenderingContext2D;
     private scaleFactor: number;
-    currentTime: Date;
+    currentTime: Date = new Date();
     interval?: NodeJS.Timeout | null;
     visible: boolean = false;
+    
     // bufferCanvas: HTMLCanvasElement;
     // bufferCtx: CanvasRenderingContext2D;
 
@@ -18,21 +19,26 @@ export class FastClock {
         // this.bufferCtx = this.bufferCanvas.getContext("2d")!;
 
         this.scaleFactor = scaleFactor;
-        this.currentTime = new Date();
-        this.start();
+        //this.currentTime = new Date();
+        //this.start();
     }
 
-    private start() {
-        if (this.interval) {
-            clearInterval(this.interval);
-        }
-        this.interval = setInterval(() =>
-            this.update(), 1000 / this.scaleFactor
-        );
-    }
+    // private start() {
+    //     if (this.interval) {
+    //         clearInterval(this.interval);
+    //     }
+    //     this.interval = setInterval(() =>
+    //         this.update(), 1000 / this.scaleFactor
+    //     );
+    // }
 
     public update() {
-        this.currentTime.setSeconds(this.currentTime.getSeconds() + 1);
+        //this.currentTime.setSeconds(this.currentTime.getSeconds() + 1);
+        // const now = performance.now();
+        // const elapsedRealTime = now - this.lastUpdateTime;
+        // this.drawTime = new Date(this.currentTime.getTime() + elapsedRealTime * this.scaleFactor);
+        //this.lastUpdateTime = now;
+        
         requestAnimationFrame(() => {
             this.draw();
         })
@@ -146,9 +152,15 @@ export class FastClock {
         this.ctx.stroke();
     }
 
-    public setScaleFactor(factor: number) {
-        this.scaleFactor = Math.min(factor, 10);
-        this.start();
+    // public setScaleFactor(factor: number) {
+    //     this.scaleFactor = Math.min(factor, 10);
+    //     this.start();
+    // }
+
+    setCurrentTime(timestamp: number) {
+        this.currentTime = new Date(timestamp)
+        //this.lastUpdateTime = performance.now();
+        this.update()
     }
 }
 

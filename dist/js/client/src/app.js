@@ -76,7 +76,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 globals_1.Globals.Settings.CommandCenterDCCExSerial = (_d = s.CommandCenterDCCExSerial) !== null && _d !== void 0 ? _d : dcc_1.defaultSettings.CommandCenterDCCExSerial;
                 globals_1.Globals.Settings.Dispacher = (_e = s.Dispacher) !== null && _e !== void 0 ? _e : dcc_1.defaultSettings.Dispacher;
                 globals_1.Globals.Settings.EditorSettings = (_f = s.EditorSettings) !== null && _f !== void 0 ? _f : dcc_1.defaultSettings.EditorSettings;
-                this.editor.fastClock.setScaleFactor(globals_1.Globals.Settings.EditorSettings.fastClockFactor);
+                //this.editor.fastClock!.setScaleFactor(Globals.Settings.EditorSettings.fastClockFactor)
                 this.editor.fastClock.visible = globals_1.Globals.Settings.EditorSettings.ShowClock;
                 globals_1.Globals.fetchJsonData('/config.json').then((conf) => {
                     this.configLoaded(conf);
@@ -148,6 +148,12 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                         break;
                     case dcc_1.ApiCommands.UnsuccessfulOperation:
                         toastManager_1.toastManager.showToast("UnsuccessfulOperation");
+                        break;
+                    case dcc_1.ApiCommands.timeInfo:
+                        if (this.editor.fastClock) {
+                            const ti = msg.data;
+                            this.editor.fastClock.setCurrentTime(ti.timestamp);
+                        }
                         break;
                     default:
                         console.log("Unknow WS message:", msg);
