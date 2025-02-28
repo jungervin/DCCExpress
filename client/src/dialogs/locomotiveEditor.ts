@@ -31,7 +31,8 @@ class LocomotiveManager {
     private async fetchLocomotives() {
         try {
             const response = await fetch(`/locomotives`);
-            this.locomotives = await response.json();
+            const locos = await response.json();
+            this.locomotives = locos.sort((a: iLocomotive, b: iLocomotive) => a.address - b.address);
             this.render();
         } catch (error) {
             console.error("Error fetching locomotives:", error);

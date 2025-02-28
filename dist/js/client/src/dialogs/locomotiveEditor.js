@@ -33,7 +33,8 @@ define(["require", "exports"], function (require, exports) {
             return __awaiter(this, void 0, void 0, function* () {
                 try {
                     const response = yield fetch(`/locomotives`);
-                    this.locomotives = yield response.json();
+                    const locos = yield response.json();
+                    this.locomotives = locos.sort((a, b) => a.address - b.address);
                     this.render();
                 }
                 catch (error) {
