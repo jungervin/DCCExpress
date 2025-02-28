@@ -118,23 +118,14 @@ export interface iLocomotive {
     direction: Z21Directions
     functions: iLocoFunction[]
     functionMap: number
-    // functions?: Array<{
-    //     id: number;
-    //     name: string;
-    //     momentary: boolean;
-    // }>;
 }
 
 
 export interface iLoco {
-    //cc: iCommandCenter,
     address: number,
-    //name: string,
     speed: number,
-    //prevSpeed: number,
-    direction: number, //eDirections,
+    direction: number,
     funcMap: number,
-    //functions: Array<iLocoFunction>
 }
 
 export interface iSetTurnout {

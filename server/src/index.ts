@@ -56,12 +56,16 @@ checkFile(DISPATCHER_FILE)
 checkFile(CC_FILE)
 console.log("------------------------------------------")
 
+let sigint = false
 process.on('SIGINT', () => {
-  console.log("SIGINT")
-  commandCenters.stop()
-  setTimeout(() => {
-    process.exit(0);
-  }, 500);
+  if (!sigint) {
+    console.log("SIGINT")
+    commandCenters.stop()
+    setTimeout(() => {
+      process.exit(0);
+    }, 500);
+  }
+  sigint = true
 });
 
 
@@ -83,7 +87,7 @@ try {
   }
 
   if (defaultSettings.CommandCenter.type == CommandCenterTypes.Z21) {
-    
+
     commandCenters.cc = new Z21CommandCenter("z21", defaultSettings.CommandCenter.ip, defaultSettings.CommandCenter.port)
     commandCenters.cc.TURNOUT_WAIT_TIME = defaultSettings.CommandCenter.turnoutActiveTime
     commandCenters.cc.BASICACCESSORY_WAIT_TIME = defaultSettings.CommandCenter.basicAccessoryDecoderActiveTime
@@ -93,7 +97,7 @@ try {
     commandCenters.start()
 
   }
-  else if(defaultSettings.CommandCenter.type == CommandCenterTypes.DCCExTCP) {
+  else if (defaultSettings.CommandCenter.type == CommandCenterTypes.DCCExTCP) {
     commandCenters.cc = new DCCExTCPCommandCenter("dcc-ex-tcp", defaultSettings.CommandCenter.ip, defaultSettings.CommandCenter.port)
     commandCenters.cc.TURNOUT_WAIT_TIME = defaultSettings.CommandCenter.turnoutActiveTime
     commandCenters.cc.BASICACCESSORY_WAIT_TIME = defaultSettings.CommandCenter.basicAccessoryDecoderActiveTime
@@ -121,12 +125,13 @@ server.listen(PORT, () => {
   // Lekérdezzük a hálózati interfészeket
   const interfaces = os.networkInterfaces();
   Object.keys(interfaces).forEach((iface) => {
-      interfaces[iface]?.forEach((details) => {
-          if (details.family === "IPv4" && !details.internal) {
-              console.log(`🌍 Accessible at: http://${details.address}:${PORT}`);
-          }
-      });
+    interfaces[iface]?.forEach((details) => {
+      if (details.family === "IPv4" && !details.internal) {
+        console.log(`🌍 Accessible at: http://${details.address}:${PORT}`);
+      }
+    });
   });
 
-  console.log("===============================");});
+  console.log("===============================");
+});
 

@@ -129,7 +129,6 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
                     transform: none;
                 }
 
-
             /* Modal háttér */
                 #modal {
                     display: none;
@@ -153,15 +152,12 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
                     padding: 10px;
                     border-radius: 10px;
                     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-                    
                     text-align: center;
-                    
                 }
 
                 /* Mozdony lista */
                 .loco-item {
                     display: flex;
-                    
                     overflow: auto;
                     align-items: center;
                     padding: 10px;
@@ -169,6 +165,7 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
                     border-bottom: 1px solid #ddd;
                     transition: background 0.3s;
                 }
+
                 /* Kijelölt mozdony */
                 .selected {
                     background: red !important;
@@ -181,7 +178,6 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
                 }
 
                 .loco-item img {
-                    
                     height: auto;
                     margin-right: 10px;
                     border-radius: 5px;
@@ -196,12 +192,14 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
                     color: white;
                     cursor: pointer;
                 }
+
                 #locoList {
                     height: 300px;
                     overflow: auto;
                     border-radius: 5px;
                     border: 1px solid #ddd;
                 }
+
                 #locoInfo {
                     min-width: 100px;
                     color: #222;
@@ -214,7 +212,6 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
                     justify-content: center;
                     text-align: center;
                     font-size: 2em;
-                    
                 }
 
                 #container #btnEmergency {
@@ -249,6 +246,17 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
                         fill: #000;
                     }
                 }                   
+
+                #container #locoModeInfo {
+                    width: 100%;
+                    background-color: gray;
+                    color: white;
+                    padding: 4px 0;
+                    border-radius:5px;
+                    margin: 4px 0;
+                    text-align: center;"
+                }
+
             </style>
         
             <div id="container" class="scrollable" >
@@ -265,6 +273,9 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
                     10
                 </div>
         
+                <div id="locoModeInfo">
+                    MANUAL
+                </div>
                 <div style="width: 100%">
                     <button id="btnEmergency">EMERGENCY STOP</button>
                 </div>
@@ -301,6 +312,7 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
             this.locoImage = shadow.getElementById("locoImage");
             this.locoName = shadow.getElementById("locoName");
             this.locoInfoElement = shadow.getElementById("locoInfo");
+            this.locoModeInfoElement = shadow.getElementById("locoModeInfo");
             this.locoImage.addEventListener("click", () => this.openLocoSelector());
             (_a = shadow.getElementById("closeModal")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => this.closeLocoSelector());
             this.btnEmergency = shadow.getElementById("btnEmergency");
@@ -486,7 +498,7 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
             });
         }
         renderLocoFunctions() {
-            var _a, _b, _c, _d;
+            var _a, _b;
             this.locoImage.src = this.currentLoco.imageUrl;
             this.locoName.innerText = `#${this.currentLoco.address} ${this.currentLoco.name}`;
             for (var i = 0; i <= 28; i++) {
@@ -502,20 +514,6 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
                 this.buttons[f.id].function = f;
             });
             this.updateUI();
-            return;
-            this.fnButtons.innerHTML = "";
-            (_d = (_c = this.currentLoco) === null || _c === void 0 ? void 0 : _c.functions) === null || _d === void 0 ? void 0 : _d.forEach((f) => {
-                const btn = document.createElement('button');
-                btn.style.backgroundColor = "cornflowerblue";
-                btn.function = f;
-                btn.onclick = (e) => {
-                    var _a;
-                    console.log((_a = btn.function) === null || _a === void 0 ? void 0 : _a.name);
-                };
-                btn.innerHTML = f.name;
-                this.fnButtons.appendChild(btn);
-            });
-            //this.body.appendChild(locoElement)
         }
         get currentLoco() {
             return this._currentLoco;

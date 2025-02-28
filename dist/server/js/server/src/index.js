@@ -76,12 +76,16 @@ checkFile(server_1.SETTINGS_FILE);
 checkFile(server_1.DISPATCHER_FILE);
 checkFile(server_1.CC_FILE);
 console.log("------------------------------------------");
+let sigint = false;
 process.on('SIGINT', () => {
-    console.log("SIGINT");
-    commandcenters_1.commandCenters.stop();
-    setTimeout(() => {
-        process.exit(0);
-    }, 500);
+    if (!sigint) {
+        console.log("SIGINT");
+        commandcenters_1.commandCenters.stop();
+        setTimeout(() => {
+            process.exit(0);
+        }, 500);
+    }
+    sigint = true;
 });
 locomanager_1.Locomanager.init();
 try {

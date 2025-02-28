@@ -14,7 +14,7 @@ const cLAN_SYSTEMSTATE_DATACHANGED0x84 = 0x84
 
 export class Z21CommandCenter extends CommandCenter {
 
-    private mutex = new Mutex();
+    //private mutex = new Mutex();
 
     trackPower(on: boolean): void {
         if (on) {
@@ -403,9 +403,9 @@ export class Z21CommandCenter extends CommandCenter {
     }
 
     async put(data: any) {
-        await this.mutex.lock()
+        //await this.mutex.lock()
         this.buffer.push(data)
-        this.mutex.unlock()
+        //this.mutex.unlock()
     }
 
 
@@ -432,24 +432,18 @@ export class Z21CommandCenter extends CommandCenter {
     }
 
 
-    async processBuffer() {
-        await this.mutex.lock()
+    processBuffer() {
+        //async processBuffer() {
+            //await this.mutex.lock()
 
         if (this.buffer.length > 0) {
             log('Z21 Task Üzenet start');
-
-
-
-
-            //var data = [0x08, 0x00, 0x50, 0x00, 0x03, 0x01, 0x00, 0x00]    
             var data: any[] = []
             while (this.buffer.length > 0 && data.length < 1024) {
                 const row = this.buffer.shift()
                 log('Z21 SendMessageTask: ' + arrayToHex(row))
                 data = data.concat(row)
             }
-
-            
 
             this.udpClient.send(Buffer.from(data), (err, bytes) => {
                 if (err) {
@@ -459,31 +453,24 @@ export class Z21CommandCenter extends CommandCenter {
                     this.lastMessageReceivedTime = performance.now()
                 }
             })
-           
         }
 
         if (performance.now() - this.lastMessageReceivedTime > 55000) {
             this.LAN_GET_SERIAL_NUMBER()
-            //this.LAN_LOGOFF()
-            //this.LAN_SYSTEMSTATE_GETDATA()
-            //this.LAN_SET_BROADCASTFLAGS()
-            // for (const [k, v] of Object.entries(this.locos)) {
-            //     this.LAN_X_GET_LOCO_INFO(v)
-            // }
         }
 
-        this.mutex.unlock()
+        //this.mutex.unlock()
     }
     start(): void {
         log("Z21 start()")
+        log("=========================================================")
+        log("TURNOUT_WAIT_TIME:", this.TURNOUT_WAIT_TIME)
+        log("BASICACCESSORY_WAIT_TIME:", this.BASICACCESSORY_WAIT_TIME)
+        log("=========================================================")
+
         if (!this.taskId) {
             log("Z21 Task started!")
             try {
-                //this.udp.bind(this.port, this.ip);
-                // this.udp.connect(this.port, this.ip, () => {
-                //     log("Z21 Connected")
-                // })
-                //this.LAN_LOGOFF()
                 this.LAN_SET_BROADCASTFLAGS()
                 this.LAN_SYSTEMSTATE_GETDATA()
 

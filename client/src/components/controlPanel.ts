@@ -26,6 +26,7 @@ export class LocoControlPanel extends HTMLElement {
     btnSpeed5: HTMLButtonElement;
     btnEmergency: any;
     locoName: HTMLDivElement;
+    locoModeInfoElement: HTMLElement;
 
 
 
@@ -144,7 +145,6 @@ export class LocoControlPanel extends HTMLElement {
                     transform: none;
                 }
 
-
             /* Modal háttér */
                 #modal {
                     display: none;
@@ -168,15 +168,12 @@ export class LocoControlPanel extends HTMLElement {
                     padding: 10px;
                     border-radius: 10px;
                     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-                    
                     text-align: center;
-                    
                 }
 
                 /* Mozdony lista */
                 .loco-item {
                     display: flex;
-                    
                     overflow: auto;
                     align-items: center;
                     padding: 10px;
@@ -184,6 +181,7 @@ export class LocoControlPanel extends HTMLElement {
                     border-bottom: 1px solid #ddd;
                     transition: background 0.3s;
                 }
+
                 /* Kijelölt mozdony */
                 .selected {
                     background: red !important;
@@ -196,7 +194,6 @@ export class LocoControlPanel extends HTMLElement {
                 }
 
                 .loco-item img {
-                    
                     height: auto;
                     margin-right: 10px;
                     border-radius: 5px;
@@ -211,12 +208,14 @@ export class LocoControlPanel extends HTMLElement {
                     color: white;
                     cursor: pointer;
                 }
+
                 #locoList {
                     height: 300px;
                     overflow: auto;
                     border-radius: 5px;
                     border: 1px solid #ddd;
                 }
+
                 #locoInfo {
                     min-width: 100px;
                     color: #222;
@@ -229,7 +228,6 @@ export class LocoControlPanel extends HTMLElement {
                     justify-content: center;
                     text-align: center;
                     font-size: 2em;
-                    
                 }
 
                 #container #btnEmergency {
@@ -264,6 +262,17 @@ export class LocoControlPanel extends HTMLElement {
                         fill: #000;
                     }
                 }                   
+
+                #container #locoModeInfo {
+                    width: 100%;
+                    background-color: gray;
+                    color: white;
+                    padding: 4px 0;
+                    border-radius:5px;
+                    margin: 4px 0;
+                    text-align: center;"
+                }
+
             </style>
         
             <div id="container" class="scrollable" >
@@ -280,6 +289,9 @@ export class LocoControlPanel extends HTMLElement {
                     10
                 </div>
         
+                <div id="locoModeInfo">
+                    MANUAL
+                </div>
                 <div style="width: 100%">
                     <button id="btnEmergency">EMERGENCY STOP</button>
                 </div>
@@ -317,6 +329,7 @@ export class LocoControlPanel extends HTMLElement {
         this.locoImage = shadow.getElementById("locoImage") as HTMLImageElement
         this.locoName = shadow.getElementById("locoName") as HTMLDivElement
         this.locoInfoElement = shadow.getElementById("locoInfo") as HTMLElement
+        this.locoModeInfoElement = shadow.getElementById("locoModeInfo") as HTMLElement
         this.locoImage.addEventListener("click", () => this.openLocoSelector());
         shadow.getElementById("closeModal")?.addEventListener("click", () => this.closeLocoSelector());
 
@@ -522,7 +535,6 @@ export class LocoControlPanel extends HTMLElement {
             this.buttons[i].className = ''
             this.buttons[i].function = undefined;
             this.buttons[i].innerHTML = `F${i}`
-
         }
 
         this.currentLoco?.functions?.forEach((f) => {
@@ -533,23 +545,6 @@ export class LocoControlPanel extends HTMLElement {
         })
 
         this.updateUI()
-
-
-        return
-        this.fnButtons.innerHTML = "";
-
-        this.currentLoco?.functions?.forEach((f) => {
-            const btn: FunctionButton = document.createElement('button') as FunctionButton
-            btn.style.backgroundColor = "cornflowerblue"
-            btn.function = f
-            btn.onclick = (e) => {
-                console.log(btn.function?.name)
-            }
-            btn.innerHTML = f.name
-            this.fnButtons.appendChild(btn)
-        })
-
-        //this.body.appendChild(locoElement)
     }
 
 
