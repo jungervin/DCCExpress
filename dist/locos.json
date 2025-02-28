@@ -33,7 +33,7 @@
       {
         "id": 4,
         "name": "Alváz síp",
-        "momentary": false,
+        "momentary": true,
         "isOn": false
       },
       {
@@ -51,7 +51,7 @@
       {
         "id": 8,
         "name": "Ajtó",
-        "momentary": false,
+        "momentary": true,
         "isOn": false
       },
       {
