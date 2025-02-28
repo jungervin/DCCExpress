@@ -69,7 +69,7 @@ export class Locomanager {
 
         // Add a new locomotive
         app.post("/locomotives", (req, res) => {
-            const { name, address, imageUrl, speedMode } = req.body;
+            const { name, address, imageUrl, speedMode, functions } = req.body;
             const locomotives = readLocosFile();
             const newLocomotive = {
                 id: uuidv4(),
@@ -77,6 +77,7 @@ export class Locomanager {
                 address,
                 imageUrl,
                 speedMode,
+                functions,
             };
             locomotives.push(newLocomotive);
             writeLocosFile(locomotives);

@@ -97,6 +97,7 @@ define(["require", "exports"], function (require, exports) {
                             <td>${locomotive.address}</td>
                             <td>${locomotive.speedMode}</td>
                             <td>
+                                <button class="btn btn-primary btn-sm duplicate">Duplicate</button>
                                 <button class="btn btn-warning btn-sm edit-locomotive">Edit</button>
                                  <button class="btn btn-info btn-sm edit-functions">Edit Functions</button>
                                 <button class="btn btn-danger btn-sm delete-locomotive">Delete</button>
@@ -114,6 +115,21 @@ define(["require", "exports"], function (require, exports) {
             (_a = this.tableContainer.querySelector("#add-locomotive")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => {
                 this.openDialog();
             });
+            this.tableContainer.querySelectorAll(".duplicate").forEach((button) => button.addEventListener("click", (event) => {
+                const row = event.target.closest("tr");
+                if (row) {
+                    const id = row.getAttribute("data-id");
+                    const locomotive = this.locomotives.find((loco) => loco.id === id);
+                    if (locomotive) {
+                        const clone = JSON.parse(JSON.stringify(locomotive));
+                        clone.id = undefined;
+                        clone.address = 3;
+                        clone.name = "KLÓN";
+                        this.locomotives.push(clone);
+                        this.openDialog(clone);
+                    }
+                }
+            }));
             this.tableContainer.querySelectorAll(".edit-locomotive").forEach((button) => button.addEventListener("click", (event) => {
                 const row = event.target.closest("tr");
                 if (row) {
