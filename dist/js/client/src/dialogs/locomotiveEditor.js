@@ -389,7 +389,7 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/ws"], funct
             <td><input type="number" class="form-control" placeholder="Fn"></td>
             <td><input type="text" class="form-control" placeholder="Name"></td>
             <td><input type="checkbox" class="form-check-input"></td>
-            <td><button class="btn btn-primary btn-sm test-function">TEST</button></td>
+            <td><button class="btn btn-secondary btn-sm test-function">TEST</button></td>
             <td>
                 <button class="btn btn-danger btn-sm delete-function">Delete</button>
             </td>

@@ -1,14 +1,14 @@
 [
   {
     "id": "24cafcc7-0741-4ce7-9015-4b5794dc9662",
-    "name": "BOBÓ",
+    "name": "M44 148 BOBÓ",
     "address": 18,
     "imageUrl": "/uploads/1738397309175-11w5cd9LEynn8fsxdEZym-kDshveDzWB7mdmgutgP.png",
     "speedMode": "128",
     "functions": [
       {
         "id": 0,
-        "name": "Lámpa",
+        "name": "Világítás",
         "momentary": false,
         "isOn": false
       },
@@ -32,13 +32,109 @@
       },
       {
         "id": 4,
-        "name": "Valami",
+        "name": "Alváz síp",
         "momentary": false,
         "isOn": false
       },
       {
         "id": 5,
-        "name": "F6",
+        "name": "Fény Tompítás",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 6,
+        "name": "Tolató mód",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 8,
+        "name": "Ajtó",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 9,
+        "name": "Hangerő",
+        "momentary": true,
+        "isOn": false
+      },
+      {
+        "id": 10,
+        "name": "Géptér ajtó",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 11,
+        "name": "Fújás",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 12,
+        "name": "Ív csikorgás",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 13,
+        "name": "Homokoló",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 14,
+        "name": "Kézífék",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 15,
+        "name": "Csatolás",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 16,
+        "name": "Csikorgás, Kattogás",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 17,
+        "name": "Fék levegő",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 18,
+        "name": "Bemondó 1",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 19,
+        "name": "Bemondó 2",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 20,
+        "name": "Motorpörgetés",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 23,
+        "name": "Fülkevilágítás",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 28,
+        "name": "Némítás",
         "momentary": false,
         "isOn": false
       }
