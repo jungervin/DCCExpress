@@ -299,7 +299,7 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/ws"], funct
                                                 <td><input type="number" class="form-control" value="${func.id}"></td>
                                                 <td><input type="text" class="form-control" value="${func.name}"></td>
                                                 <td><input type="checkbox" class="form-check-input" ${func.momentary ? "checked" : ""}></td>
-                                                <td><button class="btn btn-primary btn-sm test-function" address="${locomotive.address}" function="${func.id}">TEST</button></td>
+                                                <td><button class="btn btn-secondary btn-sm test-function" address="${locomotive.address}" function="${func.id}">TEST</button></td>
                                                 <td><button class="btn btn-danger btn-sm delete-function">Delete</button></td>
                                             </tr>
                                         `).join("")) || ""}
@@ -334,9 +334,37 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/ws"], funct
                             name: nameInput ? nameInput.value : "",
                             momentary: momentaryInput ? momentaryInput.checked : false,
                         };
-                        const data = { address: locomotive.address, id: rowData.id, isOn: true };
-                        ws_1.wsClient.send({ type: dcc_1.ApiCommands.setLocoFunction, data: data });
+                        if (clickedButton.classList.contains("btn-secondary")) {
+                            clickedButton.classList.remove("btn-secondary");
+                            clickedButton.classList.add("btn-primary");
+                            const data = { address: locomotive.address, id: rowData.id, isOn: true };
+                            ws_1.wsClient.send({ type: dcc_1.ApiCommands.setLocoFunction, data: data });
+                        }
+                        else {
+                            clickedButton.classList.add("btn-secondary");
+                            clickedButton.classList.remove("btn-primary");
+                            const data = { address: locomotive.address, id: rowData.id, isOn: false };
+                            ws_1.wsClient.send({ type: dcc_1.ApiCommands.setLocoFunction, data: data });
+                        }
                         console.log(rowData);
+                    }
+                    else {
+                        console.log("No parent <tr> found");
+                    }
+                });
+                elem.addEventListener("mouseup", (e) => {
+                    const clickedButton = e.currentTarget;
+                    const parentRow = clickedButton.closest("tr");
+                    if (parentRow) {
+                        const idInput = parentRow.querySelector("input[type='number']");
+                        const nameInput = parentRow.querySelector("input[type='text']");
+                        const momentaryInput = parentRow.querySelector("input[type='checkbox']");
+                        if (momentaryInput.checked == true) {
+                            clickedButton.classList.add("btn-secondary");
+                            clickedButton.classList.remove("btn-primary");
+                            const data = { address: locomotive.address, id: parseInt(idInput.value, 10), isOn: false };
+                            ws_1.wsClient.send({ type: dcc_1.ApiCommands.setLocoFunction, data: data });
+                        }
                     }
                     else {
                         console.log("No parent <tr> found");

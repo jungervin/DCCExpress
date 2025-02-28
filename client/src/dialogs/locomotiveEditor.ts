@@ -325,7 +325,7 @@ class LocomotiveManager {
                                                 <td><input type="number" class="form-control" value="${func.id}"></td>
                                                 <td><input type="text" class="form-control" value="${func.name}"></td>
                                                 <td><input type="checkbox" class="form-check-input" ${func.momentary ? "checked" : ""}></td>
-                                                <td><button class="btn btn-primary btn-sm test-function" address="${locomotive.address}" function="${func.id}">TEST</button></td>
+                                                <td><button class="btn btn-secondary btn-sm test-function" address="${locomotive.address}" function="${func.id}">TEST</button></td>
                                                 <td><button class="btn btn-danger btn-sm delete-function">Delete</button></td>
                                             </tr>
                                         `).join("") || ""}
@@ -352,26 +352,51 @@ class LocomotiveManager {
 
         testelems.forEach((elem) => {
             elem.addEventListener("mousedown", (e) => {
-                
                 const clickedButton = e.currentTarget as HTMLButtonElement;
-                
                 const parentRow = clickedButton.closest("tr");
-
                 if (parentRow) {
                     const idInput = parentRow.querySelector("input[type='number']") as HTMLInputElement;
                     const nameInput = parentRow.querySelector("input[type='text']") as HTMLInputElement;
                     const momentaryInput = parentRow.querySelector("input[type='checkbox']") as HTMLInputElement;
-
                     const rowData = {
                         id: idInput ? parseInt(idInput.value, 10) : null,
                         name: nameInput ? nameInput.value : "",
                         momentary: momentaryInput ? momentaryInput.checked : false,
                     };
-
-                    const data: iSetLocoFunction = {address: locomotive.address, id: rowData.id!, isOn: true}
-                    wsClient.send({type: ApiCommands.setLocoFunction, data: data})
+                    if (clickedButton.classList.contains("btn-secondary")) {
+                        clickedButton.classList.remove("btn-secondary")
+                        clickedButton.classList.add("btn-primary")
+                        const data: iSetLocoFunction = { address: locomotive.address, id: rowData.id!, isOn: true }
+                        wsClient.send({ type: ApiCommands.setLocoFunction, data: data })
+                    } else {
+                        clickedButton.classList.add("btn-secondary")
+                        clickedButton.classList.remove("btn-primary")
+                        const data: iSetLocoFunction = { address: locomotive.address, id: rowData.id!, isOn: false }
+                        wsClient.send({ type: ApiCommands.setLocoFunction, data: data })
+                    }
 
                     console.log(rowData)
+                } else {
+                    console.log("No parent <tr> found");
+                }
+            })
+
+            elem.addEventListener("mouseup", (e) => {
+                const clickedButton = e.currentTarget as HTMLButtonElement;
+                const parentRow = clickedButton.closest("tr");
+                if (parentRow) {
+                    const idInput = parentRow.querySelector("input[type='number']") as HTMLInputElement;
+                    const nameInput = parentRow.querySelector("input[type='text']") as HTMLInputElement;
+                    const momentaryInput = parentRow.querySelector("input[type='checkbox']") as HTMLInputElement;
+                    if (momentaryInput.checked == true) {
+
+                        clickedButton.classList.add("btn-secondary")
+                        clickedButton.classList.remove("btn-primary")
+
+                        const data: iSetLocoFunction = { address: locomotive.address, id: parseInt(idInput.value, 10), isOn: false }
+                        wsClient.send({ type: ApiCommands.setLocoFunction, data: data })
+                    }
+
                 } else {
                     console.log("No parent <tr> found");
                 }
