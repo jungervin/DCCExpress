@@ -20,7 +20,7 @@ export class SRFlipFlop {
     }
 }
 
-class SRFlipFlopManager {
+export class SRFlipFlopManager {
     private static flipFlops: Map<string, SRFlipFlop> = new Map();
 
     public static get(id: string): SRFlipFlop {
