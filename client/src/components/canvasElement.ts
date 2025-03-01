@@ -187,6 +187,7 @@ export class TurnoutDoubleCanvasElement extends CanvasElement {
         this.turnout!.t2OpenValue = turnout.t2OpenValue
         this.turnout!.t1Closed = t1Closed
         this.turnout!.t2Closed = t2Closed
+        this.turnout!.angle = turnout.angle
         this.draw()
     }
     draw() {

@@ -340,8 +340,110 @@
         "isOn": false
       },
       {
+        "id": 2,
+        "name": "Kürt1",
+        "momentary": true,
+        "isOn": false
+      },
+      {
         "id": 3,
-        "name": "RKürt",
+        "name": "Kürt2",
+        "momentary": true,
+        "isOn": false
+      },
+      {
+        "id": 4,
+        "name": "Alváz kürt",
+        "momentary": true,
+        "isOn": false
+      },
+      {
+        "id": 5,
+        "name": "Fény Tomp",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 6,
+        "name": "Tolatás",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 7,
+        "name": "Bemondó1",
+        "momentary": true,
+        "isOn": false
+      },
+      {
+        "id": 8,
+        "name": "Bemondó2",
+        "momentary": true,
+        "isOn": false
+      },
+      {
+        "id": 9,
+        "name": "Hangerő",
+        "momentary": true,
+        "isOn": false
+      },
+      {
+        "id": 11,
+        "name": "ÖsszeKapcs.",
+        "momentary": true,
+        "isOn": false
+      },
+      {
+        "id": 12,
+        "name": "Ív hang",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 13,
+        "name": "SzétKapcs.",
+        "momentary": true,
+        "isOn": false
+      },
+      {
+        "id": 14,
+        "name": "A Menetfény Le",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 16,
+        "name": "B Menetfény Le",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 17,
+        "name": "A Fülke fény",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 19,
+        "name": "B Fülke fény",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 20,
+        "name": "Motorpörg.",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 28,
+        "name": "Némítás",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 18,
+        "name": "Síp",
         "momentary": true,
         "isOn": false
       }
