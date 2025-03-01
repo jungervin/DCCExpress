@@ -30,7 +30,13 @@ define(["require", "exports", "../controls/toastManager", "../helpers/api"], fun
         static exec() {
             if (Dispatcher.currentScriptFunction) {
                 try {
-                    Dispatcher.currentScriptFunction(Dispatcher.App, api_1.Api);
+                    //Dispatcher.currentScriptFunction(Dispatcher.App, Api);
+                    if (window.dispatcherLoop) {
+                        window.dispatcherLoop();
+                    }
+                    else {
+                        Dispatcher.currentScriptFunction(Dispatcher.App, api_1.Api);
+                    }
                 }
                 catch (error) {
                     console.error("❌Dispatcher: Hiba a script futtatása közben:", error);
@@ -55,7 +61,20 @@ define(["require", "exports", "../controls/toastManager", "../helpers/api"], fun
                     Dispatcher.scriptContent = yield response.text();
                     console.log(`📥Dispatcher: Betöltött fájl: ${filePath}`);
                     this.currentScriptFunction = new Function("App", 'Api', "with (App, Api) { " + this.scriptContent + " }");
+                    // First Run
                     this.currentScriptFunction(Dispatcher.App, api_1.Api);
+                    if (window.dispatcherInit) {
+                        window.dispatcherInit();
+                    }
+                    else {
+                        toastManager_1.toastManager.showToast("Could not find window.dispatcherInit function", "warning");
+                    }
+                    if (window.dispatcherLoop) {
+                        window.dispatcherLoop();
+                    }
+                    else {
+                        toastManager_1.toastManager.showToast("Could not find dispatcherLoop function", "warning");
+                    }
                     toastManager_1.toastManager.showToast(Dispatcher.icon + " Dispathcer Started!", "success");
                     this.intervalId = setInterval(() => {
                         Dispatcher.exec();

@@ -48,6 +48,7 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/ws"], funct
                 try {
                     const method = locomotive.id ? "PUT" : "POST";
                     const endpoint = locomotive.id ? `/locomotives/${locomotive.id}` : "/locomotives";
+                    locomotive.functions = locomotive.functions.sort((a, b) => a.id - b.id);
                     const response = yield fetch(`${endpoint}`, {
                         method,
                         headers: { "Content-Type": "application/json" },

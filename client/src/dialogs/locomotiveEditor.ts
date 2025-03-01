@@ -5,7 +5,7 @@
 // }
 
 import { getUUID } from "../helpers/utility";
-import { ApiCommands, iLocomotive, iSetLocoFunction } from "../../../common/src/dcc";
+import { ApiCommands, iLocoFunction, iLocomotive, iSetLocoFunction } from "../../../common/src/dcc";
 import { wsClient } from "../helpers/ws";
 import { remove } from "lodash";
 
@@ -46,6 +46,8 @@ class LocomotiveManager {
         try {
             const method = locomotive.id ? "PUT" : "POST";
             const endpoint = locomotive.id ? `/locomotives/${locomotive.id}` : "/locomotives";
+
+            locomotive.functions = locomotive.functions.sort((a: iLocoFunction, b: iLocoFunction) => a.id - b.id);
 
             const response = await fetch(`${endpoint}`, {
                 method,

@@ -141,33 +141,6 @@
     ]
   },
   {
-    "id": "4",
-    "name": "2182",
-    "address": 11,
-    "imageUrl": "/uploads/1738397370188-csorgo.png",
-    "speedMode": "128",
-    "functions": [
-      {
-        "id": 0,
-        "name": "Világítás",
-        "momentary": false,
-        "isOn": false
-      },
-      {
-        "id": 1,
-        "name": "Motor",
-        "momentary": false,
-        "isOn": false
-      },
-      {
-        "id": 3,
-        "name": "RKürt",
-        "momentary": true,
-        "isOn": false
-      }
-    ]
-  },
-  {
     "id": "b1b81ea6-727a-42c6-8983-7451a0897d1f",
     "name": "M62 228",
     "address": 3,
@@ -322,7 +295,7 @@
   },
   {
     "id": "f1398049-4614-49fa-bfa9-84c49ce18e94",
-    "name": "2162",
+    "name": "M41 2182",
     "address": 10,
     "imageUrl": "/uploads/1738397370188-csorgo.png",
     "speedMode": "128",
@@ -424,6 +397,12 @@
         "isOn": false
       },
       {
+        "id": 18,
+        "name": "Síp",
+        "momentary": true,
+        "isOn": false
+      },
+      {
         "id": 19,
         "name": "B Fülke fény",
         "momentary": false,
@@ -440,11 +419,134 @@
         "name": "Némítás",
         "momentary": false,
         "isOn": false
+      }
+    ]
+  },
+  {
+    "id": "4956a82a-cd72-4924-b7e7-8911ef040b10",
+    "name": "M41 2169",
+    "address": 11,
+    "imageUrl": "/uploads/1738397370188-csorgo.png",
+    "speedMode": "128",
+    "functions": [
+      {
+        "id": 0,
+        "name": "Világítás",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 1,
+        "name": "Motor",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 2,
+        "name": "Kürt1",
+        "momentary": true,
+        "isOn": false
+      },
+      {
+        "id": 3,
+        "name": "Kürt2",
+        "momentary": true,
+        "isOn": false
+      },
+      {
+        "id": 4,
+        "name": "Alváz kürt",
+        "momentary": true,
+        "isOn": false
+      },
+      {
+        "id": 5,
+        "name": "Fény Tomp",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 6,
+        "name": "Tolatás",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 7,
+        "name": "Bemondó1",
+        "momentary": true,
+        "isOn": false
+      },
+      {
+        "id": 8,
+        "name": "Bemondó2",
+        "momentary": true,
+        "isOn": false
+      },
+      {
+        "id": 9,
+        "name": "Hangerő",
+        "momentary": true,
+        "isOn": false
+      },
+      {
+        "id": 11,
+        "name": "ÖsszeKapcs.",
+        "momentary": true,
+        "isOn": false
+      },
+      {
+        "id": 12,
+        "name": "Ív hang",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 13,
+        "name": "SzétKapcs.",
+        "momentary": true,
+        "isOn": false
+      },
+      {
+        "id": 14,
+        "name": "A Menetfény Le",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 16,
+        "name": "B Menetfény Le",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 17,
+        "name": "A Fülke fény",
+        "momentary": false,
+        "isOn": false
       },
       {
         "id": 18,
         "name": "Síp",
         "momentary": true,
+        "isOn": false
+      },
+      {
+        "id": 19,
+        "name": "B Fülke fény",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 20,
+        "name": "Motorpörg.",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 28,
+        "name": "Némítás",
+        "momentary": false,
         "isOn": false
       }
     ]

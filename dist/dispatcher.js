@@ -20,14 +20,24 @@ const rb15 = Api.getSensor(15)
 const rb16 = Api.getSensor(16)
 const rb24 = Api.getSensor(24)
 
-const l18 = Api.getLoco(18)
-console.log(l18)
 
 const block198 = Api.getElement("block198")
 const block199 = Api.getElement("block199")
 const block202 = Api.getElement("block202")
 const block203 = Api.getElement("block203")
 
+
+let loco18 = undefined
+window.dispatcherInit2 = function init(app) {
+    loco18 = Api.getLoco(18)
+    console.log(loco18)
+}
+
+
+window.dispatcherLoop2 = function() {
+    console.log("dispatcherLoop")
+    console.log(loco18)
+}
 //==================================
 // INIT
 //==================================

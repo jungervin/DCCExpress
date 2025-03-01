@@ -3,6 +3,8 @@ import { CommandCenterTypes, DCCExDirections, defaultSettings, iPowerInfo, iSett
 declare global {
     interface Window {
         invalidate: () => void;
+        dispatcherInit?: () => void;
+        dispatcherLoop?: () => void;
         powerChanged: (pi: iPowerInfo) => void;
         
     }
