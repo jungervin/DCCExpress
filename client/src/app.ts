@@ -14,6 +14,7 @@ import { AccessoryDecoderElement } from "./editor/button";
 import { Api } from "./helpers/api";
 import { Task, Tasks } from "./helpers/task";
 import { Scheduler } from "./helpers/scheduler";
+import { CommandCenterSettingsDialog } from "./dialogs/commandCenterSettingsDialog";
 
 console.log(Dispatcher)
 console.log(ApiCommands)
@@ -96,6 +97,12 @@ export class App {
             this.editor.canvas.height = window.innerHeight;
             this.editor.draw()
         })
+
+        this.toolbar.btnCommandCenterSettings!.onclick = (e) => {
+            const cc =new CommandCenterSettingsDialog()
+            
+        }
+
 
         this.editor.init()
 
