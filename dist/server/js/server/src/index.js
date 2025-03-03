@@ -91,39 +91,9 @@ try {
         fastClock_1.FastClock.setFastClockFactor(dcc_1.defaultSettings.EditorSettings.fastClockFactor);
         // FastClock.start()
     }
-    //   const ccSettings = JSON.parse(fs.readFileSync(COMMANDCENTER_SETTING_FILE, 'utf8')) as iCommandCenter;
-    //   if (ccSettings.type == CommandCenterTypes.Z21) {
-    //     const z21 = ccSettings.commandCenter as iZ21CommandCenter
-    //     commandCenters.cc = new Z21CommandCenter("z21", z21.ip, z21.port)
-    //     commandCenters.cc.TURNOUT_WAIT_TIME = z21.turnoutActiveTime
-    //     commandCenters.cc.BASICACCESSORY_WAIT_TIME = z21.basicAccessoryDecoderActiveTime
-    //     console.log("Z21 Command Center Registered!")
-    //     console.log("IP:", z21.ip)
-    //     console.log("Port:", z21.port)
-    //     commandCenters.start()
-    //   }
-    //   else if (ccSettings.type == CommandCenterTypes.DCCExTCP) {
-    //     const dccextcp = ccSettings.commandCenter as iDCCExTcp
-    //     commandCenters.cc = new DCCExTCPCommandCenter("dcc-ex-tcp", dccextcp.ip, dccextcp.port)
-    //     commandCenters.cc.TURNOUT_WAIT_TIME = 0 //dccextcp.turnoutActiveTime
-    //     commandCenters.cc.BASICACCESSORY_WAIT_TIME = 0 //dccextcp.basicAccessoryDecoderActiveTime
-    //     console.log("DCCEx TCP Command Center Registered!")
-    //     console.log("IP:", dccextcp.ip)
-    //     console.log("Port:", dccextcp.port)
-    //     commandCenters.start()
-    //   }
-    //   else if (ccSettings.type == CommandCenterTypes.DCCExSerial) {
-    //     const dccexserial = ccSettings.commandCenter as iDCCExSerial
-    //     commandCenters.cc = new DccExSerialCommandCenter("dcc-ex-serial", dccexserial.port, 115200)
-    //     commandCenters.cc.TURNOUT_WAIT_TIME = 0 //dccextcp.turnoutActiveTime
-    //     commandCenters.cc.BASICACCESSORY_WAIT_TIME = 0 //dccextcp.basicAccessoryDecoderActiveTime
-    //     console.log("DCCEx Serial Command Center Registered!")
-    //     console.log("Port:", dccexserial.port)
-    //     commandCenters.start()
-    //   }
 }
 catch (error) {
-    console.log("ServerSetting Error:", error);
+    console.log("Setting Error:", error);
 }
 if (ws_1.wsServer) {
     console.log("WS running");
