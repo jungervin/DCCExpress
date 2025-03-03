@@ -2,17 +2,18 @@ import * as net from "net";
 import { log, logError } from "./utility";
 
 export class TCPClient {
-    private client: net.Socket | null = null;
+     socket: net.Socket | null = null;
     private isStopped: boolean = true;
+    reconnectTimer: NodeJS.Timeout | undefined;
 
     constructor(
         private host: string,
         private port: number,
         private reconnectDelay: number = 5000,
         private onConnected: () => void,
-        private onData: (data: any) => void ,
+        private onData: (data: any) => void,
         private onError: (error: Error) => void
-    ) {}
+    ) { }
 
     public start() {
         if (!this.isStopped) {
@@ -30,10 +31,10 @@ export class TCPClient {
     }
 
     public send(message: string, callback: (err?: Error) => void) {
-        if (this.client && !this.client.destroyed && !this.client.closed) {
+        if (this.socket && !this.socket.destroyed && !this.socket.closed) {
             log(`TCP Küldés: ${message}`);
             //this.client.write(message + "\n");
-            this.client.write(message);
+            this.socket.write(message);
         } else {
             logError("Nincs aktív kapcsolat, nem lehet üzenetet küldeni.");
         }
@@ -41,30 +42,46 @@ export class TCPClient {
 
     private connectToServer() {
         log("tcpClient.connectToServer()");
-
-        this.client = new net.Socket();
-
-        this.client.connect(this.port, this.host, () => {
+        clearTimeout(this.reconnectTimer)
+        this.socket = new net.Socket();
+        this.socket.setTimeout(6000)
+        this.socket.connect(this.port, this.host, () => {
+            this.socket!.setTimeout(6000)
+            
             log(`tcpClient Connected: ${this.host}:${this.port}`);
             //this.startKeepAlive();
-            if(this.onConnected) {
+            if (this.onConnected) {
                 this.onConnected()
             }
         });
 
-        this.client.on("data", (data) => {
+        this.socket.on('timeout', () => {
+            log('socket timeout');
+            this.reconnect()
+            // if(this.socket) {
+            //     this.socket.end();
+            // }
+          });        
+
+          this.socket.on('end', () => {
+            log('socket timeout');
+            this.reconnect()
+          });        
+
+        this.socket.on("data", (data) => {
             const message = data.toString().trim();
-            this.onData(message); 
+            this.onData(message);
         });
 
-        this.client.on("error", (err) => {
+        this.socket.on("error", (err) => {
             logError("tcpClient error:", err.message);
-            this.onError(err); 
+            this.onError(err);
             this.reconnect();
         });
 
-        this.client.on("close", () => {
+        this.socket.on("close", () => {
             log("tcpClient close");
+            
             this.reconnect();
         });
     }
@@ -74,19 +91,20 @@ export class TCPClient {
             return
         }
 
-        this.cleanup();
-
-        setTimeout(() => {
-            log("tcpClient.reconnect()");
-            this.connectToServer();
-        }, this.reconnectDelay);
+        if (!this.reconnectTimer) {
+            this.reconnectTimer = setTimeout(() => {
+                log("tcpClient.reconnect()");
+                this.socket!.removeAllListeners()
+                this.connectToServer();
+            }, this.reconnectDelay);
+        }
     }
 
     private cleanup() {
         log("tcpClient.cleanup()");
-        if (this.client) {
-            this.client.destroy();
-            this.client = null;
+        if (this.socket) {
+            this.socket.destroy();
+            this.socket = null;
             log("tcpClient.destroy()");
         } else {
             log("tcpClient.cleanup() socket doesn't exists!");

@@ -24,13 +24,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.commandCenters = exports.CommandCenters = void 0;
-const console_1 = require("console");
 const dcc_1 = require("../../common/src/dcc");
 const server_1 = require("./server");
 const fs = __importStar(require("fs"));
 const z21commandcenter_1 = require("./z21commandcenter");
 const dccExTCPCommandCenter_1 = require("./dccExTCPCommandCenter");
 const dccExSerialCommandCenter_1 = require("./dccExSerialCommandCenter");
+const utility_1 = require("./utility");
 class CommandCenters {
     constructor() {
         this.cc = undefined;
@@ -41,23 +41,23 @@ class CommandCenters {
         }
     }
     start() {
-        (0, console_1.log)("Command Centers Start");
+        (0, utility_1.log)("Command Centers Start");
         if (this.cc) {
             this.cc.start();
-            (0, console_1.log)(this.cc.name + "Command Center Started!");
+            (0, utility_1.log)(this.cc.name + "Command Center Started!");
         }
         else {
-            (0, console_1.log)("Command Center doesn't exists!");
+            (0, utility_1.log)("Command Center doesn't exists!");
         }
     }
     stop() {
-        console.log("Command Centers Stopping...");
+        (0, utility_1.log)("Command Centers Stopping...");
         if (this.cc) {
             this.cc.stop();
-            console.log("Command Centers Stopped");
+            (0, utility_1.log)("Command Centers Stopped");
         }
         else {
-            (0, console_1.log)("Command Center doesn't exists!");
+            (0, utility_1.log)("Command Center doesn't exists!");
         }
     }
     clientConnected() {
@@ -65,7 +65,7 @@ class CommandCenters {
             this.cc.clientConnected();
         }
         else {
-            (0, console_1.log)("Command Center doesn't exists!");
+            (0, utility_1.log)("Command Center doesn't exists!");
         }
     }
     setBasicAccessory(a) {
@@ -73,7 +73,7 @@ class CommandCenters {
             this.cc.setAccessoryDecoder(a.address, a.value);
         }
         else {
-            (0, console_1.log)("Command Center doesn't exists!");
+            (0, utility_1.log)("Command Center doesn't exists!");
         }
     }
     getBasicAccessory(a) {
@@ -81,7 +81,7 @@ class CommandCenters {
             this.cc.getAccessoryDecoder(a.address);
         }
         else {
-            (0, console_1.log)("Command Center doesn't exists!");
+            (0, utility_1.log)("Command Center doesn't exists!");
         }
     }
     getTurnout(t) {
@@ -89,7 +89,7 @@ class CommandCenters {
             this.cc.getTurnout(t.address);
         }
         else {
-            (0, console_1.log)("Command Center doesn't exists!");
+            (0, utility_1.log)("Command Center doesn't exists!");
         }
     }
     setTurnout(t) {
@@ -97,7 +97,7 @@ class CommandCenters {
             this.cc.setTurnout(t.address, t.isClosed);
         }
         else {
-            (0, console_1.log)("Command Center doesn't exists!");
+            (0, utility_1.log)("Command Center doesn't exists!");
         }
     }
     getRBusInfo() {
@@ -105,7 +105,7 @@ class CommandCenters {
             this.cc.getRBusInfo();
         }
         else {
-            (0, console_1.log)("Command Center doesn't exists!");
+            (0, utility_1.log)("Command Center doesn't exists!");
         }
     }
     getLoco(loco) {
@@ -113,7 +113,7 @@ class CommandCenters {
             this.cc.getLoco(loco.address);
         }
         else {
-            (0, console_1.log)("Command Center doesn't exists!");
+            (0, utility_1.log)("Command Center doesn't exists!");
         }
     }
     setLoco(loco) {
@@ -121,7 +121,7 @@ class CommandCenters {
             this.cc.setLoco(loco.address, loco.speed, loco.direction);
         }
         else {
-            (0, console_1.log)("Command Center doesn't exists!");
+            (0, utility_1.log)("Command Center doesn't exists!");
         }
     }
     setLocoFunction(loco) {
@@ -129,7 +129,7 @@ class CommandCenters {
             this.cc.setLocoFunction(loco.address, loco.id, loco.isOn);
         }
         else {
-            (0, console_1.log)("Command Center doesn't exists!");
+            (0, utility_1.log)("Command Center doesn't exists!");
         }
     }
     setPower(data) {
@@ -137,7 +137,7 @@ class CommandCenters {
             this.cc.trackPower(data.on);
         }
         else {
-            (0, console_1.log)("Command Center doesn't exists!");
+            (0, utility_1.log)("Command Center doesn't exists!");
         }
     }
     emergencyStop() {
@@ -145,11 +145,11 @@ class CommandCenters {
             this.cc.emergenyStop(true);
         }
         else {
-            (0, console_1.log)("Command Center doesn't exists!");
+            (0, utility_1.log)("Command Center doesn't exists!");
         }
     }
     load() {
-        (0, console_1.log)("CommandCenters.load()");
+        (0, utility_1.log)("CommandCenters.load()");
         if (this.cc) {
             this.cc.stop();
         }
@@ -160,9 +160,9 @@ class CommandCenters {
                 exports.commandCenters.cc = new z21commandcenter_1.Z21CommandCenter("z21", z21.ip, z21.port);
                 exports.commandCenters.cc.TURNOUT_WAIT_TIME = z21.turnoutActiveTime;
                 exports.commandCenters.cc.BASICACCESSORY_WAIT_TIME = z21.basicAccessoryDecoderActiveTime;
-                console.log("Z21 Command Center Registered!");
-                console.log("IP:", z21.ip);
-                console.log("Port:", z21.port);
+                (0, utility_1.log)("Z21 Command Center Registered!");
+                (0, utility_1.log)("IP:", z21.ip);
+                (0, utility_1.log)("Port:", z21.port);
                 exports.commandCenters.start();
             }
             else if (ccSettings.type == dcc_1.CommandCenterTypes.DCCExTCP) {
@@ -170,9 +170,9 @@ class CommandCenters {
                 exports.commandCenters.cc = new dccExTCPCommandCenter_1.DCCExTCPCommandCenter("dcc-ex-tcp", dccextcp.ip, dccextcp.port);
                 exports.commandCenters.cc.TURNOUT_WAIT_TIME = 0; //dccextcp.turnoutActiveTime
                 exports.commandCenters.cc.BASICACCESSORY_WAIT_TIME = 0; //dccextcp.basicAccessoryDecoderActiveTime
-                console.log("DCCEx TCP Command Center Registered!");
-                console.log("IP:", dccextcp.ip);
-                console.log("Port:", dccextcp.port);
+                (0, utility_1.log)("DCCEx TCP Command Center Registered!");
+                (0, utility_1.log)("IP:", dccextcp.ip);
+                (0, utility_1.log)("Port:", dccextcp.port);
                 exports.commandCenters.start();
             }
             else if (ccSettings.type == dcc_1.CommandCenterTypes.DCCExSerial) {
@@ -180,17 +180,16 @@ class CommandCenters {
                 exports.commandCenters.cc = new dccExSerialCommandCenter_1.DccExSerialCommandCenter("dcc-ex-serial", dccexserial.port, 115200);
                 exports.commandCenters.cc.TURNOUT_WAIT_TIME = 0; //dccextcp.turnoutActiveTime
                 exports.commandCenters.cc.BASICACCESSORY_WAIT_TIME = 0; //dccextcp.basicAccessoryDecoderActiveTime
-                console.log("DCCEx Serial Command Center Registered!");
-                console.log("Port:", dccexserial.port);
+                (0, utility_1.log)("DCCEx Serial Command Center Registered!");
+                (0, utility_1.log)("Port:", dccexserial.port);
                 exports.commandCenters.start();
             }
         }
         catch (error) {
-            console.log("ServerSetting Error:", error);
+            (0, utility_1.logError)("ServerSetting Error:", error);
         }
     }
 }
 exports.CommandCenters = CommandCenters;
-(0, console_1.log)("COMMAND CENTERS");
 exports.commandCenters = new CommandCenters();
 //# sourceMappingURL=commandcenters.js.map

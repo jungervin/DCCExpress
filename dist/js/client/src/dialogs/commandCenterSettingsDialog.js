@@ -1,4 +1,4 @@
-define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "../helpers/globals"], function (require, exports, dialog_1, dcc_1, globals_1) {
+define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "../helpers/globals", "../helpers/ws"], function (require, exports, dialog_1, dcc_1, globals_1, ws_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CommandCenterSettingsDialog = void 0;
@@ -45,6 +45,17 @@ define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "
                         else {
                             ccIp.value = "";
                             ccPort.value = "2560";
+                        }
+                        // turnoutActiveTime.value = dtcp.turnoutActiveTime
+                        // baActiveTime.value = dtcp.basicAccessoryDecoderActiveTime
+                        break;
+                    case dcc_1.CommandCenterTypes.DCCExSerial.toString():
+                        if (globals_1.Globals.CommandCenterSetting.type == dcc_1.CommandCenterTypes.DCCExSerial) {
+                            const dserial = globals_1.Globals.CommandCenterSetting.commandCenter;
+                            ccSerialPort.value = dserial.port.toString();
+                        }
+                        else {
+                            ccSerialPort.value = "";
                         }
                         // turnoutActiveTime.value = dtcp.turnoutActiveTime
                         // baActiveTime.value = dtcp.basicAccessoryDecoderActiveTime
@@ -98,7 +109,7 @@ define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "
             btnOk.onclick = () => {
                 switch (ccCombobox.value) {
                     case dcc_1.CommandCenterTypes.Z21.toString():
-                        const z21 = {
+                        globals_1.Globals.CommandCenterSetting = {
                             type: dcc_1.CommandCenterTypes.Z21,
                             commandCenter: {
                                 ip: ccIp.value,
@@ -107,10 +118,10 @@ define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "
                                 basicAccessoryDecoderActiveTime: baActiveTime.value,
                             }
                         };
-                        globals_1.Globals.saveJson(dcc_1.FileNames.CommandCenterSettings, z21);
+                        ws_1.wsClient.send({ type: dcc_1.ApiCommands.saveCommandCenter, data: globals_1.Globals.CommandCenterSetting });
                         break;
                     case dcc_1.CommandCenterTypes.DCCExTCP.toString():
-                        const dccextcp = {
+                        globals_1.Globals.CommandCenterSetting = {
                             type: dcc_1.CommandCenterTypes.DCCExTCP,
                             commandCenter: {
                                 ip: ccIp.value,
@@ -118,16 +129,16 @@ define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "
                                 init: "",
                             }
                         };
-                        globals_1.Globals.saveJson(dcc_1.FileNames.CommandCenterSettings, dccextcp);
+                        ws_1.wsClient.send({ type: dcc_1.ApiCommands.saveCommandCenter, data: globals_1.Globals.CommandCenterSetting });
                         break;
                     case dcc_1.CommandCenterTypes.DCCExSerial.toString():
-                        const dccexserial = {
+                        globals_1.Globals.CommandCenterSetting = {
                             type: dcc_1.CommandCenterTypes.DCCExSerial,
                             commandCenter: {
-                                port: ccPort.value,
+                                port: ccSerialPort.value,
                             }
                         };
-                        globals_1.Globals.saveJson(dcc_1.FileNames.CommandCenterSettings, dccexserial);
+                        ws_1.wsClient.send({ type: dcc_1.ApiCommands.saveCommandCenter, data: globals_1.Globals.CommandCenterSetting });
                         break;
                 }
                 this.dialogResult = dialog_1.DialogResult.ok;

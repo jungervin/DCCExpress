@@ -106,9 +106,10 @@ exports.wsServer.on("connection", (ws, req) => {
                         (0, utility_1.log)("WS ApiCommands.getRBusInfo:", error);
                     }
                     break;
-                case dcc_1.ApiCommands.saveSettings:
+                case dcc_1.ApiCommands.saveCommandCenter:
                     try {
-                        fs.writeFileSync(server_1.SETTINGS_FILE, JSON.stringify(data, null, 2), 'utf8');
+                        fs.writeFileSync(server_1.COMMANDCENTER_SETTING_FILE, JSON.stringify(data), 'utf8');
+                        commandcenters_1.commandCenters.load();
                     }
                     catch (error) {
                         (0, utility_1.log)("WS ApiCommands.saveSettings:", error);
@@ -147,6 +148,15 @@ exports.wsServer.on("connection", (ws, req) => {
                 case dcc_1.ApiCommands.setTimeSettings:
                     const ts = data;
                     fastClock_1.FastClock.setFastClockFactor(ts.scale);
+                    break;
+                case dcc_1.ApiCommands.saveCommandCenter:
+                    const cc = data;
+                    try {
+                        utility_1.File.write(server_1.COMMANDCENTER_SETTING_FILE, JSON.stringify(data));
+                    }
+                    catch (error) {
+                        (0, utility_1.logError)("ApiCommands.saveCommandCenter");
+                    }
                     break;
                 default:
                     (0, utility_1.log)("WS Unknown command:", type);

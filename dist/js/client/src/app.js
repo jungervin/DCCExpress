@@ -64,18 +64,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 this.editor.canvas.height = window.innerHeight;
                 this.editor.draw();
             });
-            globals_1.Globals.fetchJsonData(dcc_1.FileNames.CommandCenterSettings).then((data) => {
-                globals_1.Globals.CommandCenterSetting.type = data.type;
-                globals_1.Globals.CommandCenterSetting.commandCenter = data.commandCenter;
-            }).catch((reason) => {
-                globals_1.Globals.CommandCenterSetting.type = dcc_1.CommandCenterTypes.Z21,
-                    globals_1.Globals.CommandCenterSetting.commandCenter = {
-                        ip: "192.168.0.70",
-                        port: 21105,
-                        turnoutActiveTime: 500,
-                        basicAccessoryDecoderActiveTime: 100
-                    };
-            });
+            globals_1.Globals.loadCommandCenterSettings();
             this.toolbar.btnCommandCenterSettings.onclick = (e) => {
                 const cc = new commandCenterSettingsDialog_1.CommandCenterSettingsDialog();
             };

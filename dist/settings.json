@@ -28,7 +28,7 @@
         "ShowAddress": false,
         "Orientation": 1,
         "ShowGrid": true,
-        "ShowClock": true,
+        "ShowClock": false,
         "fastClockFactor": 3
     }
 }

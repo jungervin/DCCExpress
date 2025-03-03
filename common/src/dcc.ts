@@ -51,6 +51,7 @@ export enum ApiCommands {
     settingsInfo = "settingsInfo",
     timeInfo = "timeInfo",
     setTimeSettings = "setTimeSettings",
+    saveCommandCenter = "saveCommandCenter",
 }
 
 export interface iData {

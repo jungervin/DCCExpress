@@ -72,6 +72,22 @@ define(["require", "exports", "../../../common/src/dcc"], function (require, exp
                 yield Globals.saveJson("/config.json", config);
             });
         }
+        static loadCommandCenterSettings() {
+            return __awaiter(this, void 0, void 0, function* () {
+                Globals.fetchJsonData(dcc_1.FileNames.CommandCenterSettings).then((data) => {
+                    Globals.CommandCenterSetting.type = data.type;
+                    Globals.CommandCenterSetting.commandCenter = data.commandCenter;
+                }).catch((reason) => {
+                    Globals.CommandCenterSetting.type = dcc_1.CommandCenterTypes.Z21,
+                        Globals.CommandCenterSetting.commandCenter = {
+                            ip: "192.168.0.70",
+                            port: 21105,
+                            turnoutActiveTime: 500,
+                            basicAccessoryDecoderActiveTime: 100
+                        };
+                });
+            });
+        }
     }
     exports.Globals = Globals;
     Globals.GridSizeX = 40;

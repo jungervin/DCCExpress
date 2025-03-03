@@ -37,14 +37,14 @@ export const DISPATCHER_FILE = path.resolve(distFolder, 'dispatcher.js');
 export const uploadDir = path.resolve(distFolder, "uploads");
 app.use("/uploads", express.static(path.resolve(distFolder, "uploads")));
 
-console.log("==========================================")
-console.log("               DIRECTORIES")
-console.log("==========================================")
-console.log(" RootDir:   ", __dirname)
-console.log(" StaticDir: ", distFolder)
-console.log(" Modules:   ", modulesFolder)
-console.log("------------------------------------------")
-console.log('')
+log("==========================================")
+log("               DIRECTORIES")
+log("==========================================")
+log(" RootDir:   ", __dirname)
+log(" StaticDir: ", distFolder)
+log(" Modules:   ", modulesFolder)
+log("------------------------------------------")
+log('')
 
 app.use(express.static(distFolder));
 
@@ -54,17 +54,17 @@ app.get("/", (req: any, res: { sendFile: (arg0: string) => void; }) => {
 
 app.get("/require.js", (req: any, res: { sendFile: (arg0: string) => void; }) => {
   var nm = path.resolve(modulesFolder, "requirejs/require.js")
-  console.log("Get Requirejs:", nm)
+  log("Get Requirejs:", nm)
   res.sendFile(nm);
 });
-app.get("/socketio.js", (req: any, res: { sendFile: (arg0: string) => void; }) => {
-  var nm = path.resolve(modulesFolder, "socket.io/client-dist/socket.io.js")
-  console.log("Get Requirejs:", nm)
-  res.sendFile(nm);
-});
+// app.get("/socketio.js", (req: any, res: { sendFile: (arg0: string) => void; }) => {
+//   var nm = path.resolve(modulesFolder, "socket.io/client-dist/socket.io.js")
+//   log("Get Requirejs:", nm)
+//   res.sendFile(nm);
+// });
 // app.get("/js/lodash.js", (req: any, res: { sendFile: (arg0: string) => void; }) => {
 //   var nm = path.join(modulesFolder, "lodash/cloneDeep.js")
-//   console.log("Get lodash:", nm)
+//   log("Get lodash:", nm)
 //   res.sendFile(nm);
 // });
 

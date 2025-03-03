@@ -65,31 +65,31 @@ exports.COMMANDCENTER_SETTING_FILE = path_1.default.resolve(exports.distFolder, 
 exports.DISPATCHER_FILE = path_1.default.resolve(exports.distFolder, 'dispatcher.js');
 exports.uploadDir = path_1.default.resolve(exports.distFolder, "uploads");
 exports.app.use("/uploads", express_1.default.static(path_1.default.resolve(exports.distFolder, "uploads")));
-console.log("==========================================");
-console.log("               DIRECTORIES");
-console.log("==========================================");
-console.log(" RootDir:   ", __dirname);
-console.log(" StaticDir: ", exports.distFolder);
-console.log(" Modules:   ", exports.modulesFolder);
-console.log("------------------------------------------");
-console.log('');
+(0, utility_1.log)("==========================================");
+(0, utility_1.log)("               DIRECTORIES");
+(0, utility_1.log)("==========================================");
+(0, utility_1.log)(" RootDir:   ", __dirname);
+(0, utility_1.log)(" StaticDir: ", exports.distFolder);
+(0, utility_1.log)(" Modules:   ", exports.modulesFolder);
+(0, utility_1.log)("------------------------------------------");
+(0, utility_1.log)('');
 exports.app.use(express_1.default.static(exports.distFolder));
 exports.app.get("/", (req, res) => {
     res.sendFile(path_1.default.resolve(exports.distFolder, "index.html"));
 });
 exports.app.get("/require.js", (req, res) => {
     var nm = path_1.default.resolve(exports.modulesFolder, "requirejs/require.js");
-    console.log("Get Requirejs:", nm);
+    (0, utility_1.log)("Get Requirejs:", nm);
     res.sendFile(nm);
 });
-exports.app.get("/socketio.js", (req, res) => {
-    var nm = path_1.default.resolve(exports.modulesFolder, "socket.io/client-dist/socket.io.js");
-    console.log("Get Requirejs:", nm);
-    res.sendFile(nm);
-});
+// app.get("/socketio.js", (req: any, res: { sendFile: (arg0: string) => void; }) => {
+//   var nm = path.resolve(modulesFolder, "socket.io/client-dist/socket.io.js")
+//   log("Get Requirejs:", nm)
+//   res.sendFile(nm);
+// });
 // app.get("/js/lodash.js", (req: any, res: { sendFile: (arg0: string) => void; }) => {
 //   var nm = path.join(modulesFolder, "lodash/cloneDeep.js")
-//   console.log("Get lodash:", nm)
+//   log("Get lodash:", nm)
 //   res.sendFile(nm);
 // });
 // Bootstrap CSS kiszolgálása

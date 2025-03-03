@@ -1,4 +1,4 @@
-import { CommandCenterTypes, DCCExDirections, defaultCommandCenterSettings, defaultSettings, iPowerInfo, iSettings } from "../../../common/src/dcc";
+import { CommandCenterTypes, DCCExDirections, defaultCommandCenterSettings, defaultSettings, FileNames, iCommandCenter, iPowerInfo, iSettings, iZ21CommandCenter } from "../../../common/src/dcc";
 
 declare global {
     interface Window {
@@ -82,7 +82,21 @@ export class Globals {
         await Globals.saveJson("/config.json", config)
     }
 
+    static async loadCommandCenterSettings() {
+        Globals.fetchJsonData(FileNames.CommandCenterSettings).then((data: iCommandCenter) => {
+            Globals.CommandCenterSetting.type = data.type
+            Globals.CommandCenterSetting.commandCenter = data.commandCenter;
+        }).catch((reason: any) => {
+            Globals.CommandCenterSetting.type = CommandCenterTypes.Z21,
+            Globals.CommandCenterSetting.commandCenter = {
+                ip: "192.168.0.70",
+                port: 21105,
+                turnoutActiveTime: 500,
+                basicAccessoryDecoderActiveTime: 100
+            } as iZ21CommandCenter
+        });
 
+    }
 }
 
 // export let commandCenters: iCommandCenter[] = []

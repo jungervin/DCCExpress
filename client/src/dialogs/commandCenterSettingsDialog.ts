@@ -1,10 +1,8 @@
-import { SignalStates } from "../editor/signals";
-import { Signal2CanvasElement } from "../components/canvasElement";
-import { Checkbox, Dialog, Input, Button, InputNumber, DialogResult, TabControl, Combobox, Label, GroupBox, ThemeColors } from "../controls/dialog";
-import { Dispatcher } from "../editor/dispatcher";
+import { Dialog, Input, Button, InputNumber, DialogResult, TabControl, Combobox, Label, ThemeColors } from "../controls/dialog";
 
-import { CommandCenterTypes, FileNames, iCommandCenter, iDCCExSerial, iDCCExTcp, iZ21CommandCenter } from "../../../common/src/dcc";
+import { ApiCommands, CommandCenterTypes, FileNames, iCommandCenter, iData, iDCCExSerial, iDCCExTcp, iZ21CommandCenter } from "../../../common/src/dcc";
 import { Globals } from "../helpers/globals";
+import { wsClient } from "../helpers/ws";
 
 export class CommandCenterSettingsDialog extends Dialog {
     constructor() {
@@ -43,7 +41,7 @@ export class CommandCenterSettingsDialog extends Dialog {
                     }
                     else {
                         ccIp.value = "192.168.0.70"
-                        ccPort.value ="21105"
+                        ccPort.value = "21105"
                         turnoutActiveTime.value = 500
                         baActiveTime.value = 100
                     }
@@ -57,6 +55,16 @@ export class CommandCenterSettingsDialog extends Dialog {
                     } else {
                         ccIp.value = ""
                         ccPort.value = "2560"
+                    }
+                    // turnoutActiveTime.value = dtcp.turnoutActiveTime
+                    // baActiveTime.value = dtcp.basicAccessoryDecoderActiveTime
+                    break;
+                case CommandCenterTypes.DCCExSerial.toString():
+                    if (Globals.CommandCenterSetting.type == CommandCenterTypes.DCCExSerial) {
+                        const dserial = Globals.CommandCenterSetting.commandCenter as iDCCExSerial
+                        ccSerialPort.value = dserial.port.toString()
+                    } else {
+                        ccSerialPort.value = ""
                     }
                     // turnoutActiveTime.value = dtcp.turnoutActiveTime
                     // baActiveTime.value = dtcp.basicAccessoryDecoderActiveTime
@@ -111,7 +119,7 @@ export class CommandCenterSettingsDialog extends Dialog {
         tab1.addComponent(label6)
         const baActiveTime = new InputNumber()
         baActiveTime.maxValue = 5000
-        baActiveTime.value = 0 
+        baActiveTime.value = 0
         baActiveTime.onchange = (sender) => {
             //Globals.Settings.CommandCenter.basicAccessoryDecoderActiveTime = sender.value
         }
@@ -123,7 +131,7 @@ export class CommandCenterSettingsDialog extends Dialog {
         btnOk.onclick = () => {
             switch (ccCombobox.value) {
                 case CommandCenterTypes.Z21.toString():
-                    const z21 = {
+                    Globals.CommandCenterSetting = {
                         type: CommandCenterTypes.Z21,
                         commandCenter: {
                             ip: ccIp.value,
@@ -132,12 +140,11 @@ export class CommandCenterSettingsDialog extends Dialog {
                             basicAccessoryDecoderActiveTime: baActiveTime.value,
                         } as iZ21CommandCenter
                     } as iCommandCenter
-                    Globals.saveJson(FileNames.CommandCenterSettings, z21)
-
+                    wsClient.send({type: ApiCommands.saveCommandCenter, data: Globals.CommandCenterSetting} as iData)
                     break;
 
                 case CommandCenterTypes.DCCExTCP.toString():
-                    const dccextcp = {
+                    Globals.CommandCenterSetting = {
                         type: CommandCenterTypes.DCCExTCP,
                         commandCenter: {
                             ip: ccIp.value,
@@ -145,17 +152,17 @@ export class CommandCenterSettingsDialog extends Dialog {
                             init: "",
                         } as iDCCExTcp
                     } as iCommandCenter
-                    Globals.saveJson(FileNames.CommandCenterSettings, dccextcp)
+                    wsClient.send({type: ApiCommands.saveCommandCenter, data: Globals.CommandCenterSetting} as iData)
                     break;
 
                 case CommandCenterTypes.DCCExSerial.toString():
-                    const dccexserial = {
+                    Globals.CommandCenterSetting = {
                         type: CommandCenterTypes.DCCExSerial,
                         commandCenter: {
-                            port: ccPort.value,
+                            port: ccSerialPort.value,
                         } as iDCCExSerial
                     } as iCommandCenter
-                    Globals.saveJson(FileNames.CommandCenterSettings, dccexserial)
+                    wsClient.send({type: ApiCommands.saveCommandCenter, data: Globals.CommandCenterSetting} as iData)
                     break;
             }
 

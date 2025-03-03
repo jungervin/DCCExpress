@@ -41,6 +41,9 @@ class DCCExTCPCommandCenter extends dccExCommandCenter_1.DCCExCommandCenter {
     error(err) {
         console.log("DCCEx TCP Error:", err);
     }
+    // put(msg: string) {
+    //   this.buffer.push(msg)
+    // }
     start() {
         this.stop();
         if (this.tcpClient) {

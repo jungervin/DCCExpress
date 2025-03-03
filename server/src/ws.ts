@@ -1,12 +1,14 @@
 import WebSocket, { WebSocketServer } from "ws";
-import { CONFIG_FILE, server, SETTINGS_FILE } from "./server";
-import { ApiCommands, blocks, iBlockInfo, iData, iLoco, iLocoData, iSetBlock, iSetTimeSettings, iTimeInfo, locos } from "../../common/src/dcc";
+import { COMMANDCENTER_SETTING_FILE, CONFIG_FILE, server, SETTINGS_FILE } from "./server";
+import { ApiCommands, blocks, iBlockInfo, iCommandCenter, iData, iLoco, iLocoData, iSetBlock, iSetTimeSettings, iTimeInfo, locos } from "../../common/src/dcc";
 import { commandCenters } from "./commandcenters";
 import * as fs from "fs";
 import { config } from "process";
-import { log, logError } from "./utility";
+import { log, logError, File } from "./utility";
 import { FastClock } from "./fastClock";
+
 export const wsServer = new WebSocketServer({ server, path: "/ws" });
+
 
 export function broadcastAll(msg: iData) {
     wsServer.clients.forEach(client => {
@@ -94,9 +96,10 @@ wsServer.on("connection", (ws, req) => {
                     }
                     break;
 
-                case ApiCommands.saveSettings:
+                case ApiCommands.saveCommandCenter:
                     try {
-                        fs.writeFileSync(SETTINGS_FILE, JSON.stringify(data, null, 2), 'utf8');
+                        fs.writeFileSync(COMMANDCENTER_SETTING_FILE, JSON.stringify(data), 'utf8');
+                        commandCenters.load()
                     } catch (error) {
                         log("WS ApiCommands.saveSettings:", error)
                     }
@@ -126,11 +129,11 @@ wsServer.on("connection", (ws, req) => {
 
                     log("BEFORE BROADCAST BLOCKS")
                     try {
-                        blocks[sb.blockName] = { blockName: sb.blockName, locoAddress: sb.locoAddress }    
+                        blocks[sb.blockName] = { blockName: sb.blockName, locoAddress: sb.locoAddress }
                     } catch (error) {
                         logError(error)
                     }
-                    
+
 
                     log("BROADCAST BLOCKS", blocks)
                     broadcastAll({ type: ApiCommands.blockInfo, data: { blocks } } as iData)
@@ -139,7 +142,15 @@ wsServer.on("connection", (ws, req) => {
                 case ApiCommands.setTimeSettings:
                     const ts = data as iSetTimeSettings
                     FastClock.setFastClockFactor(ts.scale)
-                break;
+                    break;
+                case ApiCommands.saveCommandCenter:
+                    const cc = data as iCommandCenter
+                    try {
+                        File.write(COMMANDCENTER_SETTING_FILE, JSON.stringify(data))
+                    } catch (error) {
+                        logError("ApiCommands.saveCommandCenter")
+                    }
+                    break;
                 default:
                     log("WS Unknown command:", type);
                     ws.send(JSON.stringify({ type: "error", data: "Unknown command" }));
