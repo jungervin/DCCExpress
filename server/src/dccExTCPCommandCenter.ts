@@ -3,7 +3,7 @@ import { DCCExCommandCenter } from "./dccExCommandCenter";
 import { TCPClient } from "./tcpClient";
 import { broadcastAll } from "./ws";
 
-export class DCCExTCPCommancenter extends DCCExCommandCenter {
+export class DCCExTCPCommandCenter extends DCCExCommandCenter {
   ip: string;
   port: number;
   // aliveTask?: NodeJS.Timeout;

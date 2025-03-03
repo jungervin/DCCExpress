@@ -124,10 +124,10 @@ export class App {
         Globals.fetchJsonData("/settings.json").then((data: any) => {
             const s = data as iSettings
             Globals.Settings = data as iSettings
-            Globals.Settings.CommandCenter = s.CommandCenter ?? defaultSettings.CommandCenter
-            Globals.Settings.CommandCenterZ21 = s.CommandCenterZ21 ?? defaultSettings.CommandCenterZ21
-            Globals.Settings.CommandCenterDCCExTcp = s.CommandCenterDCCExTcp ?? defaultSettings.CommandCenterDCCExTcp
-            Globals.Settings.CommandCenterDCCExSerial = s.CommandCenterDCCExSerial ?? defaultSettings.CommandCenterDCCExSerial
+            // Globals.Settings.CommandCenter = s.CommandCenter ?? defaultSettings.CommandCenter
+            // Globals.Settings.CommandCenterZ21 = s.CommandCenterZ21 ?? defaultSettings.CommandCenterZ21
+            // Globals.Settings.CommandCenterDCCExTcp = s.CommandCenterDCCExTcp ?? defaultSettings.CommandCenterDCCExTcp
+            // Globals.Settings.CommandCenterDCCExSerial = s.CommandCenterDCCExSerial ?? defaultSettings.CommandCenterDCCExSerial
             Globals.Settings.Dispacher = s.Dispacher ?? defaultSettings.Dispacher
             Globals.Settings.EditorSettings = s.EditorSettings ?? defaultSettings.EditorSettings
 
@@ -208,7 +208,7 @@ export class App {
                     break;
                 case ApiCommands.settingsInfo:
                     const d = msg.data as iSettings;
-                    if (d.CommandCenter && d.Dispacher) {
+                    if (d.Dispacher) {
                         Globals.Settings = d
                     }
                     break;

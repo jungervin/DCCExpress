@@ -35,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.upload = exports.uploadDir = exports.DISPATCHER_FILE = exports.SETTINGS_FILE = exports.CC_FILE = exports.LOCOS_FILE = exports.DEVICES_FILE = exports.CONFIG_FILE = exports.modulesFolder = exports.distFolder = exports.rootFolder = exports.PORT = exports.server = exports.app = void 0;
+exports.upload = exports.uploadDir = exports.DISPATCHER_FILE = exports.COMMANDCENTER_SETTING_FILE = exports.SETTINGS_FILE = exports.CC_FILE = exports.LOCOS_FILE = exports.DEVICES_FILE = exports.CONFIG_FILE = exports.modulesFolder = exports.distFolder = exports.rootFolder = exports.PORT = exports.server = exports.app = void 0;
 const http_1 = __importDefault(require("http"));
 const fs = __importStar(require("fs"));
 const path_1 = __importDefault(require("path"));
@@ -61,6 +61,7 @@ exports.DEVICES_FILE = path_1.default.resolve(exports.distFolder, "devices.json"
 exports.LOCOS_FILE = path_1.default.resolve(exports.distFolder, 'locos.json');
 exports.CC_FILE = path_1.default.resolve(exports.distFolder, 'cc.json');
 exports.SETTINGS_FILE = path_1.default.resolve(exports.distFolder, 'settings.json');
+exports.COMMANDCENTER_SETTING_FILE = path_1.default.resolve(exports.distFolder, 'commandcentersettings.json');
 exports.DISPATCHER_FILE = path_1.default.resolve(exports.distFolder, 'dispatcher.js');
 exports.uploadDir = path_1.default.resolve(exports.distFolder, "uploads");
 exports.app.use("/uploads", express_1.default.static(path_1.default.resolve(exports.distFolder, "uploads")));

@@ -18,21 +18,22 @@ import * as fs from "fs";
 // import express, { Request, Response } from 'express';
 // import { Server as IOServer } from 'socket.io';
 // import { Z21 } from "./z21";
-import { ApiCommands, CommandCenterTypes, defaultSettings, iSettings, iTimeInfo } from "../../common/src/dcc";
+import { ApiCommands, CommandCenterTypes, defaultSettings, FileNames, iCommandCenter, iDCCExSerial, iDCCExTcp, iSettings, iTimeInfo, iZ21CommandCenter } from "../../common/src/dcc";
 import { commandCenters, CommandCenters } from "./commandcenters";
 // import bodyParser from 'body-parser';
 // import cors from 'cors';
 // import multer, { StorageEngine } from "multer";
-import { app, CC_FILE, CONFIG_FILE, DEVICES_FILE, DISPATCHER_FILE, distFolder, LOCOS_FILE, modulesFolder, PORT, rootFolder, server, SETTINGS_FILE, upload } from "./server";
+import { app, CC_FILE, COMMANDCENTER_SETTING_FILE, CONFIG_FILE, DEVICES_FILE, DISPATCHER_FILE, distFolder, LOCOS_FILE, modulesFolder, PORT, rootFolder, server, SETTINGS_FILE, upload } from "./server";
 import { Locomanager } from "./locomanager";
 import { wsServer } from "./ws";
 import { Z21CommandCenter } from "./z21commandcenter";
 // import { File, logError } from "./utility";
 // import { DeviceManager } from "./devicemanager";
-import { DCCExTCPCommancenter as DCCExTCPCommandCenter } from "./dccExTCPCommandCenter";
+import { DCCExTCPCommandCenter as DCCExTCPCommandCenter } from "./dccExTCPCommandCenter";
 import { log } from "console";
 import { exit } from "process";
 import { FastClock } from "./fastClock";
+import { DccExSerialCommandCenter } from "./dccExSerialCommandCenter";
 
 process.on('uncaughtException', function (err) {
   console.log('uncaughtException: ', err)
@@ -75,37 +76,41 @@ try {
 
   const settings = JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8')) as iSettings;
   if (settings) {
-    defaultSettings.CommandCenter.type = settings.CommandCenter.type as CommandCenterTypes;
-    defaultSettings.CommandCenter.ip = settings.CommandCenter.ip;
-    defaultSettings.CommandCenter.port = settings.CommandCenter.port;
-    defaultSettings.CommandCenter.serialPort = settings.CommandCenter.serialPort;
-    defaultSettings.CommandCenter.turnoutActiveTime = settings.CommandCenter.turnoutActiveTime
-    defaultSettings.CommandCenter.basicAccessoryDecoderActiveTime = settings.CommandCenter.basicAccessoryDecoderActiveTime
     defaultSettings.EditorSettings.fastClockFactor = settings.EditorSettings.fastClockFactor
     FastClock.setFastClockFactor(defaultSettings.EditorSettings.fastClockFactor)
     // FastClock.start()
   }
 
-  if (defaultSettings.CommandCenter.type == CommandCenterTypes.Z21) {
-
-    commandCenters.cc = new Z21CommandCenter("z21", defaultSettings.CommandCenter.ip, defaultSettings.CommandCenter.port)
-    commandCenters.cc.TURNOUT_WAIT_TIME = defaultSettings.CommandCenter.turnoutActiveTime
-    commandCenters.cc.BASICACCESSORY_WAIT_TIME = defaultSettings.CommandCenter.basicAccessoryDecoderActiveTime
-    console.log("Z21 Command Center Registered!")
-    console.log("IP:", defaultSettings.CommandCenter.ip)
-    console.log("Port:", defaultSettings.CommandCenter.port)
-    commandCenters.start()
-
-  }
-  else if (defaultSettings.CommandCenter.type == CommandCenterTypes.DCCExTCP) {
-    commandCenters.cc = new DCCExTCPCommandCenter("dcc-ex-tcp", defaultSettings.CommandCenter.ip, defaultSettings.CommandCenter.port)
-    commandCenters.cc.TURNOUT_WAIT_TIME = defaultSettings.CommandCenter.turnoutActiveTime
-    commandCenters.cc.BASICACCESSORY_WAIT_TIME = defaultSettings.CommandCenter.basicAccessoryDecoderActiveTime
-    console.log("ECCEx TCP Command Center Registered!")
-    console.log("IP:", defaultSettings.CommandCenter.ip)
-    console.log("Port:", defaultSettings.CommandCenter.port)
-    commandCenters.start()
-  }
+//   const ccSettings = JSON.parse(fs.readFileSync(COMMANDCENTER_SETTING_FILE, 'utf8')) as iCommandCenter;
+//   if (ccSettings.type == CommandCenterTypes.Z21) {
+//     const z21 = ccSettings.commandCenter as iZ21CommandCenter
+//     commandCenters.cc = new Z21CommandCenter("z21", z21.ip, z21.port)
+//     commandCenters.cc.TURNOUT_WAIT_TIME = z21.turnoutActiveTime
+//     commandCenters.cc.BASICACCESSORY_WAIT_TIME = z21.basicAccessoryDecoderActiveTime
+//     console.log("Z21 Command Center Registered!")
+//     console.log("IP:", z21.ip)
+//     console.log("Port:", z21.port)
+//     commandCenters.start()
+//   }
+//   else if (ccSettings.type == CommandCenterTypes.DCCExTCP) {
+//     const dccextcp = ccSettings.commandCenter as iDCCExTcp
+//     commandCenters.cc = new DCCExTCPCommandCenter("dcc-ex-tcp", dccextcp.ip, dccextcp.port)
+//     commandCenters.cc.TURNOUT_WAIT_TIME = 0 //dccextcp.turnoutActiveTime
+//     commandCenters.cc.BASICACCESSORY_WAIT_TIME = 0 //dccextcp.basicAccessoryDecoderActiveTime
+//     console.log("DCCEx TCP Command Center Registered!")
+//     console.log("IP:", dccextcp.ip)
+//     console.log("Port:", dccextcp.port)
+//     commandCenters.start()
+//   }
+//   else if (ccSettings.type == CommandCenterTypes.DCCExSerial) {
+//     const dccexserial = ccSettings.commandCenter as iDCCExSerial
+//     commandCenters.cc = new DccExSerialCommandCenter("dcc-ex-serial", dccexserial.port, 115200)
+//     commandCenters.cc.TURNOUT_WAIT_TIME = 0 //dccextcp.turnoutActiveTime
+//     commandCenters.cc.BASICACCESSORY_WAIT_TIME = 0 //dccextcp.basicAccessoryDecoderActiveTime
+//     console.log("DCCEx Serial Command Center Registered!")
+//     console.log("Port:", dccexserial.port)
+//     commandCenters.start()
+//   }
 
 } catch (error) {
   console.log("ServerSetting Error:", error)

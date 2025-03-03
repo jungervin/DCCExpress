@@ -80,18 +80,18 @@ define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "
             tab1.addComponent(label5);
             const turnoutActiveTime = new dialog_1.InputNumber();
             turnoutActiveTime.maxValue = 5000;
-            turnoutActiveTime.value = globals_1.Globals.Settings.CommandCenter.turnoutActiveTime;
+            turnoutActiveTime.value = 0;
             turnoutActiveTime.onchange = (sender) => {
-                globals_1.Globals.Settings.CommandCenter.turnoutActiveTime = sender.value;
+                //Globals.CommandCenterSetting.commandCenter..turnoutActiveTime = sender.value
             };
             tab1.addComponent(turnoutActiveTime);
             const label6 = new dialog_1.Label("Accessory Active Time [ms]");
             tab1.addComponent(label6);
             const baActiveTime = new dialog_1.InputNumber();
             baActiveTime.maxValue = 5000;
-            baActiveTime.value = globals_1.Globals.Settings.CommandCenter.basicAccessoryDecoderActiveTime;
+            baActiveTime.value = 0;
             baActiveTime.onchange = (sender) => {
-                globals_1.Globals.Settings.CommandCenter.basicAccessoryDecoderActiveTime = sender.value;
+                //Globals.Settings.CommandCenter.basicAccessoryDecoderActiveTime = sender.value
             };
             tab1.addComponent(baActiveTime);
             const btnOk = new dialog_1.Button("OK");

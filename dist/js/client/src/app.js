@@ -82,15 +82,15 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             this.editor.init();
             ws_1.wsClient.connect();
             globals_1.Globals.fetchJsonData("/settings.json").then((data) => {
-                var _a, _b, _c, _d, _e, _f;
+                var _a, _b;
                 const s = data;
                 globals_1.Globals.Settings = data;
-                globals_1.Globals.Settings.CommandCenter = (_a = s.CommandCenter) !== null && _a !== void 0 ? _a : dcc_1.defaultSettings.CommandCenter;
-                globals_1.Globals.Settings.CommandCenterZ21 = (_b = s.CommandCenterZ21) !== null && _b !== void 0 ? _b : dcc_1.defaultSettings.CommandCenterZ21;
-                globals_1.Globals.Settings.CommandCenterDCCExTcp = (_c = s.CommandCenterDCCExTcp) !== null && _c !== void 0 ? _c : dcc_1.defaultSettings.CommandCenterDCCExTcp;
-                globals_1.Globals.Settings.CommandCenterDCCExSerial = (_d = s.CommandCenterDCCExSerial) !== null && _d !== void 0 ? _d : dcc_1.defaultSettings.CommandCenterDCCExSerial;
-                globals_1.Globals.Settings.Dispacher = (_e = s.Dispacher) !== null && _e !== void 0 ? _e : dcc_1.defaultSettings.Dispacher;
-                globals_1.Globals.Settings.EditorSettings = (_f = s.EditorSettings) !== null && _f !== void 0 ? _f : dcc_1.defaultSettings.EditorSettings;
+                // Globals.Settings.CommandCenter = s.CommandCenter ?? defaultSettings.CommandCenter
+                // Globals.Settings.CommandCenterZ21 = s.CommandCenterZ21 ?? defaultSettings.CommandCenterZ21
+                // Globals.Settings.CommandCenterDCCExTcp = s.CommandCenterDCCExTcp ?? defaultSettings.CommandCenterDCCExTcp
+                // Globals.Settings.CommandCenterDCCExSerial = s.CommandCenterDCCExSerial ?? defaultSettings.CommandCenterDCCExSerial
+                globals_1.Globals.Settings.Dispacher = (_a = s.Dispacher) !== null && _a !== void 0 ? _a : dcc_1.defaultSettings.Dispacher;
+                globals_1.Globals.Settings.EditorSettings = (_b = s.EditorSettings) !== null && _b !== void 0 ? _b : dcc_1.defaultSettings.EditorSettings;
                 this.editor.fastClock.visible = globals_1.Globals.Settings.EditorSettings.ShowClock;
                 toastManager_1.toastManager.showToast("Settings Loaded", "success");
                 globals_1.Globals.fetchJsonData('/config.json').then((conf) => {
@@ -152,7 +152,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                         break;
                     case dcc_1.ApiCommands.settingsInfo:
                         const d = msg.data;
-                        if (d.CommandCenter && d.Dispacher) {
+                        if (d.Dispacher) {
                             globals_1.Globals.Settings = d;
                         }
                         break;

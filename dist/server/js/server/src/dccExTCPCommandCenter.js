@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DCCExTCPCommancenter = void 0;
+exports.DCCExTCPCommandCenter = void 0;
 const dcc_1 = require("../../common/src/dcc");
 const dccExCommandCenter_1 = require("./dccExCommandCenter");
 const tcpClient_1 = require("./tcpClient");
 const ws_1 = require("./ws");
-class DCCExTCPCommancenter extends dccExCommandCenter_1.DCCExCommandCenter {
+class DCCExTCPCommandCenter extends dccExCommandCenter_1.DCCExCommandCenter {
     constructor(name, ip, port) {
         super(name);
         this.lastSentTime = 0;
@@ -63,5 +63,5 @@ class DCCExTCPCommancenter extends dccExCommandCenter_1.DCCExCommandCenter {
         }
     }
 }
-exports.DCCExTCPCommancenter = DCCExTCPCommancenter;
+exports.DCCExTCPCommandCenter = DCCExTCPCommandCenter;
 //# sourceMappingURL=dccExTCPCommandCenter.js.map

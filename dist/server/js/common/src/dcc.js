@@ -129,25 +129,25 @@ class FileNames {
 exports.FileNames = FileNames;
 FileNames.CommandCenterSettings = "/commandcentersettings.json";
 exports.defaultSettings = {
-    CommandCenter: {
-        type: CommandCenterTypes.Z21,
-        ip: "192.168.0.70",
-        port: 21105,
-        serialPort: "COM1",
-        turnoutActiveTime: 500,
-        basicAccessoryDecoderActiveTime: 10
-    },
-    CommandCenterZ21: {
-        ip: "",
-        port: 21105,
-    },
-    CommandCenterDCCExTcp: {
-        ip: "192.168.1.183",
-        port: 2560,
-    },
-    CommandCenterDCCExSerial: {
-        port: "COM3"
-    },
+    // CommandCenter: {
+    //     type: CommandCenterTypes.Z21,
+    //     ip: "192.168.0.70",
+    //     port: 21105,
+    //     serialPort: "COM1",
+    //     turnoutActiveTime: 500,
+    //     basicAccessoryDecoderActiveTime: 10
+    // },
+    // CommandCenterZ21: {
+    //     ip: "",
+    //     port: 21105,
+    // },
+    // CommandCenterDCCExTcp: {
+    //     ip: "192.168.1.183",
+    //     port: 2560,
+    // },
+    // CommandCenterDCCExSerial: {
+    //     port: "COM3"
+    // },
     Dispacher: {
         interval: 500
     },

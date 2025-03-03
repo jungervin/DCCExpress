@@ -101,9 +101,9 @@ export class CommandCenterSettingsDialog extends Dialog {
         tab1.addComponent(label5)
         const turnoutActiveTime = new InputNumber()
         turnoutActiveTime.maxValue = 5000
-        turnoutActiveTime.value = Globals.Settings.CommandCenter.turnoutActiveTime
+        turnoutActiveTime.value = 0
         turnoutActiveTime.onchange = (sender) => {
-            Globals.Settings.CommandCenter.turnoutActiveTime = sender.value
+            //Globals.CommandCenterSetting.commandCenter..turnoutActiveTime = sender.value
         }
         tab1.addComponent(turnoutActiveTime)
 
@@ -111,9 +111,9 @@ export class CommandCenterSettingsDialog extends Dialog {
         tab1.addComponent(label6)
         const baActiveTime = new InputNumber()
         baActiveTime.maxValue = 5000
-        baActiveTime.value = Globals.Settings.CommandCenter.basicAccessoryDecoderActiveTime
+        baActiveTime.value = 0 
         baActiveTime.onchange = (sender) => {
-            Globals.Settings.CommandCenter.basicAccessoryDecoderActiveTime = sender.value
+            //Globals.Settings.CommandCenter.basicAccessoryDecoderActiveTime = sender.value
         }
         tab1.addComponent(baActiveTime)
 
