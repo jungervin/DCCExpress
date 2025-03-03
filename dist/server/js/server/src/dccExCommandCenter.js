@@ -5,6 +5,10 @@ const dcc_1 = require("../../common/src/dcc");
 const commandcenter_1 = require("./commandcenter");
 const utility_1 = require("./utility");
 const ws_1 = require("./ws");
+// Configure myAutomation.h - DCC Turnouts/Points
+// https://dcc-ex.com/exrail/creating-elements.html#configure-myautomation-h-dcc-turnouts-pointshttps://dcc-ex.com/exrail/creating-elements.html#configure-myautomation-h-dcc-turnouts-points
+// TURNOUT( id, addr, sub_addr [, "description"] )
+// https://dcc-ex.com/exrail/exrail-command-reference.html#objects-definition-and-control
 class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     constructor(name) {
         super(name);
@@ -115,14 +119,6 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
             var speedByte = parseInt(items[3]);
             var funcMap = parseInt(items[4]);
             var direction = dcc_1.DCCExDirections.forward;
-            //var loco = locos[address] // this.getLoco(addr)
-            // if(speedByte == -1 && !this.powerInfo.emergencyStop) {
-            //     this.powerInfo.emergencyStop = true;
-            //     broadcastAll({type: ApiCommands.powerInfo, data: this.powerInfo})
-            // } else if(this.powerInfo.emergencyStop) {
-            //     this.powerInfo.emergencyStop = false;
-            //     broadcastAll({type: ApiCommands.powerInfo, data: this.powerInfo})
-            // }
             //if (loco) 
             {
                 var newSpeed = 0;
@@ -152,12 +148,6 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
                 // if(this.powerInfo.emergencyStop && newSpeed > 0) {
                 //     this.powerInfo.emergencyStop = false;
                 //     broadcastAll({type: ApiCommands.powerInfo, data: this.powerInfo})
-                // }
-                // for (var i = 0; i <= 28; i++) {
-                //     var func = loco.functions.find(f => f.index == i)
-                //     if (func) {
-                //         func.isOn = ((loco.funcMap >> i) & 0x1) > 0;
-                //     }
                 // }
             }
         }

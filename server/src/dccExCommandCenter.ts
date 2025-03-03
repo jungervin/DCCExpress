@@ -3,6 +3,13 @@ import { CommandCenter } from "./commandcenter";
 import { log } from "./utility";
 import { broadcastAll } from "./ws";
 
+
+// Configure myAutomation.h - DCC Turnouts/Points
+// https://dcc-ex.com/exrail/creating-elements.html#configure-myautomation-h-dcc-turnouts-pointshttps://dcc-ex.com/exrail/creating-elements.html#configure-myautomation-h-dcc-turnouts-points
+// TURNOUT( id, addr, sub_addr [, "description"] )
+
+// https://dcc-ex.com/exrail/exrail-command-reference.html#objects-definition-and-control
+
 export class DCCExCommandCenter extends CommandCenter {
     buffer: string[] = []
     private _data: string = ""
@@ -128,17 +135,6 @@ export class DCCExCommandCenter extends CommandCenter {
             var speedByte = parseInt(items[3]);
             var funcMap = parseInt(items[4]);
             var direction: DCCExDirections = DCCExDirections.forward
-            //var loco = locos[address] // this.getLoco(addr)
-
-            // if(speedByte == -1 && !this.powerInfo.emergencyStop) {
-            //     this.powerInfo.emergencyStop = true;
-            //     broadcastAll({type: ApiCommands.powerInfo, data: this.powerInfo})
-            // } else if(this.powerInfo.emergencyStop) {
-            //     this.powerInfo.emergencyStop = false;
-            //     broadcastAll({type: ApiCommands.powerInfo, data: this.powerInfo})
-            // }
-
-    
 
             //if (loco) 
             {
@@ -172,13 +168,6 @@ export class DCCExCommandCenter extends CommandCenter {
                 //     this.powerInfo.emergencyStop = false;
                 //     broadcastAll({type: ApiCommands.powerInfo, data: this.powerInfo})
                 // }
-                // for (var i = 0; i <= 28; i++) {
-                //     var func = loco.functions.find(f => f.index == i)
-                //     if (func) {
-                //         func.isOn = ((loco.funcMap >> i) & 0x1) > 0;
-                //     }
-                // }
-
             }
         }
         else if (data.startsWith('H')) {
