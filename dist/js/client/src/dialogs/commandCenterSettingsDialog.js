@@ -64,6 +64,11 @@ define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "
                 label2.visible = label3.visible = ccIp.visible = ccPort.visible = sender.value == dcc_1.CommandCenterTypes.Z21.toString() ||
                     sender.value == dcc_1.CommandCenterTypes.DCCExTCP.toString();
                 label4.visible = ccSerialPort.visible = sender.value == dcc_1.CommandCenterTypes.DCCExSerial.toString();
+                label5.visible =
+                    turnoutActiveTime.visible =
+                        label6.visible =
+                            baActiveTime.visible =
+                                sender.value == dcc_1.CommandCenterTypes.Z21.toString();
             };
             tab1.addComponent(ccCombobox);
             const label2 = new dialog_1.Label("Ip Address");

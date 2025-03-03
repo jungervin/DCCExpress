@@ -63,9 +63,10 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     }
     setTurnout(address, closed) {
         this.put(`<T ${address} ${closed ? dcc_1.DCCExTurnout.closed : dcc_1.DCCExTurnout.open}>`);
+        this.getTurnout(address);
     }
     getTurnout(address) {
-        this.put(`<T ${address} X>`);
+        this.put(`<JT ${address}>`);
     }
     // 'a': // ACCESSORY <a ADDRESS SUBADDRESS ACTIVATE [ONOFF]> or <a LINEARADDRESS ACTIVATE>
     setAccessoryDecoder(address, on) {
@@ -87,10 +88,11 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
         //throw new Error("Method not implemented.");
     }
     parse(data) {
-        console.log("DCCEx Parse:", data);
-        if (data != "# 50") {
-            console.log('tcpClient Data: ', data);
+        if (data == "# 50") {
+            //log('tcpClient Data: ', data);
+            return;
         }
+        //log("DCCEx Parse:", data)
         if (data.startsWith('p1')) {
             this.powerInfo.info = 0b00000001;
             this.powerInfo.trackVoltageOn = true;
@@ -154,8 +156,13 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
         else if (data.startsWith('H')) {
             var items = data.split(" ");
             var address = parseInt(items[1]);
-            var closed = parseInt(items[2]);
-            var t = { address: address, isClosed: closed == 0 };
+            var t = { address: address, isClosed: parseInt(items[2]) == 0 };
+            (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.turnoutInfo, data: t });
+        }
+        else if (data.startsWith("jT")) {
+            var items = data.split(" ");
+            var address = parseInt(items[1]);
+            var t = { address: address, isClosed: items[2] == 'C' };
             (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.turnoutInfo, data: t });
         }
         else if (data == "X") {
@@ -169,7 +176,7 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     }
     received(buffer) {
         var msg = buffer.toString();
-        console.log("TCP RECEIVED:", msg);
+        (0, utility_1.log)("TCP RECEIVED:", msg);
         for (var i = 0; i < msg.length; i++) {
             var c = msg[i];
             if (c == ">") {

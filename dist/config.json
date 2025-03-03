@@ -1,10 +1,10 @@
 {
     "settings": {
-        "scale": 0.2,
-        "origX": 198,
-        "origY": 14,
-        "locoPanelVisible": false,
-        "propertyPanelVisible": false
+        "scale": 1.050669593827097,
+        "origX": -742,
+        "origY": -317,
+        "locoPanelVisible": true,
+        "propertyPanelVisible": true
     },
     "pages": [
         {
@@ -1424,6 +1424,18 @@
                     "y": 18,
                     "angle": 0,
                     "rbusAddress": 24
+                },
+                {
+                    "uuid": "d4cc6cf0-3b0a-4da0-bbb6-7c3cf9f982c8",
+                    "type": "turnoutLeft",
+                    "name": "turnoutleft142",
+                    "x": 35,
+                    "y": 12,
+                    "address": 2,
+                    "angle": 0,
+                    "t1ClosedValue": true,
+                    "t1OpenValue": false,
+                    "rbusAddress": 0
                 }
             ]
         }

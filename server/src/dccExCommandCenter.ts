@@ -26,7 +26,7 @@ export class DCCExCommandCenter extends CommandCenter {
     getConnectionString(): string {
         throw new Error("Method not implemented.");
     }
-   
+
     trackPower(on: boolean): void {
         log("DCCEx ", `trackPower(${on})`)
         this.put(on ? '<1>' : '<0>')
@@ -34,7 +34,7 @@ export class DCCExCommandCenter extends CommandCenter {
     emergenyStop(stop: boolean): void {
         this.put('<!>')
         this.powerInfo.emergencyStop = true;
-        broadcastAll({type: ApiCommands.powerInfo, data: this.powerInfo})
+        broadcastAll({ type: ApiCommands.powerInfo, data: this.powerInfo })
 
     }
     setLocoFunction(address: number, fn: number, on: boolean): void {
@@ -51,10 +51,10 @@ export class DCCExCommandCenter extends CommandCenter {
         // <t cab>
         this.put(`<t ${address}>`)
     }
-    
+
     setLoco(address: number, speed: number, direction: Z21Directions): void {
         // <t cab speed dir>
-        if(speed > 126) {
+        if (speed > 126) {
             speed = 126
         }
 
@@ -73,9 +73,10 @@ export class DCCExCommandCenter extends CommandCenter {
     }
     setTurnout(address: number, closed: boolean): void {
         this.put(`<T ${address} ${closed ? DCCExTurnout.closed : DCCExTurnout.open}>`)
+        this.getTurnout(address)
     }
     getTurnout(address: number): void {
-        this.put(`<T ${address} X>`)
+        this.put(`<JT ${address}>`)
     }
 
     // 'a': // ACCESSORY <a ADDRESS SUBADDRESS ACTIVATE [ONOFF]> or <a LINEARADDRESS ACTIVATE>
@@ -100,10 +101,12 @@ export class DCCExCommandCenter extends CommandCenter {
     }
 
     parse(data: string) {
-        console.log("DCCEx Parse:", data)
-        if (data != "# 50") {
-            console.log('tcpClient Data: ', data);
+        if (data == "# 50") {
+            //log('tcpClient Data: ', data);
+            return
         }
+
+        //log("DCCEx Parse:", data)
 
         if (data.startsWith('p1')) {
             this.powerInfo.info = 0b00000001
@@ -128,6 +131,8 @@ export class DCCExCommandCenter extends CommandCenter {
             //var sensor = getSensor(addr)
         }
         else if (data.startsWith('l')) {
+
+
             console.log("TCP Rec:", data)
 
             var items = data.split(" ")
@@ -159,11 +164,11 @@ export class DCCExCommandCenter extends CommandCenter {
                     //loco.speed = 0;
                 }
 
-  
+
                 var loco: iLoco = { address: address, speed: newSpeed, direction: direction, funcMap: funcMap }
                 broadcastAll({ type: ApiCommands.locoInfo, data: loco } as iData)
                 log("BROADCAST DCC-EX LOCO INFO:", loco)
-                
+
                 // if(this.powerInfo.emergencyStop && newSpeed > 0) {
                 //     this.powerInfo.emergencyStop = false;
                 //     broadcastAll({type: ApiCommands.powerInfo, data: this.powerInfo})
@@ -171,13 +176,18 @@ export class DCCExCommandCenter extends CommandCenter {
             }
         }
         else if (data.startsWith('H')) {
-                var items = data.split(" ")
-                var address = parseInt(items[1])
-                var closed = parseInt(items[2])
-
-            var t : iTurnoutInfo = {address: address,  isClosed: closed == 0}
-            broadcastAll({type: ApiCommands.turnoutInfo, data: t} as iData)
-        } else if (data == "X") {
+            var items = data.split(" ")
+            var address = parseInt(items[1])
+            var t: iTurnoutInfo = { address: address, isClosed: parseInt(items[2]) == 0 }
+            broadcastAll({ type: ApiCommands.turnoutInfo, data: t } as iData)
+        }
+        else if (data.startsWith("jT")) {
+            var items = data.split(" ")
+            var address = parseInt(items[1])
+            var t: iTurnoutInfo = { address: address, isClosed: items[2] == 'C' }
+            broadcastAll({ type: ApiCommands.turnoutInfo, data: t } as iData)
+        }
+        else if (data == "X") {
             console.log("A művelet nem sikerült!")
             var d: iData = { type: ApiCommands.UnsuccessfulOperation, data: "DCCEx Unsuccessful Operation!" }
             broadcastAll(d)
@@ -190,7 +200,7 @@ export class DCCExCommandCenter extends CommandCenter {
 
     received(buffer: any) {
         var msg = buffer.toString()
-        console.log("TCP RECEIVED:", msg)
+        log("TCP RECEIVED:", msg)
 
         for (var i = 0; i < msg.length; i++) {
             var c = msg[i];

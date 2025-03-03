@@ -75,6 +75,13 @@ export class CommandCenterSettingsDialog extends Dialog {
             label2.visible = label3.visible = ccIp.visible = ccPort.visible = sender.value == CommandCenterTypes.Z21.toString() ||
                 sender.value == CommandCenterTypes.DCCExTCP.toString()
             label4.visible = ccSerialPort.visible = sender.value == CommandCenterTypes.DCCExSerial.toString()
+
+            label5.visible =
+                turnoutActiveTime.visible =
+                label6.visible =
+                baActiveTime.visible = 
+                sender.value == CommandCenterTypes.Z21.toString()
+
         };
         tab1.addComponent(ccCombobox);
 
@@ -140,7 +147,7 @@ export class CommandCenterSettingsDialog extends Dialog {
                             basicAccessoryDecoderActiveTime: baActiveTime.value,
                         } as iZ21CommandCenter
                     } as iCommandCenter
-                    wsClient.send({type: ApiCommands.saveCommandCenter, data: Globals.CommandCenterSetting} as iData)
+                    wsClient.send({ type: ApiCommands.saveCommandCenter, data: Globals.CommandCenterSetting } as iData)
                     break;
 
                 case CommandCenterTypes.DCCExTCP.toString():
@@ -152,7 +159,7 @@ export class CommandCenterSettingsDialog extends Dialog {
                             init: "",
                         } as iDCCExTcp
                     } as iCommandCenter
-                    wsClient.send({type: ApiCommands.saveCommandCenter, data: Globals.CommandCenterSetting} as iData)
+                    wsClient.send({ type: ApiCommands.saveCommandCenter, data: Globals.CommandCenterSetting } as iData)
                     break;
 
                 case CommandCenterTypes.DCCExSerial.toString():
@@ -162,7 +169,7 @@ export class CommandCenterSettingsDialog extends Dialog {
                             port: ccSerialPort.value,
                         } as iDCCExSerial
                     } as iCommandCenter
-                    wsClient.send({type: ApiCommands.saveCommandCenter, data: Globals.CommandCenterSetting} as iData)
+                    wsClient.send({ type: ApiCommands.saveCommandCenter, data: Globals.CommandCenterSetting } as iData)
                     break;
             }
 
