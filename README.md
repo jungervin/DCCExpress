@@ -28,9 +28,9 @@ In the menu, reload the script by clicking on the **Dispatcher** | **Scheduler**
 
 1. **Download the ZIP file.**  
 2. **Extract it** and navigate to the `dist` folder.  
-3. **Configure the command center settings** in the `settings.json` file (IP, port).  
-4. **Run the server** by launching `DCCExpress.exe`.  
-5. **Open your browser** and go to `127.0.0.1:3000`. 🚀
+3. **Run the server** by launching `DCCExpress.exe`.  
+4. **Open your browser** and go to `127.0.0.1:3000`. 🚀
+5. **Configure the command center settings**
 
 ## 💻 Installation & 🚂Setup & 🚀Run 
 
