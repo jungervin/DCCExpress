@@ -30,11 +30,11 @@ export enum ApiCommands {
     getBasicAcessory = "getBasicAcessory",
     setBasicAccessory = "setBasicAccessory",
     basicAccessoryInfo = "basicAccessoryInfo",
-    
+
     setBlock = "setBlock",
     getBlock = "getBlock",
     blockInfo = "blockInfo",
-  
+
     getRBusInfo = "getRBusInfo",
     rbusInfo = "rbusInfo",
 
@@ -106,7 +106,7 @@ export interface iTurnoutInfo {
 }
 
 export interface iGetTurnout {
-     address: number,
+    address: number,
 }
 
 export interface iSetBasicAccessory {
@@ -148,7 +148,7 @@ export interface iTimeInfo {
     timestamp: number
 }
 export enum Z21POWERINFO {
-    poweroff =0,
+    poweroff = 0,
     poweron = 1,
     programmingmode = 2,
     shortcircuit = 8
@@ -168,7 +168,7 @@ export interface iSetPower {
 }
 
 export enum iZ21STATUS {
-    poweroff =0,
+    poweroff = 0,
     poweron = 1,
     programmingmode = 2,
     shortcircuit = 8
@@ -185,7 +185,7 @@ export enum CommandCenterTypes {
     unknown
 }
 
-export function getCommandCenterType(type: CommandCenterTypes) : string {
+export function getCommandCenterType(type: CommandCenterTypes): string {
     const res = Object.keys(CommandCenterTypes).filter(key => isNaN(Number(key)));
     return res ? res[type] : "Unknown"
 }
@@ -193,7 +193,7 @@ export function getCommandCenterType(type: CommandCenterTypes) : string {
 export interface iSystemStatus {
     MainCurrent: number,
     ProgCurrent: number,
-    FilteredMainCurrent:number,
+    FilteredMainCurrent: number,
     Temperature: number,
     SupplyVoltage: number,
     VCCVoltage: number,
@@ -237,7 +237,7 @@ export function getUUID() {
     );
 }
 
-export async function  fetchDevices() {
+export async function fetchDevices() {
     try {
         const response = await fetch('/devices');
         const devices = await response.json();
@@ -249,7 +249,9 @@ export async function  fetchDevices() {
     }
 }
 
-
+export class FileNames {
+    static CommandCenterSettings = "/commandcentersettings.json"
+}
 
 export interface iSettings {
     CommandCenter: {
@@ -257,7 +259,7 @@ export interface iSettings {
         ip: string,
         port: number,
         serialPort: string,
-        turnoutActiveTime: number,     
+        turnoutActiveTime: number,
         basicAccessoryDecoderActiveTime: number
     },
     CommandCenterZ21: {
@@ -274,7 +276,7 @@ export interface iSettings {
     Dispacher: {
         interval: number
     },
-    EditorSettings : {
+    EditorSettings: {
         ShowGrid: boolean,
         ShowAddress: boolean,
         ShowClock: boolean,
@@ -288,28 +290,28 @@ export interface iSettings {
 
 export const defaultSettings: iSettings = {
     CommandCenter: {
-      type: CommandCenterTypes.Z21,
-      ip: "192.168.0.70",
-      port: 21105,
-      serialPort: "COM1",
-      turnoutActiveTime: 500,
-      basicAccessoryDecoderActiveTime: 10
+        type: CommandCenterTypes.Z21,
+        ip: "192.168.0.70",
+        port: 21105,
+        serialPort: "COM1",
+        turnoutActiveTime: 500,
+        basicAccessoryDecoderActiveTime: 10
     },
     CommandCenterZ21: {
-      ip:"",
-      port: 21105,
+        ip: "",
+        port: 21105,
     },
     CommandCenterDCCExTcp: {
-      ip: "192.168.1.183",
-      port: 2560,
+        ip: "192.168.1.183",
+        port: 2560,
     },
     CommandCenterDCCExSerial: {
-      port: "COM3"
+        port: "COM3"
     },
     Dispacher: {
-      interval: 500
+        interval: 500
     },
-    EditorSettings : {
+    EditorSettings: {
         ShowGrid: true,
         ShowAddress: false,
         ShowClock: true,
@@ -318,6 +320,41 @@ export const defaultSettings: iSettings = {
         PropertyPanelVisible: false,
         EditModeEnable: true,
         Orientation: DCCExDirections.forward,
-    }    
-  }
-  
+    }
+}
+
+
+export interface iZ21CommandCenter {
+    ip: string,
+    port: number,
+    turnoutActiveTime: number,
+    basicAccessoryDecoderActiveTime: number
+
+}
+
+export interface iDCCEx {
+    init: string
+}
+export interface iDCCExTcp extends iDCCEx {
+    ip: string,
+    port: number
+}
+
+export interface iDCCExSerial {
+    port: string
+}
+
+export interface iCommandCenter {
+    type: CommandCenterTypes,
+    commandCenter: iZ21CommandCenter | iDCCExTcp | iDCCExSerial
+}
+
+export const defaultCommandCenterSettings: iCommandCenter = {
+    type: CommandCenterTypes.Z21,
+    commandCenter: {
+        ip: "192.168.1.70",
+        port: 21105,
+        turnoutActiveTime: 500,
+        basicAccessoryDecoderActiveTime: 10
+    } as iZ21CommandCenter,
+}

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.defaultSettings = exports.blocks = exports.rbus = exports.turnouts = exports.ext_accessories = exports.accessories = exports.locos = exports.CommandCenterTypes = exports.iZ21STATUS = exports.Z21POWERINFO = exports.ApiCommands = exports.DCCExTurnout = exports.DCCExDirections = exports.Z21Directions = exports.SpeedModes = void 0;
+exports.defaultCommandCenterSettings = exports.defaultSettings = exports.FileNames = exports.blocks = exports.rbus = exports.turnouts = exports.ext_accessories = exports.accessories = exports.locos = exports.CommandCenterTypes = exports.iZ21STATUS = exports.Z21POWERINFO = exports.ApiCommands = exports.DCCExTurnout = exports.DCCExDirections = exports.Z21Directions = exports.SpeedModes = void 0;
 exports.getCommandCenterType = getCommandCenterType;
 exports.getUUID = getUUID;
 exports.fetchDevices = fetchDevices;
@@ -124,6 +124,10 @@ function fetchDevices() {
         }
     });
 }
+class FileNames {
+}
+exports.FileNames = FileNames;
+FileNames.CommandCenterSettings = "/commandcentersettings.json";
 exports.defaultSettings = {
     CommandCenter: {
         type: CommandCenterTypes.Z21,
@@ -157,5 +161,14 @@ exports.defaultSettings = {
         EditModeEnable: true,
         Orientation: DCCExDirections.forward,
     }
+};
+exports.defaultCommandCenterSettings = {
+    type: CommandCenterTypes.Z21,
+    commandCenter: {
+        ip: "192.168.1.70",
+        port: 21105,
+        turnoutActiveTime: 500,
+        basicAccessoryDecoderActiveTime: 10
+    },
 };
 //# sourceMappingURL=dcc.js.map

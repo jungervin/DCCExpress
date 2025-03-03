@@ -24,7 +24,7 @@ define(["require", "exports", "../../../common/src/dcc"], function (require, exp
                     return data;
                 }
                 catch (error) {
-                    alert("Error fetching JSON:\n" + error);
+                    alert(`Error fetching JSON: ${url}\n` + error);
                     return null;
                 }
             });
@@ -87,6 +87,7 @@ define(["require", "exports", "../../../common/src/dcc"], function (require, exp
         shortCircuit: false,
         trackVoltageOn: false
     };
+    Globals.CommandCenterSetting = dcc_1.defaultCommandCenterSettings;
 });
 // export let commandCenters: iCommandCenter[] = []
 // export function setCommandCenters(data: any) {

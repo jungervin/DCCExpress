@@ -3,7 +3,7 @@ import { Toolbar } from "./editor/toolbar";
 import { TurnoutDoubleElement, TurnoutElement, TurnoutLeftElement, TurnoutRightElement } from "./editor/turnout";
 import { Signal1Element } from "./editor/signals";
 import { RailView } from "./editor/view";
-import { ApiCommands, iData, iGetTurnout, iLoco, iPowerInfo, iRBus, iSettings, iSetPower, iSetTurnout, iSystemStatus, defaultSettings, iLocomotive, iBlockInfo, iTimeInfo } from "../../common/src/dcc";
+import { ApiCommands, iData, iGetTurnout, iLoco, iPowerInfo, iRBus, iSettings, iSetPower, iSetTurnout, iSystemStatus, defaultSettings, iLocomotive, iBlockInfo, iTimeInfo, iCommandCenter, CommandCenterTypes, iZ21CommandCenter, FileNames } from "../../common/src/dcc";
 import { Globals } from "./helpers/globals";
 import { Dialog } from "./controls/dialog";
 import { wsClient } from "./helpers/ws";
@@ -97,6 +97,19 @@ export class App {
             this.editor.canvas.height = window.innerHeight;
             this.editor.draw()
         })
+
+        Globals.fetchJsonData(FileNames.CommandCenterSettings).then((data: iCommandCenter) => {
+            Globals.CommandCenterSetting.type = data.type
+            Globals.CommandCenterSetting.commandCenter = data.commandCenter;
+        }).catch((reason: any) => {
+            Globals.CommandCenterSetting.type = CommandCenterTypes.Z21,
+            Globals.CommandCenterSetting.commandCenter = {
+                ip: "192.168.0.70",
+                port: 21105,
+                turnoutActiveTime: 500,
+                basicAccessoryDecoderActiveTime: 100
+            } as iZ21CommandCenter
+        });
 
         this.toolbar.btnCommandCenterSettings!.onclick = (e) => {
             const cc =new CommandCenterSettingsDialog()
@@ -259,28 +272,6 @@ export class App {
             }
         }
 
-    }
-    execDispatcher() {
-        return;
-        var t10 = this.editor.views.getTurnout(10)
-        const signal55 = this.editor.views.getSignal(55);
-        const signal50 = this.editor.views.getSignal(50);
-
-        if (this.sensors[12]) {
-            signal55?.sendRed()
-        } else {
-            signal55?.sendGreen()
-        }
-
-        if (this.sensors[12] == false) {
-            if (t10?.t1Closed) {
-                signal50?.sendGreen()
-            } else {
-                signal50?.sendYellow()
-            }
-        } else {
-            signal50?.sendRed()
-        }
     }
 
     task1() {

@@ -1,0 +1,8 @@
+{
+    "type": 1,
+    "commandCenter": {
+        "ip": "1.1.1.1",
+        "port": 2560,
+        "init": ""
+    }
+}

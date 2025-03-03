@@ -64,6 +64,18 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 this.editor.canvas.height = window.innerHeight;
                 this.editor.draw();
             });
+            globals_1.Globals.fetchJsonData(dcc_1.FileNames.CommandCenterSettings).then((data) => {
+                globals_1.Globals.CommandCenterSetting.type = data.type;
+                globals_1.Globals.CommandCenterSetting.commandCenter = data.commandCenter;
+            }).catch((reason) => {
+                globals_1.Globals.CommandCenterSetting.type = dcc_1.CommandCenterTypes.Z21,
+                    globals_1.Globals.CommandCenterSetting.commandCenter = {
+                        ip: "192.168.0.70",
+                        port: 21105,
+                        turnoutActiveTime: 500,
+                        basicAccessoryDecoderActiveTime: 100
+                    };
+            });
             this.toolbar.btnCommandCenterSettings.onclick = (e) => {
                 const cc = new commandCenterSettingsDialog_1.CommandCenterSettingsDialog();
             };
@@ -195,29 +207,6 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                     this.tasks.stopAllTask();
                 }
             };
-        }
-        execDispatcher() {
-            return;
-            var t10 = this.editor.views.getTurnout(10);
-            const signal55 = this.editor.views.getSignal(55);
-            const signal50 = this.editor.views.getSignal(50);
-            if (this.sensors[12]) {
-                signal55 === null || signal55 === void 0 ? void 0 : signal55.sendRed();
-            }
-            else {
-                signal55 === null || signal55 === void 0 ? void 0 : signal55.sendGreen();
-            }
-            if (this.sensors[12] == false) {
-                if (t10 === null || t10 === void 0 ? void 0 : t10.t1Closed) {
-                    signal50 === null || signal50 === void 0 ? void 0 : signal50.sendGreen();
-                }
-                else {
-                    signal50 === null || signal50 === void 0 ? void 0 : signal50.sendYellow();
-                }
-            }
-            else {
-                signal50 === null || signal50 === void 0 ? void 0 : signal50.sendRed();
-            }
         }
         task1() {
             if (!this.tasks.getTask("Task1")) {

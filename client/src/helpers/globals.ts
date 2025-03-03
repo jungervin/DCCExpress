@@ -1,4 +1,4 @@
-import { CommandCenterTypes, DCCExDirections, defaultSettings, iPowerInfo, iSettings } from "../../../common/src/dcc";
+import { CommandCenterTypes, DCCExDirections, defaultCommandCenterSettings, defaultSettings, iPowerInfo, iSettings } from "../../../common/src/dcc";
 
 declare global {
     interface Window {
@@ -26,6 +26,9 @@ export class Globals {
         shortCircuit: false,
         trackVoltageOn: false
     }
+
+    static CommandCenterSetting = defaultCommandCenterSettings
+
     static async fetchJsonData(url: string) {
         try {
             const response = await fetch(url);
@@ -36,7 +39,7 @@ export class Globals {
             //console.log("Received JSON:", data);
             return data;
         } catch (error) {
-            alert("Error fetching JSON:\n" + error);
+            alert(`Error fetching JSON: ${url}\n` + error);
             return null;
         }
     }
