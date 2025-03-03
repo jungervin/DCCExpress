@@ -13,8 +13,8 @@ DCCExpress is a **web-based railway model layout editor and control system**. It
 - ✅ **Automation scripting support** via dispatcher.js
 - ✅ **Audio support:** button presses or via dispatcher.js automation.
 - ✅ **Current support:** 
-  * 🟢 **Roco Z21 Command Center**    
-  * 🟢 **DCC-EX TCP**
+  * 🟢 **[Roco Z21 Command Center](https://github.com/jungervin/DCCExpress/wiki/Command-Centers)**    
+  * 🟢 **[DCC-EX TCP](https://github.com/jungervin/DCCExpress/wiki/Command-Centers)**
 - ⏳ **Upcoming support:** 🔜 **DCC-EX Serial Port**
 - ⏳ **Upcoming support:** 🔜 **Node-RED integration**
 
