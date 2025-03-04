@@ -3,7 +3,7 @@ import { Toolbar } from "./editor/toolbar";
 import { TurnoutDoubleElement, TurnoutElement, TurnoutLeftElement, TurnoutRightElement } from "./editor/turnout";
 import { Signal1Element } from "./editor/signals";
 import { RailView } from "./editor/view";
-import { ApiCommands, iData, iGetTurnout, iLoco, iPowerInfo, iRBus, iSettings, iSetPower, iSetTurnout, iSystemStatus, defaultSettings, iLocomotive, iBlockInfo, iTimeInfo, iCommandCenter, CommandCenterTypes, iZ21CommandCenter, FileNames } from "../../common/src/dcc";
+import { ApiCommands, iData, iGetTurnout, iLoco, iPowerInfo, iRBus, iSettings, iSetPower, iSetTurnout, iSystemStatus, defaultSettings, iLocomotive, iBlockInfo, iTimeInfo, iCommandCenter, CommandCenterTypes, iZ21CommandCenter, FileNames, iSensorInfo } from "../../common/src/dcc";
 import { Globals } from "./helpers/globals";
 import { Dialog } from "./controls/dialog";
 import { wsClient } from "./helpers/ws";
@@ -181,6 +181,10 @@ export class App {
                     Dispatcher.exec()
                     break;
 
+                case ApiCommands.sensorInfo:
+                    this.sensorInfo(msg.data as iSensorInfo)
+                    break;
+
                 case ApiCommands.blockInfo:
                     const blocks = msg.data as { [name: string]: iBlockInfo };
                     Object.values(blocks).forEach((block) => {
@@ -260,7 +264,6 @@ export class App {
         }
 
     }
-
     task1() {
 
         if (!this.tasks.getTask("Task1")) {
@@ -500,8 +503,23 @@ export class App {
                 }
             }
             this.editor.draw()
-        } 
+        }
     }
+    sensorInfo(sensor: iSensorInfo) {
+        this.editor.views.getRailElements().forEach(elem => {
+                if (elem.rbusAddress == sensor.address) {
+                    elem.occupied = sensor.on
+                }
+        });
+        this.editor.views.getSensorElements().forEach(elem => {
+                if (elem.address == sensor.address) {
+                    elem.on = sensor.on == elem.valueOn
+                }
+        });
+        this.editor.draw()
+    }
+
+
     procPowerInfo(pi: iPowerInfo) {
         Globals.power = pi
         if (this.powerInfo.emergencyStop != pi.emergencyStop) {

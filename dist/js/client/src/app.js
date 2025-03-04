@@ -127,6 +127,9 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                         // this.execDispatcher()
                         dispatcher_1.Dispatcher.exec();
                         break;
+                    case dcc_1.ApiCommands.sensorInfo:
+                        this.sensorInfo(msg.data);
+                        break;
                     case dcc_1.ApiCommands.blockInfo:
                         const blocks = msg.data;
                         Object.values(blocks).forEach((block) => {
@@ -401,6 +404,19 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 }
                 this.editor.draw();
             }
+        }
+        sensorInfo(sensor) {
+            this.editor.views.getRailElements().forEach(elem => {
+                if (elem.rbusAddress == sensor.address) {
+                    elem.occupied = sensor.on;
+                }
+            });
+            this.editor.views.getSensorElements().forEach(elem => {
+                if (elem.address == sensor.address) {
+                    elem.on = sensor.on == elem.valueOn;
+                }
+            });
+            this.editor.draw();
         }
         procPowerInfo(pi) {
             globals_1.Globals.power = pi;

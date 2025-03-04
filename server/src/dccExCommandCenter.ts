@@ -45,6 +45,9 @@ export class DCCExCommandCenter extends CommandCenter {
     }
     clientConnected(): void {
         broadcastAll({ type: ApiCommands.powerInfo, data: this.powerInfo } as iData)
+        this.put("<T>")
+        this.put("<Q>")
+        this.put("<Z>")
 
     }
     getLoco(address: number): void {
