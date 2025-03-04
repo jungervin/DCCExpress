@@ -1,4 +1,4 @@
-import { accessories, ApiCommands, DCCExDirections, DCCExTurnout, iData, iLoco, iPowerInfo, iSetBasicAccessory, iSystemStatus, iTurnoutInfo, locos, turnouts, Z21Directions } from "../../common/src/dcc";
+import { accessories, ApiCommands, DCCExDirections, DCCExTurnout, iData, iLoco, iPowerInfo, iSensorInfo, iSetBasicAccessory, iSystemStatus, iTurnoutInfo, locos, turnouts, Z21Directions } from "../../common/src/dcc";
 import { CommandCenter } from "./commandcenter";
 import { log } from "./utility";
 import { broadcastAll } from "./ws";
@@ -96,6 +96,11 @@ export class DCCExCommandCenter extends CommandCenter {
     getRBusInfo(): void {
         //throw new Error("Method not implemented.");
     }
+
+    getSensorInfo(address: number): void {
+        this.put(`<Q ${address}>`)
+    }
+
     getSystemState(): void {
         //throw new Error("Method not implemented.");
     }
@@ -112,7 +117,6 @@ export class DCCExCommandCenter extends CommandCenter {
             this.powerInfo.info = 0b00000001
             this.powerInfo.trackVoltageOn = true
             broadcastAll({ type: ApiCommands.powerInfo, data: this.powerInfo } as iData)
-
         }
         else if (data.startsWith('p0')) {
             this.powerInfo.info = 0b00000000
@@ -120,15 +124,14 @@ export class DCCExCommandCenter extends CommandCenter {
             broadcastAll({ type: ApiCommands.powerInfo, data: this.powerInfo } as iData)
         }
         else if (data.startsWith("Q ")) {
-            var params = data.replace(">", "").split(" ");
-            console.log('tcpClient Data: processSensor');
-            var address = parseInt(params[1])
+            const params = data.split(" ");
+            const si = {address: parseInt(params[1]), on: true} as iSensorInfo
+            broadcastAll({ type: ApiCommands.sensorInfo, data: si } as iData)
         }
         else if (data.startsWith("q ")) {
-            var params = data.replace(">", "").split(" ");
-            var address = parseInt(params[1])
-            //processSensor(addr);
-            //var sensor = getSensor(addr)
+            const params = data.split(" ");
+            const si = {address: parseInt(params[1]), on: false} as iSensorInfo
+            broadcastAll({ type: ApiCommands.sensorInfo, data: si } as iData)
         }
         else if (data.startsWith('l')) {
 
@@ -196,6 +199,7 @@ export class DCCExCommandCenter extends CommandCenter {
 
     connected() {
         this.put('<T>')
+        this.put('<Q>')
     }
 
     received(buffer: any) {

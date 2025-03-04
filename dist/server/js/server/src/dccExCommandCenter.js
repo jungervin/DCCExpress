@@ -84,6 +84,9 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     getRBusInfo() {
         //throw new Error("Method not implemented.");
     }
+    getSensorInfo(address) {
+        this.put(`<Q ${address}>`);
+    }
     getSystemState() {
         //throw new Error("Method not implemented.");
     }
@@ -104,15 +107,14 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
             (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.powerInfo, data: this.powerInfo });
         }
         else if (data.startsWith("Q ")) {
-            var params = data.replace(">", "").split(" ");
-            console.log('tcpClient Data: processSensor');
-            var address = parseInt(params[1]);
+            const params = data.split(" ");
+            const si = { address: parseInt(params[1]), on: true };
+            (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.sensorInfo, data: si });
         }
         else if (data.startsWith("q ")) {
-            var params = data.replace(">", "").split(" ");
-            var address = parseInt(params[1]);
-            //processSensor(addr);
-            //var sensor = getSensor(addr)
+            const params = data.split(" ");
+            const si = { address: parseInt(params[1]), on: false };
+            (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.sensorInfo, data: si });
         }
         else if (data.startsWith('l')) {
             console.log("TCP Rec:", data);
@@ -173,6 +175,7 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     }
     connected() {
         this.put('<T>');
+        this.put('<Q>');
     }
     received(buffer) {
         var msg = buffer.toString();

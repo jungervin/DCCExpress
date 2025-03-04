@@ -100,7 +100,7 @@ export class App {
 
         Globals.loadCommandCenterSettings()
         this.toolbar.btnCommandCenterSettings!.onclick = (e) => {
-            const cc =new CommandCenterSettingsDialog()
+            const cc = new CommandCenterSettingsDialog()
         }
 
 
@@ -125,7 +125,7 @@ export class App {
                 wsClient.send({ type: ApiCommands.getRBusInfo, data: "" })
 
                 toastManager.showToast("Config Loaded", "success")
-                
+
 
             }).catch((reason) => {
                 //toastManager.showToast("Config Not Loaded<br>"+ reason, "error")
@@ -182,7 +182,7 @@ export class App {
                     break;
 
                 case ApiCommands.blockInfo:
-                    const blocks = msg.data as { [name: string]: iBlockInfo } ;
+                    const blocks = msg.data as { [name: string]: iBlockInfo };
                     Object.values(blocks).forEach((block) => {
                         Object.values(block).forEach((bb) => {
                             this.editor.views.getBlockElements().forEach((b) => {
@@ -211,10 +211,10 @@ export class App {
                     toastManager.showToast("UnsuccessfulOperation")
                     break;
                 case ApiCommands.timeInfo:
-                    if(this.editor.fastClock) {
+                    if (this.editor.fastClock) {
                         const ti = msg.data as iTimeInfo
                         this.editor.fastClock.setCurrentTime(ti.timestamp);
-                        
+
                     }
                     break;
                 default: console.log("Unknow WS message:", msg)
@@ -481,27 +481,28 @@ export class App {
         }
     }
     rbusInfo(data: iRBus) {
-        var g = data.group * 100;
-        for (var i = 0; i < data.bytes.length; i++) {
-            var byte = data.bytes[i]
-            for (var j = 0; j <= 7; j++) {
-                var bit = (byte & (1 << j)) > 0
-                var addr = g + (i + 1) * 10 + j + 1
-                var on = (byte & (1 << j)) > 0
-                this.sensors[addr] = on;
-                this.editor.views.elements.forEach(elem => {
-                    if (elem instanceof RailView) {
-                        if (elem.rbusAddress == addr) {
-                            elem.occupied = on
+        if (Globals.CommandCenterSetting.type == CommandCenterTypes.Z21) {
+            var g = data.group * 100;
+            for (var i = 0; i < data.bytes.length; i++) {
+                var byte = data.bytes[i]
+                for (var j = 0; j <= 7; j++) {
+                    var bit = (byte & (1 << j)) > 0
+                    var addr = g + (i + 1) * 10 + j + 1
+                    var on = (byte & (1 << j)) > 0
+                    this.sensors[addr] = on;
+                    this.editor.views.elements.forEach(elem => {
+                        if (elem instanceof RailView) {
+                            if (elem.rbusAddress == addr) {
+                                elem.occupied = on
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
-        }
-        this.editor.draw()
+            this.editor.draw()
+        } 
     }
     procPowerInfo(pi: iPowerInfo) {
-
         Globals.power = pi
         if (this.powerInfo.emergencyStop != pi.emergencyStop) {
             window.powerChanged(pi)

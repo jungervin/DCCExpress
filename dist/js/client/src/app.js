@@ -381,24 +381,26 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             }
         }
         rbusInfo(data) {
-            var g = data.group * 100;
-            for (var i = 0; i < data.bytes.length; i++) {
-                var byte = data.bytes[i];
-                for (var j = 0; j <= 7; j++) {
-                    var bit = (byte & (1 << j)) > 0;
-                    var addr = g + (i + 1) * 10 + j + 1;
-                    var on = (byte & (1 << j)) > 0;
-                    this.sensors[addr] = on;
-                    this.editor.views.elements.forEach(elem => {
-                        if (elem instanceof view_1.RailView) {
-                            if (elem.rbusAddress == addr) {
-                                elem.occupied = on;
+            if (globals_1.Globals.CommandCenterSetting.type == dcc_1.CommandCenterTypes.Z21) {
+                var g = data.group * 100;
+                for (var i = 0; i < data.bytes.length; i++) {
+                    var byte = data.bytes[i];
+                    for (var j = 0; j <= 7; j++) {
+                        var bit = (byte & (1 << j)) > 0;
+                        var addr = g + (i + 1) * 10 + j + 1;
+                        var on = (byte & (1 << j)) > 0;
+                        this.sensors[addr] = on;
+                        this.editor.views.elements.forEach(elem => {
+                            if (elem instanceof view_1.RailView) {
+                                if (elem.rbusAddress == addr) {
+                                    elem.occupied = on;
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
+                this.editor.draw();
             }
-            this.editor.draw();
         }
         procPowerInfo(pi) {
             globals_1.Globals.power = pi;

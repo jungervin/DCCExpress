@@ -1,4 +1,4 @@
-import { iSetBasicAccessory, iSetTurnout, iGetTurnout, iLoco, iSetLocoFunction, iSetPower, CommandCenterTypes, iZ21CommandCenter, iCommandCenter, iDCCExTcp, iDCCExSerial } from "../../common/src/dcc";
+import { iSetBasicAccessory, iSetTurnout, iGetTurnout, iLoco, iSetLocoFunction, iSetPower, CommandCenterTypes, iZ21CommandCenter, iCommandCenter, iDCCExTcp, iDCCExSerial, iGetSensor } from "../../common/src/dcc";
 import { CommandCenter } from "./commandcenter";
 import { COMMANDCENTER_SETTING_FILE } from "./server";
 import * as fs from "fs";
@@ -8,6 +8,7 @@ import { DccExSerialCommandCenter } from "./dccExSerialCommandCenter";
 import { log, logError } from "./utility";
 
 export class CommandCenters {
+
     cc?: CommandCenter = undefined;
 
     getSystemState() {
@@ -84,6 +85,15 @@ export class CommandCenters {
             log("Command Center doesn't exists!")
         }
     }
+
+    getSensor(sensor: iGetSensor) {
+        if (this.cc) {
+            this.cc.getSensorInfo(sensor.address)
+        } else {
+            log("Command Center doesn't exists!")
+        }
+    }
+    
 
     getLoco(loco: iLoco) {
         if (this.cc) {

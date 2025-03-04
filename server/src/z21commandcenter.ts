@@ -13,7 +13,7 @@ const cLAN_X_TURNOUT_INFO0x43 = 0x43
 const cLAN_SYSTEMSTATE_DATACHANGED0x84 = 0x84
 
 export class Z21CommandCenter extends CommandCenter {
-
+    
     //private mutex = new Mutex();
 
     trackPower(on: boolean): void {
@@ -401,6 +401,11 @@ export class Z21CommandCenter extends CommandCenter {
     getRBusInfo() {
         this.LAN_RMBUS_GETDATA()
     }
+
+    getSensorInfo(address: number): void {
+        //throw new Error("Method not implemented.");
+    }
+
 
     async put(data: any) {
         //await this.mutex.lock()

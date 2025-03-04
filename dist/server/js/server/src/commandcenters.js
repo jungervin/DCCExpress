@@ -108,6 +108,14 @@ class CommandCenters {
             (0, utility_1.log)("Command Center doesn't exists!");
         }
     }
+    getSensor(sensor) {
+        if (this.cc) {
+            this.cc.getSensorInfo(sensor.address);
+        }
+        else {
+            (0, utility_1.log)("Command Center doesn't exists!");
+        }
+    }
     getLoco(loco) {
         if (this.cc) {
             this.cc.getLoco(loco.address);

@@ -1,6 +1,6 @@
 import WebSocket, { WebSocketServer } from "ws";
 import { COMMANDCENTER_SETTING_FILE, CONFIG_FILE, server, SETTINGS_FILE } from "./server";
-import { ApiCommands, blocks, iBlockInfo, iCommandCenter, iData, iLoco, iLocoData, iSetBlock, iSetTimeSettings, iTimeInfo, locos } from "../../common/src/dcc";
+import { ApiCommands, blocks, iBlockInfo, iCommandCenter, iData, iGetSensor, iLoco, iLocoData, iSetBlock, iSetTimeSettings, iTimeInfo, locos } from "../../common/src/dcc";
 import { commandCenters } from "./commandcenters";
 import * as fs from "fs";
 import { config } from "process";
@@ -91,6 +91,13 @@ wsServer.on("connection", (ws, req) => {
                 case ApiCommands.getRBusInfo:
                     try {
                         commandCenters.getRBusInfo()
+                    } catch (error) {
+                        log("WS ApiCommands.getRBusInfo:", error)
+                    }
+                    break;
+                case ApiCommands.getSensor:
+                    try {
+                        commandCenters.getSensor(data as iGetSensor)
                     } catch (error) {
                         log("WS ApiCommands.getRBusInfo:", error)
                     }

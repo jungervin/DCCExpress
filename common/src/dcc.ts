@@ -52,6 +52,8 @@ export enum ApiCommands {
     timeInfo = "timeInfo",
     setTimeSettings = "setTimeSettings",
     saveCommandCenter = "saveCommandCenter",
+    getSensor = "getSensor",
+    sensorInfo = "sensorInfo",
 }
 
 export interface iData {
@@ -128,6 +130,17 @@ export interface iRBus {
     group: number,
     bytes: number[]
 }
+
+export interface iGetSensor {
+    address: number
+}
+
+export interface iSensorInfo {
+    address: number,
+    on: boolean
+}
+
+
 
 export interface iSetBlock {
     blockName: string,

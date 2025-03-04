@@ -358,6 +358,9 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
     getRBusInfo() {
         this.LAN_RMBUS_GETDATA();
     }
+    getSensorInfo(address) {
+        //throw new Error("Method not implemented.");
+    }
     put(data) {
         return __awaiter(this, void 0, void 0, function* () {
             //await this.mutex.lock()

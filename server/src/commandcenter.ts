@@ -1,6 +1,6 @@
 // import { iBasicAccessory, iTurnout } from "../../common/src/dcc";
 
-import { CommandCenterTypes, iPowerInfo, iSetBasicAccessory, iSetTurnout, iTurnoutInfo, Z21Directions } from "../../common/src/dcc";
+import { CommandCenterTypes, iGetSensor, iPowerInfo, iSetBasicAccessory, iSetTurnout, iTurnoutInfo, Z21Directions } from "../../common/src/dcc";
 
 export abstract class CommandCenter {
     //uuid: string = ""
@@ -43,6 +43,9 @@ export abstract class CommandCenter {
     abstract getAccessoryDecoder(address: number): void;
 
     abstract getRBusInfo(): void;
+    abstract getSensorInfo(address: number): void;
+
+
     abstract getSystemState(): void;
 
     abstract getLoco(address: number) : void;
