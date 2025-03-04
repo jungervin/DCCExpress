@@ -34,6 +34,7 @@ import { getDistance } from "../helpers/math";
 import { FastClock } from "./clock";
 import { EmergencyButtonShapeElement } from "./emergencyButton";
 import { TreeShapeElement } from "./tree";
+import { SensorShapeElement, SensorTypes } from "./sensor";
 
 console.log(PropertyPanel)
 
@@ -60,6 +61,7 @@ export enum drawModes {
     audiobutton,
     emergencybutton,
     tree,
+    sensor,
 }
 
 export class CustomCanvas extends HTMLElement {
@@ -114,6 +116,7 @@ export class CustomCanvas extends HTMLElement {
     cursorAudioButtonElement?: AudioButtonShapeElement;
     cursorEmergencyButtonElement: EmergencyButtonShapeElement | undefined;
     cursorTreeShapeElement: TreeShapeElement | undefined;
+    cursorSensorShapeElement: SensorShapeElement | undefined;
     private pointerMap = new Map<number, { x: number; y: number }>(); // Pointer ID-k mentése
     private lastDistance = 0;
     fastClock?: FastClock | null;
@@ -205,7 +208,8 @@ export class CustomCanvas extends HTMLElement {
         this.cursorAudioButtonElement.isSelected = true;
         this.cursorEmergencyButtonElement = new EmergencyButtonShapeElement("", 0, 0, "cursor");
         this.cursorEmergencyButtonElement.isSelected = true;
-
+        this.cursorSensorShapeElement = new SensorShapeElement("", 0, 0, 0, "cursor")
+        this.cursorSensorShapeElement.isSelected = true
         // this.cursorSignal5Element = new Signal5Element("", 10, 0, 0, "cursor");
         // this.cursorSignal5Element.isSelected = true
         this.routeSwitchElement = new RouteSwitchElement("", 0, 0, "cursor");
@@ -343,6 +347,12 @@ export class CustomCanvas extends HTMLElement {
             this.unselectAll()
             this.drawMode = drawModes.label2
             this.cursorElement = this.cursorLabel2Element!
+        }
+        document.getElementById("tbSensor")!.onclick = (e: MouseEvent) => {
+            this.shapesModal!.hide()
+            this.unselectAll()
+            this.drawMode = drawModes.sensor
+            this.cursorElement = this.cursorSensorShapeElement
         }
 
         this.drawEnabled = localStorage.getItem("drawEnabled") == "true"
@@ -483,12 +493,12 @@ export class CustomCanvas extends HTMLElement {
                     Globals.Settings.EditorSettings.ShowClock = d.showClock.checked
                     this.fastClock!.visible = d.showClock.checked
                     Globals.Settings.EditorSettings.fastClockFactor = d.fastClockFactor.value
-                    
+
                     Globals.saveJson("/settings.json", Globals.Settings)
                     //this.draw()
                     this.showAddresses(Globals.Settings.EditorSettings.ShowAddress)
 
-                    wsClient.send({type: ApiCommands.setTimeSettings, data: {scale:d.fastClockFactor.value } as iSetTimeSettings})
+                    wsClient.send({ type: ApiCommands.setTimeSettings, data: { scale: d.fastClockFactor.value } as iSetTimeSettings })
                 }
             }
         }
@@ -559,12 +569,12 @@ export class CustomCanvas extends HTMLElement {
     }
 
 
-    
-    private _locoControlPanelVisibility : boolean = false;
-    public get locoControlPanelVisibility() : boolean {
+
+    private _locoControlPanelVisibility: boolean = false;
+    public get locoControlPanelVisibility(): boolean {
         return this._locoControlPanelVisibility;
     }
-    public set locoControlPanelVisibility(v : boolean) {
+    public set locoControlPanelVisibility(v: boolean) {
         this._locoControlPanelVisibility = v;
         localStorage.setItem("locoControlPanelVisibility", v ? "true" : "false")
 
@@ -580,7 +590,7 @@ export class CustomCanvas extends HTMLElement {
 
 
     }
-    
+
 
     private _propertyPanaelVisibility: boolean = false;
     public get propertyPanelVisibility(): boolean {
@@ -1004,6 +1014,12 @@ export class CustomCanvas extends HTMLElement {
                     var l = new Label2Element(getUUID(), x, y, "label" + num);
                     this.add(l)
                     break;
+                case drawModes.sensor:
+                    //this.removeIfExists(x, y)
+                    this.unselectAll()
+                    var s = new SensorShapeElement(getUUID(), 0, x, y, "sensor" + num);
+                    this.add(s)
+                    break;
                 case drawModes.tree:
                     //this.removeIfExists(x, y)
                     this.unselectAll()
@@ -1394,9 +1410,21 @@ export class CustomCanvas extends HTMLElement {
                     elems.push({
                         uuid: b.UUID, type: b.type, address: b.address, x: b.x, y: b.y, name: b.name,
                         valueOn: b.valueOn,
-                        valueOff: b.valueOff
+                        valueOff: b.valueOff,
+                        colorOn: b.colorOn
                     })
                     break;
+                case 'sensor':
+                    var sensor = elem as SensorShapeElement
+                    elems.push({
+                        uuid: sensor.UUID, type: sensor.type, addrees: sensor.address, x: sensor.x, y: sensor.y, name: sensor.name,
+                        valueOn: sensor.valueOn,
+                        valueOff: sensor.valueOff,
+                        colorOn: sensor.colorOn,
+                        kind: sensor.kind,
+                    })
+                    break;
+
                 case 'audiobutton':
                     var ab = elem as AudioButtonShapeElement
                     elems.push({ uuid: ab.UUID, type: ab.type, x: ab.x, y: ab.y, name: ab.name, filename: ab.filename })
@@ -1409,8 +1437,6 @@ export class CustomCanvas extends HTMLElement {
                     var tree = elem as TreeShapeElement
                     elems.push({ uuid: tree.UUID, type: tree.type, x: tree.x, y: tree.y, name: tree.name })
                     break;
-
-
             }
         })
 
@@ -1610,6 +1636,14 @@ export class CustomCanvas extends HTMLElement {
                         case "tree":
                             var tree = new TreeShapeElement(elem.uuid, elem.x, elem.y, elem.name);
                             this.add(tree)
+                            break;
+                        case "sensor":
+                            var sensor = new SensorShapeElement(elem.uuid, elem.address ?? 0, elem.x, elem.y, elem.name);
+                            sensor.kind = elem.kind ?? SensorTypes.rect
+                            sensor.colorOn = elem.fillColor ?? "lime"
+                            sensor.valueOff = elem.valueOff ?? false
+                            sensor.valueOn = elem.valueOn ?? true
+                            this.add(sensor)
                             break;
 
                     }

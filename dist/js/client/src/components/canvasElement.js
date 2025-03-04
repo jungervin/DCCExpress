@@ -1,7 +1,7 @@
-define(["require", "exports", "../helpers/graphics", "../editor/turnout", "../editor/track", "../editor/trackend", "../editor/corner", "../editor/curve", "../editor/signals", "../editor/route", "../editor/button"], function (require, exports, graphics_1, turnout_1, track_1, trackend_1, corner_1, curve_1, signals_1, route_1, button_1) {
+define(["require", "exports", "../helpers/graphics", "../editor/turnout", "../editor/track", "../editor/trackend", "../editor/corner", "../editor/curve", "../editor/signals", "../editor/route", "../editor/button", "../editor/sensor"], function (require, exports, graphics_1, turnout_1, track_1, trackend_1, corner_1, curve_1, signals_1, route_1, button_1, sensor_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.ButtonCanvasElement = exports.RouteSwitchCanvasElement = exports.Signal4CanvasElement = exports.Signal3CanvasElement = exports.Signal2CanvasElement = exports.TurnoutDoubleCanvasElement = exports.TurnoutRightCanvasElement = exports.TurnoutLeftCanvasElement = exports.TrackCurveCanvasElement = exports.TrackCornerCanvasElement = exports.TrackEndCanvasElement = exports.TrackCanvasElement = exports.CanvasShapeElement = exports.CanvasElement = void 0;
+    exports.SensorCanvasElement = exports.ButtonCanvasElement = exports.RouteSwitchCanvasElement = exports.Signal4CanvasElement = exports.Signal3CanvasElement = exports.Signal2CanvasElement = exports.TurnoutDoubleCanvasElement = exports.TurnoutRightCanvasElement = exports.TurnoutLeftCanvasElement = exports.TrackCurveCanvasElement = exports.TrackCornerCanvasElement = exports.TrackEndCanvasElement = exports.TrackCanvasElement = exports.CanvasShapeElement = exports.CanvasElement = void 0;
     class CanvasElement extends HTMLElement {
         constructor() {
             super();
@@ -289,4 +289,20 @@ define(["require", "exports", "../helpers/graphics", "../editor/turnout", "../ed
     }
     exports.ButtonCanvasElement = ButtonCanvasElement;
     customElements.define("button-canvas-element", ButtonCanvasElement);
+    class SensorCanvasElement extends CanvasElement {
+        constructor() {
+            super();
+            this.sensor = new sensor_1.SensorShapeElement("", 0, 0, 0, "");
+            this.sensor.angle = 0;
+        }
+        connectedCallback() {
+            this.draw();
+        }
+        draw() {
+            super.draw();
+            this.sensor.draw(this.ctx);
+        }
+    }
+    exports.SensorCanvasElement = SensorCanvasElement;
+    customElements.define("sensor-canvas-element", SensorCanvasElement);
 });

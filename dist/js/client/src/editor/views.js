@@ -55,7 +55,7 @@ define(["require", "exports", "./turnout", "./view", "./route", "./signals", "./
         getAccessoryElements() {
             var items = [];
             this.elements.forEach((elem) => {
-                if (elem instanceof button_1.AccessoryDecoderElement) {
+                if (elem instanceof button_1.AccessoryAddressElement) {
                     items.push(elem);
                 }
             });

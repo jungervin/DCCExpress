@@ -1,8 +1,8 @@
 define(["require", "exports", "../helpers/ws", "./view", "../../../common/src/dcc"], function (require, exports, ws_1, view_1, dcc_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.ButtonShapeElement = exports.AccessoryDecoderElement = void 0;
-    class AccessoryDecoderElement extends view_1.View {
+    exports.ButtonShapeElement = exports.AccessoryAddressElement = void 0;
+    class AccessoryAddressElement extends view_1.View {
         constructor(uuid, address, x, y, name) {
             super(uuid, x, y, name);
             this.on = false;
@@ -10,6 +10,7 @@ define(["require", "exports", "../helpers/ws", "./view", "../../../common/src/dc
             this.textOff = "OFF";
             this.valueOn = true;
             this.valueOff = false;
+            this.colorOn = "lime";
             this.address = address;
         }
         get type() {
@@ -27,8 +28,8 @@ define(["require", "exports", "../helpers/ws", "./view", "../../../common/src/dc
             }
         }
     }
-    exports.AccessoryDecoderElement = AccessoryDecoderElement;
-    class ButtonShapeElement extends AccessoryDecoderElement {
+    exports.AccessoryAddressElement = AccessoryAddressElement;
+    class ButtonShapeElement extends AccessoryAddressElement {
         constructor(uuid, address, x, y, name) {
             super(uuid, address, x, y, name);
         }

@@ -3,8 +3,8 @@
         "scale": 1.050669593827097,
         "origX": -742,
         "origY": -317,
-        "locoPanelVisible": true,
-        "propertyPanelVisible": true
+        "locoPanelVisible": false,
+        "propertyPanelVisible": false
     },
     "pages": [
         {
@@ -1436,6 +1436,22 @@
                     "t1ClosedValue": true,
                     "t1OpenValue": false,
                     "rbusAddress": 0
+                },
+                {
+                    "uuid": "3cd4a265-e8e8-48a6-95e1-dc1f2bc149cf",
+                    "type": "sensor",
+                    "addrees": 0,
+                    "x": 38,
+                    "y": 13,
+                    "name": "sensor143"
+                },
+                {
+                    "uuid": "766e5ce8-373a-46aa-b4e5-040dce7b7216",
+                    "type": "sensor",
+                    "addrees": 0,
+                    "x": 37,
+                    "y": 13,
+                    "name": "sensor144"
                 }
             ]
         }

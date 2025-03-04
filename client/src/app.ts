@@ -10,7 +10,7 @@ import { wsClient } from "./helpers/ws";
 import { toastManager, ToastManager } from "./controls/toastManager";
 import { Dispatcher } from "./editor/dispatcher";
 import { LocoControlPanel } from "./components/controlPanel";
-import { AccessoryDecoderElement } from "./editor/button";
+import { AccessoryAddressElement } from "./editor/button";
 import { Api } from "./helpers/api";
 import { Task, Tasks } from "./helpers/task";
 import { Scheduler } from "./helpers/scheduler";
@@ -445,7 +445,7 @@ export class App {
         })
 
         const accessories = this.editor.views.getAccessoryElements()
-        accessories.forEach((elem: AccessoryDecoderElement) => {
+        accessories.forEach((elem: AccessoryAddressElement) => {
             if (elem.address == data.address) {
                 elem.on = data.isClosed ? elem.valueOn : elem.valueOff
                 redraw = true

@@ -9,6 +9,7 @@ import { Signal2Element, Signal3Element, Signal4Element } from "../editor/signal
 import { RouteSwitchElement } from "../editor/route";
 import { Component } from "../controls/dialog";
 import { ButtonShapeElement } from "../editor/button";
+import { SensorShapeElement } from "../editor/sensor";
 
 export class CanvasElement extends HTMLElement {
     ctx?: CanvasRenderingContext2D
@@ -316,7 +317,6 @@ export class ButtonCanvasElement extends CanvasElement {
         super()
         this.button = new ButtonShapeElement("", 0, 0, 0,  "")
         this.button.angle = 0
-        
     }
 
     connectedCallback() {
@@ -329,4 +329,23 @@ export class ButtonCanvasElement extends CanvasElement {
     
 }
 customElements.define("button-canvas-element", ButtonCanvasElement)
+
+export class SensorCanvasElement extends CanvasElement {
+    sensor: SensorShapeElement;
+    constructor() {
+        super()
+        this.sensor = new SensorShapeElement("", 0, 0, 0,  "")
+        this.sensor.angle = 0
+    }
+
+    connectedCallback() {
+        this.draw()
+    }
+    draw() {
+        super.draw()
+        this.sensor.draw(this.ctx!)
+    }
+    
+}
+customElements.define("sensor-canvas-element", SensorCanvasElement)
 

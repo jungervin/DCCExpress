@@ -21,7 +21,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "./views", "bootstrap", "./curve", "./corner", "./signals", "./trackend", "./route", "../controls/dialog", "../../../common/src/dcc", "../dialogs/propertiyPanel", "./block", "../helpers/globals", "../dialogs/AppSettingsDialog", "../dialogs/dlgSignal2Select", "../dialogs/turnoutsPopup", "../helpers/ws", "./label", "../helpers/utility", "../dialogs/codeEditor", "./dispatcher", "./button", "./audioButton", "./clock", "./emergencyButton", "./tree"], function (require, exports, track_1, rectangle_1, turnout_1, view_1, views_1, bootstrap, curve_1, corner_1, signals_1, trackend_1, route_1, dialog_1, dcc_1, propertiyPanel_1, block_1, globals_1, AppSettingsDialog_1, dlgSignal2Select_1, turnoutsPopup_1, ws_1, label_1, utility_1, codeEditor_1, dispatcher_1, button_1, audioButton_1, clock_1, emergencyButton_1, tree_1) {
+define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "./views", "bootstrap", "./curve", "./corner", "./signals", "./trackend", "./route", "../controls/dialog", "../../../common/src/dcc", "../dialogs/propertiyPanel", "./block", "../helpers/globals", "../dialogs/AppSettingsDialog", "../dialogs/dlgSignal2Select", "../dialogs/turnoutsPopup", "../helpers/ws", "./label", "../helpers/utility", "../dialogs/codeEditor", "./dispatcher", "./button", "./audioButton", "./clock", "./emergencyButton", "./tree", "./sensor"], function (require, exports, track_1, rectangle_1, turnout_1, view_1, views_1, bootstrap, curve_1, corner_1, signals_1, trackend_1, route_1, dialog_1, dcc_1, propertiyPanel_1, block_1, globals_1, AppSettingsDialog_1, dlgSignal2Select_1, turnoutsPopup_1, ws_1, label_1, utility_1, codeEditor_1, dispatcher_1, button_1, audioButton_1, clock_1, emergencyButton_1, tree_1, sensor_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CustomCanvas = exports.drawModes = void 0;
@@ -51,6 +51,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
         drawModes[drawModes["audiobutton"] = 20] = "audiobutton";
         drawModes[drawModes["emergencybutton"] = 21] = "emergencybutton";
         drawModes[drawModes["tree"] = 22] = "tree";
+        drawModes[drawModes["sensor"] = 23] = "sensor";
     })(drawModes || (exports.drawModes = drawModes = {}));
     class CustomCanvas extends HTMLElement {
         constructor() {
@@ -143,6 +144,8 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             this.cursorAudioButtonElement.isSelected = true;
             this.cursorEmergencyButtonElement = new emergencyButton_1.EmergencyButtonShapeElement("", 0, 0, "cursor");
             this.cursorEmergencyButtonElement.isSelected = true;
+            this.cursorSensorShapeElement = new sensor_1.SensorShapeElement("", 0, 0, 0, "cursor");
+            this.cursorSensorShapeElement.isSelected = true;
             // this.cursorSignal5Element = new Signal5Element("", 10, 0, 0, "cursor");
             // this.cursorSignal5Element.isSelected = true
             this.routeSwitchElement = new route_1.RouteSwitchElement("", 0, 0, "cursor");
@@ -268,6 +271,12 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                 this.unselectAll();
                 this.drawMode = drawModes.label2;
                 this.cursorElement = this.cursorLabel2Element;
+            };
+            document.getElementById("tbSensor").onclick = (e) => {
+                this.shapesModal.hide();
+                this.unselectAll();
+                this.drawMode = drawModes.sensor;
+                this.cursorElement = this.cursorSensorShapeElement;
             };
             this.drawEnabled = localStorage.getItem("drawEnabled") == "true";
             this.toolbar.btnEdit.onclick = (e) => {
@@ -846,6 +855,12 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         var l = new label_1.Label2Element((0, dcc_1.getUUID)(), x, y, "label" + num);
                         this.add(l);
                         break;
+                    case drawModes.sensor:
+                        //this.removeIfExists(x, y)
+                        this.unselectAll();
+                        var s = new sensor_1.SensorShapeElement((0, dcc_1.getUUID)(), 0, x, y, "sensor" + num);
+                        this.add(s);
+                        break;
                     case drawModes.tree:
                         //this.removeIfExists(x, y)
                         this.unselectAll();
@@ -1203,7 +1218,18 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         elems.push({
                             uuid: b.UUID, type: b.type, address: b.address, x: b.x, y: b.y, name: b.name,
                             valueOn: b.valueOn,
-                            valueOff: b.valueOff
+                            valueOff: b.valueOff,
+                            colorOn: b.colorOn
+                        });
+                        break;
+                    case 'sensor':
+                        var sensor = elem;
+                        elems.push({
+                            uuid: sensor.UUID, type: sensor.type, addrees: sensor.address, x: sensor.x, y: sensor.y, name: sensor.name,
+                            valueOn: sensor.valueOn,
+                            valueOff: sensor.valueOff,
+                            colorOn: sensor.colorOn,
+                            kind: sensor.kind,
                         });
                         break;
                     case 'audiobutton':
@@ -1254,7 +1280,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                 //var elems = config.elems
                 config.pages.forEach((page) => {
                     page.elems.forEach((elem) => {
-                        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6;
+                        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11;
                         console.log(elem);
                         switch (elem.type) {
                             case "track":
@@ -1407,6 +1433,14 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                             case "tree":
                                 var tree = new tree_1.TreeShapeElement(elem.uuid, elem.x, elem.y, elem.name);
                                 this.add(tree);
+                                break;
+                            case "sensor":
+                                var sensor = new sensor_1.SensorShapeElement(elem.uuid, (_7 = elem.address) !== null && _7 !== void 0 ? _7 : 0, elem.x, elem.y, elem.name);
+                                sensor.kind = (_8 = elem.kind) !== null && _8 !== void 0 ? _8 : sensor_1.SensorTypes.rect;
+                                sensor.colorOn = (_9 = elem.fillColor) !== null && _9 !== void 0 ? _9 : "lime";
+                                sensor.valueOff = (_10 = elem.valueOff) !== null && _10 !== void 0 ? _10 : false;
+                                sensor.valueOn = (_11 = elem.valueOn) !== null && _11 !== void 0 ? _11 : true;
+                                this.add(sensor);
                                 break;
                         }
                     });

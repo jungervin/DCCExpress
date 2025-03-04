@@ -3,13 +3,14 @@ import { Globals } from "../helpers/globals";
 import { View } from "./view";
 import { ApiCommands, iData, iSetBasicAccessory } from "../../../common/src/dcc";
 
-export abstract class AccessoryDecoderElement extends View {
+export abstract class AccessoryAddressElement extends View {
     address: number;
     on: boolean = false;
     textOn: string = "ON";
     textOff: string = "OFF";
     valueOn: boolean = true;
     valueOff: boolean = false;
+    colorOn: string = "lime"
 
     constructor(uuid: string, address: number, x: number, y: number, name: string) {
         super(uuid, x, y, name);
@@ -34,7 +35,7 @@ export abstract class AccessoryDecoderElement extends View {
     }
 }
 
-export class ButtonShapeElement extends AccessoryDecoderElement {
+export class ButtonShapeElement extends AccessoryAddressElement {
 
     constructor(uuid: string, address: number, x: number, y: number, name: string) {
         super(uuid, address, x, y, name)
