@@ -10,6 +10,11 @@ import { RouteSwitchElement } from "../editor/route";
 import { Component } from "../controls/dialog";
 import { ButtonShapeElement } from "../editor/button";
 import { SensorShapeElement } from "../editor/sensor";
+import { EmergencyButtonShapeElement } from "../editor/emergencyButton";
+import { AudioButtonShapeElement } from "../editor/audioButton";
+import { Label2Element } from "../editor/label";
+import { BlockElement } from "../editor/block";
+import { TreeShapeElement } from "../editor/tree";
 
 export class CanvasElement extends HTMLElement {
     ctx?: CanvasRenderingContext2D
@@ -32,7 +37,7 @@ export class CanvasElement extends HTMLElement {
     }
 
     draw() {
-        this.ctx?.reset()
+        this.ctx!.reset()
         drawRectangle(this.ctx!, 0, 0, 60, 60)
         this.ctx!.translate(10, 10)
     }
@@ -307,7 +312,6 @@ export class RouteSwitchCanvasElement extends CanvasElement {
         super.draw()
         this.route?.draw(this.ctx!)
     }
-    
 }
 customElements.define("route-switch-canvas-element", RouteSwitchCanvasElement)
 
@@ -325,10 +329,46 @@ export class ButtonCanvasElement extends CanvasElement {
     draw() {
         super.draw()
         this.button.draw(this.ctx!)
+    }   
+}
+customElements.define("button-canvas-element", ButtonCanvasElement)
+
+export class AudioButtonCanvasElement extends CanvasElement {
+    button: AudioButtonShapeElement;
+    constructor() {
+        super()
+        this.button = new AudioButtonShapeElement("", 0, 0,  "")
+        this.button.angle = 0
+    }
+
+    connectedCallback() {
+        this.draw()
+    }
+    draw() {
+        super.draw()
+        this.button.draw(this.ctx!)
+    }
+}
+customElements.define("audio-button-canvas-element", AudioButtonCanvasElement)
+
+export class EmergencyButtonCanvasElement extends CanvasElement {
+    button: EmergencyButtonShapeElement;
+    constructor() {
+        super()
+        this.button = new EmergencyButtonShapeElement("", 0, 0,  "")
+        this.button.angle = 0
+    }
+
+    connectedCallback() {
+        this.draw()
+    }
+    draw() {
+        super.draw()
+        this.button.draw(this.ctx!)
     }
     
 }
-customElements.define("button-canvas-element", ButtonCanvasElement)
+customElements.define("emergency-button-canvas-element", EmergencyButtonCanvasElement)
 
 export class SensorCanvasElement extends CanvasElement {
     sensor: SensorShapeElement;
@@ -349,3 +389,63 @@ export class SensorCanvasElement extends CanvasElement {
 }
 customElements.define("sensor-canvas-element", SensorCanvasElement)
 
+export class LabelCanvasElement extends CanvasElement {
+    label: Label2Element;
+    constructor() {
+        super()
+        this.label = new Label2Element("", 0, 0,  "")
+        this.label.text = "LABEL"
+        this.label.angle = 0
+    }
+
+    connectedCallback() {
+        this.draw()
+    }
+    draw() {
+        super.draw()
+        this.label.draw(this.ctx!)
+    }
+}
+customElements.define("label-canvas-element", LabelCanvasElement)
+
+export class TreeCanvasElement extends CanvasElement {
+    tree: TreeShapeElement;
+    constructor() {
+        super()
+        this.tree = new TreeShapeElement("", 0, 0,  "")
+        this.tree.angle = 0
+    }
+
+    connectedCallback() {
+        this.draw()
+    }
+    draw() {
+        super.draw()
+        this.tree.draw(this.ctx!)
+    }
+}
+customElements.define("tree-canvas-element", TreeCanvasElement)
+
+
+export class BlockCanvasElement extends CanvasElement {
+    block: BlockElement;
+    constructor() {
+        super()
+        this.block = new BlockElement("", 0, 0,  "")
+        this.block.text = "LABEL"
+        this.block.angle = 0
+    }
+
+    connectedCallback() {
+        this.draw()
+    }
+    draw() {
+        super.draw()
+        this.ctx!.save()
+        this.ctx!.scale(0.5, 1)
+        this.ctx!.translate(20,0)
+        this.block.draw(this.ctx!)
+        this.ctx!.restore()
+    }
+}
+customElements.define("block-canvas-element", BlockCanvasElement)

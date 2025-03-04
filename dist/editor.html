@@ -110,10 +110,10 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="shapesModalLabel">Track Elements</h1>
+                    <h1 class="modal-title fs-5" id="shapesModalLabel">Elements</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="font-size: small;">
                     <div class="row">
                         <div class="col-2 text-center">
                             <track-canvas-element id="tbTrack"></track-canvas-element>
@@ -166,33 +166,53 @@
 
                     <hr>
                     <div class="row">
+                    </div>
+                    <div class="row">
                         <div class="col-2 text-center">
                             <route-switch-canvas-element id="tbRouteSwitch"></route-switch-canvas-element>
                             <div>Route Switch</div>
                         </div>
-                    </div>
 
-                    <hr>
+                        <div class="col-2 text-center">
+                            <sensor-canvas-element id="tbSensor"></sensor-canvas-element>
+                            <div>Sensor</div>
+                        </div>
+                        <div class="col-2 text-center">
+                            <button-canvas-element id="tbButton"></button-canvas-element>
+                            <div>Button</div>
+                        </div>
+                        <div class="col-2 text-center">
+                            <audio-button-canvas-element id="tbAudioButton"></audio-button-canvas-element>
+                            <div>Audio</div>
+                        </div>
+                        <div class="col-2 text-center">
+                            <emergency-button-canvas-element id="tbEmergencyButton"></emergency-button-canvas-element>
+                            <div>Emergency Button</div>
+                        </div>
+                        <div class="col-2 text-center">
+                            <label-canvas-element id="tbLabel2"></label-canvas-element>
+                            <div>Label</div>
+                        </div>
+
+                        <div class="col-2 text-center">
+                            <block-canvas-element id="tbBlock"></block-canvas-element>
+                            <div>Block</div>
+                        </div>
+
+                        <div class="col-2 text-center">
+                            <tree-canvas-element id="tbTree"></tree-canvas-element>
+                            <div>Tree</div>
+                        </div>
+                        
+
+                    </div>
                     <div class="row">
                         <div class="col-auto">
-                            <button id="tbBlock" class="btn btn-light">Block</button>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-auto">
-                            <button id="tbButton" class="btn btn-light">Button</button>
-                            <button id="tbAudioButton" class="btn btn-light">AudioButton</button>
-                            <button id="tbEmergencyButton" class="btn btn-light">EmergencyButton</button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-auto">
-                            <button id="tbSensor" class="btn btn-light">Sensor</button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-auto">
-                            <button id="tbLabel2" class="btn btn-light">Label</button>
+                            <!-- <button id="tbLabel2" class="btn btn-light">Label</button> -->
                             <!-- <button id="tbTree" class="btn btn-light">Tree</button> -->
                         </div>
                     </div>

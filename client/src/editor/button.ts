@@ -2,6 +2,7 @@ import { wsClient } from "../helpers/ws";
 import { Globals } from "../helpers/globals";
 import { View } from "./view";
 import { ApiCommands, iData, iSetBasicAccessory } from "../../../common/src/dcc";
+import { drawTextWithRoundedBackground } from "../helpers/graphics";
 
 export abstract class AccessoryAddressElement extends View {
     address: number;
@@ -11,6 +12,8 @@ export abstract class AccessoryAddressElement extends View {
     valueOn: boolean = true;
     valueOff: boolean = false;
     colorOn: string = "lime"
+    showAddress: boolean = false;
+
 
     constructor(uuid: string, address: number, x: number, y: number, name: string) {
         super(uuid, x, y, name);
@@ -32,6 +35,14 @@ export abstract class AccessoryAddressElement extends View {
         if (this.mouseDownHandler) {
             this.mouseDownHandler(this);
         }
+    }
+
+    draw(ctx: CanvasRenderingContext2D) {
+        if (this.showAddress) {
+            drawTextWithRoundedBackground(ctx, this.posLeft, this.posBottom - 10, "#" + this.address.toString())
+            // drawTextWithRoundedBackground(ctx, this.posLeft, this.posTop, this.angle.toString())
+        }
+        super.draw(ctx)
     }
 }
 

@@ -25,9 +25,9 @@
         "port": "COM3"
     },
     "EditorSettings": {
-        "ShowAddress": false,
+        "ShowAddress": true,
         "Orientation": 1,
-        "ShowGrid": false,
+        "ShowGrid": true,
         "ShowClock": true,
         "fastClockFactor": 3
     }

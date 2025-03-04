@@ -1,4 +1,4 @@
-define(["require", "exports", "./turnout", "./view", "./route", "./signals", "./button", "./block"], function (require, exports, turnout_1, view_1, route_1, signals_1, button_1, block_1) {
+define(["require", "exports", "./turnout", "./view", "./route", "./signals", "./button", "./block", "./sensor"], function (require, exports, turnout_1, view_1, route_1, signals_1, button_1, block_1, sensor_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Views = void 0;
@@ -82,12 +82,36 @@ define(["require", "exports", "./turnout", "./view", "./route", "./signals", "./
             });
             return items;
         }
+        getButtonElements() {
+            var items = [];
+            this.elements.forEach((elem) => {
+                if (elem instanceof button_1.ButtonShapeElement) {
+                    items.push(elem);
+                }
+            });
+            return items;
+        }
+        getButton(addr) {
+            return this.getButtonElements().find((t) => t.address == addr);
+        }
+        getSensorElements() {
+            var items = [];
+            this.elements.forEach((elem) => {
+                if (elem instanceof sensor_1.SensorShapeElement) {
+                    items.push(elem);
+                }
+            });
+            return items;
+        }
+        getSensor(addr) {
+            return this.getSensorElements().find((t) => t.address == addr);
+        }
         // getTurnout(address: number) : TurnoutElement | undefined{
         //     return this.getTurnoutElements().find((t) => {
         //         return t.hasAddress(address)
         //     })
         // }
-        getSensor(addr) {
+        getRSensor(addr) {
             return this.getRailElements().find(s => s.rbusAddress == addr);
         }
         getRailElements() {

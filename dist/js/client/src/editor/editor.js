@@ -253,13 +253,13 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                 this.cursorElement = this.cursorEmergencyButtonElement;
                 this.cursorElement.draw(this.ctx);
             };
-            // document.getElementById("tbTree")!.onclick = (e: MouseEvent) => {
-            //     this.shapesModal!.hide()
-            //     this.unselectAll()
-            //     this.drawMode = drawModes.tree
-            //     this.cursorElement = this.cursorTreeShapeElement
-            //     this.cursorElement!.draw(this.ctx!)
-            // }
+            document.getElementById("tbTree").onclick = (e) => {
+                this.shapesModal.hide();
+                this.unselectAll();
+                this.drawMode = drawModes.tree;
+                this.cursorElement = this.cursorTreeShapeElement;
+                this.cursorElement.draw(this.ctx);
+            };
             document.getElementById("tbBlock").onclick = (e) => {
                 this.shapesModal.hide();
                 this.unselectAll();
@@ -442,6 +442,12 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                 t.showAddress = show;
             });
             this.views.getSignalElements().forEach((t) => {
+                t.showAddress = show;
+            });
+            this.views.getSensorElements().forEach((t) => {
+                t.showAddress = show;
+            });
+            this.views.getButtonElements().forEach((t) => {
                 t.showAddress = show;
             });
             this.draw();
@@ -1230,7 +1236,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                     case 'sensor':
                         var sensor = elem;
                         elems.push({
-                            uuid: sensor.UUID, type: sensor.type, addrees: sensor.address, x: sensor.x, y: sensor.y, name: sensor.name,
+                            uuid: sensor.UUID, type: sensor.type, address: sensor.address, x: sensor.x, y: sensor.y, name: sensor.name,
                             valueOn: sensor.valueOn,
                             valueOff: sensor.valueOff,
                             colorOn: sensor.colorOn,

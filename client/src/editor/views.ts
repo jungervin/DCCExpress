@@ -9,8 +9,9 @@ import { TrackCurveElement } from "./curve"
 import { Point } from "../helpers/math"
 // import { SignalElement } from "../components/signalElement"
 import { Signal1Element, Signal2Element } from "./signals"
-import { AccessoryAddressElement } from "./button"
+import { AccessoryAddressElement, ButtonShapeElement } from "./button"
 import { BlockElement } from "./block"
+import { SensorShapeElement } from "./sensor"
 
 
 export class Views {
@@ -102,6 +103,7 @@ export class Views {
     getTurnout(addr: number) {
         return this.getTurnoutElements().find((t) => t.address == addr)
     }
+
     getTurnoutElements(): TurnoutElement[] {
         var items: TurnoutElement[] = []
         this.elements.forEach((elem: View) => {
@@ -112,13 +114,41 @@ export class Views {
         return items
     }
 
+    getButtonElements(): ButtonShapeElement[] {
+        var items: ButtonShapeElement[] = []
+        this.elements.forEach((elem: View) => {
+            if (elem instanceof ButtonShapeElement) {
+                items.push(elem)
+            }
+        })
+        return items
+    }
+
+    getButton(addr: number) {
+        return this.getButtonElements().find((t) => t.address == addr)
+    }
+
+    getSensorElements(): SensorShapeElement[] {
+        var items: SensorShapeElement[] = []
+        this.elements.forEach((elem: View) => {
+            if (elem instanceof SensorShapeElement) {
+                items.push(elem)
+            }
+        })
+        return items
+    }
+
+    getSensor(addr: number) {
+        return this.getSensorElements().find((t) => t.address == addr)
+    }
+
     // getTurnout(address: number) : TurnoutElement | undefined{
     //     return this.getTurnoutElements().find((t) => {
     //         return t.hasAddress(address)
     //     })
     // }
 
-    getSensor(addr: number) {
+    getRSensor(addr: number) {
         return this.getRailElements().find(s => s.rbusAddress == addr)
     }
     getRailElements(): RailView[] {

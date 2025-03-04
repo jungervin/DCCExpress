@@ -1,7 +1,7 @@
-define(["require", "exports", "../helpers/graphics", "../editor/turnout", "../editor/track", "../editor/trackend", "../editor/corner", "../editor/curve", "../editor/signals", "../editor/route", "../editor/button", "../editor/sensor"], function (require, exports, graphics_1, turnout_1, track_1, trackend_1, corner_1, curve_1, signals_1, route_1, button_1, sensor_1) {
+define(["require", "exports", "../helpers/graphics", "../editor/turnout", "../editor/track", "../editor/trackend", "../editor/corner", "../editor/curve", "../editor/signals", "../editor/route", "../editor/button", "../editor/sensor", "../editor/emergencyButton", "../editor/audioButton", "../editor/label", "../editor/block", "../editor/tree"], function (require, exports, graphics_1, turnout_1, track_1, trackend_1, corner_1, curve_1, signals_1, route_1, button_1, sensor_1, emergencyButton_1, audioButton_1, label_1, block_1, tree_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.SensorCanvasElement = exports.ButtonCanvasElement = exports.RouteSwitchCanvasElement = exports.Signal4CanvasElement = exports.Signal3CanvasElement = exports.Signal2CanvasElement = exports.TurnoutDoubleCanvasElement = exports.TurnoutRightCanvasElement = exports.TurnoutLeftCanvasElement = exports.TrackCurveCanvasElement = exports.TrackCornerCanvasElement = exports.TrackEndCanvasElement = exports.TrackCanvasElement = exports.CanvasShapeElement = exports.CanvasElement = void 0;
+    exports.BlockCanvasElement = exports.TreeCanvasElement = exports.LabelCanvasElement = exports.SensorCanvasElement = exports.EmergencyButtonCanvasElement = exports.AudioButtonCanvasElement = exports.ButtonCanvasElement = exports.RouteSwitchCanvasElement = exports.Signal4CanvasElement = exports.Signal3CanvasElement = exports.Signal2CanvasElement = exports.TurnoutDoubleCanvasElement = exports.TurnoutRightCanvasElement = exports.TurnoutLeftCanvasElement = exports.TrackCurveCanvasElement = exports.TrackCornerCanvasElement = exports.TrackEndCanvasElement = exports.TrackCanvasElement = exports.CanvasShapeElement = exports.CanvasElement = void 0;
     class CanvasElement extends HTMLElement {
         constructor() {
             super();
@@ -19,8 +19,7 @@ define(["require", "exports", "../helpers/graphics", "../editor/turnout", "../ed
             //this.draw()
         }
         draw() {
-            var _a;
-            (_a = this.ctx) === null || _a === void 0 ? void 0 : _a.reset();
+            this.ctx.reset();
             (0, graphics_1.drawRectangle)(this.ctx, 0, 0, 60, 60);
             this.ctx.translate(10, 10);
         }
@@ -289,6 +288,38 @@ define(["require", "exports", "../helpers/graphics", "../editor/turnout", "../ed
     }
     exports.ButtonCanvasElement = ButtonCanvasElement;
     customElements.define("button-canvas-element", ButtonCanvasElement);
+    class AudioButtonCanvasElement extends CanvasElement {
+        constructor() {
+            super();
+            this.button = new audioButton_1.AudioButtonShapeElement("", 0, 0, "");
+            this.button.angle = 0;
+        }
+        connectedCallback() {
+            this.draw();
+        }
+        draw() {
+            super.draw();
+            this.button.draw(this.ctx);
+        }
+    }
+    exports.AudioButtonCanvasElement = AudioButtonCanvasElement;
+    customElements.define("audio-button-canvas-element", AudioButtonCanvasElement);
+    class EmergencyButtonCanvasElement extends CanvasElement {
+        constructor() {
+            super();
+            this.button = new emergencyButton_1.EmergencyButtonShapeElement("", 0, 0, "");
+            this.button.angle = 0;
+        }
+        connectedCallback() {
+            this.draw();
+        }
+        draw() {
+            super.draw();
+            this.button.draw(this.ctx);
+        }
+    }
+    exports.EmergencyButtonCanvasElement = EmergencyButtonCanvasElement;
+    customElements.define("emergency-button-canvas-element", EmergencyButtonCanvasElement);
     class SensorCanvasElement extends CanvasElement {
         constructor() {
             super();
@@ -305,4 +336,58 @@ define(["require", "exports", "../helpers/graphics", "../editor/turnout", "../ed
     }
     exports.SensorCanvasElement = SensorCanvasElement;
     customElements.define("sensor-canvas-element", SensorCanvasElement);
+    class LabelCanvasElement extends CanvasElement {
+        constructor() {
+            super();
+            this.label = new label_1.Label2Element("", 0, 0, "");
+            this.label.text = "LABEL";
+            this.label.angle = 0;
+        }
+        connectedCallback() {
+            this.draw();
+        }
+        draw() {
+            super.draw();
+            this.label.draw(this.ctx);
+        }
+    }
+    exports.LabelCanvasElement = LabelCanvasElement;
+    customElements.define("label-canvas-element", LabelCanvasElement);
+    class TreeCanvasElement extends CanvasElement {
+        constructor() {
+            super();
+            this.tree = new tree_1.TreeShapeElement("", 0, 0, "");
+            this.tree.angle = 0;
+        }
+        connectedCallback() {
+            this.draw();
+        }
+        draw() {
+            super.draw();
+            this.tree.draw(this.ctx);
+        }
+    }
+    exports.TreeCanvasElement = TreeCanvasElement;
+    customElements.define("tree-canvas-element", TreeCanvasElement);
+    class BlockCanvasElement extends CanvasElement {
+        constructor() {
+            super();
+            this.block = new block_1.BlockElement("", 0, 0, "");
+            this.block.text = "LABEL";
+            this.block.angle = 0;
+        }
+        connectedCallback() {
+            this.draw();
+        }
+        draw() {
+            super.draw();
+            this.ctx.save();
+            this.ctx.scale(0.5, 1);
+            this.ctx.translate(20, 0);
+            this.block.draw(this.ctx);
+            this.ctx.restore();
+        }
+    }
+    exports.BlockCanvasElement = BlockCanvasElement;
+    customElements.define("block-canvas-element", BlockCanvasElement);
 });

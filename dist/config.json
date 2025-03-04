@@ -1,15 +1,27 @@
 {
     "settings": {
-        "scale": 1.050669593827097,
-        "origX": -742,
-        "origY": -317,
+        "scale": 1.0246963933921664,
+        "origX": -997,
+        "origY": -314,
         "locoPanelVisible": false,
-        "propertyPanelVisible": false
+        "propertyPanelVisible": true
     },
     "pages": [
         {
             "name": "page1",
             "elems": [
+                {
+                    "uuid": "766e5ce8-373a-46aa-b4e5-040dce7b7216",
+                    "type": "sensor",
+                    "address": 0,
+                    "x": 36,
+                    "y": 17,
+                    "name": "sensor144",
+                    "valueOn": true,
+                    "valueOff": false,
+                    "colorOn": "lime",
+                    "kind": 1
+                },
                 {
                     "uuid": "52e18bcc-3d9d-4ab4-b1f9-e940cbe04419",
                     "type": "block",
@@ -1074,12 +1086,13 @@
                 {
                     "uuid": "8a1d0862-b2b3-4a4e-afdd-4f5fc31c13c6",
                     "type": "button",
-                    "address": 100,
+                    "address": 103,
                     "x": 30,
                     "y": 21,
                     "name": "button118",
                     "valueOn": true,
-                    "valueOff": false
+                    "valueOff": false,
+                    "colorOn": "lime"
                 },
                 {
                     "uuid": "881bf289-b58f-4551-9357-76c9610196a7",
@@ -1089,7 +1102,8 @@
                     "y": 22,
                     "name": "button119",
                     "valueOn": false,
-                    "valueOff": true
+                    "valueOff": true,
+                    "colorOn": "lime"
                 },
                 {
                     "uuid": "c6f6f04b-4889-46a1-a739-a211f37ccf4d",
@@ -1440,18 +1454,28 @@
                 {
                     "uuid": "3cd4a265-e8e8-48a6-95e1-dc1f2bc149cf",
                     "type": "sensor",
-                    "addrees": 0,
+                    "address": 1003,
                     "x": 38,
                     "y": 13,
-                    "name": "sensor143"
+                    "name": "sensor143",
+                    "valueOn": true,
+                    "valueOff": false,
+                    "colorOn": "lime",
+                    "kind": 1
                 },
                 {
-                    "uuid": "766e5ce8-373a-46aa-b4e5-040dce7b7216",
-                    "type": "sensor",
-                    "addrees": 0,
-                    "x": 37,
-                    "y": 13,
-                    "name": "sensor144"
+                    "uuid": "1e2b97d5-3f92-477e-84d5-49442f82bf83",
+                    "type": "tree",
+                    "x": 39,
+                    "y": 15,
+                    "name": "tree145"
+                },
+                {
+                    "uuid": "d6c7bb60-b960-441b-8d5b-5fb7aca5fd20",
+                    "type": "tree",
+                    "x": 38,
+                    "y": 15,
+                    "name": "tree146"
                 }
             ]
         }

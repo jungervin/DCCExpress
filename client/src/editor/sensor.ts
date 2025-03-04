@@ -52,7 +52,7 @@ export class SensorShapeElement extends AccessoryAddressElement {
 
         // Gomb megrajzolása (kör alakú)
         ctx.beginPath();
-        ctx.arc(this.centerX, this.centerY, 25 / 2, 0, Math.PI * 2);
+        ctx.arc(this.centerX, this.centerY, 9, 0, Math.PI * 2);
         ctx.fill();
 
         // Keret
@@ -62,7 +62,7 @@ export class SensorShapeElement extends AccessoryAddressElement {
 
         ctx.fillStyle = "white";
         ctx.fillStyle = this.on ? "black" : "white";
-        ctx.font = "8px Arial";
+        ctx.font = "7px Arial";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText(this.on ? this.textOn : this.textOff, this.centerX, this.centerY + 1);

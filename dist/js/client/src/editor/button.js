@@ -1,4 +1,4 @@
-define(["require", "exports", "../helpers/ws", "../helpers/globals", "./view", "../../../common/src/dcc"], function (require, exports, ws_1, globals_1, view_1, dcc_1) {
+define(["require", "exports", "../helpers/ws", "../helpers/globals", "./view", "../../../common/src/dcc", "../helpers/graphics"], function (require, exports, ws_1, globals_1, view_1, dcc_1, graphics_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ButtonShapeElement = exports.AccessoryAddressElement = void 0;
@@ -11,6 +11,7 @@ define(["require", "exports", "../helpers/ws", "../helpers/globals", "./view", "
             this.valueOn = true;
             this.valueOff = false;
             this.colorOn = "lime";
+            this.showAddress = false;
             this.address = address;
         }
         get type() {
@@ -26,6 +27,13 @@ define(["require", "exports", "../helpers/ws", "../helpers/globals", "./view", "
             if (this.mouseDownHandler) {
                 this.mouseDownHandler(this);
             }
+        }
+        draw(ctx) {
+            if (this.showAddress) {
+                (0, graphics_1.drawTextWithRoundedBackground)(ctx, this.posLeft, this.posBottom - 10, "#" + this.address.toString());
+                // drawTextWithRoundedBackground(ctx, this.posLeft, this.posTop, this.angle.toString())
+            }
+            super.draw(ctx);
         }
     }
     exports.AccessoryAddressElement = AccessoryAddressElement;
