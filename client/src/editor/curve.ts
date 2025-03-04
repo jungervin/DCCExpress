@@ -8,6 +8,7 @@ export class TrackCurveElement extends RailView {
     constructor(uuid: string, x1: number, y1: number, name: string) {
         super(uuid, x1, y1, name)
         this.angleStep = 45
+        this.cursor = "default"
     }
     get type() : string {
         return 'curve' 

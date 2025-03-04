@@ -923,7 +923,12 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                 return e.mouseInView(x, y);
             });
             if (elem || (this.cursorElement)) {
-                this.canvas.style.cursor = "pointer";
+                if (this.drawEnabled) {
+                    this.canvas.style.cursor = "pointer";
+                }
+                else {
+                    this.canvas.style.cursor = elem.cursor;
+                }
             }
             else {
                 this.canvas.style.cursor = "default";

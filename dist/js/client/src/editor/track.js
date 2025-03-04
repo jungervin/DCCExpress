@@ -6,6 +6,7 @@ define(["require", "exports", "../helpers/globals", "./view", "./view"], functio
         constructor(uuid, x1, y1, name) {
             super(uuid, x1, y1, name);
             this.angleStep = 45;
+            this.cursor = "default";
         }
         get type() {
             return 'track';

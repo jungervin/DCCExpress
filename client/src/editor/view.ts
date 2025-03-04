@@ -53,7 +53,7 @@ export abstract class View {
     UUID: string = ""
     public name: string = ""
     public isSelected: boolean = false
-
+    public cursor = "pointer"
     public angleStep: number = 90; // Ha nulla akkor nem lehet forgatni!
     public mouseDownHandler?: (sender: Object) => void;
     public mouseUpHandler?: (sender: Object) => void;

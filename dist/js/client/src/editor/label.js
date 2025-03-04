@@ -12,6 +12,7 @@ define(["require", "exports", "../helpers/globals", "./view"], function (require
             this.angleStep = 0;
             this.w = 2;
             this.h = 1;
+            this.cursor = "default";
         }
         get type() {
             return 'label2';

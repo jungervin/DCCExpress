@@ -6,6 +6,7 @@ define(["require", "exports", "../helpers/math", "./view"], function (require, e
         constructor(uuid, x, y, name) {
             super(uuid, x, y, name);
             this.on = false;
+            this.cursor = "default";
         }
         get type() {
             return 'tree';

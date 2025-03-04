@@ -31,6 +31,7 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/math", "../
             this.UUID = "";
             this.name = "";
             this.isSelected = false;
+            this.cursor = "pointer";
             this.angleStep = 90; // Ha nulla akkor nem lehet forgatni!
             this._angle = 0;
             //this.type = type

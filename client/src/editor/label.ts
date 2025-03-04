@@ -12,7 +12,7 @@ export class Label2Element extends View {
         this.angleStep = 0
         this.w = 2;
         this.h = 1;
-
+        this.cursor = "default"
     }
 
     get type(): string {

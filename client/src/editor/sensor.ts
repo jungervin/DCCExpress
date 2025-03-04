@@ -11,14 +11,14 @@ export class SensorShapeElement extends AccessoryAddressElement {
 
     constructor(uuid: string, address: number, x1: number, y1: number, name: string) {
         super(uuid, address, x1, y1, name)
-
+        this.cursor = "default"
     }
 
     get type(): string {
         return 'sensor'
     }
 
-    public draw(ctx: CanvasRenderingContext2D) {
+    public draw2(ctx: CanvasRenderingContext2D) {
         var w = Globals.GridSizeX - 10
 
         ctx.fillStyle = this.on ? this.colorOn : "gray"
@@ -39,6 +39,35 @@ export class SensorShapeElement extends AccessoryAddressElement {
         ctx.fillText(this.on ? this.textOn : this.textOff, this.centerX, this.centerY + 1);
 
 
+        super.draw(ctx)
+    }
+
+    draw(ctx: CanvasRenderingContext2D) {
+        const p = 5; // padding
+        ctx.save();
+        // ctx.strokeRect(this.posLeft + p, this.posTop + p, this.width - 2 * p, this.height - 2 * p)
+        // ctx.restore()
+
+        ctx.fillStyle = this.on ? "lime" : "gray";
+
+        // Gomb megrajzolása (kör alakú)
+        ctx.beginPath();
+        ctx.arc(this.centerX, this.centerY, 25 / 2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Keret
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = "white";
+        ctx.fillStyle = this.on ? "black" : "white";
+        ctx.font = "8px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(this.on ? this.textOn : this.textOff, this.centerX, this.centerY + 1);
+
+        ctx.restore();
         super.draw(ctx)
     }
 

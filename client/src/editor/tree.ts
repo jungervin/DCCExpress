@@ -6,6 +6,7 @@ export class TreeShapeElement extends View {
 
     constructor(uuid: string, x: number, y: number, name: string) {
         super(uuid, x, y, name)
+        this.cursor = "default"
     }
     get type(): string {
         return 'tree'
