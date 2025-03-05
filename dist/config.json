@@ -723,6 +723,7 @@
                     "valueRed": 0,
                     "valueYellow": 2,
                     "rbusAddress": 18,
+                    "outputMode": 0,
                     "aspect": 1
                 },
                 {
@@ -739,6 +740,7 @@
                     "valueRed": 0,
                     "valueYellow": 1,
                     "rbusAddress": 17,
+                    "outputMode": 1,
                     "aspect": 1
                 },
                 {
@@ -864,6 +866,7 @@
                     "valueYellow": 3,
                     "valueWhite": 16,
                     "rbusAddress": 22,
+                    "outputMode": 0,
                     "aspect": 1
                 },
                 {
@@ -881,6 +884,7 @@
                     "valueYellow": 3,
                     "valueWhite": 16,
                     "rbusAddress": 23,
+                    "outputMode": 0,
                     "aspect": 1
                 },
                 {
@@ -898,6 +902,7 @@
                     "valueYellow": 3,
                     "valueWhite": 16,
                     "rbusAddress": 24,
+                    "outputMode": 0,
                     "aspect": 1
                 },
                 {
@@ -915,6 +920,7 @@
                     "valueYellow": 3,
                     "valueWhite": 16,
                     "rbusAddress": 21,
+                    "outputMode": 1,
                     "aspect": 1
                 },
                 {
@@ -1478,6 +1484,22 @@
                     "x": 38,
                     "y": 15,
                     "name": "tree146"
+                },
+                {
+                    "uuid": "6210912f-7698-40a0-acea-da7eee5a2a8b",
+                    "type": "signal2",
+                    "address": 14,
+                    "name": "turnoutleft147",
+                    "x": 33,
+                    "y": 12,
+                    "angle": 0,
+                    "addressLength": 5,
+                    "isExtendedDecoder": false,
+                    "valueGreen": 0,
+                    "valueRed": 0,
+                    "rbusAddress": 0,
+                    "outputMode": 1,
+                    "aspect": 1
                 }
             ]
         }

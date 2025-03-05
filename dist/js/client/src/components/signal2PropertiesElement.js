@@ -1,4 +1,4 @@
-define(["require", "exports", "../helpers/graphics", "../editor/signals", "../helpers/utility"], function (require, exports, graphics_1, signals_1, utility_1) {
+define(["require", "exports", "../helpers/graphics", "../editor/signals", "../helpers/utility", "../../../common/src/dcc", "../helpers/globals"], function (require, exports, graphics_1, signals_1, utility_1, dcc_1, globals_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Signal4PropertiesElement = exports.Signal3PropertiesElement = exports.Signal2PropertiesElement = void 0;
@@ -82,6 +82,19 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
                     </div>
                 </div>
        
+                <div class="igroup" id="modeGroup">
+                    <div>Mode</div>
+                    <div>
+                        <input type="radio" id="accessory" name="mode" value="accessory" checked />
+                        <label for="accessory">Accessory</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="output" name="mode" value="output" />
+                        <label for="output">Output</label>
+                    </div>
+                </div>
+
                 <div class="igroup">
                     <div>RBus Address</div>
                     <div>
@@ -90,6 +103,7 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
                 </div>
 
             </div>
+
         `;
             //this.deviceElement = this.shadow.getElementById("device") as CommandCenterHTMLSelectElement
             this.addressElement = this.shadow.getElementById("address");
@@ -100,29 +114,12 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
             this.valueRedElement = this.shadow.getElementById("valueRed");
             this.valueGreenDecElement = this.shadow.getElementById("valueGreenDec");
             this.valueRedDecElement = this.shadow.getElementById("valueRedDec");
+            this.accessoryModeElement = this.shadow.getElementById("accessory");
+            this.outputModeElement = this.shadow.getElementById("output");
             this.rbusAddressElement = this.shadow.getElementById("rbusAddress");
         }
         setSignal(signal2) {
-            // for (const key in signal2) {
-            //     console.log("KEY: ", key)
-            //     const label = document.createElement("label");
-            //     label.textContent = key;
-            //     // Létrehozás: bemeneti mező
-            //     const input = document.createElement("input");
-            //     input.type = "text"
-            //     input.value = signal2[key as keyof object];            
-            //     console.log("VALUE: ", input.value!.toString())
-            //     const wrapper = document.createElement("div");
-            //     wrapper.classList.add("property-item");
-            //     wrapper.appendChild(label);
-            //     wrapper.appendChild(input);
-            //     this.shadow.appendChild(wrapper);
-            // }
             this.signal2 = signal2;
-            // this.deviceElement.setSelectedDevice(this.signal2.cc!)
-            // this.deviceElement.onchangeCallback = (value) => {
-            //     this.signal2!.cc = value!
-            // };
             this.addressElement.value = this.signal2.address.toString();
             this.addressElement.onchange = (e) => {
                 this.signal2.address = parseInt(this.addressElement.value);
@@ -160,8 +157,6 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
             ctx2.translate(12, 12);
             ctx2.scale(1.4, 1.4);
             signalRed.draw(ctx2);
-            // const signalYellow = new Signal5Element("", signal.address, 0, 0, "yellow")
-            // signalGreen.draw(this.canvas2.getContext('2d')!)
             this.canvas1Element.onclick = (e) => {
                 var _a;
                 (_a = this.signal2) === null || _a === void 0 ? void 0 : _a.send(this.signal2.valueGreen);
@@ -178,9 +173,16 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
             this.valueRedElement.onchange = (e) => {
                 this.signal2.valueGreen = (0, utility_1.toDecimal)(this.valueRedElement.value);
                 this.valueRedDecElement.innerHTML = "dec: " + (0, utility_1.toDecimal)(this.valueRedElement.value);
-                //this.updateUI()
             };
-            //this.updateUI()
+            this.shadowRoot.getElementById("modeGroup").style.display = globals_1.Globals.CommandCenterSetting.type == dcc_1.CommandCenterTypes.Z21 ? "none" : "block";
+            this.accessoryModeElement.checked = this.signal2.outputMode == dcc_1.OutputModes.accessory;
+            this.accessoryModeElement.onchange = (e) => {
+                this.signal2.outputMode = dcc_1.OutputModes.accessory;
+            };
+            this.outputModeElement.checked = this.signal2.outputMode == dcc_1.OutputModes.output;
+            this.outputModeElement.onchange = (e) => {
+                this.signal2.outputMode = dcc_1.OutputModes.output;
+            };
         }
         updateUI() {
             this.signal2.address = parseInt(this.addressElement.value);
@@ -263,6 +265,20 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
 
                 </div>
 
+                <div class="igroup" id="modeGroup">
+                    <div>Mode</div>
+                    <div>
+                        <input type="radio" id="accessory" name="mode" value="accessory" checked />
+                        <label for="accessory">Accessory</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="output" name="mode" value="output" />
+                        <label for="output">Output</label>
+                    </div>
+                </div>
+
+
                 <div class="igroup">
                     <div>RBus Address</div>
                     <div>
@@ -284,6 +300,8 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
             this.canvas3Element = this.shadow.getElementById('canvas3');
             this.valueYellowElement = this.shadow.getElementById("valueYellow");
             this.valueYellowDecElement = this.shadow.getElementById("valueYellowDec");
+            this.accessoryModeElement = this.shadow.getElementById("accessory");
+            this.outputModeElement = this.shadow.getElementById("output");
             this.rbusAddressElement = this.shadow.getElementById("rbusAddress");
         }
         setSignal(signal3) {
@@ -364,6 +382,15 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
             this.valueYellowElement.onchange = (e) => {
                 this.signal3.valueYellow = (0, utility_1.toDecimal)(this.valueYellowElement.value);
                 this.valueYellowDecElement.innerHTML = "dec: " + (0, utility_1.toDecimal)(this.valueYellowElement.value);
+            };
+            this.shadowRoot.getElementById("modeGroup").style.display = globals_1.Globals.CommandCenterSetting.type == dcc_1.CommandCenterTypes.Z21 ? "none" : "block";
+            this.accessoryModeElement.checked = this.signal3.outputMode == dcc_1.OutputModes.accessory;
+            this.accessoryModeElement.onchange = (e) => {
+                this.signal3.outputMode = dcc_1.OutputModes.accessory;
+            };
+            this.outputModeElement.checked = this.signal3.outputMode == dcc_1.OutputModes.output;
+            this.outputModeElement.onchange = (e) => {
+                this.signal3.outputMode = dcc_1.OutputModes.output;
             };
         }
         getTemplate() {
@@ -451,6 +478,19 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
 
                 </div>
 
+                <div class="igroup" id="modeGroup">
+                    <div>Mode</div>
+                    <div>
+                        <input type="radio" id="accessory" name="mode" value="accessory" checked />
+                        <label for="accessory">Accessory</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="output" name="mode" value="output" />
+                        <label for="output">Output</label>
+                    </div>
+                </div>
+
                 <div class="igroup">
                     <div>RBus Address</div>
                     <div>
@@ -475,14 +515,13 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
             this.canvas4Element = this.shadow.getElementById('canvas4');
             this.valueWhiteElement = this.shadow.getElementById("valueWhite");
             this.valueWhiteDecElement = this.shadow.getElementById("valueWhiteDec");
+            this.accessoryModeElement = this.shadow.getElementById("accessory");
+            this.outputModeElement = this.shadow.getElementById("output");
             this.rbusAddressElement = this.shadow.getElementById("rbusAddress");
+            this.shadowRoot.getElementById("modeGroup").style.display = globals_1.Globals.CommandCenterSetting.type == dcc_1.CommandCenterTypes.Z21 ? "none" : "block";
         }
         setSignal(signal4) {
             this.signal4 = signal4;
-            // this.deviceElement.setSelectedDevice(this.signal4.cc!)
-            // this.deviceElement.onchangeCallback = (value) => {
-            //     this.signal4!.cc = value!
-            // };
             this.addressElement.value = this.signal4.address.toString();
             this.addressElement.onchange = (e) => {
                 this.signal4.address = parseInt(this.addressElement.value);
@@ -575,6 +614,15 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
             this.valueWhiteElement.onchange = (e) => {
                 this.signal4.valueWhite = (0, utility_1.toDecimal)(this.valueWhiteElement.value);
                 this.valueWhiteDecElement.innerHTML = "dec: " + (0, utility_1.toDecimal)(this.valueWhiteElement.value);
+            };
+            this.shadowRoot.getElementById("modeGroup").style.display = globals_1.Globals.CommandCenterSetting.type == dcc_1.CommandCenterTypes.Z21 ? "none" : "block";
+            this.accessoryModeElement.checked = this.signal4.outputMode == dcc_1.OutputModes.accessory;
+            this.accessoryModeElement.onchange = (e) => {
+                this.signal4.outputMode = dcc_1.OutputModes.accessory;
+            };
+            this.outputModeElement.checked = this.signal4.outputMode == dcc_1.OutputModes.output;
+            this.outputModeElement.onchange = (e) => {
+                this.signal4.outputMode = dcc_1.OutputModes.output;
             };
         }
         getTemplate() {

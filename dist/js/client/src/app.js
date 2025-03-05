@@ -309,8 +309,10 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             var signals = this.editor.views.getSignalElements();
             signals.forEach((s) => {
                 for (var i = 0; i < s.addressLength; i++) {
-                    ws_1.wsClient.send({ type: dcc_1.ApiCommands.getTurnout, data: { address: s.address + i } });
-                    //wsClient.send(ApiCommands.getTurnout, s.address + i)
+                    if (globals_1.Globals.CommandCenterSetting.type == dcc_1.CommandCenterTypes.Z21) {
+                        ws_1.wsClient.send({ type: dcc_1.ApiCommands.getTurnout, data: { address: s.address + i } });
+                        //wsClient.send(ApiCommands.getTurnout, s.address + i)
+                    }
                 }
             });
             var accessories = this.editor.views.getAccessoryElements();

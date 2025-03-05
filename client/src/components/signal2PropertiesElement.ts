@@ -1,6 +1,8 @@
 import { drawRectangle } from "../helpers/graphics";
 import { Signal2Element, Signal3Element, Signal4Element,  SignalStates } from "../editor/signals";
 import { byteToBinary, toDecimal } from "../helpers/utility";
+import { CommandCenterTypes, OutputModes } from "../../../common/src/dcc";
+import { Globals } from "../helpers/globals";
 // import { CommandCenterHTMLSelectElement } from "./CommandCenterHTMLSelectElement";
 // import { iCommandCenter } from "../../../common/src/dcc";
 
@@ -16,6 +18,8 @@ export class Signal2PropertiesElement extends HTMLElement {
     valueRedDecElement: HTMLElement;
     shadow: ShadowRoot;
     rbusAddressElement: HTMLInputElement;
+    accessoryModeElement: HTMLInputElement;
+    outputModeElement: HTMLInputElement;
     // deviceElement: CommandCenterHTMLSelectElement;
     
 
@@ -98,6 +102,19 @@ export class Signal2PropertiesElement extends HTMLElement {
                     </div>
                 </div>
        
+                <div class="igroup" id="modeGroup">
+                    <div>Mode</div>
+                    <div>
+                        <input type="radio" id="accessory" name="mode" value="accessory" checked />
+                        <label for="accessory">Accessory</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="output" name="mode" value="output" />
+                        <label for="output">Output</label>
+                    </div>
+                </div>
+
                 <div class="igroup">
                     <div>RBus Address</div>
                     <div>
@@ -106,6 +123,7 @@ export class Signal2PropertiesElement extends HTMLElement {
                 </div>
 
             </div>
+
         `
 
         //this.deviceElement = this.shadow.getElementById("device") as CommandCenterHTMLSelectElement
@@ -121,39 +139,17 @@ export class Signal2PropertiesElement extends HTMLElement {
         this.valueGreenDecElement = this.shadow.getElementById("valueGreenDec") as HTMLElement
         this.valueRedDecElement = this.shadow.getElementById("valueRedDec") as HTMLElement
 
+        this.accessoryModeElement = this.shadow.getElementById("accessory") as HTMLInputElement
+        this.outputModeElement = this.shadow.getElementById("output") as HTMLInputElement
+
+
         this.rbusAddressElement = this.shadow.getElementById("rbusAddress") as HTMLInputElement
     }
 
     
     setSignal(signal2: Signal2Element) {
-
-        // for (const key in signal2) {
-        //     console.log("KEY: ", key)
-
-        //     const label = document.createElement("label");
-        //     label.textContent = key;
-
-        //     // Létrehozás: bemeneti mező
-        //     const input = document.createElement("input");
-        //     input.type = "text"
-        //     input.value = signal2[key as keyof object];            
-        //     console.log("VALUE: ", input.value!.toString())
-
-        //     const wrapper = document.createElement("div");
-        //     wrapper.classList.add("property-item");
-        //     wrapper.appendChild(label);
-        //     wrapper.appendChild(input);
-        //     this.shadow.appendChild(wrapper);
-        // }
-
         this.signal2 = signal2
         
-        // this.deviceElement.setSelectedDevice(this.signal2.cc!)
-        // this.deviceElement.onchangeCallback = (value) => {
-        //     this.signal2!.cc = value!
-        // };
-
-
         this.addressElement.value = this.signal2.address.toString()
         this.addressElement.onchange = (e) => {
             this.signal2!.address = parseInt(this.addressElement.value)        
@@ -197,9 +193,6 @@ export class Signal2PropertiesElement extends HTMLElement {
         ctx2!.scale(1.4, 1.4)
         signalRed.draw(ctx2!)
 
-        // const signalYellow = new Signal5Element("", signal.address, 0, 0, "yellow")
-        // signalGreen.draw(this.canvas2.getContext('2d')!)
-
         this.canvas1Element.onclick = (e) => {
             this.signal2?.send(this.signal2.valueGreen)
         }
@@ -217,9 +210,20 @@ export class Signal2PropertiesElement extends HTMLElement {
         this.valueRedElement.onchange = (e) => {
             this.signal2!.valueGreen = toDecimal(this.valueRedElement.value,)
             this.valueRedDecElement.innerHTML = "dec: " + toDecimal(this.valueRedElement.value)
-            //this.updateUI()
         }
-        //this.updateUI()
+
+        this.shadowRoot!.getElementById("modeGroup")!.style.display = Globals.CommandCenterSetting.type == CommandCenterTypes.Z21 ? "none" : "block"
+        
+        this.accessoryModeElement.checked = this.signal2.outputMode == OutputModes.accessory
+        this.accessoryModeElement.onchange = (e) => {
+            this.signal2!.outputMode = OutputModes.accessory
+        }
+        
+        this.outputModeElement.checked = this.signal2.outputMode == OutputModes.output
+        this.outputModeElement.onchange = (e) => {
+            this.signal2!.outputMode = OutputModes.output
+        }
+        
     }
 
     updateUI() {
@@ -258,6 +262,8 @@ export class Signal3PropertiesElement extends HTMLElement {
     valueYellowElement: HTMLInputElement;
     valueYellowDecElement: HTMLElement;
     rbusAddressElement: HTMLInputElement;
+    accessoryModeElement: HTMLInputElement;
+    outputModeElement: HTMLInputElement;
     //deviceElement: CommandCenterHTMLSelectElement;
     
 
@@ -330,6 +336,20 @@ export class Signal3PropertiesElement extends HTMLElement {
 
                 </div>
 
+                <div class="igroup" id="modeGroup">
+                    <div>Mode</div>
+                    <div>
+                        <input type="radio" id="accessory" name="mode" value="accessory" checked />
+                        <label for="accessory">Accessory</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="output" name="mode" value="output" />
+                        <label for="output">Output</label>
+                    </div>
+                </div>
+
+
                 <div class="igroup">
                     <div>RBus Address</div>
                     <div>
@@ -355,6 +375,9 @@ export class Signal3PropertiesElement extends HTMLElement {
         this.canvas3Element = this.shadow.getElementById('canvas3') as HTMLCanvasElement
         this.valueYellowElement = this.shadow.getElementById("valueYellow") as HTMLInputElement
         this.valueYellowDecElement = this.shadow.getElementById("valueYellowDec") as HTMLElement
+
+        this.accessoryModeElement = this.shadow.getElementById("accessory") as HTMLInputElement
+        this.outputModeElement = this.shadow.getElementById("output") as HTMLInputElement
 
         this.rbusAddressElement = this.shadow.getElementById("rbusAddress") as HTMLInputElement
     }
@@ -448,6 +471,19 @@ export class Signal3PropertiesElement extends HTMLElement {
             this.signal3!.valueYellow = toDecimal(this.valueYellowElement.value)
             this.valueYellowDecElement.innerHTML = "dec: " + toDecimal(this.valueYellowElement.value)
         }
+
+        this.shadowRoot!.getElementById("modeGroup")!.style.display = Globals.CommandCenterSetting.type == CommandCenterTypes.Z21 ? "none" : "block"
+        
+        this.accessoryModeElement.checked = this.signal3.outputMode == OutputModes.accessory
+        this.accessoryModeElement.onchange = (e) => {
+            this.signal3!.outputMode = OutputModes.accessory
+        }
+        
+        this.outputModeElement.checked = this.signal3.outputMode == OutputModes.output
+        this.outputModeElement.onchange = (e) => {
+            this.signal3!.outputMode = OutputModes.output
+        }
+
     }
 
 
@@ -488,6 +524,8 @@ export class Signal4PropertiesElement extends HTMLElement {
     valueWhiteElement: HTMLInputElement;
     valueWhiteDecElement: HTMLElement;
     rbusAddressElement: HTMLInputElement;
+    accessoryModeElement: HTMLInputElement;
+    outputModeElement: HTMLInputElement;
     
     //deviceElement: CommandCenterHTMLSelectElement;
     
@@ -568,6 +606,19 @@ export class Signal4PropertiesElement extends HTMLElement {
 
                 </div>
 
+                <div class="igroup" id="modeGroup">
+                    <div>Mode</div>
+                    <div>
+                        <input type="radio" id="accessory" name="mode" value="accessory" checked />
+                        <label for="accessory">Accessory</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="output" name="mode" value="output" />
+                        <label for="output">Output</label>
+                    </div>
+                </div>
+
                 <div class="igroup">
                     <div>RBus Address</div>
                     <div>
@@ -598,17 +649,20 @@ export class Signal4PropertiesElement extends HTMLElement {
         this.valueWhiteElement = this.shadow.getElementById("valueWhite") as HTMLInputElement
         this.valueWhiteDecElement = this.shadow.getElementById("valueWhiteDec") as HTMLElement
 
+        this.accessoryModeElement = this.shadow.getElementById("accessory") as HTMLInputElement
+        this.outputModeElement = this.shadow.getElementById("output") as HTMLInputElement
+
+
         this.rbusAddressElement = this.shadow.getElementById("rbusAddress") as HTMLInputElement
+
+        this.shadowRoot!.getElementById("modeGroup")!.style.display = Globals.CommandCenterSetting.type == CommandCenterTypes.Z21 ? "none" : "block"
+
+
     }
 
 
     setSignal(signal4: Signal4Element) {
         this.signal4 = signal4
-
-        // this.deviceElement.setSelectedDevice(this.signal4.cc!)
-        // this.deviceElement.onchangeCallback = (value) => {
-        //     this.signal4!.cc = value!
-        // };
 
         this.addressElement.value = this.signal4.address.toString()
         this.addressElement.onchange = (e) => {
@@ -712,6 +766,19 @@ export class Signal4PropertiesElement extends HTMLElement {
             this.signal4!.valueWhite = toDecimal(this.valueWhiteElement.value)
             this.valueWhiteDecElement.innerHTML = "dec: " + toDecimal(this.valueWhiteElement.value)
         }
+
+        this.shadowRoot!.getElementById("modeGroup")!.style.display = Globals.CommandCenterSetting.type == CommandCenterTypes.Z21 ? "none" : "block"
+
+        this.accessoryModeElement.checked = this.signal4!.outputMode == OutputModes.accessory
+        this.accessoryModeElement.onchange = (e) => {
+            this.signal4!.outputMode = OutputModes.accessory
+        }
+        
+        this.outputModeElement.checked = this.signal4!.outputMode == OutputModes.output
+        this.outputModeElement.onchange = (e) => {
+            this.signal4!.outputMode = OutputModes.output
+        }
+
     }
 
 

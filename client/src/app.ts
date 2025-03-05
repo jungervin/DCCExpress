@@ -402,8 +402,10 @@ export class App {
         var signals = this.editor.views.getSignalElements()
         signals.forEach((s) => {
             for (var i = 0; i < s.addressLength; i++) {
-                wsClient.send({ type: ApiCommands.getTurnout, data: { address: s.address + i } as iGetTurnout } as iData)
-                //wsClient.send(ApiCommands.getTurnout, s.address + i)
+                if (Globals.CommandCenterSetting.type == CommandCenterTypes.Z21) {
+                    wsClient.send({ type: ApiCommands.getTurnout, data: { address: s.address + i } as iGetTurnout } as iData)
+                    //wsClient.send(ApiCommands.getTurnout, s.address + i)
+                }
             }
         })
 

@@ -1176,6 +1176,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                             valueGreen: s2.valueGreen,
                             valueRed: s2.valueRed,
                             rbusAddress: s2.rbusAddress,
+                            outputMode: s2.outputMode,
                             // cc: s2.cc,
                             aspect: s2.aspect
                         });
@@ -1190,6 +1191,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                             valueRed: s3.valueRed,
                             valueYellow: s3.valueYellow,
                             rbusAddress: s3.rbusAddress,
+                            outputMode: s3.outputMode,
                             // cc: s3.cc,
                             aspect: s3.aspect
                         });
@@ -1205,6 +1207,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                             valueYellow: s4.valueYellow,
                             valueWhite: s4.valueWhite,
                             rbusAddress: s4.rbusAddress,
+                            outputMode: s4.outputMode,
                             // cc: s4.cc,
                             aspect: s4.aspect
                         });
@@ -1231,7 +1234,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                             valueOn: b.valueOn,
                             valueOff: b.valueOff,
                             colorOn: b.colorOn,
-                            outputMode: b.mode,
+                            outputMode: b.outputMode,
                         });
                         break;
                     case 'sensor':
@@ -1292,7 +1295,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                 //var elems = config.elems
                 config.pages.forEach((page) => {
                     page.elems.forEach((elem) => {
-                        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12;
+                        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15;
                         console.log(elem);
                         switch (elem.type) {
                             case "track":
@@ -1382,33 +1385,36 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                                 s2.valueGreen = (_q = elem.valueGreen) !== null && _q !== void 0 ? _q : 0;
                                 s2.valueRed = (_r = elem.valueRed) !== null && _r !== void 0 ? _r : 0;
                                 s2.rbusAddress = elem.rbusAddress;
+                                s2.outputMode = (_s = elem.outputMode) !== null && _s !== void 0 ? _s : dcc_1.OutputModes.accessory;
                                 // s2.cc = elem.cc == undefined ? undefined : elem.cc
                                 s2.aspect = 1; // elem.aspect ?? 1
                                 this.add(s2);
                                 break;
                             case "signal3":
                                 var s3 = new signals_1.Signal3Element(elem.uuid, elem.address | 0, elem.x, elem.y, elem.name);
-                                s3.angle = (_s = elem.angle) !== null && _s !== void 0 ? _s : 0;
-                                s3.addressLength = (_t = elem.addressLength) !== null && _t !== void 0 ? _t : 5;
-                                s3.isExtendedDecoder = (_u = s3.isExtendedDecoder) !== null && _u !== void 0 ? _u : false;
-                                s3.valueGreen = (_v = elem.valueGreen) !== null && _v !== void 0 ? _v : 0;
-                                s3.valueRed = (_w = elem.valueRed) !== null && _w !== void 0 ? _w : 0;
-                                s3.valueYellow = (_x = elem.valueYellow) !== null && _x !== void 0 ? _x : 0;
+                                s3.angle = (_t = elem.angle) !== null && _t !== void 0 ? _t : 0;
+                                s3.addressLength = (_u = elem.addressLength) !== null && _u !== void 0 ? _u : 5;
+                                s3.isExtendedDecoder = (_v = s3.isExtendedDecoder) !== null && _v !== void 0 ? _v : false;
+                                s3.valueGreen = (_w = elem.valueGreen) !== null && _w !== void 0 ? _w : 0;
+                                s3.valueRed = (_x = elem.valueRed) !== null && _x !== void 0 ? _x : 0;
+                                s3.valueYellow = (_y = elem.valueYellow) !== null && _y !== void 0 ? _y : 0;
                                 s3.rbusAddress = elem.rbusAddress;
+                                s3.outputMode = (_z = elem.outputMode) !== null && _z !== void 0 ? _z : dcc_1.OutputModes.accessory;
                                 // s3.cc = elem.cc == undefined ? undefined : elem.cc
                                 s3.aspect = 1; //elem.aspect ?? 1
                                 this.add(s3);
                                 break;
                             case "signal4":
                                 var s4 = new signals_1.Signal4Element(elem.uuid, elem.address | 0, elem.x, elem.y, elem.name);
-                                s4.angle = (_y = elem.angle) !== null && _y !== void 0 ? _y : 0;
-                                s4.addressLength = (_z = elem.addressLength) !== null && _z !== void 0 ? _z : 5;
-                                s4.isExtendedDecoder = (_0 = s4.isExtendedDecoder) !== null && _0 !== void 0 ? _0 : false;
-                                s4.valueGreen = (_1 = elem.valueGreen) !== null && _1 !== void 0 ? _1 : 0;
-                                s4.valueRed = (_2 = elem.valueRed) !== null && _2 !== void 0 ? _2 : 0;
-                                s4.valueYellow = (_3 = elem.valueYellow) !== null && _3 !== void 0 ? _3 : 0;
-                                s4.valueWhite = (_4 = elem.valueWhite) !== null && _4 !== void 0 ? _4 : 0;
+                                s4.angle = (_0 = elem.angle) !== null && _0 !== void 0 ? _0 : 0;
+                                s4.addressLength = (_1 = elem.addressLength) !== null && _1 !== void 0 ? _1 : 5;
+                                s4.isExtendedDecoder = (_2 = s4.isExtendedDecoder) !== null && _2 !== void 0 ? _2 : false;
+                                s4.valueGreen = (_3 = elem.valueGreen) !== null && _3 !== void 0 ? _3 : 0;
+                                s4.valueRed = (_4 = elem.valueRed) !== null && _4 !== void 0 ? _4 : 0;
+                                s4.valueYellow = (_5 = elem.valueYellow) !== null && _5 !== void 0 ? _5 : 0;
+                                s4.valueWhite = (_6 = elem.valueWhite) !== null && _6 !== void 0 ? _6 : 0;
                                 s4.rbusAddress = elem.rbusAddress;
+                                s4.outputMode = (_7 = elem.outputMode) !== null && _7 !== void 0 ? _7 : dcc_1.OutputModes.accessory;
                                 // s4.cc = elem.cc == undefined ? undefined : elem.cc
                                 s4.aspect = 1; //elem.aspect ?? 1
                                 this.add(s4);
@@ -1429,9 +1435,9 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                             //     break;
                             case "button":
                                 var b = new button_1.ButtonShapeElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
-                                b.valueOff = (_5 = elem.valueOff) !== null && _5 !== void 0 ? _5 : false;
-                                b.valueOn = (_6 = elem.valueOn) !== null && _6 !== void 0 ? _6 : true;
-                                b.mode = (_7 = elem.outputMode) !== null && _7 !== void 0 ? _7 : 0;
+                                b.valueOff = (_8 = elem.valueOff) !== null && _8 !== void 0 ? _8 : false;
+                                b.valueOn = (_9 = elem.valueOn) !== null && _9 !== void 0 ? _9 : true;
+                                b.outputMode = (_10 = elem.outputMode) !== null && _10 !== void 0 ? _10 : 0;
                                 this.add(b);
                                 break;
                             case "audiobutton":
@@ -1448,11 +1454,11 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                                 this.add(tree);
                                 break;
                             case "sensor":
-                                var sensor = new sensor_1.SensorShapeElement(elem.uuid, (_8 = elem.address) !== null && _8 !== void 0 ? _8 : 0, elem.x, elem.y, elem.name);
-                                sensor.kind = (_9 = elem.kind) !== null && _9 !== void 0 ? _9 : sensor_1.SensorTypes.rect;
-                                sensor.colorOn = (_10 = elem.fillColor) !== null && _10 !== void 0 ? _10 : "lime";
-                                sensor.valueOff = (_11 = elem.valueOff) !== null && _11 !== void 0 ? _11 : false;
-                                sensor.valueOn = (_12 = elem.valueOn) !== null && _12 !== void 0 ? _12 : true;
+                                var sensor = new sensor_1.SensorShapeElement(elem.uuid, (_11 = elem.address) !== null && _11 !== void 0 ? _11 : 0, elem.x, elem.y, elem.name);
+                                sensor.kind = (_12 = elem.kind) !== null && _12 !== void 0 ? _12 : sensor_1.SensorTypes.rect;
+                                sensor.colorOn = (_13 = elem.fillColor) !== null && _13 !== void 0 ? _13 : "lime";
+                                sensor.valueOff = (_14 = elem.valueOff) !== null && _14 !== void 0 ? _14 : false;
+                                sensor.valueOn = (_15 = elem.valueOn) !== null && _15 !== void 0 ? _15 : true;
                                 this.add(sensor);
                                 break;
                         }

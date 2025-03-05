@@ -71,7 +71,7 @@ export class ButtonPropertiesElement extends HTMLElement {
         this.btnOffElement!.button.address = button.address
         this.btnOffElement!.button.on = false
         this.btnOffElement!.onclick = (e) => {
-            this.btnOffElement!.button.mode = this.button!.mode
+            this.btnOffElement!.button.outputMode = this.button!.outputMode
             this.btnOffElement!.button.address = this.button!.address
             this.btnOffElement!.button.address = this.button!.address
             this.btnOffElement!.button.send()
@@ -82,7 +82,7 @@ export class ButtonPropertiesElement extends HTMLElement {
         this.btnOnElement!.button.on = true
         this.btnOnElement!.draw()
         this.btnOnElement!.onclick = (e) => {
-            this.btnOnElement!.button.mode = this.button!.mode
+            this.btnOnElement!.button.outputMode = this.button!.outputMode
             this.btnOnElement!.button.address = this.button!.address
             this.btnOnElement!.button.address = this.button!.address
             this.btnOnElement!.button.send()
@@ -106,13 +106,13 @@ export class ButtonPropertiesElement extends HTMLElement {
 
         this.shadowRoot!.getElementById("modeGroup")!.style.display = Globals.CommandCenterSetting.type == CommandCenterTypes.Z21 ? "none" : "block"
 
-        this.accessoryModeElement.checked = this.button.mode == OutputModes.accessory
+        this.accessoryModeElement.checked = this.button.outputMode == OutputModes.accessory
         this.accessoryModeElement.onchange = (e) => {
-            this.button!.mode = OutputModes.accessory
+            this.button!.outputMode = OutputModes.accessory
         }
-        this.outputModeElement.checked = button.mode == OutputModes.output
+        this.outputModeElement.checked = button.outputMode == OutputModes.output
         this.outputModeElement.onchange = (e) => {
-            this.button!.mode = OutputModes.output
+            this.button!.outputMode = OutputModes.output
         }
     }
 }

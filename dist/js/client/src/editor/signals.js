@@ -19,6 +19,7 @@ define(["require", "exports", "../helpers/math", "./track", "./view", "../../../
         // showTrackElem: boolean = true;
         constructor(uuid, address, x1, y1, name) {
             super(uuid, x1, y1, name);
+            this.outputMode = dcc_1.OutputModes.accessory;
             this.addressLength = 5; // Digitools signal decoder must be 5 address
             this.max = 1;
             //device?: iCommandCenter | null;
@@ -292,8 +293,15 @@ define(["require", "exports", "../helpers/math", "./track", "./view", "../../../
             var addr = this.address;
             var len = this.addressLength & 5;
             for (var i = 0; i < len; i++) {
-                var d = { address: this.address + i, value: ((bits >> i) & 1) == 1 };
-                ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBasicAccessory, data: d });
+                const value = ((bits >> i) & 1) == 1;
+                if (this.outputMode == dcc_1.OutputModes.accessory) {
+                    var d = { address: this.address + i, value: value };
+                    ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBasicAccessory, data: d });
+                }
+                else {
+                    var d = { address: this.address + i, value: value };
+                    ws_1.wsClient.send({ type: dcc_1.ApiCommands.setOutput, data: d });
+                }
             }
         }
     }

@@ -13,7 +13,7 @@ import { TrackEndElement } from "./trackend";
 // import { GridState, UndoRedoManager } from "./undoman";
 import { RouteSwitchElement } from "./route";
 import { Dialog, DialogResult, Popup, ThemeColors } from "../controls/dialog";
-import { ApiCommands, getUUID, iSetBasicAccessory, iData, iSetTurnout, turnouts, iSetTimeSettings } from "../../../common/src/dcc";
+import { ApiCommands, getUUID, iSetBasicAccessory, iData, iSetTurnout, turnouts, iSetTimeSettings, OutputModes } from "../../../common/src/dcc";
 //import { IOConn } from "../helpers/iocon";
 import { PropertyPanel } from "../dialogs/propertiyPanel";
 import { BlockElement } from "./block";
@@ -1367,6 +1367,7 @@ export class CustomCanvas extends HTMLElement {
                         valueGreen: s2.valueGreen,
                         valueRed: s2.valueRed,
                         rbusAddress: s2.rbusAddress,
+                        outputMode: s2.outputMode,
                         // cc: s2.cc,
                         aspect: s2.aspect
                     })
@@ -1381,6 +1382,7 @@ export class CustomCanvas extends HTMLElement {
                         valueRed: s3.valueRed,
                         valueYellow: s3.valueYellow,
                         rbusAddress: s3.rbusAddress,
+                        outputMode: s3.outputMode,
                         // cc: s3.cc,
                         aspect: s3.aspect
                     })
@@ -1396,6 +1398,7 @@ export class CustomCanvas extends HTMLElement {
                         valueYellow: s4.valueYellow,
                         valueWhite: s4.valueWhite,
                         rbusAddress: s4.rbusAddress,
+                        outputMode: s4.outputMode,
                         // cc: s4.cc,
                         aspect: s4.aspect
                     })
@@ -1422,7 +1425,7 @@ export class CustomCanvas extends HTMLElement {
                         valueOn: b.valueOn,
                         valueOff: b.valueOff,
                         colorOn: b.colorOn,
-                        outputMode: b.mode,
+                        outputMode: b.outputMode,
                     })
                     break;
                 case 'sensor':
@@ -1583,6 +1586,7 @@ export class CustomCanvas extends HTMLElement {
                             s2.valueGreen = elem.valueGreen ?? 0
                             s2.valueRed = elem.valueRed ?? 0
                             s2.rbusAddress = elem.rbusAddress
+                            s2.outputMode = elem.outputMode ?? OutputModes.accessory
                             // s2.cc = elem.cc == undefined ? undefined : elem.cc
                             s2.aspect = 1 // elem.aspect ?? 1
                             this.add(s2)
@@ -1596,6 +1600,7 @@ export class CustomCanvas extends HTMLElement {
                             s3.valueRed = elem.valueRed ?? 0
                             s3.valueYellow = elem.valueYellow ?? 0
                             s3.rbusAddress = elem.rbusAddress
+                            s3.outputMode = elem.outputMode ?? OutputModes.accessory
                             // s3.cc = elem.cc == undefined ? undefined : elem.cc
                             s3.aspect = 1; //elem.aspect ?? 1
                             this.add(s3)
@@ -1610,6 +1615,7 @@ export class CustomCanvas extends HTMLElement {
                             s4.valueYellow = elem.valueYellow ?? 0
                             s4.valueWhite = elem.valueWhite ?? 0
                             s4.rbusAddress = elem.rbusAddress
+                            s4.outputMode = elem.outputMode ?? OutputModes.accessory
                             // s4.cc = elem.cc == undefined ? undefined : elem.cc
                             s4.aspect = 1 //elem.aspect ?? 1
                             this.add(s4)
@@ -1633,7 +1639,7 @@ export class CustomCanvas extends HTMLElement {
                             var b = new ButtonShapeElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
                             b.valueOff = elem.valueOff ?? false;
                             b.valueOn = elem.valueOn ?? true;
-                            b.mode = elem.outputMode ?? 0
+                            b.outputMode = elem.outputMode ?? 0
                             this.add(b)
                             break;
                         case "audiobutton":

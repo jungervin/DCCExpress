@@ -1,9 +1,10 @@
 import { degreesToRadians } from "../helpers/math";
 import { TrackElement } from "./track";
 import { RailView } from "./view";
-import { ApiCommands, iSetBasicAccessory, iData } from "../../../common/src/dcc";
+import { ApiCommands, iSetBasicAccessory, iData, OutputModes, iSetOutput } from "../../../common/src/dcc";
 import { drawTextWithRoundedBackground } from "../helpers/graphics";
 import { wsClient } from "../helpers/ws";
+import { Globals } from "../helpers/globals";
 
 export enum SignalStates {
     green,
@@ -21,6 +22,7 @@ class SignalLight {
     }
 }
 export class Signal1Element extends RailView {
+    outputMode: OutputModes = OutputModes.accessory;
     address: number;
     addressLength: number = 5; // Digitools signal decoder must be 5 address
     trackElem: TrackElement
@@ -184,7 +186,7 @@ export class Signal1Element extends RailView {
     }
     setWhite(): void {
         this.state = SignalStates.white
-    }    
+    }
 
     sendRedIfNotRed() {
         if (!this.isRed) {
@@ -202,13 +204,13 @@ export class Signal1Element extends RailView {
         if (!this.isYellow) {
             this.sendYellow();
         }
-    }    
+    }
 
     sendWhiteIfNotWhite() {
         if (!this.isWhite) {
             this.sendWhite();
         }
-    }    
+    }
 
     public get canRotate(): boolean {
         return true
@@ -328,17 +330,17 @@ export class Signal1Element extends RailView {
             this.trackElem.draw(ctx)
         }
         ctx.restore();
-       // super.draw(ctx)
+        // super.draw(ctx)
 
     }
 
     drawAddress(ctx: CanvasRenderingContext2D) {
         if (this.showAddress) {
-            var addr= "#" + this.address
-            drawTextWithRoundedBackground(ctx, this.posLeft, this.posBottom - 10, addr )
+            var addr = "#" + this.address
+            drawTextWithRoundedBackground(ctx, this.posLeft, this.posBottom - 10, addr)
         }
     }
-   
+
     private _state: SignalStates = SignalStates.red;
     public get state(): SignalStates {
         return this._state;
@@ -352,8 +354,15 @@ export class Signal1Element extends RailView {
         var addr = this.address;
         var len = this.addressLength & 5;
         for (var i = 0; i < len; i++) {
-            var d: iSetBasicAccessory = { address: this.address + i, value: ((bits >> i) & 1) == 1}
-            wsClient.send({type: ApiCommands.setBasicAccessory, data: d} as iData);
+
+            const value = ((bits >> i) & 1) == 1; 
+            if (this.outputMode == OutputModes.accessory) {
+                var d: iSetBasicAccessory = { address: this.address + i, value: value }
+                wsClient.send({ type: ApiCommands.setBasicAccessory, data: d } as iData);
+            } else {
+                var d: iSetOutput = { address: this.address + i, value: value}
+                wsClient.send({ type: ApiCommands.setOutput, data: d } as iData);
+            }
         }
     }
 }

@@ -48,7 +48,7 @@ export abstract class AccessoryAddressElement extends View {
 
 export class ButtonShapeElement extends AccessoryAddressElement {
 
-    mode: OutputModes = OutputModes.accessory;
+    outputMode: OutputModes = OutputModes.accessory;
 
     constructor(uuid: string, address: number, x: number, y: number, name: string) {
         super(uuid, address, x, y, name)
@@ -127,7 +127,7 @@ export class ButtonShapeElement extends AccessoryAddressElement {
             const data: iSetBasicAccessory = { address: this.address, value: this.on ? this.valueOn : this.valueOff } as iSetBasicAccessory
             wsClient.send({ type: ApiCommands.setBasicAccessory, data: data } as iData)
         } else {
-            if (this.mode == OutputModes.output) {
+            if (this.outputMode == OutputModes.output) {
                 const data: iSetOutput = { address: this.address, value: this.on ? this.valueOn : this.valueOff } as iSetBasicAccessory
                 wsClient.send({ type: ApiCommands.setOutput, data: data } as iData)
             }
