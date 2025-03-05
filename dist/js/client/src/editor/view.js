@@ -18,6 +18,10 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/math", "../
     //     on: boolean
     // }
     exports.propertiesChangedEvent = new Event("propertiesChanged");
+    // export interface ExHTMLElement extends HTMLElement {
+    //    get visible(): boolean;
+    //     set visible(v: boolean);
+    // }
     // export function setSettings(setting: any) {
     //     if (setting) {
     //         AppSettings = setting

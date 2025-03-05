@@ -1,4 +1,4 @@
-define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], function (require, exports, ws_1, dcc_1) {
+define(["require", "exports", "../../../common/src/dcc", "../helpers/globals"], function (require, exports, dcc_1, globals_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ButtonPropertiesElement = void 0;
@@ -28,28 +28,46 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
                         <bit-element id="valueOn"></bit-element>
                     </div>
                 </div>
-            </div>
+
+                <div class="igroup" id="modeGroup">
+                    <div>Mode</div>
+                    <div>
+                        <input type="radio" id="accessory" name="mode" value="accessory" checked />
+                        <label for="accessory">Accessory</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="output" name="mode" value="output" />
+                        <label for="output">Output</label>
+                    </div>
+                </div>
         `;
             this.addressInputElement = this.shadow.getElementById('address');
             this.btnOffElement = this.shadow.getElementById("btnOff");
             this.btnOnElement = this.shadow.getElementById("btnOn");
             this.valueOffElement = this.shadow.getElementById("valueOff");
             this.valueOnElement = this.shadow.getElementById("valueOn");
+            this.accessoryModeElement = this.shadow.getElementById("accessory");
+            this.outputModeElement = this.shadow.getElementById("output");
         }
         setButton(button) {
             this.button = button;
             this.btnOffElement.button.address = button.address;
             this.btnOffElement.button.on = false;
             this.btnOffElement.onclick = (e) => {
-                const data = { address: button.address, value: this.valueOffElement.value };
-                ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBasicAccessory, data: data });
+                this.btnOffElement.button.mode = this.button.mode;
+                this.btnOffElement.button.address = this.button.address;
+                this.btnOffElement.button.address = this.button.address;
+                this.btnOffElement.button.send();
             };
             this.btnOnElement.button.address = button.address;
             this.btnOnElement.button.on = true;
             this.btnOnElement.draw();
             this.btnOnElement.onclick = (e) => {
-                const data = { address: button.address, value: this.valueOnElement.value };
-                ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBasicAccessory, data: data });
+                this.btnOnElement.button.mode = this.button.mode;
+                this.btnOnElement.button.address = this.button.address;
+                this.btnOnElement.button.address = this.button.address;
+                this.btnOnElement.button.send();
             };
             this.addressInputElement.value = button.address.toString();
             this.addressInputElement.onchange = (e) => {
@@ -63,6 +81,15 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
             this.valueOnElement.value = button.valueOn;
             this.valueOnElement.onchanged = (e) => {
                 this.button.valueOn = this.valueOnElement.value;
+            };
+            this.shadowRoot.getElementById("modeGroup").style.display = globals_1.Globals.CommandCenterSetting.type == dcc_1.CommandCenterTypes.Z21 ? "none" : "block";
+            this.accessoryModeElement.checked = this.button.mode == dcc_1.OutputModes.accessory;
+            this.accessoryModeElement.onchange = (e) => {
+                this.button.mode = dcc_1.OutputModes.accessory;
+            };
+            this.outputModeElement.checked = button.mode == dcc_1.OutputModes.output;
+            this.outputModeElement.onchange = (e) => {
+                this.button.mode = dcc_1.OutputModes.output;
             };
         }
     }

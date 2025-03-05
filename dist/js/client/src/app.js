@@ -66,6 +66,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             });
             globals_1.Globals.loadCommandCenterSettings();
             this.toolbar.btnCommandCenterSettings.onclick = (e) => {
+                this.editor.unselectAll();
                 const cc = new commandCenterSettingsDialog_1.CommandCenterSettingsDialog();
             };
             this.editor.init();
@@ -140,6 +141,15 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                                     }
                                 });
                             });
+                        });
+                        break;
+                    case dcc_1.ApiCommands.outputInfo:
+                        const output = msg.data;
+                        this.editor.views.getButtonElements().forEach((b) => {
+                            if (b.address == output.address) {
+                                b.on = output.value == b.valueOn;
+                                this.editor.draw();
+                            }
                         });
                         break;
                     case dcc_1.ApiCommands.settingsInfo:

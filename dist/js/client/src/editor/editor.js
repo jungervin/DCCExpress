@@ -1230,7 +1230,8 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                             uuid: b.UUID, type: b.type, address: b.address, x: b.x, y: b.y, name: b.name,
                             valueOn: b.valueOn,
                             valueOff: b.valueOff,
-                            colorOn: b.colorOn
+                            colorOn: b.colorOn,
+                            outputMode: b.mode,
                         });
                         break;
                     case 'sensor':
@@ -1291,7 +1292,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                 //var elems = config.elems
                 config.pages.forEach((page) => {
                     page.elems.forEach((elem) => {
-                        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11;
+                        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12;
                         console.log(elem);
                         switch (elem.type) {
                             case "track":
@@ -1430,6 +1431,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                                 var b = new button_1.ButtonShapeElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
                                 b.valueOff = (_5 = elem.valueOff) !== null && _5 !== void 0 ? _5 : false;
                                 b.valueOn = (_6 = elem.valueOn) !== null && _6 !== void 0 ? _6 : true;
+                                b.mode = (_7 = elem.outputMode) !== null && _7 !== void 0 ? _7 : 0;
                                 this.add(b);
                                 break;
                             case "audiobutton":
@@ -1446,11 +1448,11 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                                 this.add(tree);
                                 break;
                             case "sensor":
-                                var sensor = new sensor_1.SensorShapeElement(elem.uuid, (_7 = elem.address) !== null && _7 !== void 0 ? _7 : 0, elem.x, elem.y, elem.name);
-                                sensor.kind = (_8 = elem.kind) !== null && _8 !== void 0 ? _8 : sensor_1.SensorTypes.rect;
-                                sensor.colorOn = (_9 = elem.fillColor) !== null && _9 !== void 0 ? _9 : "lime";
-                                sensor.valueOff = (_10 = elem.valueOff) !== null && _10 !== void 0 ? _10 : false;
-                                sensor.valueOn = (_11 = elem.valueOn) !== null && _11 !== void 0 ? _11 : true;
+                                var sensor = new sensor_1.SensorShapeElement(elem.uuid, (_8 = elem.address) !== null && _8 !== void 0 ? _8 : 0, elem.x, elem.y, elem.name);
+                                sensor.kind = (_9 = elem.kind) !== null && _9 !== void 0 ? _9 : sensor_1.SensorTypes.rect;
+                                sensor.colorOn = (_10 = elem.fillColor) !== null && _10 !== void 0 ? _10 : "lime";
+                                sensor.valueOff = (_11 = elem.valueOff) !== null && _11 !== void 0 ? _11 : false;
+                                sensor.valueOn = (_12 = elem.valueOn) !== null && _12 !== void 0 ? _12 : true;
                                 this.add(sensor);
                                 break;
                         }

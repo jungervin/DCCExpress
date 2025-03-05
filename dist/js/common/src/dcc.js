@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.defaultCommandCenterSettings = exports.defaultSettings = exports.FileNames = exports.blocks = exports.rbus = exports.turnouts = exports.ext_accessories = exports.accessories = exports.locos = exports.CommandCenterTypes = exports.iZ21STATUS = exports.Z21POWERINFO = exports.ApiCommands = exports.DCCExTurnout = exports.DCCExDirections = exports.Z21Directions = exports.SpeedModes = void 0;
+    exports.defaultCommandCenterSettings = exports.defaultSettings = exports.FileNames = exports.blocks = exports.rbus = exports.turnouts = exports.ext_accessories = exports.outputs = exports.accessories = exports.locos = exports.CommandCenterTypes = exports.iZ21STATUS = exports.Z21POWERINFO = exports.ApiCommands = exports.OutputModes = exports.DCCExTurnout = exports.DCCExDirections = exports.Z21Directions = exports.SpeedModes = void 0;
     exports.getCommandCenterType = getCommandCenterType;
     exports.getUUID = getUUID;
     exports.fetchDevices = fetchDevices;
@@ -35,6 +35,11 @@ define(["require", "exports"], function (require, exports) {
         DCCExTurnout[DCCExTurnout["closed"] = 0] = "closed";
         DCCExTurnout[DCCExTurnout["open"] = 1] = "open";
     })(DCCExTurnout || (exports.DCCExTurnout = DCCExTurnout = {}));
+    var OutputModes;
+    (function (OutputModes) {
+        OutputModes[OutputModes["accessory"] = 0] = "accessory";
+        OutputModes[OutputModes["output"] = 1] = "output";
+    })(OutputModes || (exports.OutputModes = OutputModes = {}));
     var ApiCommands;
     (function (ApiCommands) {
         ApiCommands["getLoco"] = "getLoco";
@@ -67,6 +72,9 @@ define(["require", "exports"], function (require, exports) {
         ApiCommands["saveCommandCenter"] = "saveCommandCenter";
         ApiCommands["getSensor"] = "getSensor";
         ApiCommands["sensorInfo"] = "sensorInfo";
+        ApiCommands["setOutput"] = "setOutput";
+        ApiCommands["getOutput"] = "getOutput";
+        ApiCommands["outputInfo"] = "outputInfo";
     })(ApiCommands || (exports.ApiCommands = ApiCommands = {}));
     var Z21POWERINFO;
     (function (Z21POWERINFO) {
@@ -109,6 +117,7 @@ define(["require", "exports"], function (require, exports) {
     //export let CommandCenters
     exports.locos = {};
     exports.accessories = {};
+    exports.outputs = {};
     exports.ext_accessories = {};
     exports.turnouts = {};
     exports.rbus = {};

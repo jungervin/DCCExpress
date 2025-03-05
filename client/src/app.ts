@@ -3,7 +3,7 @@ import { Toolbar } from "./editor/toolbar";
 import { TurnoutDoubleElement, TurnoutElement, TurnoutLeftElement, TurnoutRightElement } from "./editor/turnout";
 import { Signal1Element } from "./editor/signals";
 import { RailView } from "./editor/view";
-import { ApiCommands, iData, iGetTurnout, iLoco, iPowerInfo, iRBus, iSettings, iSetPower, iSetTurnout, iSystemStatus, defaultSettings, iLocomotive, iBlockInfo, iTimeInfo, iCommandCenter, CommandCenterTypes, iZ21CommandCenter, FileNames, iSensorInfo } from "../../common/src/dcc";
+import { ApiCommands, iData, iGetTurnout, iLoco, iPowerInfo, iRBus, iSettings, iSetPower, iSetTurnout, iSystemStatus, defaultSettings, iLocomotive, iBlockInfo, iTimeInfo, iCommandCenter, CommandCenterTypes, iZ21CommandCenter, FileNames, iSensorInfo, iOutputInfo } from "../../common/src/dcc";
 import { Globals } from "./helpers/globals";
 import { Dialog } from "./controls/dialog";
 import { wsClient } from "./helpers/ws";
@@ -100,6 +100,7 @@ export class App {
 
         Globals.loadCommandCenterSettings()
         this.toolbar.btnCommandCenterSettings!.onclick = (e) => {
+            this.editor.unselectAll()
             const cc = new CommandCenterSettingsDialog()
         }
 
@@ -196,6 +197,17 @@ export class App {
                             })
                         })
                     })
+                    break;
+
+                case ApiCommands.outputInfo:
+                    const output = msg.data as iOutputInfo
+                    this.editor.views.getButtonElements().forEach((b) => {
+                        if (b.address == output.address) {
+                            b.on = output.value == b.valueOn
+                            this.editor.draw()
+                        }
+                    })
+
                     break;
                 case ApiCommands.settingsInfo:
                     const d = msg.data as iSettings;
@@ -507,14 +519,14 @@ export class App {
     }
     sensorInfo(sensor: iSensorInfo) {
         this.editor.views.getRailElements().forEach(elem => {
-                if (elem.rbusAddress == sensor.address) {
-                    elem.occupied = sensor.on
-                }
+            if (elem.rbusAddress == sensor.address) {
+                elem.occupied = sensor.on
+            }
         });
         this.editor.views.getSensorElements().forEach(elem => {
-                if (elem.address == sensor.address) {
-                    elem.on = sensor.on == elem.valueOn
-                }
+            if (elem.address == sensor.address) {
+                elem.on = sensor.on == elem.valueOn
+            }
         });
         this.editor.draw()
     }

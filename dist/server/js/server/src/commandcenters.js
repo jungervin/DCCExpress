@@ -84,6 +84,22 @@ class CommandCenters {
             (0, utility_1.log)("Command Center doesn't exists!");
         }
     }
+    setOutput(a) {
+        if (this.cc) {
+            this.cc.setOutput(a.address, a.value);
+        }
+        else {
+            (0, utility_1.log)("Command Center doesn't exists!");
+        }
+    }
+    getOutput(a) {
+        if (this.cc) {
+            this.cc.getOutput(a.address);
+        }
+        else {
+            (0, utility_1.log)("Command Center doesn't exists!");
+        }
+    }
     getTurnout(t) {
         if (this.cc) {
             this.cc.getTurnout(t.address);

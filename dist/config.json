@@ -1,10 +1,10 @@
 {
     "settings": {
-        "scale": 1.1862141624006068,
-        "origX": -905,
-        "origY": -391,
+        "scale": 1.0493335298174544,
+        "origX": -729,
+        "origY": -350,
         "locoPanelVisible": true,
-        "propertyPanelVisible": false
+        "propertyPanelVisible": true
     },
     "pages": [
         {
@@ -719,9 +719,9 @@
                     "angle": 180,
                     "addressLength": 5,
                     "isExtendedDecoder": false,
-                    "valueGreen": 0,
-                    "valueRed": 5,
-                    "valueYellow": 0,
+                    "valueGreen": 1,
+                    "valueRed": 0,
+                    "valueYellow": 2,
                     "rbusAddress": 18,
                     "aspect": 1
                 },
@@ -735,9 +735,9 @@
                     "angle": 180,
                     "addressLength": 5,
                     "isExtendedDecoder": false,
-                    "valueGreen": 0,
-                    "valueRed": 5,
-                    "valueYellow": 0,
+                    "valueGreen": 3,
+                    "valueRed": 0,
+                    "valueYellow": 1,
                     "rbusAddress": 17,
                     "aspect": 1
                 },
@@ -1086,13 +1086,14 @@
                 {
                     "uuid": "8a1d0862-b2b3-4a4e-afdd-4f5fc31c13c6",
                     "type": "button",
-                    "address": 103,
+                    "address": 50,
                     "x": 30,
                     "y": 21,
                     "name": "button118",
                     "valueOn": true,
                     "valueOff": false,
-                    "colorOn": "lime"
+                    "colorOn": "lime",
+                    "outputMode": 1
                 },
                 {
                     "uuid": "881bf289-b58f-4551-9357-76c9610196a7",
@@ -1103,7 +1104,8 @@
                     "name": "button119",
                     "valueOn": false,
                     "valueOff": true,
-                    "colorOn": "lime"
+                    "colorOn": "lime",
+                    "outputMode": 0
                 },
                 {
                     "uuid": "c6f6f04b-4889-46a1-a739-a211f37ccf4d",

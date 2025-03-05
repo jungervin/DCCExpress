@@ -98,6 +98,12 @@ exports.wsServer.on("connection", (ws, req) => {
                 case dcc_1.ApiCommands.getBasicAcessory:
                     commandcenters_1.commandCenters.getBasicAccessory(data);
                     break;
+                case dcc_1.ApiCommands.setOutput:
+                    commandcenters_1.commandCenters.setOutput(data);
+                    break;
+                case dcc_1.ApiCommands.getOutput:
+                    commandcenters_1.commandCenters.getOutput(data);
+                    break;
                 case dcc_1.ApiCommands.getRBusInfo:
                     try {
                         commandcenters_1.commandCenters.getRBusInfo();

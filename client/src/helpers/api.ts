@@ -131,6 +131,7 @@ export class Api {
         return Api.app.editor.views.getSignal(address)
     }
 
+
     static getRoute(name: string): RouteSwitchElement | undefined {
         return Api.app.editor.views.getRouteSwitchElements().find(r => r.name === name)
     }

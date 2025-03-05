@@ -40,6 +40,7 @@ define(["require", "exports", "../helpers/ws", "../helpers/globals", "./view", "
     class ButtonShapeElement extends AccessoryAddressElement {
         constructor(uuid, address, x, y, name) {
             super(uuid, address, x, y, name);
+            this.mode = dcc_1.OutputModes.accessory;
         }
         get type() {
             return 'button';
@@ -88,10 +89,25 @@ define(["require", "exports", "../helpers/ws", "../helpers/globals", "./view", "
         }
         mouseDown(e) {
             this.toggle();
-            const data = { address: this.address, value: this.on ? this.valueOn : this.valueOff };
-            ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBasicAccessory, data: data });
+            this.send();
             if (this.mouseDownHandler) {
                 this.mouseDownHandler(this);
+            }
+        }
+        send() {
+            if (globals_1.Globals.CommandCenterSetting.type == dcc_1.CommandCenterTypes.Z21) {
+                const data = { address: this.address, value: this.on ? this.valueOn : this.valueOff };
+                ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBasicAccessory, data: data });
+            }
+            else {
+                if (this.mode == dcc_1.OutputModes.output) {
+                    const data = { address: this.address, value: this.on ? this.valueOn : this.valueOff };
+                    ws_1.wsClient.send({ type: dcc_1.ApiCommands.setOutput, data: data });
+                }
+                else {
+                    const data = { address: this.address, value: this.on ? this.valueOn : this.valueOff };
+                    ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBasicAccessory, data: data });
+                }
             }
         }
     }

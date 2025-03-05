@@ -42,6 +42,10 @@ export abstract class CommandCenter {
     abstract setAccessoryDecoder(address: number, on: boolean): void;
     abstract getAccessoryDecoder(address: number): void;
 
+    abstract setOutput(address: number, on: boolean): void;
+    abstract getOutput(address: number): void;
+
+
     abstract getRBusInfo(): void;
     abstract getSensorInfo(address: number): void;
 

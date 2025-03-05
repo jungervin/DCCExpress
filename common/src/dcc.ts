@@ -19,6 +19,11 @@ export enum DCCExTurnout {
     open = 1
 }
 
+export enum OutputModes {
+    accessory = 0,
+    output = 1
+}
+
 export enum ApiCommands {
     getLoco = "getLoco",
     setLoco = "setLoco",
@@ -54,6 +59,9 @@ export enum ApiCommands {
     saveCommandCenter = "saveCommandCenter",
     getSensor = "getSensor",
     sensorInfo = "sensorInfo",
+    setOutput = "setOutput",
+    getOutput = "getOutput",
+    outputInfo = "outputInfo",
 }
 
 export interface iData {
@@ -120,6 +128,19 @@ export interface iSetBasicAccessory {
 export interface iGetBasicAccessory {
     address: number;
 }
+
+export interface iSetOutput {
+    address: number;
+    value: boolean;
+}
+export interface iGetOutput {
+    address: number;
+}
+export interface iOutputInfo {
+    address: number;
+    value: boolean;
+}
+
 
 export interface iExtAccessory {
     address: number;
@@ -239,6 +260,7 @@ export interface iSystemStatus {
 //export let CommandCenters
 export let locos: { [address: number]: iLoco } = {};
 export let accessories: { [address: number]: iSetBasicAccessory } = {};
+export let outputs: { [address: number]: iSetOutput } = {};
 export let ext_accessories: { [address: number]: iExtAccessory } = {};
 export let turnouts: { [address: number]: iTurnoutInfo } = {};
 export let rbus: { [address: number]: iRBus } = {};

@@ -1,7 +1,7 @@
 import { wsClient } from "../helpers/ws";
 import { Globals } from "../helpers/globals";
 import { View } from "./view";
-import { ApiCommands, iData, iSetBasicAccessory } from "../../../common/src/dcc";
+import { ApiCommands, CommandCenterTypes, iData, iSetBasicAccessory, iSetOutput, OutputModes } from "../../../common/src/dcc";
 import { drawTextWithRoundedBackground } from "../helpers/graphics";
 
 export abstract class AccessoryAddressElement extends View {
@@ -47,6 +47,8 @@ export abstract class AccessoryAddressElement extends View {
 }
 
 export class ButtonShapeElement extends AccessoryAddressElement {
+
+    mode: OutputModes = OutputModes.accessory;
 
     constructor(uuid: string, address: number, x: number, y: number, name: string) {
         super(uuid, address, x, y, name)
@@ -114,10 +116,26 @@ export class ButtonShapeElement extends AccessoryAddressElement {
 
     mouseDown(e: MouseEvent): void {
         this.toggle()
-        const data: iSetBasicAccessory = { address: this.address, value: this.on ? this.valueOn : this.valueOff } as iSetBasicAccessory
-        wsClient.send({ type: ApiCommands.setBasicAccessory, data: data } as iData)
+        this.send();    
         if (this.mouseDownHandler) {
             this.mouseDownHandler(this)
         }
+    }
+
+    send() {
+        if (Globals.CommandCenterSetting.type == CommandCenterTypes.Z21) {
+            const data: iSetBasicAccessory = { address: this.address, value: this.on ? this.valueOn : this.valueOff } as iSetBasicAccessory
+            wsClient.send({ type: ApiCommands.setBasicAccessory, data: data } as iData)
+        } else {
+            if (this.mode == OutputModes.output) {
+                const data: iSetOutput = { address: this.address, value: this.on ? this.valueOn : this.valueOff } as iSetBasicAccessory
+                wsClient.send({ type: ApiCommands.setOutput, data: data } as iData)
+            }
+            else {
+                const data: iSetBasicAccessory = { address: this.address, value: this.on ? this.valueOn : this.valueOff } as iSetBasicAccessory
+                wsClient.send({ type: ApiCommands.setBasicAccessory, data: data } as iData)
+            }
+        }
+
     }
 }

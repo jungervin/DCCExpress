@@ -41,6 +41,8 @@ export class Toolbar extends HTMLElement {
     btnCodeEditor: any;
     btnTasks: any;
     btnCommandCenterSettings: HTMLElement | null;
+    btnDebug: HTMLElement;
+    btnConsole: HTMLElement;
 
 
     constructor() {
@@ -143,6 +145,9 @@ export class Toolbar extends HTMLElement {
                     <svg id="btnSave" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Save</title><path d="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z" /></svg>
                     <svg id="btnAppSettings" class="toolbarButton"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Settings...</title><path d="M21.7 18.6V17.6L22.8 16.8C22.9 16.7 23 16.6 22.9 16.5L21.9 14.8C21.9 14.7 21.7 14.7 21.6 14.7L20.4 15.2C20.1 15 19.8 14.8 19.5 14.7L19.3 13.4C19.3 13.3 19.2 13.2 19.1 13.2H17.1C16.9 13.2 16.8 13.3 16.8 13.4L16.6 14.7C16.3 14.9 16.1 15 15.8 15.2L14.6 14.7C14.5 14.7 14.4 14.7 14.3 14.8L13.3 16.5C13.3 16.6 13.3 16.7 13.4 16.8L14.5 17.6V18.6L13.4 19.4C13.3 19.5 13.2 19.6 13.3 19.7L14.3 21.4C14.4 21.5 14.5 21.5 14.6 21.5L15.8 21C16 21.2 16.3 21.4 16.6 21.5L16.8 22.8C16.9 22.9 17 23 17.1 23H19.1C19.2 23 19.3 22.9 19.3 22.8L19.5 21.5C19.8 21.3 20 21.2 20.3 21L21.5 21.4C21.6 21.4 21.7 21.4 21.8 21.3L22.8 19.6C22.9 19.5 22.9 19.4 22.8 19.4L21.7 18.6M18 19.5C17.2 19.5 16.5 18.8 16.5 18S17.2 16.5 18 16.5 19.5 17.2 19.5 18 18.8 19.5 18 19.5M12.3 22H3C1.9 22 1 21.1 1 20V4C1 2.9 1.9 2 3 2H21C22.1 2 23 2.9 23 4V13.1C22.4 12.5 21.7 12 21 11.7V6H3V20H11.3C11.5 20.7 11.8 21.4 12.3 22Z" /></svg>
                     <svg id="btnCommandCenterSettings" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Command Center Settings</title><path d="M20.2,4.9C19,3.8 17.5,3.2 16,3.2C14.5,3.2 13,3.8 11.8,4.9L11,4.1C12.4,2.7 14.2,2 16,2C17.8,2 19.6,2.7 21,4.1L20.2,4.9M19.3,5.7L18.5,6.5C17.8,5.8 16.9,5.5 16,5.5C15.1,5.5 14.2,5.8 13.5,6.5L12.7,5.7C13.6,4.8 14.8,4.3 16,4.3C17.2,4.3 18.4,4.8 19.3,5.7M19,12A2,2 0 0,1 21,14V18A2,2 0 0,1 19,20H5A2,2 0 0,1 3,18V14A2,2 0 0,1 5,12H15V8H17V12H19M8,17V15H6V17H8M11.5,17V15H9.5V17H11.5M15,17V15H13V17H15M7,22H9V24H7V22M11,22H13V24H11V22M15,22H17V24H15V22Z" /></svg>
+                    <svg id="btnDebug" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Debug</title><path d="M14,12H10V10H14M14,16H10V14H14M20,8H17.19C16.74,7.22 16.12,6.55 15.37,6.04L17,4.41L15.59,3L13.42,5.17C12.96,5.06 12.5,5 12,5C11.5,5 11.04,5.06 10.59,5.17L8.41,3L7,4.41L8.62,6.04C7.88,6.55 7.26,7.22 6.81,8H4V10H6.09C6.04,10.33 6,10.66 6,11V12H4V14H6V15C6,15.34 6.04,15.67 6.09,16H4V18H6.81C7.85,19.79 9.78,21 12,21C14.22,21 16.15,19.79 17.19,18H20V16H17.91C17.96,15.67 18,15.34 18,15V14H20V12H18V11C18,10.66 17.96,10.33 17.91,10H20V8Z" /></svg>
+                    <svg id="btnConsole" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Console</title><path d="M20,19V7H4V19H20M20,3A2,2 0 0,1 22,5V19A2,2 0 0,1 20,21H4A2,2 0 0,1 2,19V5C2,3.89 2.9,3 4,3H20M13,17V15H18V17H13M9.58,13L5.57,9H8.4L11.7,12.3C12.09,12.69 12.09,13.33 11.7,13.72L8.42,17H5.59L9.58,13Z" /></svg>                    
+                    
                     <svg class="separator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Train</title><path d="M9,3H11V5H9V3M13,3H15V5H13V3M9,7H11V9H9V7M13,7H15V9H13V7M9,11H11V13H9V11M13,11H15V13H13V11M9,15H11V17H9V15M13,15H15V17H13V15M9,19H11V21H9V19M13,19H15V21H13V19Z" /></svg>
 
                     <svg id="btnPointer" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Pointer (ESC)</title><path d="M13.75,10.19L14.38,10.32L18.55,12.4C19.25,12.63 19.71,13.32 19.65,14.06V14.19L19.65,14.32L18.75,20.44C18.69,20.87 18.5,21.27 18.15,21.55C17.84,21.85 17.43,22 17,22H10.12C9.63,22 9.18,21.82 8.85,21.47L2.86,15.5L3.76,14.5C4,14.25 4.38,14.11 4.74,14.13H5.03L9,15V4.5A2,2 0 0,1 11,2.5A2,2 0 0,1 13,4.5V10.19H13.75Z" /></svg>
@@ -161,7 +166,6 @@ export class Toolbar extends HTMLElement {
                         <svg id="btnMoveToBottom" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Move to bottom</title><path d="M19.92,12.08L12,20L4.08,12.08L5.5,10.67L11,16.17V2H13V16.17L18.5,10.66L19.92,12.08M12,20H2V22H22V20H12Z" /></svg>                        
                     
                     <svg class="separator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9,3H11V5H9V3M13,3H15V5H13V3M9,7H11V9H9V7M13,7H15V9H13V7M9,11H11V13H9V11M13,11H15V13H13V11M9,15H11V17H9V15M13,15H15V17H13V15M9,19H11V21H9V19M13,19H15V21H13V19Z" /></svg>
-                    <svg id="btnDebug" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Debug</title><path d="M14,12H10V10H14M14,16H10V14H14M20,8H17.19C16.74,7.22 16.12,6.55 15.37,6.04L17,4.41L15.59,3L13.42,5.17C12.96,5.06 12.5,5 12,5C11.5,5 11.04,5.06 10.59,5.17L8.41,3L7,4.41L8.62,6.04C7.88,6.55 7.26,7.22 6.81,8H4V10H6.09C6.04,10.33 6,10.66 6,11V12H4V14H6V15C6,15.34 6.04,15.67 6.09,16H4V18H6.81C7.85,19.79 9.78,21 12,21C14.22,21 16.15,19.79 17.19,18H20V16H17.91C17.96,15.67 18,15.34 18,15V14H20V12H18V11C18,10.66 17.96,10.33 17.91,10H20V8Z" /></svg>
                         </span>
 
 
@@ -195,6 +199,10 @@ export class Toolbar extends HTMLElement {
         this.btnSave = this.shadowRoot!.getElementById('btnSave') as any
         this.btnAppSettings = this.shadowRoot!.getElementById('btnAppSettings') as any
         this.btnCommandCenterSettings = this.shadowRoot?.getElementById("btnCommandCenterSettings") as any
+        this.btnDebug = this.shadowRoot?.getElementById("btnDebug") as HTMLElement
+        this.btnConsole = this.shadowRoot?.getElementById("btnConsole") as HTMLElement
+        
+
         this.toolbarExt = this.shadowRoot!.getElementById("toolbarExt") as HTMLSpanElement
 
         this.btnPointer = this.shadowRoot!.getElementById('btnPointer') as any
@@ -226,6 +234,7 @@ export class Toolbar extends HTMLElement {
             // hiddenDiv.style.display = 'none'
         })
 
+        this.debugButtonEnabled = false
 
     }
 
@@ -287,6 +296,22 @@ export class Toolbar extends HTMLElement {
         }
     }
     
+    
+    private _debugButtonEnabled : boolean = false;
+    public get debugButtonEnabled() : boolean  {
+        return this._debugButtonEnabled;
+    }
+    public set debugButtonEnabled(v : boolean ) {
+        this._debugButtonEnabled = v;
+        if(v) {
+            this.btnDebug.classList.remove("disabled")
+        }
+        else {
+            this.btnDebug.classList.add("disabled")
+        }
+    }
+    
+
     
 }
 

@@ -88,6 +88,13 @@ wsServer.on("connection", (ws, req) => {
                     commandCenters.getBasicAccessory(data)
                     break;
 
+                case ApiCommands.setOutput:
+                    commandCenters.setOutput(data)
+                    break;
+                case ApiCommands.getOutput:
+                    commandCenters.getOutput(data)
+                    break;
+
                 case ApiCommands.getRBusInfo:
                     try {
                         commandCenters.getRBusInfo()

@@ -83,6 +83,29 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     }
     getAccessoryDecoder(address) {
         const a = dcc_1.accessories[address];
+        if (a) {
+            const turnoutInfo = { address: a.address, isClosed: a.value };
+            (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.turnoutInfo, data: turnoutInfo });
+        }
+        else {
+            var d = { type: dcc_1.ApiCommands.UnsuccessfulOperation, data: "DCCEx.getAccessory Unsuccessful Operation!" };
+            (0, ws_1.broadcastAll)(d);
+        }
+    }
+    setOutput(address, on) {
+        dcc_1.outputs[address] = { address: address, value: on };
+        this.put(`<Z ${address} ${on ? 1 : 0}>`);
+    }
+    getOutput(address) {
+        const o = dcc_1.outputs[address];
+        if (o) {
+            const outputInfo = { address: o.address, value: o.value };
+            (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.outputInfo, data: outputInfo });
+        }
+        else {
+            var d = { type: dcc_1.ApiCommands.UnsuccessfulOperation, data: "DCCEx.getOutput Unsuccessful Operation!" };
+            (0, ws_1.broadcastAll)(d);
+        }
     }
     getRBusInfo() {
         //throw new Error("Method not implemented.");
@@ -169,6 +192,12 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
             var address = parseInt(items[1]);
             var t = { address: address, isClosed: items[2] == 'C' };
             (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.turnoutInfo, data: t });
+        }
+        else if (data.startsWith("Y")) {
+            var items = data.split(" ");
+            var address = parseInt(items[1]);
+            var o = { address: address, value: items[items.length - 1] == '1' };
+            (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.outputInfo, data: o });
         }
         else if (data == "X") {
             console.log("A művelet nem sikerült!");

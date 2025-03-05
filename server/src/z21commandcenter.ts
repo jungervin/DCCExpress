@@ -398,6 +398,11 @@ export class Z21CommandCenter extends CommandCenter {
         this.LAN_X_GET_TURNOUT_INFO(address)
     }
 
+    setOutput(address: number, on: boolean): void { 
+    }
+    getOutput(address: number): void {
+    }   
+
     getRBusInfo() {
         this.LAN_RMBUS_GETDATA()
     }

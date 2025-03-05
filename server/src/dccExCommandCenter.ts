@@ -1,4 +1,4 @@
-import { accessories, ApiCommands, DCCExDirections, DCCExTurnout, iData, iLoco, iPowerInfo, iSensorInfo, iSetBasicAccessory, iSystemStatus, iTurnoutInfo, locos, turnouts, Z21Directions } from "../../common/src/dcc";
+import { accessories, ApiCommands, DCCExDirections, DCCExTurnout, iData, iLoco, iOutputInfo, iPowerInfo, iSensorInfo, iSetBasicAccessory, iSetOutput, iSystemStatus, iTurnoutInfo, locos, outputs, turnouts, Z21Directions } from "../../common/src/dcc";
 import { CommandCenter } from "./commandcenter";
 import { log } from "./utility";
 import { broadcastAll } from "./ws";
@@ -95,7 +95,30 @@ export class DCCExCommandCenter extends CommandCenter {
     }
     getAccessoryDecoder(address: number): void {
         const a = accessories[address];
+        if (a) {
+            const turnoutInfo: iTurnoutInfo = { address: a.address, isClosed: a.value }
+            broadcastAll({ type: ApiCommands.turnoutInfo, data: turnoutInfo } as iData)
+        } else {
+            var d: iData = { type: ApiCommands.UnsuccessfulOperation, data: "DCCEx.getAccessory Unsuccessful Operation!" }
+            broadcastAll(d)
+        }
     }
+
+    setOutput(address: number, on: boolean): void {
+        outputs[address] = { address: address, value: on } as iSetOutput
+        this.put(`<Z ${address} ${on ? 1 : 0}>`)
+    }
+    getOutput(address: number): void {
+        const o = outputs[address];
+        if (o) {
+            const outputInfo: iOutputInfo = { address: o.address, value: o.value }
+            broadcastAll({ type: ApiCommands.outputInfo, data: outputInfo } as iData)
+        } else {
+            var d: iData = { type: ApiCommands.UnsuccessfulOperation, data: "DCCEx.getOutput Unsuccessful Operation!" }
+            broadcastAll(d)
+        }
+    }
+
     getRBusInfo(): void {
         //throw new Error("Method not implemented.");
     }
@@ -128,12 +151,12 @@ export class DCCExCommandCenter extends CommandCenter {
         }
         else if (data.startsWith("Q ")) {
             const params = data.split(" ");
-            const si = {address: parseInt(params[1]), on: true} as iSensorInfo
+            const si = { address: parseInt(params[1]), on: true } as iSensorInfo
             broadcastAll({ type: ApiCommands.sensorInfo, data: si } as iData)
         }
         else if (data.startsWith("q ")) {
             const params = data.split(" ");
-            const si = {address: parseInt(params[1]), on: false} as iSensorInfo
+            const si = { address: parseInt(params[1]), on: false } as iSensorInfo
             broadcastAll({ type: ApiCommands.sensorInfo, data: si } as iData)
         }
         else if (data.startsWith('l')) {
@@ -192,6 +215,13 @@ export class DCCExCommandCenter extends CommandCenter {
             var address = parseInt(items[1])
             var t: iTurnoutInfo = { address: address, isClosed: items[2] == 'C' }
             broadcastAll({ type: ApiCommands.turnoutInfo, data: t } as iData)
+        }
+        else if (data.startsWith("Y")) {
+            var items = data.split(" ")
+
+                var address = parseInt(items[1])
+                var o: iOutputInfo = { address: address, value: items[items.length - 1] == '1' }
+                broadcastAll({ type: ApiCommands.outputInfo, data: o } as iData)
         }
         else if (data == "X") {
             console.log("A művelet nem sikerült!")

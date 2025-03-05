@@ -1421,7 +1421,8 @@ export class CustomCanvas extends HTMLElement {
                         uuid: b.UUID, type: b.type, address: b.address, x: b.x, y: b.y, name: b.name,
                         valueOn: b.valueOn,
                         valueOff: b.valueOff,
-                        colorOn: b.colorOn
+                        colorOn: b.colorOn,
+                        outputMode: b.mode,
                     })
                     break;
                 case 'sensor':
@@ -1630,8 +1631,9 @@ export class CustomCanvas extends HTMLElement {
                         //     break;
                         case "button":
                             var b = new ButtonShapeElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
-                            b.valueOff = elem.valueOff ?? false
-                            b.valueOn = elem.valueOn ?? true
+                            b.valueOff = elem.valueOff ?? false;
+                            b.valueOn = elem.valueOn ?? true;
+                            b.mode = elem.outputMode ?? 0
                             this.add(b)
                             break;
                         case "audiobutton":

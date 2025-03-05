@@ -35,6 +35,10 @@ export const propertiesChangedEvent = new Event("propertiesChanged");
 export interface ExtendedHTMLInputElement extends HTMLInputElement {
     tag?: any;
 }
+// export interface ExHTMLElement extends HTMLElement {
+//    get visible(): boolean;
+//     set visible(v: boolean);
+// }
 
 // export function setSettings(setting: any) {
 //     if (setting) {
