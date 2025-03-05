@@ -9,7 +9,7 @@ $TIMEOUT = 1000  # ms
 $udpClient = New-Object System.Net.Sockets.UdpClient
 $udpClient.Connect($Z21_IP, $Z21_PORT)
 
-$command = [byte[]](0x04, 0x00, 0x40, 0x00, 0x24, 0x00)
+$command = [byte[]](0x04, 0x00, 0x10, 0x00)
 $udpClient.Send($command, $command.Length)
 
 $remoteEndPoint = New-Object System.Net.IPEndPoint ([System.Net.IPAddress]::Any, 0)
@@ -17,9 +17,9 @@ $udpClient.Client.ReceiveTimeout = $TIMEOUT
 
 try {
     $response = $udpClient.Receive([ref]$remoteEndPoint)
-    Write-Host "✅ Válasz érkezett: $([BitConverter]::ToString($response))"
+    Write-Host "✅ RESPONSE: $([BitConverter]::ToString($response))"
 } catch {
-    Write-Host "⏳ Timeout: Nem érkezett válasz $($TIMEOUT / 1000) másodpercen belül."
+    Write-Host "⏳ TIMEOUT $($TIMEOUT / 1000) sec."
 }
 
 $udpClient.Close()
