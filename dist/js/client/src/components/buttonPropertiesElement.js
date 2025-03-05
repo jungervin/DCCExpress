@@ -14,6 +14,14 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/globals"], 
                                
             </style>
             <div class="container">
+
+                <div class="igroup">
+                    <div>Name</div>
+                    <div>
+                        <input id="name" type="text" value="" readonly disabled>
+                    </div>
+                </div>
+
                 <div class="igroup">
                     <div>Address</div>
                     <div>
@@ -42,6 +50,7 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/globals"], 
                     </div>
                 </div>
         `;
+            this.nameElement = this.shadow.getElementById("name");
             this.addressInputElement = this.shadow.getElementById('address');
             this.btnOffElement = this.shadow.getElementById("btnOff");
             this.btnOnElement = this.shadow.getElementById("btnOn");
@@ -52,6 +61,10 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/globals"], 
         }
         setButton(button) {
             this.button = button;
+            this.nameElement.value = this.button.name;
+            this.nameElement.onchange = (e) => {
+                this.button.name = this.nameElement.value;
+            };
             this.btnOffElement.button.address = button.address;
             this.btnOffElement.button.on = false;
             this.btnOffElement.onclick = (e) => {

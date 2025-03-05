@@ -14,6 +14,14 @@ define(["require", "exports"], function (require, exports) {
                                
             </style>
             <div class="container">
+
+                <div class="igroup">
+                    <div>Name</div>
+                    <div>
+                        <input id="name" type="text" value="" readonly disabled>
+                    </div>
+                </div>
+
                 <div class="igroup">
                     <div>Address</div>
                     <div>
@@ -30,6 +38,7 @@ define(["require", "exports"], function (require, exports) {
                 </div>
             </div>
         `;
+            this.nameElement = this.shadow.getElementById("name");
             this.addressInputElement = this.shadow.getElementById('address');
             this.sensorOffElement = this.shadow.getElementById("btnOff");
             this.sensorOnElement = this.shadow.getElementById("btnOn");
@@ -38,6 +47,10 @@ define(["require", "exports"], function (require, exports) {
         }
         setSensor(sensor) {
             this.sensor = sensor;
+            this.nameElement.value = this.sensor.name;
+            this.nameElement.onchange = (e) => {
+                this.sensor.name = this.nameElement.value;
+            };
             this.sensorOffElement.sensor.address = sensor.address;
             this.sensorOffElement.sensor.on = false;
             this.sensorOffElement.onclick = (e) => {

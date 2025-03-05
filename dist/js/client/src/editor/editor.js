@@ -802,7 +802,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                     case drawModes.signal2:
                         this.removeIfExists(x, y);
                         this.unselectAll();
-                        var s2 = new signals_1.Signal2Element((0, dcc_1.getUUID)(), 14, x, y, "turnoutleft" + num);
+                        var s2 = new signals_1.Signal2Element((0, dcc_1.getUUID)(), 14, x, y, "signal2-" + num);
                         s2.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
                         s2.angle = this.cursorElement.angle;
                         // s2.cc = Globals.defaultDevice!
@@ -812,7 +812,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                     case drawModes.signal3:
                         this.removeIfExists(x, y);
                         this.unselectAll();
-                        var s3 = new signals_1.Signal3Element((0, dcc_1.getUUID)(), 14, x, y, "turnoutleft" + num);
+                        var s3 = new signals_1.Signal3Element((0, dcc_1.getUUID)(), 14, x, y, "signal3-" + num);
                         s3.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
                         s3.angle = this.cursorElement.angle;
                         // s3.cc = Globals.defaultDevice!
@@ -822,7 +822,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                     case drawModes.signal4:
                         this.removeIfExists(x, y);
                         this.unselectAll();
-                        var s4 = new signals_1.Signal4Element((0, dcc_1.getUUID)(), 14, x, y, "turnoutleft" + num);
+                        var s4 = new signals_1.Signal4Element((0, dcc_1.getUUID)(), 14, x, y, "signal4-" + num);
                         s4.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
                         s4.angle = this.cursorElement.angle;
                         // s4.cc = Globals.defaultDevice!
@@ -1388,6 +1388,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                                 s2.outputMode = (_s = elem.outputMode) !== null && _s !== void 0 ? _s : dcc_1.OutputModes.accessory;
                                 // s2.cc = elem.cc == undefined ? undefined : elem.cc
                                 s2.aspect = 1; // elem.aspect ?? 1
+                                s2.name = elem.name.replace("turnoutleft", "signal2-");
                                 this.add(s2);
                                 break;
                             case "signal3":
@@ -1402,6 +1403,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                                 s3.outputMode = (_z = elem.outputMode) !== null && _z !== void 0 ? _z : dcc_1.OutputModes.accessory;
                                 // s3.cc = elem.cc == undefined ? undefined : elem.cc
                                 s3.aspect = 1; //elem.aspect ?? 1
+                                s3.name = elem.name.replace("turnoutleft", "signal3-");
                                 this.add(s3);
                                 break;
                             case "signal4":
@@ -1417,6 +1419,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                                 s4.outputMode = (_7 = elem.outputMode) !== null && _7 !== void 0 ? _7 : dcc_1.OutputModes.accessory;
                                 // s4.cc = elem.cc == undefined ? undefined : elem.cc
                                 s4.aspect = 1; //elem.aspect ?? 1
+                                s4.name = elem.name.replace("turnoutleft", "signal4-");
                                 this.add(s4);
                                 break;
                             // case "signal5":

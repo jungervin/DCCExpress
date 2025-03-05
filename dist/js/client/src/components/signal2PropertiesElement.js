@@ -47,6 +47,15 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
                      <command-center-select-element id="device"></command-center-select-element>
                 </div> -->
 
+                <div class="igroup">
+                    <div>Name</div>
+                    <div>
+                        <input id="name" type="text" value="" readonly disabled>
+                    </div>
+                </div>
+
+
+
                 <!-- Első sor -->
                 <div class="igroup">
                     <p>Set the first address and specify how many addresses need to receive the bits! Bit 0 goes to the first address</p>
@@ -106,6 +115,7 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
 
         `;
             //this.deviceElement = this.shadow.getElementById("device") as CommandCenterHTMLSelectElement
+            this.nameElement = this.shadow.getElementById("name");
             this.addressElement = this.shadow.getElementById("address");
             this.addressLengthElement = this.shadow.getElementById("addressLength");
             this.canvas1Element = this.shadow.getElementById('canvas1');
@@ -120,6 +130,10 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
         }
         setSignal(signal2) {
             this.signal2 = signal2;
+            this.nameElement.value = this.signal2.name;
+            this.nameElement.onchange = (e) => {
+                this.signal2.name = this.nameElement.value;
+            };
             this.addressElement.value = this.signal2.address.toString();
             this.addressElement.onchange = (e) => {
                 this.signal2.address = parseInt(this.addressElement.value);
@@ -171,7 +185,7 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
                 // this.updateUI()
             };
             this.valueRedElement.onchange = (e) => {
-                this.signal2.valueGreen = (0, utility_1.toDecimal)(this.valueRedElement.value);
+                this.signal2.valueRed = (0, utility_1.toDecimal)(this.valueRedElement.value);
                 this.valueRedDecElement.innerHTML = "dec: " + (0, utility_1.toDecimal)(this.valueRedElement.value);
             };
             this.shadowRoot.getElementById("modeGroup").style.display = globals_1.Globals.CommandCenterSetting.type == dcc_1.CommandCenterTypes.Z21 ? "none" : "block";
@@ -221,6 +235,14 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
                     <command-center-select-element id="device"></command-center-select-element>
                 </div>
             -->
+
+                <div class="igroup">
+                    <div>Name</div>
+                    <div>
+                        <input id="name" type="text" value="" readonly disabled>
+                    </div>
+                </div>
+
                 <!-- Első sor -->
                 <div class="igroup">
                     <p>Set the first address and specify how many addresses need to receive the bits! Bit 0 goes to the first address</p>
@@ -289,6 +311,7 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
             </div>
         `;
             // this.deviceElement = this.shadow.getElementById("device") as CommandCenterHTMLSelectElement
+            this.nameElement = this.shadow.getElementById("name");
             this.addressElement = this.shadow.getElementById("address");
             this.addressLengthElement = this.shadow.getElementById("addressLength");
             this.canvas1Element = this.shadow.getElementById('canvas1');
@@ -306,6 +329,10 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
         }
         setSignal(signal3) {
             this.signal3 = signal3;
+            this.nameElement.value = this.signal3.name;
+            this.nameElement.onchange = (e) => {
+                this.signal3.name = this.nameElement.value;
+            };
             // this.deviceElement.setSelectedDevice(this.signal3.cc!)
             // this.deviceElement.onchangeCallback = (value) => {
             //     this.signal3!.cc = value!
@@ -426,6 +453,13 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
                 </div>
                 -->
 
+                <div class="igroup">
+                    <div>Name</div>
+                    <div>
+                        <input id="name" type="text" value="" readonly disabled>
+                    </div>
+                </div>
+
                 <!-- Első sor -->
                 <div class="igroup">
                     <p>Set the first address and specify how many addresses need to receive the bits! Bit 0 goes to the first address</p>
@@ -501,6 +535,7 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
             </div>
         `;
             //this.deviceElement = this.shadow.getElementById("device") as CommandCenterHTMLSelectElement
+            this.nameElement = this.shadow.getElementById("name");
             this.addressElement = this.shadow.getElementById("address");
             this.addressLengthElement = this.shadow.getElementById("addressLength");
             this.canvas1Element = this.shadow.getElementById('canvas1');
@@ -522,6 +557,10 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
         }
         setSignal(signal4) {
             this.signal4 = signal4;
+            this.nameElement.value = this.signal4.name;
+            this.nameElement.onchange = (e) => {
+                this.signal4.name = this.nameElement.value;
+            };
             this.addressElement.value = this.signal4.address.toString();
             this.addressElement.onchange = (e) => {
                 this.signal4.address = parseInt(this.addressElement.value);

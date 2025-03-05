@@ -19,6 +19,7 @@ export class TurnoutLeftPropertiesElement extends HTMLElement {
     bit1Element: BitElement;
     canvas2Element: TurnoutLeftCanvasElement;
     bit2Element: BitElement;
+    nameElement: HTMLInputElement;
 
     constructor() {
         super()
@@ -34,6 +35,13 @@ export class TurnoutLeftPropertiesElement extends HTMLElement {
         </style>
 
         <div class="container">
+
+                <div class="igroup">
+                    <div>Name</div>
+                    <div>
+                        <input id="name" type="text" value="" readonly disabled>
+                    </div>
+                </div>
 
             <div class="igroup">
                 <div class="row">
@@ -73,6 +81,8 @@ export class TurnoutLeftPropertiesElement extends HTMLElement {
         </div>
     `;
 
+        this.nameElement = shadow.getElementById("name") as HTMLInputElement
+
        // this.deviceElement = shadow.getElementById("device") as CommandCenterHTMLSelectElement
         this.addressElement = shadow.getElementById("address") as HTMLInputElement
 
@@ -89,10 +99,10 @@ export class TurnoutLeftPropertiesElement extends HTMLElement {
     setTurnout(turnout: TurnoutLeftElement) {
         this.turnout = turnout
        
-        // this.deviceElement.setSelectedDevice(this.turnout!.cc)
-        // this.deviceElement!.onchangeCallback = (value) => {
-        //     this.turnout!.cc = value!
-        // };
+        this.nameElement.value = this.turnout.name
+        this.nameElement.onchange = (e: Event) => {
+            this.turnout!.name = this.nameElement.value
+        }        
 
         this.addressElement!.value = this.turnout.address.toString()
         this.addressElement.onchange = (e: Event) => {
@@ -152,6 +162,7 @@ export class TurnoutRightPropertiesElement extends HTMLElement {
     bit1Element: BitElement;
     canvas2Element: TurnoutRightCanvasElement;
     bit2Element: BitElement;
+    nameElement: HTMLInputElement;
 
     constructor() {
         super()
@@ -168,6 +179,13 @@ export class TurnoutRightPropertiesElement extends HTMLElement {
 
         <div class="container">
         
+            <div class="igroup">
+                <div>Name</div>
+                <div>
+                    <input id="name" type="text" value="" readonly disabled>
+                </div>
+            </div>
+
             <div class="igroup">
                 <div class="row">
                     <div>Address</div>
@@ -206,6 +224,7 @@ export class TurnoutRightPropertiesElement extends HTMLElement {
         </div>
     `;
 
+        this.nameElement = shadow.getElementById("name") as HTMLInputElement
         // this.deviceElement = shadow.getElementById("device") as CommandCenterHTMLSelectElement
         this.addressElement = shadow.getElementById("address") as HTMLInputElement
 
@@ -221,6 +240,11 @@ export class TurnoutRightPropertiesElement extends HTMLElement {
 
     setTurnout(turnout: TurnoutRightElement) {
         this.turnout = turnout
+
+        this.nameElement.value = this.turnout.name
+        this.nameElement.onchange = (e: Event) => {
+            this.turnout!.name = this.nameElement.value
+        }
 
         // this.deviceElement.setSelectedDevice(this.turnout!.cc)
         // this.deviceElement!.onchangeCallback = (value) => {
@@ -294,6 +318,7 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
     canvas4Element: TurnoutDoubleCanvasElement;
     bit41Element: BitElement;
     bit42Element: BitElement;
+    nameElement: HTMLInputElement;
 
     constructor() {
         super()
@@ -310,9 +335,14 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
 
         <div class="container">
 
+                <div class="igroup">
+                    <div>Name</div>
+                    <div>
+                        <input id="name" type="text" value="" readonly disabled>
+                    </div>
+                </div>
         
             <div class="igroup">
-
                 <div class="row">
                     <div>Address</div>
                     <div>
@@ -385,6 +415,7 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
         </div>
     `;
 
+        this.nameElement = shadow.getElementById("name") as HTMLInputElement
         // this.deviceElement = shadow.getElementById("device") as CommandCenterHTMLSelectElement
         this.address1Element = shadow.getElementById("address1") as HTMLInputElement
         this.address2Element = shadow.getElementById("address2") as HTMLInputElement
@@ -412,6 +443,10 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
     setTurnout(turnout: TurnoutDoubleElement) {
         this.turnout = turnout
 
+        this.nameElement.value = this.turnout.name
+        this.nameElement.onchange = (e: Event) => {
+            this.turnout!.name = this.nameElement.value
+        }
         // this.deviceElement.setSelectedDevice(this.turnout!.cc)
         // this.deviceElement!.onchangeCallback = (value) => {
         //     this.turnout!.cc = value!

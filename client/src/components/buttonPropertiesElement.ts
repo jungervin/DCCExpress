@@ -15,6 +15,7 @@ export class ButtonPropertiesElement extends HTMLElement {
     button?: ButtonShapeElement;
     accessoryModeElement: HTMLInputElement;
     outputModeElement: HTMLInputElement;
+    nameElement: HTMLInputElement;
     constructor() {
         super();
 
@@ -27,6 +28,14 @@ export class ButtonPropertiesElement extends HTMLElement {
                                
             </style>
             <div class="container">
+
+                <div class="igroup">
+                    <div>Name</div>
+                    <div>
+                        <input id="name" type="text" value="" readonly disabled>
+                    </div>
+                </div>
+
                 <div class="igroup">
                     <div>Address</div>
                     <div>
@@ -55,6 +64,8 @@ export class ButtonPropertiesElement extends HTMLElement {
                     </div>
                 </div>
         `
+        this.nameElement = this.shadow.getElementById("name") as HTMLInputElement
+
         this.addressInputElement = this.shadow.getElementById('address') as HTMLInputElement
         this.btnOffElement = this.shadow.getElementById("btnOff") as ButtonCanvasElement
         this.btnOnElement = this.shadow.getElementById("btnOn") as ButtonCanvasElement
@@ -68,6 +79,10 @@ export class ButtonPropertiesElement extends HTMLElement {
     setButton(button: ButtonShapeElement) {
         this.button = button
 
+        this.nameElement.value = this.button.name
+        this.nameElement.onchange = (e: Event) => {
+            this.button!.name = this.nameElement.value
+        }        
         this.btnOffElement!.button.address = button.address
         this.btnOffElement!.button.on = false
         this.btnOffElement!.onclick = (e) => {

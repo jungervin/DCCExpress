@@ -33,6 +33,7 @@ define(["require", "exports", "bootstrap"], function (require, exports, bootstra
             super();
             this._tasks = false;
             this._debugButtonEnabled = false;
+            this._consoleButtonEnabled = false;
             // A gombok és a stílusok hozzáadása
             const shadow = this.attachShadow({ mode: 'open' });
             shadow.innerHTML = `
@@ -207,6 +208,7 @@ define(["require", "exports", "bootstrap"], function (require, exports, bootstra
                 // hiddenDiv.style.display = 'none'
             });
             this.debugButtonEnabled = false;
+            this.consoleButtonEnabled = false;
         }
         save() {
             this.canvas.save();
@@ -266,6 +268,18 @@ define(["require", "exports", "bootstrap"], function (require, exports, bootstra
             }
             else {
                 this.btnDebug.classList.add("disabled");
+            }
+        }
+        get consoleButtonEnabled() {
+            return this._consoleButtonEnabled;
+        }
+        set consoleButtonEnabled(v) {
+            this._debugButtonEnabled = v;
+            if (v) {
+                this.btnConsole.classList.remove("disabled");
+            }
+            else {
+                this.btnConsole.classList.add("disabled");
             }
         }
     }

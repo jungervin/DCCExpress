@@ -20,6 +20,7 @@ export class Signal2PropertiesElement extends HTMLElement {
     rbusAddressElement: HTMLInputElement;
     accessoryModeElement: HTMLInputElement;
     outputModeElement: HTMLInputElement;
+    nameElement: HTMLInputElement;
     // deviceElement: CommandCenterHTMLSelectElement;
     
 
@@ -66,6 +67,15 @@ export class Signal2PropertiesElement extends HTMLElement {
                 <!-- <div class="igroup">
                      <command-center-select-element id="device"></command-center-select-element>
                 </div> -->
+
+                <div class="igroup">
+                    <div>Name</div>
+                    <div>
+                        <input id="name" type="text" value="" readonly disabled>
+                    </div>
+                </div>
+
+
 
                 <!-- Első sor -->
                 <div class="igroup">
@@ -128,6 +138,8 @@ export class Signal2PropertiesElement extends HTMLElement {
 
         //this.deviceElement = this.shadow.getElementById("device") as CommandCenterHTMLSelectElement
 
+        this.nameElement = this.shadow.getElementById("name") as HTMLInputElement
+
         this.addressElement = this.shadow.getElementById("address") as HTMLInputElement
         this.addressLengthElement = this.shadow.getElementById("addressLength") as HTMLInputElement
         this.canvas1Element = this.shadow.getElementById('canvas1') as HTMLCanvasElement
@@ -149,6 +161,11 @@ export class Signal2PropertiesElement extends HTMLElement {
     
     setSignal(signal2: Signal2Element) {
         this.signal2 = signal2
+
+        this.nameElement.value = this.signal2.name
+        this.nameElement.onchange = (e: Event) => {
+            this.signal2!.name = this.nameElement.value
+        }
         
         this.addressElement.value = this.signal2.address.toString()
         this.addressElement.onchange = (e) => {
@@ -208,7 +225,7 @@ export class Signal2PropertiesElement extends HTMLElement {
         }
 
         this.valueRedElement.onchange = (e) => {
-            this.signal2!.valueGreen = toDecimal(this.valueRedElement.value,)
+            this.signal2!.valueRed = toDecimal(this.valueRedElement.value,)
             this.valueRedDecElement.innerHTML = "dec: " + toDecimal(this.valueRedElement.value)
         }
 
@@ -264,6 +281,7 @@ export class Signal3PropertiesElement extends HTMLElement {
     rbusAddressElement: HTMLInputElement;
     accessoryModeElement: HTMLInputElement;
     outputModeElement: HTMLInputElement;
+    nameElement: HTMLInputElement;
     //deviceElement: CommandCenterHTMLSelectElement;
     
 
@@ -292,6 +310,14 @@ export class Signal3PropertiesElement extends HTMLElement {
                     <command-center-select-element id="device"></command-center-select-element>
                 </div>
             -->
+
+                <div class="igroup">
+                    <div>Name</div>
+                    <div>
+                        <input id="name" type="text" value="" readonly disabled>
+                    </div>
+                </div>
+
                 <!-- Első sor -->
                 <div class="igroup">
                     <p>Set the first address and specify how many addresses need to receive the bits! Bit 0 goes to the first address</p>
@@ -361,6 +387,8 @@ export class Signal3PropertiesElement extends HTMLElement {
         `
        // this.deviceElement = this.shadow.getElementById("device") as CommandCenterHTMLSelectElement
 
+       this.nameElement = this.shadow.getElementById("name") as HTMLInputElement
+
         this.addressElement = this.shadow.getElementById("address") as HTMLInputElement
         this.addressLengthElement = this.shadow.getElementById("addressLength") as HTMLInputElement
         this.canvas1Element = this.shadow.getElementById('canvas1') as HTMLCanvasElement
@@ -384,6 +412,11 @@ export class Signal3PropertiesElement extends HTMLElement {
 
     setSignal(signal3: Signal3Element) {
         this.signal3 = signal3
+
+        this.nameElement.value = this.signal3.name
+        this.nameElement.onchange = (e: Event) => {
+            this.signal3!.name = this.nameElement.value
+        }
 
         // this.deviceElement.setSelectedDevice(this.signal3.cc!)
         // this.deviceElement.onchangeCallback = (value) => {
@@ -526,6 +559,7 @@ export class Signal4PropertiesElement extends HTMLElement {
     rbusAddressElement: HTMLInputElement;
     accessoryModeElement: HTMLInputElement;
     outputModeElement: HTMLInputElement;
+    nameElement: HTMLInputElement;
     
     //deviceElement: CommandCenterHTMLSelectElement;
     
@@ -553,6 +587,13 @@ export class Signal4PropertiesElement extends HTMLElement {
                     <command-center-select-element id="device"></command-center-select-element>
                 </div>
                 -->
+
+                <div class="igroup">
+                    <div>Name</div>
+                    <div>
+                        <input id="name" type="text" value="" readonly disabled>
+                    </div>
+                </div>
 
                 <!-- Első sor -->
                 <div class="igroup">
@@ -630,6 +671,8 @@ export class Signal4PropertiesElement extends HTMLElement {
         `
         //this.deviceElement = this.shadow.getElementById("device") as CommandCenterHTMLSelectElement
       
+        this.nameElement = this.shadow.getElementById("name") as HTMLInputElement
+        
         this.addressElement = this.shadow.getElementById("address") as HTMLInputElement
         this.addressLengthElement = this.shadow.getElementById("addressLength") as HTMLInputElement
         this.canvas1Element = this.shadow.getElementById('canvas1') as HTMLCanvasElement
@@ -663,6 +706,12 @@ export class Signal4PropertiesElement extends HTMLElement {
 
     setSignal(signal4: Signal4Element) {
         this.signal4 = signal4
+
+        this.nameElement.value = this.signal4.name
+        this.nameElement.onchange = (e: Event) => {
+            this.signal4!.name = this.nameElement.value
+        }
+
 
         this.addressElement.value = this.signal4.address.toString()
         this.addressElement.onchange = (e) => {

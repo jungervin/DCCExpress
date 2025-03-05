@@ -20,6 +20,13 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
 
         <div class="container">
 
+                <div class="igroup">
+                    <div>Name</div>
+                    <div>
+                        <input id="name" type="text" value="" readonly disabled>
+                    </div>
+                </div>
+
             <div class="igroup">
                 <div class="row">
                     <div>Address</div>
@@ -57,6 +64,7 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
 
         </div>
     `;
+            this.nameElement = shadow.getElementById("name");
             // this.deviceElement = shadow.getElementById("device") as CommandCenterHTMLSelectElement
             this.addressElement = shadow.getElementById("address");
             this.canvas1Element = shadow.getElementById("turnout1");
@@ -67,10 +75,10 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
         }
         setTurnout(turnout) {
             this.turnout = turnout;
-            // this.deviceElement.setSelectedDevice(this.turnout!.cc)
-            // this.deviceElement!.onchangeCallback = (value) => {
-            //     this.turnout!.cc = value!
-            // };
+            this.nameElement.value = this.turnout.name;
+            this.nameElement.onchange = (e) => {
+                this.turnout.name = this.nameElement.value;
+            };
             this.addressElement.value = this.turnout.address.toString();
             this.addressElement.onchange = (e) => {
                 this.turnout.address = parseInt(this.addressElement.value);
@@ -131,6 +139,13 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
         <div class="container">
         
             <div class="igroup">
+                <div>Name</div>
+                <div>
+                    <input id="name" type="text" value="" readonly disabled>
+                </div>
+            </div>
+
+            <div class="igroup">
                 <div class="row">
                     <div>Address</div>
                     <div>
@@ -167,6 +182,7 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
 
         </div>
     `;
+            this.nameElement = shadow.getElementById("name");
             // this.deviceElement = shadow.getElementById("device") as CommandCenterHTMLSelectElement
             this.addressElement = shadow.getElementById("address");
             this.canvas1Element = shadow.getElementById("turnout1");
@@ -177,6 +193,10 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
         }
         setTurnout(turnout) {
             this.turnout = turnout;
+            this.nameElement.value = this.turnout.name;
+            this.nameElement.onchange = (e) => {
+                this.turnout.name = this.nameElement.value;
+            };
             // this.deviceElement.setSelectedDevice(this.turnout!.cc)
             // this.deviceElement!.onchangeCallback = (value) => {
             //     this.turnout!.cc = value!
@@ -240,9 +260,14 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
 
         <div class="container">
 
+                <div class="igroup">
+                    <div>Name</div>
+                    <div>
+                        <input id="name" type="text" value="" readonly disabled>
+                    </div>
+                </div>
         
             <div class="igroup">
-
                 <div class="row">
                     <div>Address</div>
                     <div>
@@ -314,6 +339,7 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
 
         </div>
     `;
+            this.nameElement = shadow.getElementById("name");
             // this.deviceElement = shadow.getElementById("device") as CommandCenterHTMLSelectElement
             this.address1Element = shadow.getElementById("address1");
             this.address2Element = shadow.getElementById("address2");
@@ -333,6 +359,10 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
         }
         setTurnout(turnout) {
             this.turnout = turnout;
+            this.nameElement.value = this.turnout.name;
+            this.nameElement.onchange = (e) => {
+                this.turnout.name = this.nameElement.value;
+            };
             // this.deviceElement.setSelectedDevice(this.turnout!.cc)
             // this.deviceElement!.onchangeCallback = (value) => {
             //     this.turnout!.cc = value!

@@ -961,7 +961,7 @@ export class CustomCanvas extends HTMLElement {
                 case drawModes.signal2:
                     this.removeIfExists(x, y)
                     this.unselectAll()
-                    var s2 = new Signal2Element(getUUID(), 14, x, y, "turnoutleft" + num);
+                    var s2 = new Signal2Element(getUUID(), 14, x, y, "signal2-" + num);
                     s2.showAddress = Globals.Settings.EditorSettings.ShowAddress
                     s2.angle = this.cursorElement!.angle
                     // s2.cc = Globals.defaultDevice!
@@ -971,7 +971,7 @@ export class CustomCanvas extends HTMLElement {
                 case drawModes.signal3:
                     this.removeIfExists(x, y)
                     this.unselectAll()
-                    var s3 = new Signal3Element(getUUID(), 14, x, y, "turnoutleft" + num);
+                    var s3 = new Signal3Element(getUUID(), 14, x, y, "signal3-" + num);
                     s3.showAddress = Globals.Settings.EditorSettings.ShowAddress
                     s3.angle = this.cursorElement!.angle
                     // s3.cc = Globals.defaultDevice!
@@ -981,7 +981,7 @@ export class CustomCanvas extends HTMLElement {
                 case drawModes.signal4:
                     this.removeIfExists(x, y)
                     this.unselectAll()
-                    var s4 = new Signal4Element(getUUID(), 14, x, y, "turnoutleft" + num);
+                    var s4 = new Signal4Element(getUUID(), 14, x, y, "signal4-" + num);
                     s4.showAddress = Globals.Settings.EditorSettings.ShowAddress
                     s4.angle = this.cursorElement!.angle
                     // s4.cc = Globals.defaultDevice!
@@ -1589,6 +1589,7 @@ export class CustomCanvas extends HTMLElement {
                             s2.outputMode = elem.outputMode ?? OutputModes.accessory
                             // s2.cc = elem.cc == undefined ? undefined : elem.cc
                             s2.aspect = 1 // elem.aspect ?? 1
+                            s2.name = elem.name.replace("turnoutleft", "signal2-")
                             this.add(s2)
                             break;
                         case "signal3":
@@ -1603,6 +1604,8 @@ export class CustomCanvas extends HTMLElement {
                             s3.outputMode = elem.outputMode ?? OutputModes.accessory
                             // s3.cc = elem.cc == undefined ? undefined : elem.cc
                             s3.aspect = 1; //elem.aspect ?? 1
+                            s3.name = elem.name.replace("turnoutleft", "signal3-")
+
                             this.add(s3)
                             break;
                         case "signal4":
@@ -1618,6 +1621,8 @@ export class CustomCanvas extends HTMLElement {
                             s4.outputMode = elem.outputMode ?? OutputModes.accessory
                             // s4.cc = elem.cc == undefined ? undefined : elem.cc
                             s4.aspect = 1 //elem.aspect ?? 1
+                            s4.name = elem.name.replace("turnoutleft", "signal4-")
+
                             this.add(s4)
                             break;
                         // case "signal5":

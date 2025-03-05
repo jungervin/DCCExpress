@@ -10,6 +10,7 @@ export class SensorPropertiesElement extends HTMLElement {
     valueOnElement: BitElement;
     valueOffElement: BitElement;
     sensor?: SensorShapeElement;
+    nameElement: HTMLInputElement;
     constructor() {
         super();
 
@@ -22,6 +23,14 @@ export class SensorPropertiesElement extends HTMLElement {
                                
             </style>
             <div class="container">
+
+                <div class="igroup">
+                    <div>Name</div>
+                    <div>
+                        <input id="name" type="text" value="" readonly disabled>
+                    </div>
+                </div>
+
                 <div class="igroup">
                     <div>Address</div>
                     <div>
@@ -38,6 +47,9 @@ export class SensorPropertiesElement extends HTMLElement {
                 </div>
             </div>
         `
+
+        this.nameElement = this.shadow.getElementById("name") as HTMLInputElement
+        
         this.addressInputElement = this.shadow.getElementById('address') as HTMLInputElement
         this.sensorOffElement = this.shadow.getElementById("btnOff") as SensorCanvasElement
         this.sensorOnElement = this.shadow.getElementById("btnOn") as SensorCanvasElement
@@ -47,6 +59,11 @@ export class SensorPropertiesElement extends HTMLElement {
 
     setSensor(sensor: SensorShapeElement) {
         this.sensor = sensor
+
+        this.nameElement.value = this.sensor.name
+        this.nameElement.onchange = (e: Event) => {
+            this.sensor!.name = this.nameElement.value
+        }
 
         this.sensorOffElement!.sensor.address = sensor.address
         this.sensorOffElement!.sensor.on = false

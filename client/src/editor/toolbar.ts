@@ -235,6 +235,7 @@ export class Toolbar extends HTMLElement {
         })
 
         this.debugButtonEnabled = false
+        this.consoleButtonEnabled = false
 
     }
 
@@ -310,7 +311,22 @@ export class Toolbar extends HTMLElement {
             this.btnDebug.classList.add("disabled")
         }
     }
-    
+
+    private _consoleButtonEnabled : boolean = false;
+    public get consoleButtonEnabled() : boolean  {
+        return this._consoleButtonEnabled;
+    }
+    public set consoleButtonEnabled(v : boolean ) {
+        this._debugButtonEnabled = v;
+        if(v) {
+            this.btnConsole.classList.remove("disabled")
+        }
+        else {
+            this.btnConsole.classList.add("disabled")
+        }
+    }
+
+
 
     
 }
