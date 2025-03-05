@@ -1,10 +1,10 @@
 {
     "settings": {
-        "scale": 1.0246963933921664,
-        "origX": -997,
-        "origY": -314,
-        "locoPanelVisible": false,
-        "propertyPanelVisible": true
+        "scale": 1.1862141624006068,
+        "origX": -905,
+        "origY": -391,
+        "locoPanelVisible": true,
+        "propertyPanelVisible": false
     },
     "pages": [
         {
