@@ -40,9 +40,10 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     }
     clientConnected() {
         (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.powerInfo, data: this.powerInfo });
-        this.put("<T>");
-        this.put("<Q>");
-        this.put("<Z>");
+        this.put("<s>");
+        // this.put("<T>")
+        // this.put("<Q>")
+        // this.put("<Z>")
     }
     getLoco(address) {
         // <t cab>
