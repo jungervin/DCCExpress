@@ -473,11 +473,19 @@ export class CustomCanvas extends HTMLElement {
                 return;
             }
 
+            if(e.key === 'h' || e.key === 'H') {
+
+                this.toolbar!.style.display = this.toolbar!.style.display == "none" ? "block" : "none"
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+                this.draw()
+    
+            }
             if (e.key === 'r' || e.key === 'R') {
                 if (this.cursorElement && this.cursorElement.canRotate) {
                     this.cursorElement.rotateRight()
                     this.draw()
-
+                    
                 }
                 else if (this.selectedElement && this.selectedElement.canRotate) {
                     this.selectedElement.rotateRight()

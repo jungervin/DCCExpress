@@ -332,8 +332,8 @@ export class TurnoutYShapeElement extends TurnoutElement {
     public draw(ctx: CanvasRenderingContext2D): void {
         ctx.save()
         this.drawTurnout(ctx, this.t1Closed)
-        this.drawAddress(ctx)
         ctx.restore()
+        this.drawAddress(ctx)
         super.draw(ctx)
     }
 

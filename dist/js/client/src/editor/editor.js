@@ -382,6 +382,12 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                     // Ne csinálj semmit, ha az esemény egy szerkeszthető mezőben történt
                     return;
                 }
+                if (e.key === 'h' || e.key === 'H') {
+                    this.toolbar.style.display = this.toolbar.style.display == "none" ? "block" : "none";
+                    this.canvas.width = window.innerWidth;
+                    this.canvas.height = window.innerHeight;
+                    this.draw();
+                }
                 if (e.key === 'r' || e.key === 'R') {
                     if (this.cursorElement && this.cursorElement.canRotate) {
                         this.cursorElement.rotateRight();

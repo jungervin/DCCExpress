@@ -293,8 +293,8 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
         draw(ctx) {
             ctx.save();
             this.drawTurnout(ctx, this.t1Closed);
-            this.drawAddress(ctx);
             ctx.restore();
+            this.drawAddress(ctx);
             super.draw(ctx);
         }
         drawTurnout(ctx, t1Closed) {
