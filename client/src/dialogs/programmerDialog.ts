@@ -30,13 +30,15 @@ export class ProgrammerDialog extends Dialog {
         const html = `
 <p style="width:100%;text-align: center;background-color: yellow;padding:4px;border-radius:4px;border: solid 1px black">'        
 ⚠️The locomotive should be on the programming track!⚠️<br>
-⚠️The buttons activate the PROG output.⚠️<br>
+⚠️The buttons will activate the PROG output.⚠️<br>
 For now, it only works on DCC-EX!        
 </p>
         `
         const tab = tabcontrol.addTab("DCC")
         tab.addComponent(new Label(html));
 
+        const help = '<p style="font-size:14px"><a href="https://www.nmra.org/sites/default/files/standards/sandrp/Draft/DCC/s-9.2.2_configuration_variables_for_dcc_draft.pdf" target="blank">🚂NMRA Standard CV List🚀</a></p>';
+        tab.addComponent(new Label(help));
 
         const panel = new GroupBox("Write CV");
         tab.addComponent(panel);
