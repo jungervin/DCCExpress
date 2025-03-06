@@ -24,6 +24,7 @@ import { ButtonPropertiesElement } from "../components/buttonPropertiesElement";
 import { ButtonShapeElement } from "../editor/button";
 import { SensorPropertiesElement } from "../components/sensorPropertiesElement";
 import { SensorShapeElement } from "../editor/sensor";
+import { TrackCrossingShapeElement } from "../editor/crossing";
 
 console.log(TurnoutLeftPropertiesElement)
 console.log(RouteListElementProperties)
@@ -242,6 +243,10 @@ export class PropertyPanel extends HTMLElement {
                 this.trackPropertiesElement.setTrack(this.selectedObject as RailView)
             }
             else if (Object.getPrototypeOf(v) == TrackCurveElement.prototype) {
+                this.container.appendChild(this.trackPropertiesElement)
+                this.trackPropertiesElement.setTrack(this.selectedObject as RailView)
+            }
+            else if (Object.getPrototypeOf(v) == TrackCrossingShapeElement.prototype) {
                 this.container.appendChild(this.trackPropertiesElement)
                 this.trackPropertiesElement.setTrack(this.selectedObject as RailView)
             }

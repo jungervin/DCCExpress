@@ -1,7 +1,7 @@
 define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view", "./view", "../helpers/ws", "../helpers/globals"], function (require, exports, graphics_1, math_1, view_1, view_2, ws_1, globals_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.TurnoutDoubleElement = exports.TurnoutLeftElement = exports.TurnoutRightElement = exports.TurnoutElement = void 0;
+    exports.TurnoutDoubleElement = exports.TurnoutYShapeElement = exports.TurnoutLeftElement = exports.TurnoutRightElement = exports.TurnoutElement = void 0;
     class TurnoutElement extends view_1.RailView {
         constructor(uuid, address, x1, y1, name) {
             super(uuid, x1, y1, name);
@@ -282,6 +282,102 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
         }
     }
     exports.TurnoutLeftElement = TurnoutLeftElement;
+    class TurnoutYShapeElement extends TurnoutRightElement {
+        constructor(uuid, address, x1, y1, name) {
+            super(uuid, address, x1, y1, name);
+            this.angleStep = 45;
+        }
+        get type() {
+            return 'turnoutY';
+        }
+        draw(ctx) {
+            ctx.save();
+            this.drawTurnout(ctx, this.t1Closed);
+            this.drawAddress(ctx);
+            ctx.restore();
+            super.draw(ctx);
+        }
+        drawTurnout(ctx, t1Closed) {
+            var dx = this.width / 5;
+            ctx.beginPath();
+            ctx.strokeStyle = view_2.Colors.TrackPrimaryColor;
+            ctx.lineWidth = globals_1.Globals.TrackWidth7;
+            if (this.angle % 90 == 0) {
+                ctx.translate(this.centerX, this.centerY);
+                ctx.rotate((0, math_1.degreesToRadians)(this.angle));
+                ctx.translate(-this.centerX, -this.centerY);
+                ctx.moveTo(this.posLeft, this.centerY);
+                ctx.lineTo(this.centerX, this.centerY);
+                ctx.lineTo(this.posRight, this.posTop);
+                ctx.moveTo(this.centerX, this.centerY);
+                ctx.lineTo(this.posRight, this.posBottom);
+                ctx.stroke();
+                // ==========
+                ctx.beginPath();
+                ctx.strokeStyle = this.stateColor;
+                ctx.lineWidth = globals_1.Globals.TrackWidth3;
+                ctx.moveTo(this.posLeft + dx, this.centerY);
+                ctx.lineTo(this.centerX, this.centerY);
+                if (t1Closed) {
+                    ctx.lineTo(this.posRight - dx, this.posTop + dx);
+                }
+                else {
+                    ctx.moveTo(this.centerX, this.centerY);
+                    ctx.lineTo(this.posRight - dx, this.posBottom - dx);
+                }
+                ctx.stroke();
+            }
+            else { // 45
+                ctx.translate(this.centerX, this.centerY);
+                ctx.rotate((0, math_1.degreesToRadians)(this.angle + 45));
+                ctx.translate(-this.centerX, -this.centerY);
+                ctx.moveTo(this.posLeft, this.posBottom);
+                ctx.lineTo(this.centerX, this.centerY);
+                ctx.lineTo(this.centerX, this.posTop);
+                ctx.moveTo(this.centerX, this.centerY);
+                ctx.lineTo(this.posRight, this.centerY);
+                ctx.stroke();
+                //=================
+                ctx.beginPath();
+                ctx.strokeStyle = this.stateColor;
+                ctx.lineWidth = globals_1.Globals.TrackWidth3;
+                ctx.moveTo(this.posLeft + dx, this.posBottom - dx);
+                ctx.lineTo(this.centerX, this.centerY);
+                if (t1Closed) {
+                    ctx.lineTo(this.centerX, this.posTop + dx);
+                }
+                else {
+                    ctx.moveTo(this.centerX, this.centerY);
+                    ctx.lineTo(this.posRight - dx, this.centerY);
+                }
+                ctx.stroke();
+            }
+            ctx.beginPath();
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "black";
+            ctx.fillStyle = this.locked ? view_2.Colors.turnoutLocked : view_2.Colors.turnoutUnLocked;
+            ctx.arc(this.centerX, this.centerY, 3, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.stroke();
+        }
+        getNextItemXy() {
+            if (this.t1Closed) {
+                return (0, math_1.getDirectionXy)(this.pos, -this.angle);
+            }
+            return (0, math_1.getDirectionXy)(this.pos, -this.angle - 45);
+        }
+        getPrevItemXy() {
+            return (0, math_1.getDirectionXy)(this.pos, -this.angle + 180);
+        }
+        getNeigbordsXy() {
+            var points = [];
+            points.push((0, math_1.getDirectionXy)(this.pos, -this.angle));
+            points.push((0, math_1.getDirectionXy)(this.pos, -this.angle - 45));
+            points.push((0, math_1.getDirectionXy)(this.pos, -this.angle + 180));
+            return points;
+        }
+    }
+    exports.TurnoutYShapeElement = TurnoutYShapeElement;
     class TurnoutDoubleElement extends TurnoutElement {
         constructor(uuid, address1, address2, x1, y1, name) {
             super(uuid, address1, x1, y1, name);

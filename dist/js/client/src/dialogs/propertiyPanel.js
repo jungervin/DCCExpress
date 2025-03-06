@@ -1,4 +1,4 @@
-define(["require", "exports", "../components/turnoutPropertiesElement", "../editor/turnout", "../components/routeListElementProperties", "../editor/route", "../editor/track", "../components/trackPropertiesElement", "../editor/trackend", "../editor/corner", "../editor/curve", "../editor/signals", "../components/blockPropertiesElement", "../editor/block", "../components/locoComboboxElement", "../components/signal2PropertiesElement", "../components/canvasElement", "../components/labelPropertiesElement", "../editor/label", "../components/audioButtonPropetiesElement", "../editor/audioButton", "../components/buttonPropertiesElement", "../editor/button", "../components/sensorPropertiesElement", "../editor/sensor"], function (require, exports, turnoutPropertiesElement_1, turnout_1, routeListElementProperties_1, route_1, track_1, trackPropertiesElement_1, trackend_1, corner_1, curve_1, signals_1, blockPropertiesElement_1, block_1, locoComboboxElement_1, signal2PropertiesElement_1, canvasElement_1, labelPropertiesElement_1, label_1, audioButtonPropetiesElement_1, audioButton_1, buttonPropertiesElement_1, button_1, sensorPropertiesElement_1, sensor_1) {
+define(["require", "exports", "../components/turnoutPropertiesElement", "../editor/turnout", "../components/routeListElementProperties", "../editor/route", "../editor/track", "../components/trackPropertiesElement", "../editor/trackend", "../editor/corner", "../editor/curve", "../editor/signals", "../components/blockPropertiesElement", "../editor/block", "../components/locoComboboxElement", "../components/signal2PropertiesElement", "../components/canvasElement", "../components/labelPropertiesElement", "../editor/label", "../components/audioButtonPropetiesElement", "../editor/audioButton", "../components/buttonPropertiesElement", "../editor/button", "../components/sensorPropertiesElement", "../editor/sensor", "../editor/crossing"], function (require, exports, turnoutPropertiesElement_1, turnout_1, routeListElementProperties_1, route_1, track_1, trackPropertiesElement_1, trackend_1, corner_1, curve_1, signals_1, blockPropertiesElement_1, block_1, locoComboboxElement_1, signal2PropertiesElement_1, canvasElement_1, labelPropertiesElement_1, label_1, audioButtonPropetiesElement_1, audioButton_1, buttonPropertiesElement_1, button_1, sensorPropertiesElement_1, sensor_1, crossing_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.PropertyPanel = void 0;
@@ -187,6 +187,10 @@ define(["require", "exports", "../components/turnoutPropertiesElement", "../edit
                     this.trackPropertiesElement.setTrack(this.selectedObject);
                 }
                 else if (Object.getPrototypeOf(v) == curve_1.TrackCurveElement.prototype) {
+                    this.container.appendChild(this.trackPropertiesElement);
+                    this.trackPropertiesElement.setTrack(this.selectedObject);
+                }
+                else if (Object.getPrototypeOf(v) == crossing_1.TrackCrossingShapeElement.prototype) {
                     this.container.appendChild(this.trackPropertiesElement);
                     this.trackPropertiesElement.setTrack(this.selectedObject);
                 }

@@ -2,7 +2,7 @@ import { protocol, Socket } from "socket.io-client";
 import { TrackElement } from "./track";
 import { RectangleElement } from "./rectangle";
 import { Toolbar } from "./toolbar";
-import { TurnoutDoubleElement, TurnoutElement, TurnoutLeftElement, TurnoutRightElement } from "./turnout";
+import { TurnoutDoubleElement, TurnoutLeftElement, TurnoutRightElement, TurnoutYShapeElement } from "./turnout";
 import { RailView, View, RailStates } from "./view";
 import { Views } from "./views";
 import * as bootstrap from "bootstrap";
@@ -64,6 +64,7 @@ export enum drawModes {
     tree,
     sensor,
     trackCrossing,
+    turnoutY,
 }
 
 export class CustomCanvas extends HTMLElement {
@@ -90,6 +91,7 @@ export class CustomCanvas extends HTMLElement {
     cursorTrackCurveElement: TrackCornerElement | undefined;
     cursorTurnoutRightElement: TurnoutRightElement | undefined;
     cursorTurnoutLeftElement: TurnoutLeftElement | undefined;
+    cursorTurnoutYElement: TurnoutYShapeElement | undefined;
     cursorTurnoutDoubleElement: TurnoutDoubleElement | undefined;
     cursorSignal2Element: Signal2Element | undefined;
     cursorSignal3Element: Signal3Element | undefined;
@@ -198,6 +200,8 @@ export class CustomCanvas extends HTMLElement {
         this.cursorTurnoutRightElement.isSelected = true
         this.cursorTurnoutLeftElement = new TurnoutLeftElement("", 0, 0, 0, "cursor");
         this.cursorTurnoutLeftElement.isSelected = true
+        this.cursorTurnoutYElement = new TurnoutYShapeElement("", 0, 0, 0, "cursor");
+        this.cursorTurnoutYElement.isSelected = true
         this.cursorTurnoutDoubleElement = new TurnoutDoubleElement("", 0, 0, 0, 0, "cursor");
         this.cursorTurnoutDoubleElement.isSelected = true
         this.cursorSignal2Element = new Signal2Element("", 10, 0, 0, "cursor");
@@ -284,6 +288,12 @@ export class CustomCanvas extends HTMLElement {
             this.unselectAll()
             this.drawMode = drawModes.turnoutRight
             this.cursorElement = this.cursorTurnoutRightElement!
+        }
+        document.getElementById("tbTurnoutY")!.onclick = (e: MouseEvent) => {
+            this.shapesModal!.hide()
+            this.unselectAll()
+            this.drawMode = drawModes.turnoutY
+            this.cursorElement = this.cursorTurnoutYElement!
         }
         document.getElementById("tbTurnoutDouble")!.onclick = (e: MouseEvent) => {
             this.shapesModal!.hide()
@@ -963,6 +973,15 @@ export class CustomCanvas extends HTMLElement {
                     // tol.cc = Globals.defaultDevice!
                     this.add(tol)
                     break
+                case drawModes.turnoutY:
+                    this.removeIfExists(x, y)
+                    this.unselectAll()
+                    var toy = new TurnoutYShapeElement(getUUID(), 14, x, y, "turnoutY" + num);
+                    toy.showAddress = Globals.Settings.EditorSettings.ShowAddress
+                    toy.angle = this.cursorElement!.angle
+                    // tol.cc = Globals.defaultDevice!
+                    this.add(toy)
+                    break
                 case drawModes.turnoutDouble:
                     this.removeIfExists(x, y)
                     this.unselectAll()
@@ -1329,6 +1348,18 @@ export class CustomCanvas extends HTMLElement {
                         // cc: tol.cc
                     })
                     break;
+                case 'turnoutY':
+                    var toy = elem as TurnoutYShapeElement
+                    elems.push({
+                        uuid: toy.UUID, type: toy.type, name: toy.name, x: toy.x, y: toy.y, address: toy.address,
+                        angle: toy.angle,
+                        //t1Closed: tol.t1Closed, t1ClosedValue: tol.t1ClosedValue, t1OpenValue: tol.t1OpenValue,
+                        t1ClosedValue: toy.t1ClosedValue,
+                        t1OpenValue: toy.t1OpenValue,
+                        rbusAddress: toy.rbusAddress,
+                        // cc: tol.cc
+                    })
+                    break;
                 case 'turnoutDouble':
                     var tod = elem as TurnoutDoubleElement
                     elems.push({
@@ -1557,6 +1588,16 @@ export class CustomCanvas extends HTMLElement {
                             tol.rbusAddress = elem.rbusAddress
                             // tol.cc = elem.cc == undefined ? undefined : elem.cc
                             this.add(tol)
+                            break;
+                        case "turnoutY":
+                            var toy = new TurnoutYShapeElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
+                            toy.showAddress = Globals.Settings.EditorSettings.ShowAddress
+                            toy.angle = elem.angle | 0
+                            toy.t1ClosedValue = elem.t1ClosedValue ?? true
+                            toy.t1OpenValue = elem.t1OpenValue ?? false
+                            toy.rbusAddress = elem.rbusAddress
+                            // tol.cc = elem.cc == undefined ? undefined : elem.cc
+                            this.add(toy)
                             break;
                         case "turnoutDouble":
                             var tod = new TurnoutDoubleElement(elem.uuid, elem.address1 ?? 0, elem.address2 ?? 0, elem.x, elem.y, elem.name);

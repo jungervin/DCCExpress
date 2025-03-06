@@ -1,5 +1,5 @@
 import { drawRectangle } from "../helpers/graphics";
-import { TurnoutDoubleElement, TurnoutElement, TurnoutLeftElement, TurnoutRightElement } from "../editor/turnout";
+import { TurnoutDoubleElement, TurnoutElement, TurnoutLeftElement, TurnoutRightElement, TurnoutYShapeElement } from "../editor/turnout";
 import { View } from "../editor/view";
 import { TrackElement } from "../editor/track";
 import { TrackEndElement } from "../editor/trackend";
@@ -192,6 +192,32 @@ export class TurnoutRightCanvasElement extends CanvasElement {
     }
 }
 customElements.define("turnout-right-canvas-element", TurnoutRightCanvasElement)
+
+
+export class TurnoutYCanvasElement extends CanvasElement {
+    turnout?: TurnoutElement;
+    constructor() {
+        super()
+        this.turnout = new TurnoutYShapeElement("", 0, 0, 0, "")
+        this.turnout.angle = 0
+        this.draw()
+    }
+
+    initFrom(turnout: TurnoutYShapeElement, t1Closed: boolean) {
+       // this.turnout!.cc = turnout.cc
+        this.turnout!.t1ClosedValue = turnout.t1ClosedValue
+        this.turnout!.t1OpenValue = turnout.t1OpenValue
+        this.turnout!.t1Closed = t1Closed
+        this.draw()
+    }
+
+
+    draw() {
+        super.draw()
+        this.turnout?.draw(this.ctx!)
+    }
+}
+customElements.define("turnout-y-canvas-element", TurnoutYCanvasElement)
 
 export class TurnoutDoubleCanvasElement extends CanvasElement {
     turnout?: TurnoutDoubleElement;

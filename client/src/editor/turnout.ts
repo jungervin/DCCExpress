@@ -1,5 +1,5 @@
 import { drawTextWithRoundedBackground } from "../helpers/graphics";
-import { getDirectionXy, Point } from "../helpers/math";
+import { degreesToRadians, getDirectionXy, Point } from "../helpers/math";
 import { RailView } from "./view";
 import { Colors } from "./view";
 import { iSetTurnout } from "../../../common/src/dcc";
@@ -64,15 +64,15 @@ export abstract class TurnoutElement extends RailView {
         return "#" + this.address
     }
 
-    
-    private _locked : boolean = false;
-    public get locked() : boolean {
+
+    private _locked: boolean = false;
+    public get locked(): boolean {
         return this._locked;
     }
-    public set locked(v : boolean) {
+    public set locked(v: boolean) {
         this._locked = v;
     }
-    
+
 }
 
 export class TurnoutRightElement extends TurnoutElement {
@@ -249,15 +249,15 @@ export class TurnoutRightElement extends TurnoutElement {
                 ctx.lineTo(this.posLeft + dx2, this.posBottom - dx2)
             }
             ctx.stroke();
-         }
+        }
 
-         ctx.beginPath();
-         ctx.lineWidth = 1
-         ctx.strokeStyle = "black"
-         ctx.fillStyle = this.locked ? Colors.turnoutLocked : Colors.turnoutUnLocked
-         ctx.arc(this.centerX, this.centerY, 3, 0, 2 * Math.PI)
-         ctx.fill()
-         ctx.stroke()
+        ctx.beginPath();
+        ctx.lineWidth = 1
+        ctx.strokeStyle = "black"
+        ctx.fillStyle = this.locked ? Colors.turnoutLocked : Colors.turnoutUnLocked
+        ctx.arc(this.centerX, this.centerY, 3, 0, 2 * Math.PI)
+        ctx.fill()
+        ctx.stroke()
 
     }
 
@@ -319,6 +319,117 @@ export class TurnoutLeftElement extends TurnoutRightElement {
     }
 }
 
+export class TurnoutYShapeElement extends TurnoutRightElement {
+    constructor(uuid: string, address: number, x1: number, y1: number, name: string) {
+        super(uuid, address, x1, y1, name)
+        this.angleStep = 45
+    }
+    get type(): string {
+        return 'turnoutY'
+    }
+
+
+    public draw(ctx: CanvasRenderingContext2D): void {
+        ctx.save()
+        this.drawTurnout(ctx, this.t1Closed)
+        this.drawAddress(ctx)
+        ctx.restore()
+        super.draw(ctx)
+    }
+    public drawTurnout(ctx: CanvasRenderingContext2D, t1Closed: boolean): void {
+        var dx = this.width / 5
+
+        ctx.beginPath();
+        ctx.strokeStyle = Colors.TrackPrimaryColor
+        ctx.lineWidth = Globals.TrackWidth7;
+
+        if (this.angle % 90 == 0) {
+            ctx.translate(this.centerX, this.centerY);
+            ctx.rotate(degreesToRadians(this.angle));
+            ctx.translate(-this.centerX, -this.centerY);
+
+            ctx.moveTo(this.posLeft, this.centerY)
+            ctx.lineTo(this.centerX, this.centerY)
+            ctx.lineTo(this.posRight, this.posTop)
+            ctx.moveTo(this.centerX, this.centerY)
+            ctx.lineTo(this.posRight, this.posBottom)
+            ctx.stroke();
+
+            // ==========
+            ctx.beginPath();
+            ctx.strokeStyle = this.stateColor
+            ctx.lineWidth = Globals.TrackWidth3;
+
+            ctx.moveTo(this.posLeft + dx, this.centerY)
+            ctx.lineTo(this.centerX, this.centerY)
+            if(t1Closed) {
+             ctx.lineTo(this.posRight - dx, this.posTop + dx)
+            }
+            else {
+            ctx.moveTo(this.centerX, this.centerY)
+            ctx.lineTo(this.posRight-dx, this.posBottom-dx)
+            }
+            ctx.stroke();
+
+        } else { // 45
+            ctx.translate(this.centerX, this.centerY);  
+            ctx.rotate(degreesToRadians(this.angle + 45));
+            ctx.translate(-this.centerX, -this.centerY);
+
+            ctx.moveTo(this.posLeft, this.posBottom)
+            ctx.lineTo(this.centerX, this.centerY)
+            ctx.lineTo(this.centerX, this.posTop)
+            ctx.moveTo(this.centerX, this.centerY)
+            ctx.lineTo(this.posRight, this.centerY)    
+            ctx.stroke();    
+            
+            //=================
+            ctx.beginPath();
+            ctx.strokeStyle = this.stateColor
+            ctx.lineWidth = Globals.TrackWidth3;
+
+            ctx.moveTo(this.posLeft + dx, this.posBottom-dx)
+            ctx.lineTo(this.centerX, this.centerY)
+            if(t1Closed) {
+                ctx.lineTo(this.centerX, this.posTop+dx)
+            }
+            else {
+                ctx.moveTo(this.centerX, this.centerY)
+                ctx.lineTo(this.posRight-dx, this.centerY)
+            }
+            ctx.stroke();            
+
+        }
+
+        ctx.beginPath();
+        ctx.lineWidth = 1
+        ctx.strokeStyle = "black"
+        ctx.fillStyle = this.locked ? Colors.turnoutLocked : Colors.turnoutUnLocked
+        ctx.arc(this.centerX, this.centerY, 3, 0, 2 * Math.PI)
+        ctx.fill()
+        ctx.stroke()
+
+    }
+
+    getNextItemXy(): Point {
+        if (this.t1Closed) {
+            return getDirectionXy(this.pos, -this.angle)
+        }
+        return getDirectionXy(this.pos, -this.angle - 45)
+    }
+
+    getPrevItemXy(): Point {
+        return getDirectionXy(this.pos, -this.angle + 180)
+    }
+
+    getNeigbordsXy(): Point[] {
+        var points: Point[] = [];
+        points.push(getDirectionXy(this.pos, -this.angle))
+        points.push(getDirectionXy(this.pos, -this.angle - 45))
+        points.push(getDirectionXy(this.pos, -this.angle + 180))
+        return points;
+    }
+}
 
 export class TurnoutDoubleElement extends TurnoutElement {
 
@@ -538,7 +649,7 @@ export class TurnoutDoubleElement extends TurnoutElement {
                     ctx.moveTo(this.centerX, this.centerY)
                     ctx.lineTo(this.posLeft + dx, this.posBottom - dx)
                 }
-            }if (this.angle == 180) {
+            } if (this.angle == 180) {
                 if (t2Closed) {
                     ctx.moveTo(this.centerX, this.centerY)
                     ctx.lineTo(this.posLeft + dx, this.posTop + dx)
@@ -547,7 +658,7 @@ export class TurnoutDoubleElement extends TurnoutElement {
                     ctx.moveTo(this.centerX, this.centerY)
                     ctx.lineTo(this.posLeft + dx, this.centerY)
                 }
-            }if (this.angle == 225) {
+            } if (this.angle == 225) {
                 if (t2Closed) {
                     ctx.moveTo(this.centerX, this.centerY)
                     ctx.lineTo(this.centerX, this.posTop + dx)

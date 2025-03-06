@@ -1,10 +1,10 @@
 {
     "settings": {
-        "scale": 1.0493335298174544,
-        "origX": -729,
-        "origY": -350,
+        "scale": 1.378328002774206,
+        "origX": -1209,
+        "origY": -994,
         "locoPanelVisible": true,
-        "propertyPanelVisible": false
+        "propertyPanelVisible": true
     },
     "pages": [
         {
@@ -1525,6 +1525,48 @@
                     "name": "trackcrossing149",
                     "x": 29,
                     "y": 12,
+                    "angle": 0,
+                    "rbusAddress": 0
+                },
+                {
+                    "uuid": "df0226c5-1ab1-493c-a340-9d7554129ae8",
+                    "type": "turnoutY",
+                    "name": "turnoutY150",
+                    "x": 30,
+                    "y": 13,
+                    "address": 14,
+                    "angle": 180,
+                    "t1ClosedValue": true,
+                    "t1OpenValue": false,
+                    "rbusAddress": 0
+                },
+                {
+                    "uuid": "9ccbce75-9db9-4300-b0a7-207cc79d7171",
+                    "type": "turnoutY",
+                    "name": "turnoutY151",
+                    "x": 33,
+                    "y": 25,
+                    "address": 14,
+                    "angle": 0,
+                    "t1ClosedValue": true,
+                    "t1OpenValue": false,
+                    "rbusAddress": 0
+                },
+                {
+                    "uuid": "99938033-b4a1-4814-997d-a9fdf5902171",
+                    "type": "curve",
+                    "name": "curve152",
+                    "x": 34,
+                    "y": 24,
+                    "angle": 135,
+                    "rbusAddress": 0
+                },
+                {
+                    "uuid": "b7984daa-348b-4416-aabd-eb9dbc88b04c",
+                    "type": "curve",
+                    "name": "curve153",
+                    "x": 34,
+                    "y": 26,
                     "angle": 0,
                     "rbusAddress": 0
                 }

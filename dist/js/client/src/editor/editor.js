@@ -53,6 +53,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
         drawModes[drawModes["tree"] = 22] = "tree";
         drawModes[drawModes["sensor"] = 23] = "sensor";
         drawModes[drawModes["trackCrossing"] = 24] = "trackCrossing";
+        drawModes[drawModes["turnoutY"] = 25] = "turnoutY";
     })(drawModes || (exports.drawModes = drawModes = {}));
     class CustomCanvas extends HTMLElement {
         constructor() {
@@ -133,6 +134,8 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             this.cursorTurnoutRightElement.isSelected = true;
             this.cursorTurnoutLeftElement = new turnout_1.TurnoutLeftElement("", 0, 0, 0, "cursor");
             this.cursorTurnoutLeftElement.isSelected = true;
+            this.cursorTurnoutYElement = new turnout_1.TurnoutYShapeElement("", 0, 0, 0, "cursor");
+            this.cursorTurnoutYElement.isSelected = true;
             this.cursorTurnoutDoubleElement = new turnout_1.TurnoutDoubleElement("", 0, 0, 0, 0, "cursor");
             this.cursorTurnoutDoubleElement.isSelected = true;
             this.cursorSignal2Element = new signals_1.Signal2Element("", 10, 0, 0, "cursor");
@@ -210,6 +213,12 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                 this.unselectAll();
                 this.drawMode = drawModes.turnoutRight;
                 this.cursorElement = this.cursorTurnoutRightElement;
+            };
+            document.getElementById("tbTurnoutY").onclick = (e) => {
+                this.shapesModal.hide();
+                this.unselectAll();
+                this.drawMode = drawModes.turnoutY;
+                this.cursorElement = this.cursorTurnoutYElement;
             };
             document.getElementById("tbTurnoutDouble").onclick = (e) => {
                 this.shapesModal.hide();
@@ -801,6 +810,15 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         // tol.cc = Globals.defaultDevice!
                         this.add(tol);
                         break;
+                    case drawModes.turnoutY:
+                        this.removeIfExists(x, y);
+                        this.unselectAll();
+                        var toy = new turnout_1.TurnoutYShapeElement((0, dcc_1.getUUID)(), 14, x, y, "turnoutY" + num);
+                        toy.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
+                        toy.angle = this.cursorElement.angle;
+                        // tol.cc = Globals.defaultDevice!
+                        this.add(toy);
+                        break;
                     case drawModes.turnoutDouble:
                         this.removeIfExists(x, y);
                         this.unselectAll();
@@ -1135,6 +1153,18 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                             // cc: tol.cc
                         });
                         break;
+                    case 'turnoutY':
+                        var toy = elem;
+                        elems.push({
+                            uuid: toy.UUID, type: toy.type, name: toy.name, x: toy.x, y: toy.y, address: toy.address,
+                            angle: toy.angle,
+                            //t1Closed: tol.t1Closed, t1ClosedValue: tol.t1ClosedValue, t1OpenValue: tol.t1OpenValue,
+                            t1ClosedValue: toy.t1ClosedValue,
+                            t1OpenValue: toy.t1OpenValue,
+                            rbusAddress: toy.rbusAddress,
+                            // cc: tol.cc
+                        });
+                        break;
                     case 'turnoutDouble':
                         var tod = elem;
                         elems.push({
@@ -1320,7 +1350,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                 //var elems = config.elems
                 config.pages.forEach((page) => {
                     page.elems.forEach((elem) => {
-                        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15;
+                        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17;
                         console.log(elem);
                         switch (elem.type) {
                             case "track":
@@ -1357,14 +1387,24 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                                 // tol.cc = elem.cc == undefined ? undefined : elem.cc
                                 this.add(tol);
                                 break;
+                            case "turnoutY":
+                                var toy = new turnout_1.TurnoutYShapeElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
+                                toy.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
+                                toy.angle = elem.angle | 0;
+                                toy.t1ClosedValue = (_e = elem.t1ClosedValue) !== null && _e !== void 0 ? _e : true;
+                                toy.t1OpenValue = (_f = elem.t1OpenValue) !== null && _f !== void 0 ? _f : false;
+                                toy.rbusAddress = elem.rbusAddress;
+                                // tol.cc = elem.cc == undefined ? undefined : elem.cc
+                                this.add(toy);
+                                break;
                             case "turnoutDouble":
-                                var tod = new turnout_1.TurnoutDoubleElement(elem.uuid, (_e = elem.address1) !== null && _e !== void 0 ? _e : 0, (_f = elem.address2) !== null && _f !== void 0 ? _f : 0, elem.x, elem.y, elem.name);
+                                var tod = new turnout_1.TurnoutDoubleElement(elem.uuid, (_g = elem.address1) !== null && _g !== void 0 ? _g : 0, (_h = elem.address2) !== null && _h !== void 0 ? _h : 0, elem.x, elem.y, elem.name);
                                 tod.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
                                 tod.angle = elem.angle | 0;
-                                tod.t1ClosedValue = (_g = elem.t1ClosedValue) !== null && _g !== void 0 ? _g : true;
-                                tod.t1OpenValue = (_h = elem.t1OpenValue) !== null && _h !== void 0 ? _h : false;
-                                tod.t2ClosedValue = (_j = elem.t2ClosedValue) !== null && _j !== void 0 ? _j : true;
-                                tod.t2OpenValue = (_k = elem.t2OpenValue) !== null && _k !== void 0 ? _k : false;
+                                tod.t1ClosedValue = (_j = elem.t1ClosedValue) !== null && _j !== void 0 ? _j : true;
+                                tod.t1OpenValue = (_k = elem.t1OpenValue) !== null && _k !== void 0 ? _k : false;
+                                tod.t2ClosedValue = (_l = elem.t2ClosedValue) !== null && _l !== void 0 ? _l : true;
+                                tod.t2OpenValue = (_m = elem.t2OpenValue) !== null && _m !== void 0 ? _m : false;
                                 tod.rbusAddress = elem.rbusAddress;
                                 // tod.cc = elem.cc == undefined ? undefined : elem.cc
                                 this.add(tod);
@@ -1399,7 +1439,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                             case "label2":
                                 var l = new label_1.Label2Element(elem.uuid, elem.x, elem.y, elem.name);
                                 console.log("LABEL:", l instanceof view_1.RailView);
-                                l.text = (_l = elem.text) !== null && _l !== void 0 ? _l : "LABEL";
+                                l.text = (_o = elem.text) !== null && _o !== void 0 ? _o : "LABEL";
                                 l.valign = elem.valign;
                                 l.angle = 0;
                                 this.add(l);
@@ -1411,13 +1451,13 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                                 break;
                             case "signal2":
                                 var s2 = new signals_1.Signal2Element(elem.uuid, elem.address | 0, elem.x, elem.y, elem.name);
-                                s2.angle = (_m = elem.angle) !== null && _m !== void 0 ? _m : 0;
-                                s2.addressLength = (_o = elem.addressLength) !== null && _o !== void 0 ? _o : 5;
-                                s2.isExtendedDecoder = (_p = s2.isExtendedDecoder) !== null && _p !== void 0 ? _p : false;
-                                s2.valueGreen = (_q = elem.valueGreen) !== null && _q !== void 0 ? _q : 0;
-                                s2.valueRed = (_r = elem.valueRed) !== null && _r !== void 0 ? _r : 0;
+                                s2.angle = (_p = elem.angle) !== null && _p !== void 0 ? _p : 0;
+                                s2.addressLength = (_q = elem.addressLength) !== null && _q !== void 0 ? _q : 5;
+                                s2.isExtendedDecoder = (_r = s2.isExtendedDecoder) !== null && _r !== void 0 ? _r : false;
+                                s2.valueGreen = (_s = elem.valueGreen) !== null && _s !== void 0 ? _s : 0;
+                                s2.valueRed = (_t = elem.valueRed) !== null && _t !== void 0 ? _t : 0;
                                 s2.rbusAddress = elem.rbusAddress;
-                                s2.outputMode = (_s = elem.outputMode) !== null && _s !== void 0 ? _s : dcc_1.OutputModes.accessory;
+                                s2.outputMode = (_u = elem.outputMode) !== null && _u !== void 0 ? _u : dcc_1.OutputModes.accessory;
                                 // s2.cc = elem.cc == undefined ? undefined : elem.cc
                                 s2.aspect = 1; // elem.aspect ?? 1
                                 s2.name = elem.name.replace("turnoutleft", "signal2-");
@@ -1425,14 +1465,14 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                                 break;
                             case "signal3":
                                 var s3 = new signals_1.Signal3Element(elem.uuid, elem.address | 0, elem.x, elem.y, elem.name);
-                                s3.angle = (_t = elem.angle) !== null && _t !== void 0 ? _t : 0;
-                                s3.addressLength = (_u = elem.addressLength) !== null && _u !== void 0 ? _u : 5;
-                                s3.isExtendedDecoder = (_v = s3.isExtendedDecoder) !== null && _v !== void 0 ? _v : false;
-                                s3.valueGreen = (_w = elem.valueGreen) !== null && _w !== void 0 ? _w : 0;
-                                s3.valueRed = (_x = elem.valueRed) !== null && _x !== void 0 ? _x : 0;
-                                s3.valueYellow = (_y = elem.valueYellow) !== null && _y !== void 0 ? _y : 0;
+                                s3.angle = (_v = elem.angle) !== null && _v !== void 0 ? _v : 0;
+                                s3.addressLength = (_w = elem.addressLength) !== null && _w !== void 0 ? _w : 5;
+                                s3.isExtendedDecoder = (_x = s3.isExtendedDecoder) !== null && _x !== void 0 ? _x : false;
+                                s3.valueGreen = (_y = elem.valueGreen) !== null && _y !== void 0 ? _y : 0;
+                                s3.valueRed = (_z = elem.valueRed) !== null && _z !== void 0 ? _z : 0;
+                                s3.valueYellow = (_0 = elem.valueYellow) !== null && _0 !== void 0 ? _0 : 0;
                                 s3.rbusAddress = elem.rbusAddress;
-                                s3.outputMode = (_z = elem.outputMode) !== null && _z !== void 0 ? _z : dcc_1.OutputModes.accessory;
+                                s3.outputMode = (_1 = elem.outputMode) !== null && _1 !== void 0 ? _1 : dcc_1.OutputModes.accessory;
                                 // s3.cc = elem.cc == undefined ? undefined : elem.cc
                                 s3.aspect = 1; //elem.aspect ?? 1
                                 s3.name = elem.name.replace("turnoutleft", "signal3-");
@@ -1440,15 +1480,15 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                                 break;
                             case "signal4":
                                 var s4 = new signals_1.Signal4Element(elem.uuid, elem.address | 0, elem.x, elem.y, elem.name);
-                                s4.angle = (_0 = elem.angle) !== null && _0 !== void 0 ? _0 : 0;
-                                s4.addressLength = (_1 = elem.addressLength) !== null && _1 !== void 0 ? _1 : 5;
-                                s4.isExtendedDecoder = (_2 = s4.isExtendedDecoder) !== null && _2 !== void 0 ? _2 : false;
-                                s4.valueGreen = (_3 = elem.valueGreen) !== null && _3 !== void 0 ? _3 : 0;
-                                s4.valueRed = (_4 = elem.valueRed) !== null && _4 !== void 0 ? _4 : 0;
-                                s4.valueYellow = (_5 = elem.valueYellow) !== null && _5 !== void 0 ? _5 : 0;
-                                s4.valueWhite = (_6 = elem.valueWhite) !== null && _6 !== void 0 ? _6 : 0;
+                                s4.angle = (_2 = elem.angle) !== null && _2 !== void 0 ? _2 : 0;
+                                s4.addressLength = (_3 = elem.addressLength) !== null && _3 !== void 0 ? _3 : 5;
+                                s4.isExtendedDecoder = (_4 = s4.isExtendedDecoder) !== null && _4 !== void 0 ? _4 : false;
+                                s4.valueGreen = (_5 = elem.valueGreen) !== null && _5 !== void 0 ? _5 : 0;
+                                s4.valueRed = (_6 = elem.valueRed) !== null && _6 !== void 0 ? _6 : 0;
+                                s4.valueYellow = (_7 = elem.valueYellow) !== null && _7 !== void 0 ? _7 : 0;
+                                s4.valueWhite = (_8 = elem.valueWhite) !== null && _8 !== void 0 ? _8 : 0;
                                 s4.rbusAddress = elem.rbusAddress;
-                                s4.outputMode = (_7 = elem.outputMode) !== null && _7 !== void 0 ? _7 : dcc_1.OutputModes.accessory;
+                                s4.outputMode = (_9 = elem.outputMode) !== null && _9 !== void 0 ? _9 : dcc_1.OutputModes.accessory;
                                 // s4.cc = elem.cc == undefined ? undefined : elem.cc
                                 s4.aspect = 1; //elem.aspect ?? 1
                                 s4.name = elem.name.replace("turnoutleft", "signal4-");
@@ -1470,9 +1510,9 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                             //     break;
                             case "button":
                                 var b = new button_1.ButtonShapeElement(elem.uuid, elem.address, elem.x, elem.y, elem.name);
-                                b.valueOff = (_8 = elem.valueOff) !== null && _8 !== void 0 ? _8 : false;
-                                b.valueOn = (_9 = elem.valueOn) !== null && _9 !== void 0 ? _9 : true;
-                                b.outputMode = (_10 = elem.outputMode) !== null && _10 !== void 0 ? _10 : 0;
+                                b.valueOff = (_10 = elem.valueOff) !== null && _10 !== void 0 ? _10 : false;
+                                b.valueOn = (_11 = elem.valueOn) !== null && _11 !== void 0 ? _11 : true;
+                                b.outputMode = (_12 = elem.outputMode) !== null && _12 !== void 0 ? _12 : 0;
                                 this.add(b);
                                 break;
                             case "audiobutton":
@@ -1489,11 +1529,11 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                                 this.add(tree);
                                 break;
                             case "sensor":
-                                var sensor = new sensor_1.SensorShapeElement(elem.uuid, (_11 = elem.address) !== null && _11 !== void 0 ? _11 : 0, elem.x, elem.y, elem.name);
-                                sensor.kind = (_12 = elem.kind) !== null && _12 !== void 0 ? _12 : sensor_1.SensorTypes.rect;
-                                sensor.colorOn = (_13 = elem.fillColor) !== null && _13 !== void 0 ? _13 : "lime";
-                                sensor.valueOff = (_14 = elem.valueOff) !== null && _14 !== void 0 ? _14 : false;
-                                sensor.valueOn = (_15 = elem.valueOn) !== null && _15 !== void 0 ? _15 : true;
+                                var sensor = new sensor_1.SensorShapeElement(elem.uuid, (_13 = elem.address) !== null && _13 !== void 0 ? _13 : 0, elem.x, elem.y, elem.name);
+                                sensor.kind = (_14 = elem.kind) !== null && _14 !== void 0 ? _14 : sensor_1.SensorTypes.rect;
+                                sensor.colorOn = (_15 = elem.fillColor) !== null && _15 !== void 0 ? _15 : "lime";
+                                sensor.valueOff = (_16 = elem.valueOff) !== null && _16 !== void 0 ? _16 : false;
+                                sensor.valueOn = (_17 = elem.valueOn) !== null && _17 !== void 0 ? _17 : true;
                                 this.add(sensor);
                                 break;
                         }
