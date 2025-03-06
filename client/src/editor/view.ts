@@ -114,7 +114,7 @@ export abstract class View {
             // ctx.stroke();
             ctx.restore()
 
-            // Szomszédok kirajzolása
+            // Draw neighbors
             if (false) {
                 //ctx.restore()
                 ctx.beginPath();

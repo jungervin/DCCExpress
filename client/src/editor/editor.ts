@@ -1351,9 +1351,9 @@ export class CustomCanvas extends HTMLElement {
                 case 'turnoutY':
                     var toy = elem as TurnoutYShapeElement
                     elems.push({
-                        uuid: toy.UUID, type: toy.type, name: toy.name, x: toy.x, y: toy.y, address: toy.address,
+                        uuid: toy.UUID, type: toy.type, name: toy.name, x: toy.x, y: toy.y, 
+                        address: toy.address,
                         angle: toy.angle,
-                        //t1Closed: tol.t1Closed, t1ClosedValue: tol.t1ClosedValue, t1OpenValue: tol.t1OpenValue,
                         t1ClosedValue: toy.t1ClosedValue,
                         t1OpenValue: toy.t1OpenValue,
                         rbusAddress: toy.rbusAddress,

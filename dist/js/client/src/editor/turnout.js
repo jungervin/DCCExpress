@@ -388,12 +388,12 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
         }
         getNextItemXy() {
             if (this.t1Closed) {
-                return (0, math_1.getDirectionXy)(this.pos, -this.angle);
+                return (0, math_1.getDirectionXy)(this.pos, this.angle - 45);
             }
-            return (0, math_1.getDirectionXy)(this.pos, -this.angle - 45);
+            return (0, math_1.getDirectionXy)(this.pos, this.angle + 45);
         }
         getPrevItemXy() {
-            return (0, math_1.getDirectionXy)(this.pos, -this.angle + 180);
+            return (0, math_1.getDirectionXy)(this.pos, this.angle + 180);
         }
         getNeigbordsXy() {
             var points = [];

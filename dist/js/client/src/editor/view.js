@@ -78,7 +78,7 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/math", "../
                 ctx.strokeRect(this.posLeft, this.posTop, this.width, this.height);
                 // ctx.stroke();
                 ctx.restore();
-                // Szomszédok kirajzolása
+                // Draw neighbors
                 if (false) {
                     //ctx.restore()
                     ctx.beginPath();

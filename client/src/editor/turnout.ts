@@ -447,13 +447,13 @@ export class TurnoutYShapeElement extends TurnoutElement {
 
     getNextItemXy(): Point {
         if (this.t1Closed) {
-            return getDirectionXy(this.pos, -this.angle)
+            return getDirectionXy(this.pos, this.angle - 45)
         }
-        return getDirectionXy(this.pos, -this.angle - 45)
+        return getDirectionXy(this.pos, this.angle + 45)
     }
 
     getPrevItemXy(): Point {
-        return getDirectionXy(this.pos, -this.angle + 180)
+        return getDirectionXy(this.pos, this.angle + 180)
     }
 
     getNeigbordsXy(): Point[] {
