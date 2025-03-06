@@ -1,4 +1,4 @@
-define(["require", "exports", "../helpers/globals", "./view", "./view"], function (require, exports, globals_1, view_1, view_2) {
+define(["require", "exports", "../helpers/globals", "./view"], function (require, exports, globals_1, view_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.TrackElement = void 0;
@@ -24,7 +24,7 @@ define(["require", "exports", "../helpers/globals", "./view", "./view"], functio
             ctx.save();
             {
                 ctx.lineWidth = globals_1.Globals.TrackWidth7;
-                ctx.strokeStyle = view_2.Colors.TrackPrimaryColor;
+                ctx.strokeStyle = view_1.Colors.TrackPrimaryColor;
                 if (this.angle == 0 || this.angle == 180) {
                     ctx.beginPath();
                     ctx.moveTo(this.PositionX, this.centerY);

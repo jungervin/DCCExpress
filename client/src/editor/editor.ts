@@ -35,6 +35,7 @@ import { FastClock } from "./clock";
 import { EmergencyButtonShapeElement } from "./emergencyButton";
 import { TreeShapeElement } from "./tree";
 import { SensorShapeElement, SensorTypes } from "./sensor";
+import { TrackCrossingShapeElement } from "./crossing";
 
 console.log(PropertyPanel)
 
@@ -62,6 +63,7 @@ export enum drawModes {
     emergencybutton,
     tree,
     sensor,
+    trackCrossing,
 }
 
 export class CustomCanvas extends HTMLElement {
@@ -93,6 +95,7 @@ export class CustomCanvas extends HTMLElement {
     cursorSignal3Element: Signal3Element | undefined;
     cursorSignal4Element: Signal4Element | undefined;
     cursorButtonElement: ButtonShapeElement | undefined;
+    cursorTrackCrossingElement: TrackCrossingShapeElement | undefined;
     // cursorSignal5Element: Signal5Element | undefined;
     //turnoutModal: bootstrap.Modal | undefined;
     turnoutAddress: HTMLInputElement | undefined;
@@ -189,6 +192,8 @@ export class CustomCanvas extends HTMLElement {
         this.cursorTrackCornerElement.isSelected = true
         this.cursorTrackCurveElement = new TrackCurveElement("", 0, 0, "cursor");
         this.cursorTrackCurveElement.isSelected = true
+        this.cursorTrackCrossingElement = new TrackCrossingShapeElement("", 0, 0, "cursor");
+        this.cursorTrackCrossingElement.isSelected = true
         this.cursorTurnoutRightElement = new TurnoutRightElement("", 0, 0, 0, "cursor");
         this.cursorTurnoutRightElement.isSelected = true
         this.cursorTurnoutLeftElement = new TurnoutLeftElement("", 0, 0, 0, "cursor");
@@ -259,6 +264,13 @@ export class CustomCanvas extends HTMLElement {
             this.unselectAll()
             this.drawMode = drawModes.trackCurve
             this.cursorElement = this.cursorTrackCurveElement!
+        }
+
+        document.getElementById("tbTrackCrossing")!.onclick = (e: MouseEvent) => {
+            this.shapesModal!.hide()
+            this.unselectAll()
+            this.drawMode = drawModes.trackCrossing
+            this.cursorElement = this.cursorTrackCrossingElement!
         }
 
         document.getElementById("tbTurnoutLeft")!.onclick = (e: MouseEvent) => {
@@ -918,6 +930,14 @@ export class CustomCanvas extends HTMLElement {
                     this.unselectAll()
                     this.add(tc)
                     break
+                case drawModes.trackCrossing:
+                    this.removeIfExists(x, y)
+                    var tcr = new TrackCrossingShapeElement(getUUID(), x, y, "trackcrossing" + num);
+                    tcr.angle = this.cursorElement!.angle
+                    // tc.cc = Globals.defaultDevice!
+                    this.unselectAll()
+                    this.add(tcr)
+                    break
                 case drawModes.rect:
                     this.removeIfExists(x, y)
                     var rectangle = new RectangleElement(getUUID(), x, y, "rect" + num);
@@ -1331,6 +1351,14 @@ export class CustomCanvas extends HTMLElement {
                         rbusAddress: co.rbusAddress
                     })
                     break;
+                case 'trackcrossing':
+                    var tcr = elem as TrackCrossingShapeElement
+                    elems.push({
+                        uuid: tcr.UUID, type: tcr.type, name: tcr.name, x: tcr.x, y: tcr.y,
+                        angle: tcr.angle,
+                        rbusAddress: tcr.rbusAddress
+                    })
+                    break;
                 case 'corner':
                     var cu = elem as TrackCornerElement
                     elems.push({
@@ -1559,6 +1587,14 @@ export class CustomCanvas extends HTMLElement {
                             co.rbusAddress = elem.rbusAddress
                             this.add(co)
                             break;
+                        case "trackcrossing":
+                            var tcr = new TrackCrossingShapeElement(elem.uuid, elem.x, elem.y, elem.name);
+                            tcr.angle = elem.angle | 0
+                            // co.cc = elem.cc
+                            tcr.rbusAddress = elem.rbusAddress
+                            this.add(tcr)
+                            break;
+
                         case "block":
                             var bl = new BlockElement(elem.uuid, elem.x, elem.y, elem.name);
                             bl.angle = elem.angle | 0

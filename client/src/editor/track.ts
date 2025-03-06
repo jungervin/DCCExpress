@@ -1,8 +1,6 @@
-// import { iCommandCenter } from "../../../common/src/dcc";
 import { Globals } from "../helpers/globals";
-import { degreesToRadians, getDirectionXy, Point } from "../helpers/math";
-import { RailView, RailStates } from "./view";
-import { Colors } from "./view";
+import { RailView, Colors } from "./view";
+
 
 export class TrackElement extends RailView {
 

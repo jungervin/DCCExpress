@@ -15,6 +15,7 @@ import { AudioButtonShapeElement } from "../editor/audioButton";
 import { Label2Element } from "../editor/label";
 import { BlockElement } from "../editor/block";
 import { TreeShapeElement } from "../editor/tree";
+import { TrackCrossingShapeElement } from "../editor/crossing";
 
 export class CanvasElement extends HTMLElement {
     ctx?: CanvasRenderingContext2D
@@ -126,6 +127,22 @@ export class TrackCurveCanvasElement extends CanvasElement {
     }
 }
 customElements.define("track-curve-canvas-element", TrackCurveCanvasElement)
+
+export class TrackCrossingCanvasElement extends CanvasElement {
+    track?: TrackCrossingShapeElement;
+    constructor() {
+        super()
+        this.track = new TrackCrossingShapeElement("", 0, 0, "")
+        this.track.angle = 0
+        this.draw()
+    }
+
+    draw() {
+        super.draw()
+        this.track?.draw(this.ctx!)
+    }
+}
+customElements.define("track-crossing-canvas-element", TrackCrossingCanvasElement)
 
 
 export class TurnoutLeftCanvasElement extends CanvasElement {

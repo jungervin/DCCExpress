@@ -4,7 +4,7 @@
         "origX": -729,
         "origY": -350,
         "locoPanelVisible": true,
-        "propertyPanelVisible": true
+        "propertyPanelVisible": false
     },
     "pages": [
         {
@@ -1518,6 +1518,15 @@
                     "rbusAddress": 0,
                     "outputMode": 0,
                     "aspect": 1
+                },
+                {
+                    "uuid": "07042760-665d-40e3-91cf-c23d5d45eaea",
+                    "type": "trackcrossing",
+                    "name": "trackcrossing149",
+                    "x": 29,
+                    "y": 12,
+                    "angle": 0,
+                    "rbusAddress": 0
                 }
             ]
         }

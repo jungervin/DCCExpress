@@ -21,7 +21,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "./views", "bootstrap", "./curve", "./corner", "./signals", "./trackend", "./route", "../controls/dialog", "../../../common/src/dcc", "../dialogs/propertiyPanel", "./block", "../helpers/globals", "../dialogs/AppSettingsDialog", "../dialogs/dlgSignal2Select", "../dialogs/turnoutsPopup", "../helpers/ws", "./label", "../helpers/utility", "../dialogs/codeEditor", "./dispatcher", "./button", "./audioButton", "./clock", "./emergencyButton", "./tree", "./sensor"], function (require, exports, track_1, rectangle_1, turnout_1, view_1, views_1, bootstrap, curve_1, corner_1, signals_1, trackend_1, route_1, dialog_1, dcc_1, propertiyPanel_1, block_1, globals_1, AppSettingsDialog_1, dlgSignal2Select_1, turnoutsPopup_1, ws_1, label_1, utility_1, codeEditor_1, dispatcher_1, button_1, audioButton_1, clock_1, emergencyButton_1, tree_1, sensor_1) {
+define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "./views", "bootstrap", "./curve", "./corner", "./signals", "./trackend", "./route", "../controls/dialog", "../../../common/src/dcc", "../dialogs/propertiyPanel", "./block", "../helpers/globals", "../dialogs/AppSettingsDialog", "../dialogs/dlgSignal2Select", "../dialogs/turnoutsPopup", "../helpers/ws", "./label", "../helpers/utility", "../dialogs/codeEditor", "./dispatcher", "./button", "./audioButton", "./clock", "./emergencyButton", "./tree", "./sensor", "./crossing"], function (require, exports, track_1, rectangle_1, turnout_1, view_1, views_1, bootstrap, curve_1, corner_1, signals_1, trackend_1, route_1, dialog_1, dcc_1, propertiyPanel_1, block_1, globals_1, AppSettingsDialog_1, dlgSignal2Select_1, turnoutsPopup_1, ws_1, label_1, utility_1, codeEditor_1, dispatcher_1, button_1, audioButton_1, clock_1, emergencyButton_1, tree_1, sensor_1, crossing_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CustomCanvas = exports.drawModes = void 0;
@@ -52,6 +52,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
         drawModes[drawModes["emergencybutton"] = 21] = "emergencybutton";
         drawModes[drawModes["tree"] = 22] = "tree";
         drawModes[drawModes["sensor"] = 23] = "sensor";
+        drawModes[drawModes["trackCrossing"] = 24] = "trackCrossing";
     })(drawModes || (exports.drawModes = drawModes = {}));
     class CustomCanvas extends HTMLElement {
         constructor() {
@@ -126,6 +127,8 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
             this.cursorTrackCornerElement.isSelected = true;
             this.cursorTrackCurveElement = new curve_1.TrackCurveElement("", 0, 0, "cursor");
             this.cursorTrackCurveElement.isSelected = true;
+            this.cursorTrackCrossingElement = new crossing_1.TrackCrossingShapeElement("", 0, 0, "cursor");
+            this.cursorTrackCrossingElement.isSelected = true;
             this.cursorTurnoutRightElement = new turnout_1.TurnoutRightElement("", 0, 0, 0, "cursor");
             this.cursorTurnoutRightElement.isSelected = true;
             this.cursorTurnoutLeftElement = new turnout_1.TurnoutLeftElement("", 0, 0, 0, "cursor");
@@ -189,6 +192,12 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                 this.unselectAll();
                 this.drawMode = drawModes.trackCurve;
                 this.cursorElement = this.cursorTrackCurveElement;
+            };
+            document.getElementById("tbTrackCrossing").onclick = (e) => {
+                this.shapesModal.hide();
+                this.unselectAll();
+                this.drawMode = drawModes.trackCrossing;
+                this.cursorElement = this.cursorTrackCrossingElement;
             };
             document.getElementById("tbTurnoutLeft").onclick = (e) => {
                 this.shapesModal.hide();
@@ -759,6 +768,14 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         this.unselectAll();
                         this.add(tc);
                         break;
+                    case drawModes.trackCrossing:
+                        this.removeIfExists(x, y);
+                        var tcr = new crossing_1.TrackCrossingShapeElement((0, dcc_1.getUUID)(), x, y, "trackcrossing" + num);
+                        tcr.angle = this.cursorElement.angle;
+                        // tc.cc = Globals.defaultDevice!
+                        this.unselectAll();
+                        this.add(tcr);
+                        break;
                     case drawModes.rect:
                         this.removeIfExists(x, y);
                         var rectangle = new rectangle_1.RectangleElement((0, dcc_1.getUUID)(), x, y, "rect" + num);
@@ -1140,6 +1157,14 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                             rbusAddress: co.rbusAddress
                         });
                         break;
+                    case 'trackcrossing':
+                        var tcr = elem;
+                        elems.push({
+                            uuid: tcr.UUID, type: tcr.type, name: tcr.name, x: tcr.x, y: tcr.y,
+                            angle: tcr.angle,
+                            rbusAddress: tcr.rbusAddress
+                        });
+                        break;
                     case 'corner':
                         var cu = elem;
                         elems.push({
@@ -1357,6 +1382,13 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                                 // co.cc = elem.cc
                                 co.rbusAddress = elem.rbusAddress;
                                 this.add(co);
+                                break;
+                            case "trackcrossing":
+                                var tcr = new crossing_1.TrackCrossingShapeElement(elem.uuid, elem.x, elem.y, elem.name);
+                                tcr.angle = elem.angle | 0;
+                                // co.cc = elem.cc
+                                tcr.rbusAddress = elem.rbusAddress;
+                                this.add(tcr);
                                 break;
                             case "block":
                                 var bl = new block_1.BlockElement(elem.uuid, elem.x, elem.y, elem.name);
