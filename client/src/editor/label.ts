@@ -1,9 +1,17 @@
+import { drawTextWithRoundedBackground } from "../helpers/graphics";
 import { Globals } from "../helpers/globals";
 import { RailView, View } from "./view";
 
 export class Label2Element extends View {
     text: string = 'LABEL';
-    textColor: string = 'black';
+    fgColor: string = 'black';
+    bgColor: string = "red";
+    fontSize: string = "10px";
+    fontStyle: string = "normal";
+    fontName: string = "Arial";
+    textAlign: string = "left";
+    textBaseline: string = "top";
+
     locoAddress: number = 0;
     
 
@@ -22,11 +30,13 @@ export class Label2Element extends View {
     public draw(ctx: CanvasRenderingContext2D) {
         ctx.save()
 
-        ctx.fillStyle = this.textColor;
-        ctx.font = "10px Arial";
+        ctx.fillStyle = this.fgColor;
+        // ctx.font = this.fontStyle + " " + this.fontSize + " " + this.fontName;
+         ctx.font = "10px Arial";
         ctx.textAlign = "left";
         ctx.textBaseline = "top";
-        var y = this.posTop + 1;
+        var y = this.posTop - 1;
+        var x = this.posLeft + 1;
         if(this.valign == "center") {
             y = this.centerY - 4
         } else if(this.valign == "bottom") {
@@ -34,9 +44,10 @@ export class Label2Element extends View {
         }
         ctx.fillText(this.text, this.posLeft, y);
 
-
-        super.draw(ctx)
+        // drawTextWithRoundedBackground(ctx, x, y,this.text,this.fgColor,"red",2, 4)
         ctx.restore()
+        super.draw(ctx)
+        
     }
 
     public get canRotate(): boolean {

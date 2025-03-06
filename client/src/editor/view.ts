@@ -106,10 +106,10 @@ export abstract class View {
             ctx.beginPath();
             ctx.lineWidth = 1;
             ctx.strokeStyle = "red";
-            if (this.bgColor) {
-                ctx.fillStyle = this.bgColor
-                ctx.fillRect(this.posLeft, this.posTop, this.width, this.height);
-            }
+            // if (this.bgColor) {
+            //     ctx.fillStyle = this.bgColor
+            //     ctx.fillRect(this.posLeft, this.posTop, this.width, this.height);
+            // }
             ctx.strokeRect(this.posLeft, this.posTop, this.width, this.height);
             // ctx.stroke();
             ctx.restore()

@@ -15,6 +15,7 @@ import { Api } from "./helpers/api";
 import { Task, Tasks } from "./helpers/task";
 import { Scheduler } from "./helpers/scheduler";
 import { CommandCenterSettingsDialog } from "./dialogs/commandCenterSettingsDialog";
+import { ProgrammerDialog } from "./dialogs/programmerDialog";
 
 console.log(Dispatcher)
 console.log(ApiCommands)
@@ -275,6 +276,9 @@ export class App {
             }
         }
 
+        this.toolbar.btnProgrammer.onclick = (e: MouseEvent) => {
+            const d = new ProgrammerDialog()
+        }
     }
     task1() {
 

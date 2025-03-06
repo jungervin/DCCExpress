@@ -278,7 +278,7 @@ export class Label extends UIComponent {
     constructor(text: string) {
         super()
         this.label = document.createElement("label");
-        this.label.textContent = text;
+        this.label.innerHTML = text;
         this.label.style.display = "block";
         this.label.style.marginBottom = "0px";
         // this.label.style.backgroundColor = "red"
@@ -335,7 +335,7 @@ export class InputNumber extends UIComponent {
     private input: HTMLInputElement;
     onchange?: (sender: InputNumber) => void;
 
-    constructor() {
+    constructor(min: number = 0, max: number = 100) {
         super()
         this.input = document.createElement("input");
         this.input.type = "number";
@@ -344,8 +344,8 @@ export class InputNumber extends UIComponent {
         this.input.style.marginBottom = "8px";
         this.input.style.border = "1px solid #ccc";
         this.input.style.borderRadius = "4px";
-        this.minValue = 0
-        this.maxValue = 100
+        this.minValue = min
+        this.maxValue = max
 
         this.input.addEventListener("change", () => {
             if (this.value < this.minValue) {

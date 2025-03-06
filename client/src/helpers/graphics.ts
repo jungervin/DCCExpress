@@ -43,21 +43,19 @@ export function drawTextWithRoundedBackground(
     text: string,
     textColor: string = 'black',
     rectColor: string = 'lightgray',
-    borderRadius: number = 2 // Lekerekítés sugara
+    borderRadius: number = 2,
+    padding: number = 2
 ) {
     ctx.save();
 
-    // Szöveg méretezése
     const textMetrics = ctx.measureText(text);
-    const padding = 2; // Párnázás a szöveg körül
+    // const padding = 2; 
     const textWidth = textMetrics.width;
     const textHeight = textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent;
 
-    // Téglalap méretének kiszámítása
     const rectWidth = textWidth + 2 * padding;
     const rectHeight = textHeight + 2 * padding;
 
-    // Lekerekített téglalap rajzolása
     ctx.fillStyle = rectColor;
     ctx.beginPath();
     ctx.moveTo(x + borderRadius, y);

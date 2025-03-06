@@ -6,7 +6,13 @@ define(["require", "exports", "../helpers/globals", "./view"], function (require
         constructor(uuid, x, y, name) {
             super(uuid, x, y, name);
             this.text = 'LABEL';
-            this.textColor = 'black';
+            this.fgColor = 'black';
+            this.bgColor = "red";
+            this.fontSize = "10px";
+            this.fontStyle = "normal";
+            this.fontName = "Arial";
+            this.textAlign = "left";
+            this.textBaseline = "top";
             this.locoAddress = 0;
             this._valign = "center";
             this.angleStep = 0;
@@ -19,11 +25,13 @@ define(["require", "exports", "../helpers/globals", "./view"], function (require
         }
         draw(ctx) {
             ctx.save();
-            ctx.fillStyle = this.textColor;
+            ctx.fillStyle = this.fgColor;
+            // ctx.font = this.fontStyle + " " + this.fontSize + " " + this.fontName;
             ctx.font = "10px Arial";
             ctx.textAlign = "left";
             ctx.textBaseline = "top";
-            var y = this.posTop + 1;
+            var y = this.posTop - 1;
+            var x = this.posLeft + 1;
             if (this.valign == "center") {
                 y = this.centerY - 4;
             }
@@ -31,8 +39,9 @@ define(["require", "exports", "../helpers/globals", "./view"], function (require
                 y = this.posBottom - 10;
             }
             ctx.fillText(this.text, this.posLeft, y);
-            super.draw(ctx);
+            // drawTextWithRoundedBackground(ctx, x, y,this.text,this.fgColor,"red",2, 4)
             ctx.restore();
+            super.draw(ctx);
         }
         get canRotate() {
             return false;

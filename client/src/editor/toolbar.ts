@@ -43,6 +43,7 @@ export class Toolbar extends HTMLElement {
     btnCommandCenterSettings: HTMLElement | null;
     btnDebug: HTMLElement;
     btnConsole: HTMLElement;
+    btnProgrammer: HTMLElement;
 
 
     constructor() {
@@ -147,7 +148,7 @@ export class Toolbar extends HTMLElement {
                     <svg id="btnCommandCenterSettings" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Command Center Settings</title><path d="M20.2,4.9C19,3.8 17.5,3.2 16,3.2C14.5,3.2 13,3.8 11.8,4.9L11,4.1C12.4,2.7 14.2,2 16,2C17.8,2 19.6,2.7 21,4.1L20.2,4.9M19.3,5.7L18.5,6.5C17.8,5.8 16.9,5.5 16,5.5C15.1,5.5 14.2,5.8 13.5,6.5L12.7,5.7C13.6,4.8 14.8,4.3 16,4.3C17.2,4.3 18.4,4.8 19.3,5.7M19,12A2,2 0 0,1 21,14V18A2,2 0 0,1 19,20H5A2,2 0 0,1 3,18V14A2,2 0 0,1 5,12H15V8H17V12H19M8,17V15H6V17H8M11.5,17V15H9.5V17H11.5M15,17V15H13V17H15M7,22H9V24H7V22M11,22H13V24H11V22M15,22H17V24H15V22Z" /></svg>
                     <svg id="btnDebug" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Debug</title><path d="M14,12H10V10H14M14,16H10V14H14M20,8H17.19C16.74,7.22 16.12,6.55 15.37,6.04L17,4.41L15.59,3L13.42,5.17C12.96,5.06 12.5,5 12,5C11.5,5 11.04,5.06 10.59,5.17L8.41,3L7,4.41L8.62,6.04C7.88,6.55 7.26,7.22 6.81,8H4V10H6.09C6.04,10.33 6,10.66 6,11V12H4V14H6V15C6,15.34 6.04,15.67 6.09,16H4V18H6.81C7.85,19.79 9.78,21 12,21C14.22,21 16.15,19.79 17.19,18H20V16H17.91C17.96,15.67 18,15.34 18,15V14H20V12H18V11C18,10.66 17.96,10.33 17.91,10H20V8Z" /></svg>
                     <svg id="btnConsole" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Console</title><path d="M20,19V7H4V19H20M20,3A2,2 0 0,1 22,5V19A2,2 0 0,1 20,21H4A2,2 0 0,1 2,19V5C2,3.89 2.9,3 4,3H20M13,17V15H18V17H13M9.58,13L5.57,9H8.4L11.7,12.3C12.09,12.69 12.09,13.33 11.7,13.72L8.42,17H5.59L9.58,13Z" /></svg>                    
-                    
+                    <svg id="btnProgrammer" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Programmer</title><path d="M5 3C3.89 3 3 3.89 3 5V19C3 20.11 3.89 21 5 21H19C20.11 21 21 20.11 21 19V5C21 3.89 20.11 3 19 3H5M5 5H19V19H5V5M15.1 7.88C14.45 7.29 13.83 7 12.3 7H8V17H9.8V13.4H12.3C13.8 13.4 14.46 13.12 15.1 12.58C15.74 12.03 16 11.25 16 10.23C16 9.26 15.75 8.5 15.1 7.88M13.6 11.5C13.28 11.81 12.9 12 12.22 12H9.8V8.4H12.1C12.76 8.4 13.27 8.65 13.6 9C13.93 9.35 14.1 9.72 14.1 10.24C14.1 10.8 13.92 11.19 13.6 11.5Z" /></svg>           
                     <svg class="separator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Train</title><path d="M9,3H11V5H9V3M13,3H15V5H13V3M9,7H11V9H9V7M13,7H15V9H13V7M9,11H11V13H9V11M13,11H15V13H13V11M9,15H11V17H9V15M13,15H15V17H13V15M9,19H11V21H9V19M13,19H15V21H13V19Z" /></svg>
 
                     <svg id="btnPointer" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Pointer (ESC)</title><path d="M13.75,10.19L14.38,10.32L18.55,12.4C19.25,12.63 19.71,13.32 19.65,14.06V14.19L19.65,14.32L18.75,20.44C18.69,20.87 18.5,21.27 18.15,21.55C17.84,21.85 17.43,22 17,22H10.12C9.63,22 9.18,21.82 8.85,21.47L2.86,15.5L3.76,14.5C4,14.25 4.38,14.11 4.74,14.13H5.03L9,15V4.5A2,2 0 0,1 11,2.5A2,2 0 0,1 13,4.5V10.19H13.75Z" /></svg>
@@ -201,6 +202,7 @@ export class Toolbar extends HTMLElement {
         this.btnCommandCenterSettings = this.shadowRoot?.getElementById("btnCommandCenterSettings") as any
         this.btnDebug = this.shadowRoot?.getElementById("btnDebug") as HTMLElement
         this.btnConsole = this.shadowRoot?.getElementById("btnConsole") as HTMLElement
+        this.btnProgrammer = this.shadowRoot?.getElementById("btnProgrammer") as HTMLElement
         
 
         this.toolbarExt = this.shadowRoot!.getElementById("toolbarExt") as HTMLSpanElement
@@ -236,6 +238,7 @@ export class Toolbar extends HTMLElement {
 
         this.debugButtonEnabled = false
         this.consoleButtonEnabled = false
+        this.programmerButtonEnabled = false
 
     }
 
@@ -317,12 +320,26 @@ export class Toolbar extends HTMLElement {
         return this._consoleButtonEnabled;
     }
     public set consoleButtonEnabled(v : boolean ) {
-        this._debugButtonEnabled = v;
+        this._consoleButtonEnabled = v;
         if(v) {
             this.btnConsole.classList.remove("disabled")
         }
         else {
             this.btnConsole.classList.add("disabled")
+        }
+    }
+
+    private _programmerButtonEnabled : boolean = false;
+    public get programmerButtonEnabled() : boolean  {
+        return this._programmerButtonEnabled;
+    }
+    public set programmerButtonEnabled(v : boolean ) {
+        this._programmerButtonEnabled = v;
+        if(v) {
+            this.btnProgrammer.classList.remove("disabled")
+        }
+        else {
+            this.btnProgrammer.classList.add("disabled")
         }
     }
 

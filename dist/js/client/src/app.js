@@ -1,4 +1,4 @@
-define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/view", "../../common/src/dcc", "./helpers/globals", "./controls/dialog", "./helpers/ws", "./controls/toastManager", "./editor/dispatcher", "./components/controlPanel", "./helpers/api", "./helpers/task", "./helpers/scheduler", "./dialogs/commandCenterSettingsDialog"], function (require, exports, editor_1, turnout_1, view_1, dcc_1, globals_1, dialog_1, ws_1, toastManager_1, dispatcher_1, controlPanel_1, api_1, task_1, scheduler_1, commandCenterSettingsDialog_1) {
+define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/view", "../../common/src/dcc", "./helpers/globals", "./controls/dialog", "./helpers/ws", "./controls/toastManager", "./editor/dispatcher", "./components/controlPanel", "./helpers/api", "./helpers/task", "./helpers/scheduler", "./dialogs/commandCenterSettingsDialog", "./dialogs/programmerDialog"], function (require, exports, editor_1, turnout_1, view_1, dcc_1, globals_1, dialog_1, ws_1, toastManager_1, dispatcher_1, controlPanel_1, api_1, task_1, scheduler_1, commandCenterSettingsDialog_1, programmerDialog_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.App = void 0;
@@ -208,6 +208,9 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                     // }
                     this.tasks.stopAllTask();
                 }
+            };
+            this.toolbar.btnProgrammer.onclick = (e) => {
+                const d = new programmerDialog_1.ProgrammerDialog();
             };
         }
         task1() {

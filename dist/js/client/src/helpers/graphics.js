@@ -25,18 +25,14 @@ define(["require", "exports"], function (require, exports) {
         const textY = y + padding + textMetrics.actualBoundingBoxAscent;
         ctx.fillText(text, textX, textY);
     }
-    function drawTextWithRoundedBackground(ctx, x, y, text, textColor = 'black', rectColor = 'lightgray', borderRadius = 2 // Lekerekítés sugara
-    ) {
+    function drawTextWithRoundedBackground(ctx, x, y, text, textColor = 'black', rectColor = 'lightgray', borderRadius = 2, padding = 2) {
         ctx.save();
-        // Szöveg méretezése
         const textMetrics = ctx.measureText(text);
-        const padding = 2; // Párnázás a szöveg körül
+        // const padding = 2; 
         const textWidth = textMetrics.width;
         const textHeight = textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent;
-        // Téglalap méretének kiszámítása
         const rectWidth = textWidth + 2 * padding;
         const rectHeight = textHeight + 2 * padding;
-        // Lekerekített téglalap rajzolása
         ctx.fillStyle = rectColor;
         ctx.beginPath();
         ctx.moveTo(x + borderRadius, y);

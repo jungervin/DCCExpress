@@ -106,8 +106,8 @@ export class CustomCanvas extends HTMLElement {
     originX: number;
     originY: number;
     //drawEnabled: boolean = true;
-    width: number = 0;
-    height: number = 0;
+    // width: number = 0;
+    // height: number = 0;
     sidePanelLeft: HTMLDivElement | undefined;
     btnSidePanelLeftClose: HTMLDivElement | undefined;
     routeSwitchElement: RouteSwitchElement | undefined;
@@ -164,8 +164,8 @@ export class CustomCanvas extends HTMLElement {
     }
 
     connectedCallback() {
-        this.width = parseInt(this.getAttribute('width') || '100vw');
-        this.height = parseInt(this.getAttribute('height') || '100vw');
+        // this.width = parseInt(this.getAttribute('width') || '100vw');
+        // this.height = parseInt(this.getAttribute('height') || '100vw');
         this.canvas.width = this.parentElement!.offsetWidth;
         this.canvas.height = this.parentElement!.offsetHeight;
         this.ctx = this.canvas.getContext('2d')!;
@@ -407,7 +407,7 @@ export class CustomCanvas extends HTMLElement {
         this.toolbar!.btnFitToPage.onclick = (e: MouseEvent) => {
             this.originX = 0;
             this.originY = 0;
-            var r = { x1: 1000, y1: 1000, x2: 0, y2: 0 }
+            var r = { x1: 10000, y1: 10000, x2: -10000, y2: -10000 }
 
             this.views.elements.forEach((elem: View) => {
                 if (elem.x < r.x1) {
@@ -424,17 +424,17 @@ export class CustomCanvas extends HTMLElement {
                 }
             });
 
-            console.log("RECT:", r)
-            var rw = Math.floor((r.x2 - r.x1) / 2)
-            var rh = Math.floor((r.y2 - r.y1) / 2)
-            var cw = Math.floor((this.canvas.width / this.scale / this.gridSizeX) / 2)
-            var ch = Math.floor((this.canvas.height / this.scale / this.gridSizeY) / 2)
-            var dx = Math.floor(r.x1 + rw - cw)
-            var dy = Math.floor(r.y1 + rh - ch)
-            this.width = this.canvas.width / this.scale
-            this.height = this.canvas.height / this.scale
+            //console.log("RECT:", r)
+            var rw = Math.round((r.x2 - r.x1) / 2)
+            var rh = Math.round((r.y2 - r.y1) / 2)
+            var cw = Math.round((this.canvas.width / this.scale / this.gridSizeX) / 2)
+            var ch = Math.round((this.canvas.height / this.scale / this.gridSizeY) / 2)
+            var dx = Math.round(r.x1 + rw - cw)
+            var dy = Math.round(r.y1 + rh - ch)
+            // this.width = this.canvas.width / this.scale
+            // this.height = this.canvas.height / this.scale
             this.views.elements.forEach((elem: View) => {
-                elem.x -= dx + 1
+                elem.x -= dx 
                 elem.y -= dy + 1
             })
             this.draw()
@@ -1428,7 +1428,14 @@ export class CustomCanvas extends HTMLElement {
                     elems.push({
                         uuid: la.UUID, type: la.type, name: la.name, x: la.x, y: la.y, angle: 0,
                         text: la.text,
-                        valign: la.valign
+                        valign: la.valign,
+                        fgColor: la.fgColor,
+                        bgColor: la.bgColor,
+                        fontSize: la.fontSize,
+                        fontStyle: la.fontStyle,
+                        fontName: la.fontName,
+                        textAlign: la.textAlign,
+                        textBaseline: la.textBaseline
                     })
                     break;
                 case 'routeSwitch':
@@ -1662,10 +1669,17 @@ export class CustomCanvas extends HTMLElement {
                             break;
                         case "label2":
                             var l = new Label2Element(elem.uuid, elem.x, elem.y, elem.name);
-                            console.log("LABEL:", l instanceof RailView);
-                            l.text = elem.text ?? "LABEL"
-                            l.valign = elem.valign
                             l.angle = 0
+                            l.text = elem.text ?? "LABEL"
+                            l.valign = elem.valign ?? "center"
+                            l.fgColor = elem.fgColor ?? "black",
+                            l.bgColor = elem.bgColor ?? "white",
+                            l.fontSize = elem.fontSize ?? "10px",
+                            l.fontStyle = elem.fontStyle ?? "normal",
+                            l.fontName = elem.fontName ?? "Arial",
+                            l.textAlign = elem.textAlign ?? "center",
+                            l.textBaseline = elem.textBaseline ?? "middle"
+    
                             this.add(l)
                             break;
                         case "routeSwitch":

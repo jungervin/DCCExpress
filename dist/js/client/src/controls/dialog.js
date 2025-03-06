@@ -233,7 +233,7 @@ define(["require", "exports"], function (require, exports) {
         constructor(text) {
             super();
             this.label = document.createElement("label");
-            this.label.textContent = text;
+            this.label.innerHTML = text;
             this.label.style.display = "block";
             this.label.style.marginBottom = "0px";
             // this.label.style.backgroundColor = "red"
@@ -275,7 +275,7 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.Input = Input;
     class InputNumber extends UIComponent {
-        constructor() {
+        constructor(min = 0, max = 100) {
             super();
             this.input = document.createElement("input");
             this.input.type = "number";
@@ -284,8 +284,8 @@ define(["require", "exports"], function (require, exports) {
             this.input.style.marginBottom = "8px";
             this.input.style.border = "1px solid #ccc";
             this.input.style.borderRadius = "4px";
-            this.minValue = 0;
-            this.maxValue = 100;
+            this.minValue = min;
+            this.maxValue = max;
             this.input.addEventListener("change", () => {
                 if (this.value < this.minValue) {
                     this.value = this.minValue;
