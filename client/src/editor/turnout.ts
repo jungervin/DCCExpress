@@ -319,7 +319,7 @@ export class TurnoutLeftElement extends TurnoutRightElement {
     }
 }
 
-export class TurnoutYShapeElement extends TurnoutRightElement {
+export class TurnoutYShapeElement extends TurnoutElement {
     constructor(uuid: string, address: number, x1: number, y1: number, name: string) {
         super(uuid, address, x1, y1, name)
         this.angleStep = 45
@@ -336,6 +336,7 @@ export class TurnoutYShapeElement extends TurnoutRightElement {
         ctx.restore()
         super.draw(ctx)
     }
+
     public drawTurnout(ctx: CanvasRenderingContext2D, t1Closed: boolean): void {
         var dx = this.width / 5
 
@@ -362,17 +363,29 @@ export class TurnoutYShapeElement extends TurnoutRightElement {
 
             ctx.moveTo(this.posLeft + dx, this.centerY)
             ctx.lineTo(this.centerX, this.centerY)
-            if(t1Closed) {
-             ctx.lineTo(this.posRight - dx, this.posTop + dx)
+            if (t1Closed) {
+                ctx.lineTo(this.posRight - dx, this.posTop + dx)
             }
             else {
-            ctx.moveTo(this.centerX, this.centerY)
-            ctx.lineTo(this.posRight-dx, this.posBottom-dx)
+                ctx.moveTo(this.centerX, this.centerY)
+                ctx.lineTo(this.posRight - dx, this.posBottom - dx)
             }
             ctx.stroke();
 
+            // Triangle
+            if (this.isSelected) {
+                ctx.beginPath();
+                ctx.strokeStyle = 'red';
+                ctx.moveTo(this.posRight , this.centerY);
+                ctx.lineTo(this.posRight - 3, this.centerY - 2);
+                ctx.lineTo(this.posRight - 3, this.centerY + 2);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+            }
+
         } else { // 45
-            ctx.translate(this.centerX, this.centerY);  
+            ctx.translate(this.centerX, this.centerY);
             ctx.rotate(degreesToRadians(this.angle + 45));
             ctx.translate(-this.centerX, -this.centerY);
 
@@ -380,24 +393,44 @@ export class TurnoutYShapeElement extends TurnoutRightElement {
             ctx.lineTo(this.centerX, this.centerY)
             ctx.lineTo(this.centerX, this.posTop)
             ctx.moveTo(this.centerX, this.centerY)
-            ctx.lineTo(this.posRight, this.centerY)    
-            ctx.stroke();    
-            
+            ctx.lineTo(this.posRight, this.centerY)
+            ctx.stroke();
+
             //=================
             ctx.beginPath();
             ctx.strokeStyle = this.stateColor
             ctx.lineWidth = Globals.TrackWidth3;
 
-            ctx.moveTo(this.posLeft + dx, this.posBottom-dx)
+            ctx.moveTo(this.posLeft + dx, this.posBottom - dx)
             ctx.lineTo(this.centerX, this.centerY)
-            if(t1Closed) {
-                ctx.lineTo(this.centerX, this.posTop+dx)
+            if (t1Closed) {
+                ctx.lineTo(this.centerX, this.posTop + dx)
             }
             else {
                 ctx.moveTo(this.centerX, this.centerY)
-                ctx.lineTo(this.posRight-dx, this.centerY)
+                ctx.lineTo(this.posRight - dx, this.centerY)
             }
-            ctx.stroke();            
+            ctx.stroke();
+
+
+            // Triangle
+            if (this.isSelected) {
+                
+                ctx.translate(this.centerX, this.centerY);
+                ctx.rotate(degreesToRadians(-this.angle));
+                ctx.rotate(degreesToRadians(this.angle - 45));
+                ctx.translate(-this.centerX, -this.centerY);
+    
+                ctx.beginPath();
+                ctx.strokeStyle = 'red';
+                ctx.moveTo(this.posRight , this.centerY);
+                ctx.lineTo(this.posRight - 3, this.centerY - 2);
+                ctx.lineTo(this.posRight - 3, this.centerY + 2);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+            }
+
 
         }
 
@@ -408,6 +441,7 @@ export class TurnoutYShapeElement extends TurnoutRightElement {
         ctx.arc(this.centerX, this.centerY, 3, 0, 2 * Math.PI)
         ctx.fill()
         ctx.stroke()
+
 
     }
 

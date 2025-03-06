@@ -103,6 +103,7 @@ define(["require", "exports", "../components/turnoutPropertiesElement", "../edit
             this.trackPropertiesElement = document.createElement("track-properties-element");
             this.turnoutLeftPropertiesElement = document.createElement("turnout-left-properties-element");
             this.turnoutRightPropertiesElement = document.createElement("turnout-right-properties-element");
+            this.turnoutYPropertiesElement = document.createElement("turnout-y-properties-element");
             this.turnoutDoublePropertiesElement = document.createElement("turnout-double-properties-element");
             this.routeListElementProperties = document.createElement('route-list-element-properties');
             this.buttonPropertiesElement = document.createElement('button-properties-element');
@@ -201,6 +202,10 @@ define(["require", "exports", "../components/turnoutPropertiesElement", "../edit
                 else if (Object.getPrototypeOf(v) == turnout_1.TurnoutRightElement.prototype) {
                     this.turnoutRightPropertiesElement.setTurnout(this.selectedObject);
                     this.container.appendChild(this.turnoutRightPropertiesElement);
+                }
+                else if (Object.getPrototypeOf(v) == turnout_1.TurnoutYShapeElement.prototype) {
+                    this.turnoutYPropertiesElement.setTurnout(this.selectedObject);
+                    this.container.appendChild(this.turnoutYPropertiesElement);
                 }
                 else if (Object.getPrototypeOf(v) == turnout_1.TurnoutDoubleElement.prototype) {
                     this.container.appendChild(this.turnoutDoublePropertiesElement);

@@ -282,7 +282,7 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
         }
     }
     exports.TurnoutLeftElement = TurnoutLeftElement;
-    class TurnoutYShapeElement extends TurnoutRightElement {
+    class TurnoutYShapeElement extends TurnoutElement {
         constructor(uuid, address, x1, y1, name) {
             super(uuid, address, x1, y1, name);
             this.angleStep = 45;
@@ -326,6 +326,17 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
                     ctx.lineTo(this.posRight - dx, this.posBottom - dx);
                 }
                 ctx.stroke();
+                // Triangle
+                if (this.isSelected) {
+                    ctx.beginPath();
+                    ctx.strokeStyle = 'red';
+                    ctx.moveTo(this.posRight, this.centerY);
+                    ctx.lineTo(this.posRight - 3, this.centerY - 2);
+                    ctx.lineTo(this.posRight - 3, this.centerY + 2);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                }
             }
             else { // 45
                 ctx.translate(this.centerX, this.centerY);
@@ -351,6 +362,21 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
                     ctx.lineTo(this.posRight - dx, this.centerY);
                 }
                 ctx.stroke();
+                // Triangle
+                if (this.isSelected) {
+                    ctx.translate(this.centerX, this.centerY);
+                    ctx.rotate((0, math_1.degreesToRadians)(-this.angle));
+                    ctx.rotate((0, math_1.degreesToRadians)(this.angle - 45));
+                    ctx.translate(-this.centerX, -this.centerY);
+                    ctx.beginPath();
+                    ctx.strokeStyle = 'red';
+                    ctx.moveTo(this.posRight, this.centerY);
+                    ctx.lineTo(this.posRight - 3, this.centerY - 2);
+                    ctx.lineTo(this.posRight - 3, this.centerY + 2);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                }
             }
             ctx.beginPath();
             ctx.lineWidth = 1;

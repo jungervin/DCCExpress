@@ -1,7 +1,7 @@
 import { RailView, View } from "../editor/view";
 import { BitElement } from "../components/bitElement";
-import { TurnoutDoublePropertiesElement, TurnoutLeftPropertiesElement, TurnoutRightPropertiesElement } from "../components/turnoutPropertiesElement";
-import { TurnoutDoubleElement, TurnoutElement, TurnoutLeftElement, TurnoutRightElement } from "../editor/turnout";
+import { TurnoutDoublePropertiesElement, TurnoutLeftPropertiesElement, TurnoutRightPropertiesElement, TurnoutYPropertiesElement } from "../components/turnoutPropertiesElement";
+import { TurnoutDoubleElement, TurnoutElement, TurnoutLeftElement, TurnoutRightElement, TurnoutYShapeElement } from "../editor/turnout";
 // import { DialogResult } from "../controls/dialog";
 import { RouteListElementProperties } from "../components/routeListElementProperties";
 import { RouteSwitchElement } from "../editor/route";
@@ -47,6 +47,7 @@ export class PropertyPanel extends HTMLElement {
     container: HTMLDivElement;
     turnoutLeftPropertiesElement: TurnoutLeftPropertiesElement;
     turnoutRightPropertiesElement: TurnoutRightPropertiesElement;
+    turnoutYPropertiesElement: TurnoutYPropertiesElement;
     signal2PropertiesElement: Signal2PropertiesElement;
     signal3PropertiesElement: Signal3PropertiesElement;
     signal4PropertiesElement: Signal4PropertiesElement;
@@ -149,6 +150,7 @@ export class PropertyPanel extends HTMLElement {
         this.trackPropertiesElement = document.createElement("track-properties-element") as TrackPropertiesElement
         this.turnoutLeftPropertiesElement = document.createElement("turnout-left-properties-element") as TurnoutLeftPropertiesElement
         this.turnoutRightPropertiesElement = document.createElement("turnout-right-properties-element") as TurnoutRightPropertiesElement
+        this.turnoutYPropertiesElement = document.createElement("turnout-y-properties-element") as TurnoutYPropertiesElement
         this.turnoutDoublePropertiesElement = document.createElement("turnout-double-properties-element") as TurnoutDoublePropertiesElement
         this.routeListElementProperties = document.createElement('route-list-element-properties') as RouteListElementProperties
         this.buttonPropertiesElement = document.createElement('button-properties-element') as ButtonPropertiesElement
@@ -257,6 +259,10 @@ export class PropertyPanel extends HTMLElement {
             else if (Object.getPrototypeOf(v) == TurnoutRightElement.prototype) {
                 this.turnoutRightPropertiesElement.setTurnout(this.selectedObject as TurnoutRightElement)
                 this.container.appendChild(this.turnoutRightPropertiesElement)
+            }
+            else if (Object.getPrototypeOf(v) == TurnoutYShapeElement.prototype) {
+                this.turnoutYPropertiesElement.setTurnout(this.selectedObject as TurnoutYShapeElement)
+                this.container.appendChild(this.turnoutYPropertiesElement)
             }
             else if (Object.getPrototypeOf(v) == TurnoutDoubleElement.prototype) {
                 this.container.appendChild(this.turnoutDoublePropertiesElement)
