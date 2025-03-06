@@ -67,8 +67,12 @@ export class RouteListElementProperties extends HTMLElement {
         var turnouts = rs.tag as TurnoutElement[]
         const list: iSetTurnout[] = []
 
+        const uniqueAddress = turnouts.filter((obj, index, self) =>
+            index === self.findIndex((o) => o.address === obj.address)
+        );
 
-        turnouts.forEach((t) => {
+        // turnouts.forEach((t) => {
+            uniqueAddress.forEach((t) => {            
             var routeItem = this.routeSwitch!.turnouts.find((to) => {
                 return to.address == t.address
             })

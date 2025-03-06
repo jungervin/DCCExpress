@@ -48,7 +48,9 @@ define(["require", "exports", "../editor/turnout", "../helpers/graphics"], funct
             this.listPanel.innerHTML = '';
             var turnouts = rs.tag;
             const list = [];
-            turnouts.forEach((t) => {
+            const uniqueAddress = turnouts.filter((obj, index, self) => index === self.findIndex((o) => o.address === obj.address));
+            // turnouts.forEach((t) => {
+            uniqueAddress.forEach((t) => {
                 var routeItem = this.routeSwitch.turnouts.find((to) => {
                     return to.address == t.address;
                 });
