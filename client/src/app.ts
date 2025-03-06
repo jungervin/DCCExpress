@@ -277,7 +277,9 @@ export class App {
         }
 
         this.toolbar.btnProgrammer.onclick = (e: MouseEvent) => {
-            const d = new ProgrammerDialog()
+            if (this.toolbar.programmerButtonEnabled) {
+                const d = new ProgrammerDialog()
+            }
         }
     }
     task1() {
@@ -434,7 +436,7 @@ export class App {
 
         const turnouts = this.editor.views.getTurnoutElements()
         turnouts.forEach((elem: any) => {
-            
+
             // if (Object.getPrototypeOf(elem) == TurnoutRightElement.prototype) {
             //     var a = elem as TurnoutRightElement
             //     if (a.address == data.address) {
@@ -451,7 +453,7 @@ export class App {
             //         redraw = true
             //     }
             // }
-            
+
             if (Object.getPrototypeOf(elem) == TurnoutDoubleElement.prototype) {
                 var td = elem as TurnoutDoubleElement
                 if (td.address == data.address) {

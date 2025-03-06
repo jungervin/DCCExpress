@@ -210,7 +210,9 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 }
             };
             this.toolbar.btnProgrammer.onclick = (e) => {
-                const d = new programmerDialog_1.ProgrammerDialog();
+                if (this.toolbar.programmerButtonEnabled) {
+                    const d = new programmerDialog_1.ProgrammerDialog();
+                }
             };
         }
         task1() {
