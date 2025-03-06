@@ -3,7 +3,7 @@ import { Toolbar } from "./editor/toolbar";
 import { TurnoutDoubleElement, TurnoutElement, TurnoutLeftElement, TurnoutRightElement } from "./editor/turnout";
 import { Signal1Element } from "./editor/signals";
 import { RailView } from "./editor/view";
-import { ApiCommands, iData, iGetTurnout, iLoco, iPowerInfo, iRBus, iSettings, iSetPower, iSetTurnout, iSystemStatus, defaultSettings, iLocomotive, iBlockInfo, iTimeInfo, iCommandCenter, CommandCenterTypes, iZ21CommandCenter, FileNames, iSensorInfo, iOutputInfo } from "../../common/src/dcc";
+import { ApiCommands, iData, iGetTurnout, iLoco, iPowerInfo, iRBus, iSettings, iSetPower, iSetTurnout, iSystemStatus, defaultSettings, iLocomotive, iBlockInfo, iTimeInfo, iCommandCenter, CommandCenterTypes, iZ21CommandCenter, FileNames, iSensorInfo, iOutputInfo, iDccExDirectCommandResponse } from "../../common/src/dcc";
 import { Globals } from "./helpers/globals";
 import { Dialog } from "./controls/dialog";
 import { wsClient } from "./helpers/ws";
@@ -85,7 +85,7 @@ export class App {
 
         this.toolbar!.btnPower!.onclick = (e: MouseEvent) => {
             const p: iSetPower = { on: !this.powerInfo.trackVoltageOn }
-            wsClient.send({ type: ApiCommands.setPower, data: p } as iData)
+            wsClient.send({ type: ApiCommands.setTrackPower, data: p } as iData)
         }
 
         this.toolbar!.btnEmergencyStop!.onclick = (e: MouseEvent) => {
@@ -232,6 +232,12 @@ export class App {
                         const ti = msg.data as iTimeInfo
                         this.editor.fastClock.setCurrentTime(ti.timestamp);
 
+                    }
+                    break;
+                case ApiCommands.dccExDirectCommandResponse:
+                    console.log("dccExDirectCommandResponse", msg.data)
+                    if(window.directCommandResponse) {
+                        window.directCommandResponse(msg.data as iDccExDirectCommandResponse)
                     }
                     break;
                 default: console.log("Unknow WS message:", msg)
@@ -561,14 +567,30 @@ export class App {
             }
         }
 
-        if (this.powerInfo.trackVoltageOn != pi.trackVoltageOn) {
+
+        if (this.powerInfo.trackVoltageOn != pi.trackVoltageOn || this.powerInfo.programmingModeActive != pi.programmingModeActive) {
             window.powerChanged(pi)
-            if (pi.trackVoltageOn) {
-                this.toolbar.btnPower!.classList.add("success")
-            } else {
-                this.toolbar.btnPower!.classList.remove("success")
+
+            if (this.powerInfo.trackVoltageOn != pi.trackVoltageOn) {
+                if (pi.trackVoltageOn) {
+                    this.toolbar.btnPower!.classList.add("success")
+                    toastManager.showToast("⚠️Track Voltage On⚠️", "light")
+                } else {
+                    this.toolbar.btnPower!.classList.remove("success")
+                    toastManager.showToast("❌Track Voltage Off❌", "light")
+                }
+            }
+            if (this.powerInfo.programmingModeActive != pi.programmingModeActive) {
+                if (pi.programmingModeActive) {
+                    this.toolbar.btnPower!.classList.add("warning")
+                    toastManager.showToast("⚠️Programming Mode Active⚠️", "light")
+                } else {
+                    this.toolbar.btnPower!.classList.remove("warning")
+                    toastManager.showToast("❌Programming Mode Inactive❌", "light")
+                }
             }
         }
+
 
         this.powerInfo = pi;
 

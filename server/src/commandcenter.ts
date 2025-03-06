@@ -57,6 +57,9 @@ export abstract class CommandCenter {
 
     abstract setLocoFunction(address: number, fn: number, on: boolean): void;
 
-    abstract trackPower(on: boolean): void;
+    abstract setTrackPower(on: boolean): void;
+    abstract setProgPower(on: boolean): void;
     abstract emergenyStop(stop: boolean): void;
+
+    abstract writeDirectCommand(command: string): void;
 }

@@ -156,9 +156,17 @@ class CommandCenters {
             (0, utility_1.log)("Command Center doesn't exists!");
         }
     }
-    setPower(data) {
+    setTrackPower(data) {
         if (this.cc) {
-            this.cc.trackPower(data.on);
+            this.cc.setTrackPower(data.on);
+        }
+        else {
+            (0, utility_1.log)("Command Center doesn't exists!");
+        }
+    }
+    setProgPower(data) {
+        if (this.cc) {
+            this.cc.setProgPower(data.on);
         }
         else {
             (0, utility_1.log)("Command Center doesn't exists!");
@@ -167,6 +175,14 @@ class CommandCenters {
     emergencyStop() {
         if (this.cc) {
             this.cc.emergenyStop(true);
+        }
+        else {
+            (0, utility_1.log)("Command Center doesn't exists!");
+        }
+    }
+    writeDirectCommand(data) {
+        if (this.cc) {
+            this.cc.writeDirectCommand(data.command);
         }
         else {
             (0, utility_1.log)("Command Center doesn't exists!");

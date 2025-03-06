@@ -47,7 +47,7 @@ export enum ApiCommands {
     response = "response",
     systemInfo = "systemInfo",
     powerInfo = "powerInfo",
-    setPower = "setPower",
+    setTrackPower = "setPower",
     emergencyStop = "emergencyStop",
 
     UnsuccessfulOperation = "UnsuccessfulOperation",
@@ -62,6 +62,10 @@ export enum ApiCommands {
     setOutput = "setOutput",
     getOutput = "getOutput",
     outputInfo = "outputInfo",
+    setProgPower = "setProgPower",
+    writeDccExDirectCommand = "writeDirectCommand",
+    
+    dccExDirectCommandResponse = "dccExDirectCommandResponse",
 }
 
 export interface iData {
@@ -218,6 +222,14 @@ export enum CommandCenterTypes {
     "DCCExTCP",
     "DCCExSerial",
     unknown
+}
+
+export interface iDccExDirectCommand {
+    command: string,
+}
+
+export interface iDccExDirectCommandResponse {
+    response: string,
 }
 
 export function getCommandCenterType(type: CommandCenterTypes): string {

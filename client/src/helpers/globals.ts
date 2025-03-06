@@ -6,6 +6,8 @@ declare global {
         dispatcherInit?: () => void;
         dispatcherLoop?: () => void;
         powerChanged: (pi: iPowerInfo) => void;
+
+        directCommandResponse: (data: any) => void;
         
     }
 }

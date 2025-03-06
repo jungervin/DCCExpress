@@ -68,8 +68,14 @@ exports.wsServer.on("connection", (ws, req) => {
                 case dcc_1.ApiCommands.emergencyStop:
                     commandcenters_1.commandCenters.emergencyStop();
                     break;
-                case dcc_1.ApiCommands.setPower:
-                    commandcenters_1.commandCenters.setPower(data);
+                case dcc_1.ApiCommands.setTrackPower:
+                    commandcenters_1.commandCenters.setTrackPower(data);
+                    break;
+                case dcc_1.ApiCommands.setProgPower:
+                    commandcenters_1.commandCenters.setProgPower(data);
+                    break;
+                case dcc_1.ApiCommands.writeDccExDirectCommand:
+                    commandcenters_1.commandCenters.writeDirectCommand(data);
                     break;
                 // case ApiCommands.getCommandCenters:
                 //     var cc: iCommandCenter[] = commandCenters.getDevices()

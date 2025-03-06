@@ -61,7 +61,7 @@ define(["require", "exports"], function (require, exports) {
         ApiCommands["response"] = "response";
         ApiCommands["systemInfo"] = "systemInfo";
         ApiCommands["powerInfo"] = "powerInfo";
-        ApiCommands["setPower"] = "setPower";
+        ApiCommands["setTrackPower"] = "setPower";
         ApiCommands["emergencyStop"] = "emergencyStop";
         ApiCommands["UnsuccessfulOperation"] = "UnsuccessfulOperation";
         ApiCommands["saveSettings"] = "saveSettings";
@@ -75,6 +75,9 @@ define(["require", "exports"], function (require, exports) {
         ApiCommands["setOutput"] = "setOutput";
         ApiCommands["getOutput"] = "getOutput";
         ApiCommands["outputInfo"] = "outputInfo";
+        ApiCommands["setProgPower"] = "setProgPower";
+        ApiCommands["writeDccExDirectCommand"] = "writeDirectCommand";
+        ApiCommands["dccExDirectCommandResponse"] = "dccExDirectCommandResponse";
     })(ApiCommands || (exports.ApiCommands = ApiCommands = {}));
     var Z21POWERINFO;
     (function (Z21POWERINFO) {

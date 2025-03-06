@@ -101,6 +101,10 @@ define(["require", "exports", "bootstrap"], function (require, exports, bootstra
                     background-color: rgb(0, 255, 0);
                     fill: black;
                 }
+                .toolbarButton.warning {
+                    background-color: rgb(255, 196, 0);
+                    fill: black;
+                }
 
                 .toolbarButton.disabled {
                     fill: silver
@@ -211,7 +215,7 @@ define(["require", "exports", "bootstrap"], function (require, exports, bootstra
             });
             this.debugButtonEnabled = false;
             this.consoleButtonEnabled = false;
-            this.programmerButtonEnabled = false;
+            this.programmerButtonEnabled = true;
         }
         save() {
             this.canvas.save();

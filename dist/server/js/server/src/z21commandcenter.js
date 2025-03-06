@@ -20,8 +20,11 @@ const udpClient_1 = require("./udpClient");
 const cLAN_X_TURNOUT_INFO0x43 = 0x43;
 const cLAN_SYSTEMSTATE_DATACHANGED0x84 = 0x84;
 class Z21CommandCenter extends commandcenter_1.CommandCenter {
+    writeDirectCommand(command) {
+        (0, utility_1.log)("Z21.writeDirectCommand Method not implemented.");
+    }
     //private mutex = new Mutex();
-    trackPower(on) {
+    setTrackPower(on) {
         if (on) {
             this.LAN_X_SET_TRACK_POWER_ON();
         }
@@ -33,6 +36,9 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
                 this.LAN_X_SET_TRACK_POWER_OFF();
             }
         }
+    }
+    setProgPower(on) {
+        (0, utility_1.log)("Z21.progPower Method not implemented.");
     }
     emergenyStop(stop) {
         if (this.powerInfo.emergencyStop) {

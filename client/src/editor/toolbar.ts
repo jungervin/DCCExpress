@@ -115,6 +115,10 @@ export class Toolbar extends HTMLElement {
                     background-color: rgb(0, 255, 0);
                     fill: black;
                 }
+                .toolbarButton.warning {
+                    background-color: rgb(255, 196, 0);
+                    fill: black;
+                }
 
                 .toolbarButton.disabled {
                     fill: silver
@@ -238,7 +242,7 @@ export class Toolbar extends HTMLElement {
 
         this.debugButtonEnabled = false
         this.consoleButtonEnabled = false
-        this.programmerButtonEnabled = false
+        this.programmerButtonEnabled = true
 
     }
 

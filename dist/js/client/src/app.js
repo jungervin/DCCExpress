@@ -54,7 +54,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             this.toolbar.canvas.drawMode = editor_1.drawModes.pointer;
             this.toolbar.btnPower.onclick = (e) => {
                 const p = { on: !this.powerInfo.trackVoltageOn };
-                ws_1.wsClient.send({ type: dcc_1.ApiCommands.setPower, data: p });
+                ws_1.wsClient.send({ type: dcc_1.ApiCommands.setTrackPower, data: p });
             };
             this.toolbar.btnEmergencyStop.onclick = (e) => {
                 ws_1.wsClient.send({ type: dcc_1.ApiCommands.emergencyStop, data: "" });
@@ -171,6 +171,12 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                         if (this.editor.fastClock) {
                             const ti = msg.data;
                             this.editor.fastClock.setCurrentTime(ti.timestamp);
+                        }
+                        break;
+                    case dcc_1.ApiCommands.dccExDirectCommandResponse:
+                        console.log("dccExDirectCommandResponse", msg.data);
+                        if (window.directCommandResponse) {
+                            window.directCommandResponse(msg.data);
                         }
                         break;
                     default:
@@ -454,13 +460,27 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                     this.toolbar.btnEmergencyStop.classList.remove("error");
                 }
             }
-            if (this.powerInfo.trackVoltageOn != pi.trackVoltageOn) {
+            if (this.powerInfo.trackVoltageOn != pi.trackVoltageOn || this.powerInfo.programmingModeActive != pi.programmingModeActive) {
                 window.powerChanged(pi);
-                if (pi.trackVoltageOn) {
-                    this.toolbar.btnPower.classList.add("success");
+                if (this.powerInfo.trackVoltageOn != pi.trackVoltageOn) {
+                    if (pi.trackVoltageOn) {
+                        this.toolbar.btnPower.classList.add("success");
+                        toastManager_1.toastManager.showToast("⚠️Track Voltage On⚠️", "light");
+                    }
+                    else {
+                        this.toolbar.btnPower.classList.remove("success");
+                        toastManager_1.toastManager.showToast("❌Track Voltage Off❌", "light");
+                    }
                 }
-                else {
-                    this.toolbar.btnPower.classList.remove("success");
+                if (this.powerInfo.programmingModeActive != pi.programmingModeActive) {
+                    if (pi.programmingModeActive) {
+                        this.toolbar.btnPower.classList.add("warning");
+                        toastManager_1.toastManager.showToast("⚠️Programming Mode Active⚠️", "light");
+                    }
+                    else {
+                        this.toolbar.btnPower.classList.remove("warning");
+                        toastManager_1.toastManager.showToast("❌Programming Mode Inactive❌", "light");
+                    }
                 }
             }
             this.powerInfo = pi;

@@ -169,6 +169,10 @@ body {
     background: #3498db; /* Kék */
 }
 
+.toast2.light {
+    background: #979797; /* Kék */
+}
+
 /* 🎬 Animációk */
 @keyframes toastIn {
     from {

@@ -341,7 +341,7 @@ export class LocoControlPanel extends HTMLElement {
             if (this.power) {
                 wsClient.send({ type: ApiCommands.emergencyStop, data: "" } as iData)
             } else {
-                wsClient.send({ type: ApiCommands.setPower, data: { on: true } as iSetPower } as iData)
+                wsClient.send({ type: ApiCommands.setTrackPower, data: { on: true } as iSetPower } as iData)
             }
         }
 

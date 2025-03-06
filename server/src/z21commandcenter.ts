@@ -13,10 +13,13 @@ const cLAN_X_TURNOUT_INFO0x43 = 0x43
 const cLAN_SYSTEMSTATE_DATACHANGED0x84 = 0x84
 
 export class Z21CommandCenter extends CommandCenter {
+    writeDirectCommand(command: string): void {
+       log("Z21.writeDirectCommand Method not implemented.");
+    }
     
     //private mutex = new Mutex();
 
-    trackPower(on: boolean): void {
+    setTrackPower(on: boolean): void {
         if (on) {
             this.LAN_X_SET_TRACK_POWER_ON()
         } else {
@@ -26,6 +29,10 @@ export class Z21CommandCenter extends CommandCenter {
                 this.LAN_X_SET_TRACK_POWER_OFF()
             }
         }
+    }
+
+    setProgPower(on: boolean) {
+        log("Z21.progPower Method not implemented.");
     }
     emergenyStop(stop: boolean): void {
         if(this.powerInfo.emergencyStop) { 

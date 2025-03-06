@@ -52,11 +52,16 @@ wsServer.on("connection", (ws, req) => {
                     commandCenters.emergencyStop()
                     break;
 
-                case ApiCommands.setPower:
-                    commandCenters.setPower(data)
+                case ApiCommands.setTrackPower:
+                    commandCenters.setTrackPower(data)
+                    break;
+                case ApiCommands.setProgPower:
+                    commandCenters.setProgPower(data)
                     break;
 
-
+                case ApiCommands.writeDccExDirectCommand:
+                    commandCenters.writeDirectCommand(data)
+                    break;
                 // case ApiCommands.getCommandCenters:
                 //     var cc: iCommandCenter[] = commandCenters.getDevices()
                 //     const commandcenters = { type: ApiCommands.commandCenterInfos, data: cc } as iData

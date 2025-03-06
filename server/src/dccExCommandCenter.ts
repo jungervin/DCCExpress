@@ -1,4 +1,4 @@
-import { accessories, ApiCommands, DCCExDirections, DCCExTurnout, iData, iLoco, iOutputInfo, iPowerInfo, iSensorInfo, iSetBasicAccessory, iSetOutput, iSystemStatus, iTurnoutInfo, locos, outputs, turnouts, Z21Directions } from "../../common/src/dcc";
+import { accessories, ApiCommands, DCCExDirections, DCCExTurnout, iData, iDccExDirectCommandResponse, iLoco, iOutputInfo, iPowerInfo, iSensorInfo, iSetBasicAccessory, iSetOutput, iSystemStatus, iTurnoutInfo, locos, outputs, turnouts, Z21Directions } from "../../common/src/dcc";
 import { CommandCenter } from "./commandcenter";
 import { log } from "./utility";
 import { broadcastAll } from "./ws";
@@ -27,10 +27,16 @@ export class DCCExCommandCenter extends CommandCenter {
         throw new Error("Method not implemented.");
     }
 
-    trackPower(on: boolean): void {
+    setTrackPower(on: boolean): void {
         log("DCCEx ", `trackPower(${on})`)
-        this.put(on ? '<1>' : '<0>')
+        this.put(on ? '<1 MAIN>' : '<0>')
     }
+
+    setProgPower(on: boolean): void {
+        log("DCCEx ", `progPower(${on})`)
+        this.put(on ? '<1 PROG>' : '<0 PROG>')
+    }
+
     emergenyStop(stop: boolean): void {
         this.put('<!>')
         this.powerInfo.emergencyStop = true;
@@ -132,6 +138,10 @@ export class DCCExCommandCenter extends CommandCenter {
         //throw new Error("Method not implemented.");
     }
 
+    writeDirectCommand(command: string): void {
+        this.put(command)
+    }
+
     parse(data: string) {
         if (data == "# 50") {
             //log('tcpClient Data: ', data);
@@ -141,13 +151,31 @@ export class DCCExCommandCenter extends CommandCenter {
         //log("DCCEx Parse:", data)
 
         if (data.startsWith('p1')) {
+            const params = data.split(" ");
             this.powerInfo.info = 0b00000001
-            this.powerInfo.trackVoltageOn = true
-            broadcastAll({ type: ApiCommands.powerInfo, data: this.powerInfo } as iData)
+            if (params[1] == 'MAIN' || params[1] == 'A') {
+            //    if (!this.powerInfo.trackVoltageOn)
+            {
+                    this.powerInfo.trackVoltageOn = true
+                    broadcastAll({ type: ApiCommands.powerInfo, data: this.powerInfo } as iData)
+                }
+            } else if (params[1] == 'PROG' || params[1] == 'B') {
+                this.powerInfo.programmingModeActive = true;
+            }
+
+
         }
         else if (data.startsWith('p0')) {
+            const params = data.split(" ");
             this.powerInfo.info = 0b00000000
-            this.powerInfo.trackVoltageOn = false
+            // this.powerInfo.trackVoltageOn = false;
+            // this.powerInfo.programmingModeActive = false;
+            if (params[1] == 'MAIN' || params[1] == 'A') {
+                this.powerInfo.trackVoltageOn = false
+            } else if (params[1] == 'PROG' || params[1] == 'B') {
+                this.powerInfo.programmingModeActive = false;
+            }
+
             broadcastAll({ type: ApiCommands.powerInfo, data: this.powerInfo } as iData)
         }
         else if (data.startsWith("Q ")) {
@@ -220,14 +248,18 @@ export class DCCExCommandCenter extends CommandCenter {
         else if (data.startsWith("Y")) {
             var items = data.split(" ")
 
-                var address = parseInt(items[1])
-                var o: iOutputInfo = { address: address, value: items[items.length - 1] == '1' }
-                broadcastAll({ type: ApiCommands.outputInfo, data: o } as iData)
+            var address = parseInt(items[1])
+            var o: iOutputInfo = { address: address, value: items[items.length - 1] == '1' }
+            broadcastAll({ type: ApiCommands.outputInfo, data: o } as iData)
         }
         else if (data == "X") {
             console.log("A művelet nem sikerült!")
             var d: iData = { type: ApiCommands.UnsuccessfulOperation, data: "DCCEx Unsuccessful Operation!" }
             broadcastAll(d)
+        }
+        else {
+            console.log("DCCExCommandCenter: Unknown data received: ", data)
+            broadcastAll({ type: ApiCommands.dccExDirectCommandResponse, data: {response: data} as iDccExDirectCommandResponse} as iData)
         }
     }
 

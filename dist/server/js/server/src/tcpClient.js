@@ -64,6 +64,7 @@ class TCPClient {
         (0, utility_1.log)("tcpClient.connectToServer()");
         clearTimeout(this.reconnectTimer);
         this.socket = new net.Socket();
+        this.socket.setKeepAlive(true, 10000);
         this.socket.setTimeout(6000);
         this.socket.connect(this.port, this.host, () => {
             this.socket.setTimeout(6000);

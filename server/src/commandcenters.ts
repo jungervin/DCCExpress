@@ -1,4 +1,4 @@
-import { iSetBasicAccessory, iSetTurnout, iGetTurnout, iLoco, iSetLocoFunction, iSetPower, CommandCenterTypes, iZ21CommandCenter, iCommandCenter, iDCCExTcp, iDCCExSerial, iGetSensor, iSetOutput } from "../../common/src/dcc";
+import { iSetBasicAccessory, iSetTurnout, iGetTurnout, iLoco, iSetLocoFunction, iSetPower, CommandCenterTypes, iZ21CommandCenter, iCommandCenter, iDCCExTcp, iDCCExSerial, iGetSensor, iSetOutput, iDccExDirectCommand } from "../../common/src/dcc";
 import { CommandCenter } from "./commandcenter";
 import { COMMANDCENTER_SETTING_FILE } from "./server";
 import * as fs from "fs";
@@ -136,13 +136,22 @@ export class CommandCenters {
         }
     }
 
-    setPower(data: iSetPower) {
+    setTrackPower(data: iSetPower) {
         if (this.cc) {
-            this.cc!.trackPower(data.on)
+            this.cc!.setTrackPower(data.on)
         } else {
             log("Command Center doesn't exists!")
         }
     }
+
+    setProgPower(data: iSetPower) {
+        if (this.cc) {
+            this.cc!.setProgPower(data.on)
+        } else {
+            log("Command Center doesn't exists!")
+        }
+    }
+
     emergencyStop() {
         if (this.cc) {
             this.cc!.emergenyStop(true)
@@ -150,6 +159,15 @@ export class CommandCenters {
             log("Command Center doesn't exists!")
         }
     }
+
+    writeDirectCommand(data: iDccExDirectCommand): void {
+        if (this.cc) {
+            this.cc!.writeDirectCommand(data.command)
+        } else {
+            log("Command Center doesn't exists!")
+        }           
+    }
+
 
     load() {
         log("CommandCenters.load()")

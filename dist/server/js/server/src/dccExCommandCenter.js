@@ -23,9 +23,13 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     getConnectionString() {
         throw new Error("Method not implemented.");
     }
-    trackPower(on) {
+    setTrackPower(on) {
         (0, utility_1.log)("DCCEx ", `trackPower(${on})`);
-        this.put(on ? '<1>' : '<0>');
+        this.put(on ? '<1 MAIN>' : '<0>');
+    }
+    setProgPower(on) {
+        (0, utility_1.log)("DCCEx ", `progPower(${on})`);
+        this.put(on ? '<1 PROG>' : '<0 PROG>');
     }
     emergenyStop(stop) {
         this.put('<!>');
@@ -117,6 +121,9 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     getSystemState() {
         //throw new Error("Method not implemented.");
     }
+    writeDirectCommand(command) {
+        this.put(command);
+    }
     parse(data) {
         if (data == "# 50") {
             //log('tcpClient Data: ', data);
@@ -124,13 +131,30 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
         }
         //log("DCCEx Parse:", data)
         if (data.startsWith('p1')) {
+            const params = data.split(" ");
             this.powerInfo.info = 0b00000001;
-            this.powerInfo.trackVoltageOn = true;
-            (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.powerInfo, data: this.powerInfo });
+            if (params[1] == 'MAIN' || params[1] == 'A') {
+                //    if (!this.powerInfo.trackVoltageOn)
+                {
+                    this.powerInfo.trackVoltageOn = true;
+                    (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.powerInfo, data: this.powerInfo });
+                }
+            }
+            else if (params[1] == 'PROG' || params[1] == 'B') {
+                this.powerInfo.programmingModeActive = true;
+            }
         }
         else if (data.startsWith('p0')) {
+            const params = data.split(" ");
             this.powerInfo.info = 0b00000000;
-            this.powerInfo.trackVoltageOn = false;
+            // this.powerInfo.trackVoltageOn = false;
+            // this.powerInfo.programmingModeActive = false;
+            if (params[1] == 'MAIN' || params[1] == 'A') {
+                this.powerInfo.trackVoltageOn = false;
+            }
+            else if (params[1] == 'PROG' || params[1] == 'B') {
+                this.powerInfo.programmingModeActive = false;
+            }
             (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.powerInfo, data: this.powerInfo });
         }
         else if (data.startsWith("Q ")) {
@@ -204,6 +228,10 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
             console.log("A művelet nem sikerült!");
             var d = { type: dcc_1.ApiCommands.UnsuccessfulOperation, data: "DCCEx Unsuccessful Operation!" };
             (0, ws_1.broadcastAll)(d);
+        }
+        else {
+            console.log("DCCExCommandCenter: Unknown data received: ", data);
+            (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.dccExDirectCommandResponse, data: { response: data } });
         }
     }
     connected() {

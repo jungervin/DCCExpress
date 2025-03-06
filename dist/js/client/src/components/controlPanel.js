@@ -323,7 +323,7 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
                     ws_1.wsClient.send({ type: dcc_1.ApiCommands.emergencyStop, data: "" });
                 }
                 else {
-                    ws_1.wsClient.send({ type: dcc_1.ApiCommands.setPower, data: { on: true } });
+                    ws_1.wsClient.send({ type: dcc_1.ApiCommands.setTrackPower, data: { on: true } });
                 }
             };
             this.btnReverse = shadow.getElementById("btnReverse");
