@@ -376,9 +376,9 @@ export class TurnoutYShapeElement extends TurnoutElement {
             if (this.isSelected) {
                 ctx.beginPath();
                 ctx.strokeStyle = 'red';
-                ctx.moveTo(this.posRight , this.centerY);
-                ctx.lineTo(this.posRight - 3, this.centerY - 2);
-                ctx.lineTo(this.posRight - 3, this.centerY + 2);
+                ctx.moveTo(this.posRight -3, this.centerY);
+                ctx.lineTo(this.posRight - 6, this.centerY - 2);
+                ctx.lineTo(this.posRight - 6, this.centerY + 2);
                 ctx.closePath();
                 ctx.fill();
                 ctx.stroke();
@@ -423,9 +423,9 @@ export class TurnoutYShapeElement extends TurnoutElement {
     
                 ctx.beginPath();
                 ctx.strokeStyle = 'red';
-                ctx.moveTo(this.posRight , this.centerY);
-                ctx.lineTo(this.posRight - 3, this.centerY - 2);
-                ctx.lineTo(this.posRight - 3, this.centerY + 2);
+                ctx.moveTo(this.posRight - 3, this.centerY);
+                ctx.lineTo(this.posRight - 6, this.centerY - 2);
+                ctx.lineTo(this.posRight - 6, this.centerY + 2);
                 ctx.closePath();
                 ctx.fill();
                 ctx.stroke();

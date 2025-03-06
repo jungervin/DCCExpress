@@ -225,6 +225,11 @@ define(["require", "exports", "../components/turnoutPropertiesElement", "../edit
                 this.container.innerHTML = "";
             }
         }
+        update() {
+            if (this.selectedObject) {
+                this.selectedObject = this.selectedObject;
+            }
+        }
     }
     exports.PropertyPanel = PropertyPanel;
     customElements.define("property-panel", PropertyPanel);

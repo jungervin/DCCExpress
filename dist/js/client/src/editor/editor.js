@@ -391,6 +391,13 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
                         this.selectedElement.rotateRight();
                         this.draw();
                         this.selectedElement.draw(this.ctx);
+                        requestAnimationFrame(() => {
+                            var _a;
+                            if ((_a = this.selectedElement) === null || _a === void 0 ? void 0 : _a.canRotate) {
+                                //this.propertyPanel!.selectedObject = undefined
+                                //this.propertyPanel!.selectedObject = this.selectedElement
+                            }
+                        });
                     }
                 }
                 else if (e.key.toLowerCase() == 'delete') {
@@ -656,6 +663,9 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./view", "
         }
         handleMouseDown(e) {
             e.preventDefault();
+            if (e.target === this.canvas && document.activeElement) {
+                document.activeElement.blur();
+            }
             this.dragEnabled = true;
             this.downX = e.offsetX;
             this.downY = e.offsetY;

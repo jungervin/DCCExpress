@@ -430,23 +430,25 @@ export class App {
 
         const turnouts = this.editor.views.getTurnoutElements()
         turnouts.forEach((elem: any) => {
-            if (Object.getPrototypeOf(elem) == TurnoutRightElement.prototype) {
-                var a = elem as TurnoutRightElement
-                if (a.address == data.address) {
-                    a.t1Closed = data.isClosed == a.t1ClosedValue;
-                    this.turnouts[data.address] = a.t1Closed
-                    redraw = true
-                }
-            }
-            else if (Object.getPrototypeOf(elem) == TurnoutLeftElement.prototype) {
-                var la = elem as TurnoutLeftElement
-                if (la.address == data.address) {
-                    la.t1Closed = data.isClosed == la.t1ClosedValue;
-                    this.turnouts[data.address] = la.t1Closed
-                    redraw = true
-                }
-            }
-            else if (Object.getPrototypeOf(elem) == TurnoutDoubleElement.prototype) {
+            
+            // if (Object.getPrototypeOf(elem) == TurnoutRightElement.prototype) {
+            //     var a = elem as TurnoutRightElement
+            //     if (a.address == data.address) {
+            //         a.t1Closed = data.isClosed == a.t1ClosedValue;
+            //         this.turnouts[data.address] = a.t1Closed
+            //         redraw = true
+            //     }
+            // }
+            // else if (Object.getPrototypeOf(elem) == TurnoutLeftElement.prototype) {
+            //     var la = elem as TurnoutLeftElement
+            //     if (la.address == data.address) {
+            //         la.t1Closed = data.isClosed == la.t1ClosedValue;
+            //         this.turnouts[data.address] = la.t1Closed
+            //         redraw = true
+            //     }
+            // }
+            
+            if (Object.getPrototypeOf(elem) == TurnoutDoubleElement.prototype) {
                 var td = elem as TurnoutDoubleElement
                 if (td.address == data.address) {
                     td.t1Closed = data.isClosed == td.t1ClosedValue; // : td.t1OpenValue
@@ -456,6 +458,14 @@ export class App {
                 if (td.address2 == data.address) {
                     td.t2Closed = data.isClosed == td.t2ClosedValue; // : td.t2OpenValue
                     this.turnouts[data.address] = td.t2Closed
+                    redraw = true
+                }
+            }
+            else if (elem instanceof TurnoutElement) {
+                var la = elem as TurnoutElement
+                if (la.address == data.address) {
+                    la.t1Closed = data.isClosed == la.t1ClosedValue;
+                    this.turnouts[data.address] = la.t1Closed
                     redraw = true
                 }
             }

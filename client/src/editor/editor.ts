@@ -483,6 +483,12 @@ export class CustomCanvas extends HTMLElement {
                     this.selectedElement.rotateRight()
                     this.draw()
                     this.selectedElement.draw(this.ctx!)
+                    requestAnimationFrame(() => {
+                        if (this.selectedElement?.canRotate) {
+                            //this.propertyPanel!.selectedObject = undefined
+                            //this.propertyPanel!.selectedObject = this.selectedElement
+                        }
+                    })
                 }
             }
             else if (e.key.toLowerCase() == 'delete') {
@@ -803,6 +809,10 @@ export class CustomCanvas extends HTMLElement {
     }
     handleMouseDown(e: MouseEvent): any {
         e.preventDefault()
+
+        if (e.target === this.canvas && document.activeElement) {
+            (document.activeElement as HTMLElement).blur();
+        }
 
         this.dragEnabled = true
         this.downX = e.offsetX
@@ -1351,7 +1361,7 @@ export class CustomCanvas extends HTMLElement {
                 case 'turnoutY':
                     var toy = elem as TurnoutYShapeElement
                     elems.push({
-                        uuid: toy.UUID, type: toy.type, name: toy.name, x: toy.x, y: toy.y, 
+                        uuid: toy.UUID, type: toy.type, name: toy.name, x: toy.x, y: toy.y,
                         address: toy.address,
                         angle: toy.angle,
                         t1ClosedValue: toy.t1ClosedValue,

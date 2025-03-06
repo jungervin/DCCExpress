@@ -330,9 +330,9 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
                 if (this.isSelected) {
                     ctx.beginPath();
                     ctx.strokeStyle = 'red';
-                    ctx.moveTo(this.posRight, this.centerY);
-                    ctx.lineTo(this.posRight - 3, this.centerY - 2);
-                    ctx.lineTo(this.posRight - 3, this.centerY + 2);
+                    ctx.moveTo(this.posRight - 3, this.centerY);
+                    ctx.lineTo(this.posRight - 6, this.centerY - 2);
+                    ctx.lineTo(this.posRight - 6, this.centerY + 2);
                     ctx.closePath();
                     ctx.fill();
                     ctx.stroke();
@@ -370,9 +370,9 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
                     ctx.translate(-this.centerX, -this.centerY);
                     ctx.beginPath();
                     ctx.strokeStyle = 'red';
-                    ctx.moveTo(this.posRight, this.centerY);
-                    ctx.lineTo(this.posRight - 3, this.centerY - 2);
-                    ctx.lineTo(this.posRight - 3, this.centerY + 2);
+                    ctx.moveTo(this.posRight - 3, this.centerY);
+                    ctx.lineTo(this.posRight - 6, this.centerY - 2);
+                    ctx.lineTo(this.posRight - 6, this.centerY + 2);
                     ctx.closePath();
                     ctx.fill();
                     ctx.stroke();

@@ -282,6 +282,13 @@ export class PropertyPanel extends HTMLElement {
             this.container.innerHTML = ""
         }
     }
+
+    update() {
+        if (this.selectedObject) {
+            this.selectedObject = this.selectedObject
+        }
+    }
+
 }
 
 customElements.define("property-panel", PropertyPanel)
