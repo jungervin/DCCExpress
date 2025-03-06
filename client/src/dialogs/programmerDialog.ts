@@ -41,12 +41,16 @@ For now, it only works on DCC-EX!
         tab.addComponent(new Label(help));
 
         const panel = new GroupBox("Write CV");
+        // panel.getElement().style.display = "flex";
+        // panel.getElement().style.flexDirection = "row";
         tab.addComponent(panel);
         panel.add(new Label("CV"));
         const cv = new InputNumber(0, 9999);
+        //cv.getElement().style.width = "100px";
         panel.add(cv);
         panel.add(new Label("Value"));
         const value = new InputNumber(0, 255);
+        //value.getElement().style.width = "100px";
         panel.add(value);
         const writeCV = new Button("Write CV");
         panel.add(writeCV);
@@ -64,6 +68,7 @@ For now, it only works on DCC-EX!
         tab.addComponent(readPanel);
         readPanel.add(new Label("CV"));
         const readCV = new InputNumber(-1, 9999);
+        //readCV.getElement().style.width = "100px";
         readCV.value = 1;
         readPanel.add(readCV);
 
@@ -72,6 +77,7 @@ For now, it only works on DCC-EX!
 
         (readValue.getElement() as HTMLInputElement).readOnly = true;
         (readValue.getElement() as HTMLInputElement).style.backgroundColor = "lightgray";
+        //readValue.getElement().style.width = "100px";
         readPanel.add(readValue);
 
         const readCV29 = new Button("Read CV");
