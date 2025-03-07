@@ -73,12 +73,12 @@ export class RouteSwitchElement extends RailView {
                 if (Object.getPrototypeOf(turnout) == TurnoutDoubleElement.prototype) {
                     var td = turnout as TurnoutDoubleElement
                     if (to.address == td.address) {
-                        wsClient.sendTurnoutCmd({ address: td.address, isClosed: to.isClosed ? td.t1ClosedValue : td.t1OpenValue } as iSetTurnout)
+                        wsClient.sendTurnoutCmd({ address: td.address, isClosed: to.isClosed ? td.t1ClosedValue : td.t1OpenValue, outputMode: td.outputMode } as iSetTurnout)
                     } else {
-                        wsClient.sendTurnoutCmd({ address: td.address2, isClosed: to.isClosed ? td.t2ClosedValue : td.t2OpenValue } as iSetTurnout)
+                        wsClient.sendTurnoutCmd({ address: td.address2, isClosed: to.isClosed ? td.t2ClosedValue : td.t2OpenValue, outputMode: td.outputMode } as iSetTurnout)
                     }
                 } else {
-                    wsClient.sendTurnoutCmd({ address: to.address, isClosed: to.isClosed ? turnout!.t1ClosedValue : turnout!.t1OpenValue } as iSetTurnout)
+                    wsClient.sendTurnoutCmd({ address: to.address, isClosed: to.isClosed ? turnout!.t1ClosedValue : turnout!.t1OpenValue, outputMode: turnout.outputMode } as iSetTurnout)
                 }
             }
             index++

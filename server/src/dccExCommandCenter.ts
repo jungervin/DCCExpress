@@ -81,11 +81,12 @@ export class DCCExCommandCenter extends CommandCenter {
     stop(): void {
         //throw new Error("Method not implemented.");
     }
+    
     setTurnout(address: number, closed: boolean, mode: OutputModes): void {
-        if(mode == OutputModes.dccExAccessory) {
-        this.put(`<T ${address} ${closed ? DCCExTurnout.closed : DCCExTurnout.open}>`)
-        this.getTurnout(address)
-        } else if(mode == OutputModes.accessory) {
+        if (mode == OutputModes.dccExAccessory) {
+            this.put(`<T ${address} ${closed ? DCCExTurnout.closed : DCCExTurnout.open}>`)
+            this.getTurnout(address)
+        } else if (mode == OutputModes.accessory) {
             this.setAccessoryDecoder(address, closed)
         }
     }

@@ -57,14 +57,14 @@ define(["require", "exports", "./view", "./../helpers/graphics", "./turnout", ".
                     if (Object.getPrototypeOf(turnout) == turnout_1.TurnoutDoubleElement.prototype) {
                         var td = turnout;
                         if (to.address == td.address) {
-                            ws_1.wsClient.sendTurnoutCmd({ address: td.address, isClosed: to.isClosed ? td.t1ClosedValue : td.t1OpenValue });
+                            ws_1.wsClient.sendTurnoutCmd({ address: td.address, isClosed: to.isClosed ? td.t1ClosedValue : td.t1OpenValue, outputMode: td.outputMode });
                         }
                         else {
-                            ws_1.wsClient.sendTurnoutCmd({ address: td.address2, isClosed: to.isClosed ? td.t2ClosedValue : td.t2OpenValue });
+                            ws_1.wsClient.sendTurnoutCmd({ address: td.address2, isClosed: to.isClosed ? td.t2ClosedValue : td.t2OpenValue, outputMode: td.outputMode });
                         }
                     }
                     else {
-                        ws_1.wsClient.sendTurnoutCmd({ address: to.address, isClosed: to.isClosed ? turnout.t1ClosedValue : turnout.t1OpenValue });
+                        ws_1.wsClient.sendTurnoutCmd({ address: to.address, isClosed: to.isClosed ? turnout.t1ClosedValue : turnout.t1OpenValue, outputMode: turnout.outputMode });
                     }
                 }
                 index++;

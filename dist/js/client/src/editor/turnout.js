@@ -39,8 +39,8 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
             this.send();
         }
         send() {
-            ws_1.wsClient.sendTurnoutCmd({ address: this.address, isClosed: this.t1Closed ? this.t1ClosedValue : this.t1OpenValue });
-            console.log("sendTurnoutCmd", this.address, this.t1Closed, this.t1ClosedValue, this.t1OpenValue);
+            ws_1.wsClient.sendTurnoutCmd({ address: this.address, isClosed: this.t1Closed ? this.t1ClosedValue : this.t1OpenValue, outputMode: this.outputMode });
+            console.log("sendTurnoutCmd", this.address, this.t1Closed, this.t1ClosedValue, this.t1OpenValue, this.outputMode);
         }
         hasAddress(obj) {
             const turnout = obj;
@@ -443,9 +443,9 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
             }
         }
         send() {
-            ws_1.wsClient.sendTurnoutCmd({ address: this.address, isClosed: this.t1Closed ? this.t1ClosedValue : this.t1OpenValue });
+            ws_1.wsClient.sendTurnoutCmd({ address: this.address, isClosed: this.t1Closed ? this.t1ClosedValue : this.t1OpenValue, outputMode: this.outputMode });
             setTimeout((() => {
-                ws_1.wsClient.sendTurnoutCmd({ address: this.address2, isClosed: this.t2Closed ? this.t2ClosedValue : this.t2OpenValue });
+                ws_1.wsClient.sendTurnoutCmd({ address: this.address2, isClosed: this.t2Closed ? this.t2ClosedValue : this.t2OpenValue, outputMode: this.outputMode });
             }).bind(this), 500);
         }
         draw(ctx) {

@@ -77,12 +77,12 @@ export class TurnoutLeftPropertiesElement extends HTMLElement {
                     <div>Mode</div>
                     <div>
                         <input type="radio" id="accessory" name="mode" value="accessory" checked />
-                        <label for="accessory">Accessory (a)</label>
+                        <label for="accessory">Accessory (&lt;a addr activate&gt;)</label>
                     </div>
 
                     <div>
                         <input type="radio" id="output" name="mode" value="output" />
-                        <label for="output">DccEx Accessory (T)</label>
+                        <label for="output">DccEx Accessory (&lt;T id state&gt;)</label>
                     </div>
                 </div>
 
@@ -142,11 +142,13 @@ export class TurnoutLeftPropertiesElement extends HTMLElement {
         this.canvas1Element.turnout!.t1Closed = true
         this.canvas1Element.turnout!.angle = turnout.angle
         this.canvas1Element.turnout!.address = turnout.address
+        this.canvas1Element.turnout!.outputMode = this.turnout!.outputMode
         // this.canvas1Element.turnout!.cc = turnout.cc
         this.canvas1Element.draw()
         this.canvas1Element.onclick = (e: MouseEvent) => {
             this.canvas1Element.turnout!.address = turnout.address
             this.canvas1Element.turnout!.t1ClosedValue = this.turnout!.t1ClosedValue
+            this.canvas1Element.turnout!.outputMode = this.turnout!.outputMode
             this.canvas1Element.turnout!.send()
         }
 
@@ -253,12 +255,12 @@ export class TurnoutRightPropertiesElement extends HTMLElement {
                 <div>Mode</div>
                 <div>
                     <input type="radio" id="accessory" name="mode" value="accessory" checked />
-                    <label for="accessory">Accessory (a)</label>
+                    <label for="accessory">Accessory (&lt;a addr activate&gt;)</label>
                 </div>
 
                 <div>
                     <input type="radio" id="output" name="mode" value="output" />
-                    <label for="output">DccEx Accessory (T)</label>
+                    <label for="output">DccEx Accessory (&lt;T id state&gt;)</label>
                 </div>
             </div>      
 
@@ -321,11 +323,13 @@ export class TurnoutRightPropertiesElement extends HTMLElement {
         this.canvas1Element.turnout!.t1Closed = true;
         this.canvas1Element.turnout!.angle = turnout.angle
         this.canvas1Element.turnout!.address = turnout.address
+        this.canvas1Element.turnout!.outputMode = this.turnout!.outputMode
         // this.canvas1Element.turnout!.cc = turnout.cc
         this.canvas1Element.draw()
         this.canvas1Element.onclick = (e: MouseEvent) => {
             this.canvas1Element.turnout!.address = turnout.address
             this.canvas1Element.turnout!.t1ClosedValue = this.turnout!.t1ClosedValue
+            this.canvas1Element.turnout!.outputMode = this.turnout!.outputMode
             this.canvas1Element.turnout!.send()
         }
 
@@ -337,11 +341,13 @@ export class TurnoutRightPropertiesElement extends HTMLElement {
         this.canvas2Element.turnout!.t1Closed = false; 
         this.canvas2Element.turnout!.angle = turnout.angle
         this.canvas2Element.turnout!.address = turnout.address
+        this.canvas2Element.turnout!.outputMode = this.turnout!.outputMode
         // this.canvas2Element.turnout!.cc = turnout.cc
         this.canvas2Element.draw()
         this.canvas2Element.onclick = (e: MouseEvent) => {
             this.canvas2Element.turnout!.address = turnout.address
             this.canvas2Element.turnout!.t1OpenValue = this.turnout!.t1OpenValue
+            this.canvas2Element.turnout!.outputMode = this.turnout!.outputMode
             this.canvas2Element.turnout!.send()
         }
 
@@ -475,12 +481,12 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
                     <div>Mode</div>
                     <div>
                         <input type="radio" id="accessory" name="mode" value="accessory" checked />
-                        <label for="accessory">Accessory (a)</label>
+                        <label for="accessory">Accessory (&lt;a addr activate&gt;)</label>
                     </div>
 
                     <div>
                         <input type="radio" id="output" name="mode" value="output" />
-                        <label for="output">DccEx Accessory (T)</label>
+                        <label for="output">DccEx Accessory (&lt;T id state&gt;)</label>
                     </div>
                 </div>
 
@@ -567,6 +573,7 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
             this.canvas1Element.turnout!.angle = this.turnout.angle
             this.canvas1Element.turnout!.address = this.turnout.address
             this.canvas1Element.turnout!.address2 = this.turnout.address2
+            this.canvas1Element.turnout!.outputMode = this.turnout!.outputMode
             // this.canvas1Element.turnout!.cc = this.turnout.cc
             this.canvas1Element.draw()
             this.canvas1Element.onclick = (e: MouseEvent) => {
@@ -575,6 +582,7 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
    
                 this.canvas1Element.turnout!.t1ClosedValue = this.turnout!.t1ClosedValue
                 this.canvas1Element.turnout!.t2OpenValue = this.turnout!.t2OpenValue
+                this.canvas1Element.turnout!.outputMode = this.turnout!.outputMode
                 this.canvas1Element.turnout!.send()
             }
         
@@ -598,6 +606,7 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
             this.canvas2Element.turnout!.angle = this.turnout.angle
             this.canvas2Element.turnout!.address = this.turnout.address
             this.canvas2Element.turnout!.address2 = this.turnout.address2
+            this.canvas2Element.turnout!.outputMode = this.turnout!.outputMode
             // this.canvas2Element.turnout!.cc = this.turnout.cc
             this.canvas2Element.draw()
             this.canvas2Element.onclick = (e: MouseEvent) => {
@@ -605,6 +614,7 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
                 this.canvas2Element.turnout!.address2 = this.turnout!.address2
                     this.canvas2Element.turnout!.t1ClosedValue = this.turnout!.t1ClosedValue
                 this.canvas2Element.turnout!.t2ClosedValue = this.turnout!.t2ClosedValue
+                this.canvas2Element.turnout!.outputMode = this.turnout!.outputMode
                 this.canvas2Element.turnout!.send()
             }
         
@@ -627,6 +637,7 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
             this.canvas3Element.turnout!.angle = this.turnout.angle
             this.canvas3Element.turnout!.address = this.turnout.address
             this.canvas3Element.turnout!.address2 = this.turnout.address2
+            this.canvas3Element.turnout!.outputMode = this.turnout!.outputMode
             // this.canvas3Element.turnout!.cc = this.turnout.cc
             this.canvas3Element.draw()
             this.canvas3Element.onclick = (e: MouseEvent) => {
@@ -634,6 +645,7 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
                 this.canvas3Element.turnout!.address2 = this.turnout!.address2   
                 this.canvas3Element.turnout!.t1OpenValue = this.turnout!.t1OpenValue
                 this.canvas3Element.turnout!.t2ClosedValue = this.turnout!.t2ClosedValue
+                this.canvas3Element.turnout!.outputMode = this.turnout!.outputMode
                 this.canvas3Element.turnout!.send()
             }
         
@@ -656,6 +668,7 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
             this.canvas4Element.turnout!.angle = this.turnout.angle
             this.canvas4Element.turnout!.address = this.turnout.address
             this.canvas4Element.turnout!.address2 = this.turnout.address2
+            this.canvas4Element.turnout!.outputMode = this.turnout!.outputMode
             // this.canvas4Element.turnout!.cc = this.turnout.cc
             this.canvas4Element.draw()
             this.canvas4Element.onclick = (e: MouseEvent) => {
@@ -663,6 +676,7 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
                 this.canvas4Element.turnout!.address2 = this.turnout!.address2
                 this.canvas4Element.turnout!.t1OpenValue = this.turnout!.t1OpenValue
                 this.canvas4Element.turnout!.t2OpenValue = this.turnout!.t2OpenValue
+                this.canvas4Element.turnout!.outputMode = this.turnout!.outputMode
                 this.canvas4Element.turnout!.send()
             }
         
@@ -758,12 +772,12 @@ export class TurnoutYPropertiesElement extends HTMLElement {
                     <div>Mode</div>
                     <div>
                         <input type="radio" id="accessory" name="mode" value="accessory" checked />
-                        <label for="accessory">Accessory (a)</label>
+                        <label for="accessory">Accessory (&lt;a addr activate&gt;)</label>
                     </div>
 
                     <div>
                         <input type="radio" id="output" name="mode" value="output" />
-                        <label for="output">DccEx Accessory (T)</label>
+                        <label for="output">DccEx Accessory (&lt;T id state&gt;)</label>
                     </div>
                 </div>            
 
@@ -822,11 +836,13 @@ export class TurnoutYPropertiesElement extends HTMLElement {
         this.canvas1Element.turnout!.t1Closed = true
         this.canvas1Element.turnout!.angle = turnout.angle
         this.canvas1Element.turnout!.address = turnout.address
+        this.canvas1Element.turnout!.outputMode = this.turnout!.outputMode
         // this.canvas1Element.turnout!.cc = turnout.cc
         this.canvas1Element.draw()
         this.canvas1Element.onclick = (e: MouseEvent) => {
             this.canvas1Element.turnout!.address = turnout.address
             this.canvas1Element.turnout!.t1ClosedValue = this.turnout!.t1ClosedValue
+            this.canvas1Element.turnout!.outputMode = this.turnout!.outputMode
             this.canvas1Element.turnout!.send()
         }
 
@@ -838,11 +854,13 @@ export class TurnoutYPropertiesElement extends HTMLElement {
         this.canvas2Element.turnout!.t1Closed = false
         this.canvas2Element.turnout!.angle = turnout.angle
         this.canvas2Element.turnout!.address = turnout.address
+        this.canvas2Element.turnout!.outputMode = this.turnout!.outputMode
         // this.canvas2Element.turnout!.cc = turnout.cc
         this.canvas2Element.draw()
         this.canvas2Element.onclick = (e: MouseEvent) => {
             this.canvas2Element.turnout!.address = turnout.address
             this.canvas2Element.turnout!.t1OpenValue = this.turnout!.t1OpenValue
+            this.canvas2Element.turnout!.outputMode = this.turnout!.outputMode
             this.canvas2Element.turnout!.send()
         }
 

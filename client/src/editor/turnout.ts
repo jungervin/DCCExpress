@@ -47,8 +47,8 @@ export abstract class TurnoutElement extends RailView {
         this.send()
     }
     send() {
-        wsClient.sendTurnoutCmd({ address: this.address, isClosed: this.t1Closed ? this.t1ClosedValue : this.t1OpenValue } as iSetTurnout)
-        console.log("sendTurnoutCmd", this.address, this.t1Closed, this.t1ClosedValue, this.t1OpenValue)
+        wsClient.sendTurnoutCmd({ address: this.address, isClosed: this.t1Closed ? this.t1ClosedValue : this.t1OpenValue, outputMode: this.outputMode } as iSetTurnout)
+        console.log("sendTurnoutCmd", this.address, this.t1Closed, this.t1ClosedValue, this.t1OpenValue, this.outputMode)
     }
 
     hasAddress(obj: object) {
@@ -513,9 +513,9 @@ export class TurnoutDoubleElement extends TurnoutElement {
     }
 
     send(): void {
-        wsClient.sendTurnoutCmd({ address: this.address, isClosed: this.t1Closed ? this.t1ClosedValue : this.t1OpenValue } as iSetTurnout)
+        wsClient.sendTurnoutCmd({ address: this.address, isClosed: this.t1Closed ? this.t1ClosedValue : this.t1OpenValue, outputMode: this.outputMode } as iSetTurnout)
         setTimeout((() => {
-            wsClient.sendTurnoutCmd({ address: this.address2, isClosed: this.t2Closed ? this.t2ClosedValue : this.t2OpenValue } as iSetTurnout)
+            wsClient.sendTurnoutCmd({ address: this.address2, isClosed: this.t2Closed ? this.t2ClosedValue : this.t2OpenValue, outputMode: this.outputMode } as iSetTurnout)
         }).bind(this), 500)
     }
 

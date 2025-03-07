@@ -1,9 +1,9 @@
 {
     "settings": {
-        "scale": 1.4131467767078887,
-        "origX": 190,
-        "origY": 116,
-        "locoPanelVisible": false,
+        "scale": 1.3886014127444408,
+        "origX": 423,
+        "origY": 174,
+        "locoPanelVisible": true,
         "propertyPanelVisible": false
     },
     "pages": [
@@ -211,7 +211,8 @@
                     "angle": 180,
                     "t1ClosedValue": true,
                     "t1OpenValue": false,
-                    "rbusAddress": 13
+                    "rbusAddress": 13,
+                    "outputMode": 2
                 },
                 {
                     "uuid": "dcf284f4-2d08-40c7-8283-34ae770d2e37",
@@ -223,7 +224,8 @@
                     "angle": 180,
                     "t1ClosedValue": false,
                     "t1OpenValue": true,
-                    "rbusAddress": 14
+                    "rbusAddress": 14,
+                    "outputMode": 2
                 },
                 {
                     "uuid": "b4767fb4-68b3-4177-8061-87fb4aecb5b1",
@@ -298,7 +300,8 @@
                     "angle": 180,
                     "t1ClosedValue": true,
                     "t1OpenValue": false,
-                    "rbusAddress": 14
+                    "rbusAddress": 14,
+                    "outputMode": 2
                 },
                 {
                     "uuid": "961fa06c-9433-4504-9b62-e52827a59eb2",
@@ -310,7 +313,8 @@
                     "angle": 0,
                     "t1ClosedValue": false,
                     "t1OpenValue": true,
-                    "rbusAddress": 13
+                    "rbusAddress": 13,
+                    "outputMode": 2
                 },
                 {
                     "uuid": "2537005c-9bc7-4a09-a4be-af1c02c9427e",
@@ -322,7 +326,8 @@
                     "angle": 0,
                     "t1ClosedValue": false,
                     "t1OpenValue": true,
-                    "rbusAddress": 14
+                    "rbusAddress": 14,
+                    "outputMode": 2
                 },
                 {
                     "uuid": "15f4cd36-6fd7-4c09-a917-eb32fa81b77d",
@@ -505,7 +510,8 @@
                     "angle": 180,
                     "t1ClosedValue": false,
                     "t1OpenValue": true,
-                    "rbusAddress": 12
+                    "rbusAddress": 12,
+                    "outputMode": 2
                 },
                 {
                     "uuid": "76ac6240-d6c4-463b-b8d0-3e3417cb0de2",
@@ -517,7 +523,8 @@
                     "angle": 0,
                     "t1ClosedValue": false,
                     "t1OpenValue": true,
-                    "rbusAddress": 26
+                    "rbusAddress": 26,
+                    "outputMode": 2
                 },
                 {
                     "uuid": "de652dc4-cbee-498b-b11d-493219180149",
@@ -637,7 +644,8 @@
                     "angle": 180,
                     "t1ClosedValue": true,
                     "t1OpenValue": false,
-                    "rbusAddress": 25
+                    "rbusAddress": 25,
+                    "outputMode": 2
                 },
                 {
                     "uuid": "c8cb3b4f-2cc9-4439-ac0f-59abdb4fc450",
@@ -676,7 +684,8 @@
                     "angle": 180,
                     "t1ClosedValue": true,
                     "t1OpenValue": false,
-                    "rbusAddress": 14
+                    "rbusAddress": 14,
+                    "outputMode": 2
                 },
                 {
                     "uuid": "4dc8c8ff-4b69-4c73-8d07-ddcae4912f59",
@@ -785,7 +794,8 @@
                     "angle": 315,
                     "t1ClosedValue": true,
                     "t1OpenValue": false,
-                    "rbusAddress": 12
+                    "rbusAddress": 12,
+                    "outputMode": 2
                 },
                 {
                     "uuid": "484a5eb1-18df-4b95-a5ae-f9e28f28e748",
@@ -818,7 +828,8 @@
                     "t1OpenValue": false,
                     "t2ClosedValue": true,
                     "t2OpenValue": false,
-                    "rbusAddress": 12
+                    "rbusAddress": 12,
+                    "outputMode": 2
                 },
                 {
                     "uuid": "ec3f4de0-1fb8-47a1-8e0b-2d67ff51388a",

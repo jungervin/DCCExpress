@@ -57,12 +57,12 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
                     <div>Mode</div>
                     <div>
                         <input type="radio" id="accessory" name="mode" value="accessory" checked />
-                        <label for="accessory">Accessory (a)</label>
+                        <label for="accessory">Accessory (&lt;a addr activate&gt;)</label>
                     </div>
 
                     <div>
                         <input type="radio" id="output" name="mode" value="output" />
-                        <label for="output">DccEx Accessory (T)</label>
+                        <label for="output">DccEx Accessory (&lt;T id state&gt;)</label>
                     </div>
                 </div>
 
@@ -109,11 +109,13 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
             this.canvas1Element.turnout.t1Closed = true;
             this.canvas1Element.turnout.angle = turnout.angle;
             this.canvas1Element.turnout.address = turnout.address;
+            this.canvas1Element.turnout.outputMode = this.turnout.outputMode;
             // this.canvas1Element.turnout!.cc = turnout.cc
             this.canvas1Element.draw();
             this.canvas1Element.onclick = (e) => {
                 this.canvas1Element.turnout.address = turnout.address;
                 this.canvas1Element.turnout.t1ClosedValue = this.turnout.t1ClosedValue;
+                this.canvas1Element.turnout.outputMode = this.turnout.outputMode;
                 this.canvas1Element.turnout.send();
             };
             this.bit1Element.value = this.turnout.t1ClosedValue;
@@ -200,12 +202,12 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
                 <div>Mode</div>
                 <div>
                     <input type="radio" id="accessory" name="mode" value="accessory" checked />
-                    <label for="accessory">Accessory (a)</label>
+                    <label for="accessory">Accessory (&lt;a addr activate&gt;)</label>
                 </div>
 
                 <div>
                     <input type="radio" id="output" name="mode" value="output" />
-                    <label for="output">DccEx Accessory (T)</label>
+                    <label for="output">DccEx Accessory (&lt;T id state&gt;)</label>
                 </div>
             </div>      
 
@@ -256,11 +258,13 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
             this.canvas1Element.turnout.t1Closed = true;
             this.canvas1Element.turnout.angle = turnout.angle;
             this.canvas1Element.turnout.address = turnout.address;
+            this.canvas1Element.turnout.outputMode = this.turnout.outputMode;
             // this.canvas1Element.turnout!.cc = turnout.cc
             this.canvas1Element.draw();
             this.canvas1Element.onclick = (e) => {
                 this.canvas1Element.turnout.address = turnout.address;
                 this.canvas1Element.turnout.t1ClosedValue = this.turnout.t1ClosedValue;
+                this.canvas1Element.turnout.outputMode = this.turnout.outputMode;
                 this.canvas1Element.turnout.send();
             };
             this.bit1Element.value = this.turnout.t1ClosedValue;
@@ -270,11 +274,13 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
             this.canvas2Element.turnout.t1Closed = false;
             this.canvas2Element.turnout.angle = turnout.angle;
             this.canvas2Element.turnout.address = turnout.address;
+            this.canvas2Element.turnout.outputMode = this.turnout.outputMode;
             // this.canvas2Element.turnout!.cc = turnout.cc
             this.canvas2Element.draw();
             this.canvas2Element.onclick = (e) => {
                 this.canvas2Element.turnout.address = turnout.address;
                 this.canvas2Element.turnout.t1OpenValue = this.turnout.t1OpenValue;
+                this.canvas2Element.turnout.outputMode = this.turnout.outputMode;
                 this.canvas2Element.turnout.send();
             };
             this.bit2Element.value = this.turnout.t1OpenValue;
@@ -381,12 +387,12 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
                     <div>Mode</div>
                     <div>
                         <input type="radio" id="accessory" name="mode" value="accessory" checked />
-                        <label for="accessory">Accessory (a)</label>
+                        <label for="accessory">Accessory (&lt;a addr activate&gt;)</label>
                     </div>
 
                     <div>
                         <input type="radio" id="output" name="mode" value="output" />
-                        <label for="output">DccEx Accessory (T)</label>
+                        <label for="output">DccEx Accessory (&lt;T id state&gt;)</label>
                     </div>
                 </div>
 
@@ -458,6 +464,7 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
                 this.canvas1Element.turnout.angle = this.turnout.angle;
                 this.canvas1Element.turnout.address = this.turnout.address;
                 this.canvas1Element.turnout.address2 = this.turnout.address2;
+                this.canvas1Element.turnout.outputMode = this.turnout.outputMode;
                 // this.canvas1Element.turnout!.cc = this.turnout.cc
                 this.canvas1Element.draw();
                 this.canvas1Element.onclick = (e) => {
@@ -465,6 +472,7 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
                     this.canvas1Element.turnout.address2 = this.turnout.address2;
                     this.canvas1Element.turnout.t1ClosedValue = this.turnout.t1ClosedValue;
                     this.canvas1Element.turnout.t2OpenValue = this.turnout.t2OpenValue;
+                    this.canvas1Element.turnout.outputMode = this.turnout.outputMode;
                     this.canvas1Element.turnout.send();
                 };
                 this.bit11Element.value = this.turnout.t1ClosedValue;
@@ -486,6 +494,7 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
                 this.canvas2Element.turnout.angle = this.turnout.angle;
                 this.canvas2Element.turnout.address = this.turnout.address;
                 this.canvas2Element.turnout.address2 = this.turnout.address2;
+                this.canvas2Element.turnout.outputMode = this.turnout.outputMode;
                 // this.canvas2Element.turnout!.cc = this.turnout.cc
                 this.canvas2Element.draw();
                 this.canvas2Element.onclick = (e) => {
@@ -493,6 +502,7 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
                     this.canvas2Element.turnout.address2 = this.turnout.address2;
                     this.canvas2Element.turnout.t1ClosedValue = this.turnout.t1ClosedValue;
                     this.canvas2Element.turnout.t2ClosedValue = this.turnout.t2ClosedValue;
+                    this.canvas2Element.turnout.outputMode = this.turnout.outputMode;
                     this.canvas2Element.turnout.send();
                 };
                 this.bit21Element.value = this.turnout.t1ClosedValue;
@@ -513,6 +523,7 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
                 this.canvas3Element.turnout.angle = this.turnout.angle;
                 this.canvas3Element.turnout.address = this.turnout.address;
                 this.canvas3Element.turnout.address2 = this.turnout.address2;
+                this.canvas3Element.turnout.outputMode = this.turnout.outputMode;
                 // this.canvas3Element.turnout!.cc = this.turnout.cc
                 this.canvas3Element.draw();
                 this.canvas3Element.onclick = (e) => {
@@ -520,6 +531,7 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
                     this.canvas3Element.turnout.address2 = this.turnout.address2;
                     this.canvas3Element.turnout.t1OpenValue = this.turnout.t1OpenValue;
                     this.canvas3Element.turnout.t2ClosedValue = this.turnout.t2ClosedValue;
+                    this.canvas3Element.turnout.outputMode = this.turnout.outputMode;
                     this.canvas3Element.turnout.send();
                 };
                 this.bit31Element.value = this.turnout.t1OpenValue;
@@ -540,6 +552,7 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
                 this.canvas4Element.turnout.angle = this.turnout.angle;
                 this.canvas4Element.turnout.address = this.turnout.address;
                 this.canvas4Element.turnout.address2 = this.turnout.address2;
+                this.canvas4Element.turnout.outputMode = this.turnout.outputMode;
                 // this.canvas4Element.turnout!.cc = this.turnout.cc
                 this.canvas4Element.draw();
                 this.canvas4Element.onclick = (e) => {
@@ -547,6 +560,7 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
                     this.canvas4Element.turnout.address2 = this.turnout.address2;
                     this.canvas4Element.turnout.t1OpenValue = this.turnout.t1OpenValue;
                     this.canvas4Element.turnout.t2OpenValue = this.turnout.t2OpenValue;
+                    this.canvas4Element.turnout.outputMode = this.turnout.outputMode;
                     this.canvas4Element.turnout.send();
                 };
                 this.bit41Element.value = this.turnout.t1OpenValue;
@@ -623,12 +637,12 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
                     <div>Mode</div>
                     <div>
                         <input type="radio" id="accessory" name="mode" value="accessory" checked />
-                        <label for="accessory">Accessory (a)</label>
+                        <label for="accessory">Accessory (&lt;a addr activate&gt;)</label>
                     </div>
 
                     <div>
                         <input type="radio" id="output" name="mode" value="output" />
-                        <label for="output">DccEx Accessory (T)</label>
+                        <label for="output">DccEx Accessory (&lt;T id state&gt;)</label>
                     </div>
                 </div>            
 
@@ -675,11 +689,13 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
             this.canvas1Element.turnout.t1Closed = true;
             this.canvas1Element.turnout.angle = turnout.angle;
             this.canvas1Element.turnout.address = turnout.address;
+            this.canvas1Element.turnout.outputMode = this.turnout.outputMode;
             // this.canvas1Element.turnout!.cc = turnout.cc
             this.canvas1Element.draw();
             this.canvas1Element.onclick = (e) => {
                 this.canvas1Element.turnout.address = turnout.address;
                 this.canvas1Element.turnout.t1ClosedValue = this.turnout.t1ClosedValue;
+                this.canvas1Element.turnout.outputMode = this.turnout.outputMode;
                 this.canvas1Element.turnout.send();
             };
             this.bit1Element.value = this.turnout.t1ClosedValue;
@@ -689,11 +705,13 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
             this.canvas2Element.turnout.t1Closed = false;
             this.canvas2Element.turnout.angle = turnout.angle;
             this.canvas2Element.turnout.address = turnout.address;
+            this.canvas2Element.turnout.outputMode = this.turnout.outputMode;
             // this.canvas2Element.turnout!.cc = turnout.cc
             this.canvas2Element.draw();
             this.canvas2Element.onclick = (e) => {
                 this.canvas2Element.turnout.address = turnout.address;
                 this.canvas2Element.turnout.t1OpenValue = this.turnout.t1OpenValue;
+                this.canvas2Element.turnout.outputMode = this.turnout.outputMode;
                 this.canvas2Element.turnout.send();
             };
             this.bit2Element.value = this.turnout.t1OpenValue;
