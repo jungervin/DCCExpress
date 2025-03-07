@@ -4,7 +4,7 @@ define(["require", "exports", "../controls/dialog", "../helpers/ws", "../../../c
     exports.ProgrammerDialog = void 0;
     class ProgrammerDialog extends dialog_1.Dialog {
         constructor() {
-            super(800, 680, "Programmer");
+            super(800, 740, "Programmer");
             this.writeBitElements = {};
             this.readBitElements = {};
             this.bodyElement.style.fontSize = "14px";
@@ -38,6 +38,7 @@ For now, it only works on DCC-EX v5.4!
                 readGroupBoxElement.getElement().style.display = this.pomCheckboxElement.checked ? "none" : "block";
                 labelAddressElement.getElement().style.display = !this.pomCheckboxElement.checked ? "none" : "block";
                 this.writeAddressElement.getElement().style.display = !this.pomCheckboxElement.checked ? "none" : "block";
+                this.writeValidate();
             };
             const writeGroupBoxElement = new dialog_1.GroupBox("Write CV");
             tab.addComponent(writeGroupBoxElement);
@@ -111,11 +112,32 @@ For now, it only works on DCC-EX v5.4!
                 if (this.writeCVInputElement.value >= 0) {
                     readCVInputElement.value = -1;
                     readValueInputNumberElement.value = -1;
+                    const cv = this.writeCVInputElement.value;
+                    const value = parseInt(this.writeValueInputElement.value);
+                    var err = "";
+                    if (Number.isNaN(cv) || cv < 0) {
+                        err += "Invalid value of Write CV !\n";
+                    }
+                    if (Number.isNaN(value) || value < 0 || value > 255) {
+                        err += "Invalid value of Write value! (0..255)\n";
+                    }
                     if (this.pomCheckboxElement.checked) {
-                        ws_1.wsClient.send({ type: dcc_1.ApiCommands.writeDccExDirectCommand, data: { command: '<1 PROG><w ' + this.writeAddressElement.value + ' ' + this.writeCVInputElement.value + ' ' + this.writeValueInputElement.value + '>' } });
+                        const address = this.writeAddressElement.value;
+                        if (Number.isNaN(address) || address < 0 || value > 9999) {
+                            err += "Invalid value of Write value! (0..9999)\n";
+                        }
+                        if (err == "") {
+                            ws_1.wsClient.send({ type: dcc_1.ApiCommands.writeDccExDirectCommand, data: { command: `<1 PROG><w ${address} ${cv} ${value}>` } });
+                        }
+                        else
+                            alert(err);
                     }
                     else {
-                        ws_1.wsClient.send({ type: dcc_1.ApiCommands.writeDccExDirectCommand, data: { command: '<1 PROG><W ' + this.writeCVInputElement.value + ' ' + this.writeValueInputElement.value + '>' } });
+                        if (err == "") {
+                            ws_1.wsClient.send({ type: dcc_1.ApiCommands.writeDccExDirectCommand, data: { command: `<1 PROG><W ${cv} ${value}>` } });
+                        }
+                        else
+                            alert(err);
                     }
                 }
             };

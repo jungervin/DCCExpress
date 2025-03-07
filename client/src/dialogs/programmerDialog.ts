@@ -22,7 +22,7 @@ export class ProgrammerDialog extends Dialog {
     writeAddressElement: InputNumber | undefined;
 
     constructor() {
-        super(800, 680, "Programmer");
+        super(800, 740, "Programmer");
 
         this.bodyElement.style.fontSize = "14px";
         const tabcontrol = new TabControl();
@@ -36,7 +36,7 @@ export class ProgrammerDialog extends Dialog {
     writeValidate() {
         var v = parseInt(this.writeValueInputElement!.value)
         this.btnWriteElement!.enabled = !Number.isNaN(v) && !Number.isNaN(this.writeCVInputElement!.value)
-        if(this.pomCheckboxElement!.checked) {
+        if (this.pomCheckboxElement!.checked) {
             this.btnWriteElement!.enabled = this.writeAddressElement!.value > 0
         }
     }
@@ -61,6 +61,7 @@ For now, it only works on DCC-EX v5.4!
             readGroupBoxElement.getElement().style.display = this.pomCheckboxElement!.checked ? "none" : "block";
             labelAddressElement.getElement().style.display = !this.pomCheckboxElement!.checked ? "none" : "block";
             this.writeAddressElement!.getElement().style.display = !this.pomCheckboxElement!.checked ? "none" : "block";
+            this.writeValidate()
         }
 
         const writeGroupBoxElement = new GroupBox("Write CV");
@@ -74,7 +75,7 @@ For now, it only works on DCC-EX v5.4!
         this.writeAddressElement.getElement().style.display = "none";
         writeGroupBoxElement.add(this.writeAddressElement);
         this.writeAddressElement.onchange = (e) => {
-            this.writeValidate()    
+            this.writeValidate()
         }
         this.writeAddressElement.getElement().onkeyup = (e) => {
             this.writeValidate()
@@ -86,7 +87,7 @@ For now, it only works on DCC-EX v5.4!
         this.writeCVInputElement.onchange = (e) => {
             this.writeValidate()
         }
-        this.writeCVInputElement.getElement().onkeyup =(e) => {
+        this.writeCVInputElement.getElement().onkeyup = (e) => {
             this.writeValidate()
         }
 
@@ -141,13 +142,38 @@ For now, it only works on DCC-EX v5.4!
         this.btnWriteElement.enabled = false
         writeGroupBoxElement.add(this.btnWriteElement);
         this.btnWriteElement.onclick = () => {
+
+
             if (this.writeCVInputElement!.value >= 0) {
                 readCVInputElement.value = -1;
                 readValueInputNumberElement.value = -1;
+
+                const cv = this.writeCVInputElement!.value
+                const value = parseInt(this.writeValueInputElement!.value)
+                var err = ""
+                if (Number.isNaN(cv) || cv < 0) {
+                    err += "Invalid value of Write CV !\n"
+                }
+                if (Number.isNaN(value) || value < 0 || value > 255) {
+                    err += "Invalid value of Write value! (0..255)\n"
+                }
+
+
                 if (this.pomCheckboxElement!.checked) {
-                    wsClient.send({ type: ApiCommands.writeDccExDirectCommand, data: { command: '<1 PROG><w ' + this.writeAddressElement!.value + ' ' + this.writeCVInputElement!.value + ' ' + this.writeValueInputElement!.value + '>' } as iDccExDirectCommand });
+                    const address = this.writeAddressElement!.value
+                    if (Number.isNaN(address) || address < 0 || value > 9999) {
+                        err += "Invalid value of Write value! (0..9999)\n"
+                    }
+
+                    if (err == "") {
+                        wsClient.send({ type: ApiCommands.writeDccExDirectCommand, data: { command: `<1 PROG><w ${address} ${cv} ${value}>` } as iDccExDirectCommand });
+                    }
+                    else alert(err)
                 } else {
-                    wsClient.send({ type: ApiCommands.writeDccExDirectCommand, data: { command: '<1 PROG><W ' + this.writeCVInputElement!.value + ' ' + this.writeValueInputElement!.value + '>' } as iDccExDirectCommand });
+                    if (err == "") {
+                        wsClient.send({ type: ApiCommands.writeDccExDirectCommand, data: { command: `<1 PROG><W ${cv} ${value}>` } as iDccExDirectCommand });
+                    }
+                    else alert(err)
                 }
             }
         }
@@ -165,7 +191,7 @@ For now, it only works on DCC-EX v5.4!
         (readValueInputNumberElement.getElement() as HTMLInputElement).readOnly = true;
         (readValueInputNumberElement.getElement() as HTMLInputElement).style.backgroundColor = "whitesmoke";
         readGroupBoxElement.add(readValueInputNumberElement);
-        readValueInputNumberElement.onchange =((inp) => {
+        readValueInputNumberElement.onchange = ((inp) => {
             var vv = inp.value
             for (var i = 0; i < 8; i++) {
                 this.readBitElements[i].value = ((vv >> i) & 1) > 0
@@ -180,7 +206,7 @@ For now, it only works on DCC-EX v5.4!
         for (var i = 7; i >= 0; i--) {
             this.readBitElements[i] = document.createElement("bit-element") as BitElement
             this.readBitElements[i].style.scale = "0.7"
-            this.readBitElements[i].onclick = (e) => {}
+            this.readBitElements[i].onclick = (e) => { }
             dd.appendChild(this.readBitElements[i])
             this.readBitElements[i].style.cursor = "default"
         }
