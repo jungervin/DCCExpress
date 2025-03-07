@@ -19,6 +19,7 @@ export function byteToBinary(byte: number, len: number = 8): string {
 
 export function toDecimal(v: string) {
     var base = 10
+    v = v.replace('_', '')
     if (v.startsWith('0b')) {
         v = v.slice(2)
         base = 2

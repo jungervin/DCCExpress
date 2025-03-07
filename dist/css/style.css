@@ -488,7 +488,7 @@ bit-element {
     display: flex;           
     width: 32px;
     height: 32px;
-    cursor: pointer;
+    /* cursor: pointer; */
     justify-content: center;
     align-items: center;
     color: white;

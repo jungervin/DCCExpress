@@ -244,6 +244,9 @@ define(["require", "exports"], function (require, exports) {
         addComponent(component) {
             this.label.appendChild(component.getElement());
         }
+        setText(text) {
+            this.label.innerHTML = text;
+        }
     }
     exports.Label = Label;
     class Input extends UIComponent {
@@ -379,6 +382,7 @@ define(["require", "exports"], function (require, exports) {
             super();
             this._foreground = Colors.black;
             this._backround = "#007bff";
+            this._enabled = true;
             this.button = document.createElement("button");
             this.button.textContent = text;
             this.button.style.padding = "4px 10px";
@@ -419,6 +423,14 @@ define(["require", "exports"], function (require, exports) {
             this.button.style.backgroundColor = v;
             this.originalBackground = v;
         }
+        get enabled() {
+            return this._enabled;
+        }
+        set enabled(v) {
+            this._enabled = v;
+            this.button.disabled = !v;
+            this.backround = !v ? exports.ThemeColors.secondary : exports.ThemeColors.primary;
+        }
         getElement() {
             return this.button;
         }
@@ -442,7 +454,7 @@ define(["require", "exports"], function (require, exports) {
                 }
             });
             this.label = document.createElement("label");
-            this.label.textContent = labelText;
+            this.label.innerHTML = labelText;
             this.label.setAttribute("for", this.checkbox.id);
             this.label.style.cursor = 'pointer';
             this.container.appendChild(this.checkbox);

@@ -11,7 +11,6 @@ define(["require", "exports"], function (require, exports) {
             };
         }
         connectedCallback() {
-            //this.className = "btnLocoFunction"
             this.style.display = "flex";
             this.style.alignItems = "center";
             this.style.justifyContent = "center";
@@ -40,6 +39,9 @@ define(["require", "exports"], function (require, exports) {
             if (this.onchanged) {
                 this.onchanged(this);
             }
+        }
+        setCursor(cursor) {
+            this.style.cursor = cursor;
         }
     }
     exports.BitElement = BitElement;

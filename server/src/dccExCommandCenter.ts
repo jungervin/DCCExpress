@@ -154,8 +154,8 @@ export class DCCExCommandCenter extends CommandCenter {
             const params = data.split(" ");
             this.powerInfo.info = 0b00000001
             if (params[1] == 'MAIN' || params[1] == 'A') {
-            //    if (!this.powerInfo.trackVoltageOn)
-            {
+                //    if (!this.powerInfo.trackVoltageOn)
+                {
                     this.powerInfo.trackVoltageOn = true
                     broadcastAll({ type: ApiCommands.powerInfo, data: this.powerInfo } as iData)
                 }
@@ -168,14 +168,18 @@ export class DCCExCommandCenter extends CommandCenter {
         else if (data.startsWith('p0')) {
             const params = data.split(" ");
             this.powerInfo.info = 0b00000000
-            // this.powerInfo.trackVoltageOn = false;
-            // this.powerInfo.programmingModeActive = false;
-            if (params[1] == 'MAIN' || params[1] == 'A') {
+            if (params.length == 2) {
+                if (params[1] == 'MAIN' || params[1] == 'A') {
+                    this.powerInfo.trackVoltageOn = false
+                } else if (params[1] == 'PROG' || params[1] == 'B') {
+                    this.powerInfo.programmingModeActive = false;
+                }
+            } else {
                 this.powerInfo.trackVoltageOn = false
-            } else if (params[1] == 'PROG' || params[1] == 'B') {
                 this.powerInfo.programmingModeActive = false;
             }
 
+            log("DCCEx PowerInfo: ", this.powerInfo)
             broadcastAll({ type: ApiCommands.powerInfo, data: this.powerInfo } as iData)
         }
         else if (data.startsWith("Q ")) {
@@ -259,7 +263,7 @@ export class DCCExCommandCenter extends CommandCenter {
         }
         else {
             console.log("DCCExCommandCenter: Unknown data received: ", data)
-            broadcastAll({ type: ApiCommands.dccExDirectCommandResponse, data: {response: data} as iDccExDirectCommandResponse} as iData)
+            broadcastAll({ type: ApiCommands.dccExDirectCommandResponse, data: { response: data } as iDccExDirectCommandResponse } as iData)
         }
     }
 

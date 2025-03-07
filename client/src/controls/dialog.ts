@@ -292,7 +292,9 @@ export class Label extends UIComponent {
     addComponent(component: UIComponent): void {
         this.label.appendChild(component.getElement());
     }
-
+    setText(text: string) {
+        this.label.innerHTML = text;
+    }
 }
 
 export class Input extends UIComponent {
@@ -333,7 +335,7 @@ export class Input extends UIComponent {
 
 export class InputNumber extends UIComponent {
     private input: HTMLInputElement;
-    onchange?: (sender: InputNumber) => void;
+    onchange?: (sender: InputNumber) => void | undefined;
 
     constructor(min: number = 0, max: number = 100) {
         super()
@@ -511,6 +513,17 @@ export class Button extends UIComponent {
         this.originalBackground = v;
     }
 
+    
+    private _enabled : boolean = true;
+    public get enabled() : boolean {
+        return this._enabled;
+    }
+    public set enabled(v : boolean) {
+        this._enabled = v;
+        this.button.disabled = !v
+        this.backround = !v ? ThemeColors.secondary : ThemeColors.primary
+    }
+    
 
     getElement(): HTMLElement {
         return this.button;
@@ -543,7 +556,7 @@ export class Checkbox extends UIComponent {
         });
 
         this.label = document.createElement("label");
-        this.label.textContent = labelText;
+        this.label.innerHTML = labelText;
         this.label.setAttribute("for", this.checkbox.id)
         this.label.style.cursor = 'pointer'
 
@@ -677,9 +690,9 @@ export class Combobox extends UIComponent {
 }
 
 export class GroupBox extends UIComponent {
-    private container: HTMLDivElement;
+    public container: HTMLDivElement;
     private legend: HTMLLegendElement;
-    private fieldset: HTMLFieldSetElement;
+    public fieldset: HTMLFieldSetElement;
 
     constructor(labelText: string) {
         super()

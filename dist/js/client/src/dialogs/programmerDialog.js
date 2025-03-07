@@ -4,76 +4,157 @@ define(["require", "exports", "../controls/dialog", "../helpers/ws", "../../../c
     exports.ProgrammerDialog = void 0;
     class ProgrammerDialog extends dialog_1.Dialog {
         constructor() {
-            super(800, 660, "Programmer");
-            this.bodyElement.style.fontSize = "12px";
+            super(800, 680, "Programmer");
+            this.writeBitElements = {};
+            this.readBitElements = {};
+            this.bodyElement.style.fontSize = "14px";
             const tabcontrol = new dialog_1.TabControl();
             this.addBody(tabcontrol);
             this.mkDCCPanel(tabcontrol);
             this.mkDigiToolsPanel(tabcontrol);
-            // wsClient.send({ type: ApiCommands.setProgPower, data: { on: true } as iPowerInfo });
-            // this.onclose = () => {
-            //     wsClient.send({ type: ApiCommands.setProgPower, data: { on: false } as iPowerInfo });
-            // }
+        }
+        writeValidate() {
+            var v = parseInt(this.writeValueInputElement.value);
+            this.btnWriteElement.enabled = !Number.isNaN(v) && !Number.isNaN(this.writeCVInputElement.value);
+            if (this.pomCheckboxElement.checked) {
+                this.btnWriteElement.enabled = this.writeAddressElement.value > 0;
+            }
         }
         mkDCCPanel(tabcontrol) {
             const html = `
 <p style="width:100%;text-align: center;background-color: yellow;padding:4px;border-radius:4px;border: solid 1px black">'        
 ⚠️The locomotive should be on the programming track!⚠️<br>
 ⚠️The buttons will activate the PROG output.⚠️<br>
-For now, it only works on DCC-EX!        
+For now, it only works on DCC-EX v5.4!        
 </p>
         `;
             const tab = tabcontrol.addTab("DCC");
             tab.addComponent(new dialog_1.Label(html));
             const help = '<p style="font-size:14px"><a href="https://www.nmra.org/sites/default/files/standards/sandrp/Draft/DCC/s-9.2.2_configuration_variables_for_dcc_draft.pdf" target="blank">🚂NMRA Standard CV List🚀</a></p>';
             tab.addComponent(new dialog_1.Label(help));
-            const panel = new dialog_1.GroupBox("Write CV");
-            // panel.getElement().style.display = "flex";
-            // panel.getElement().style.flexDirection = "row";
-            tab.addComponent(panel);
-            panel.add(new dialog_1.Label("CV"));
-            const cv = new dialog_1.InputNumber(0, 9999);
-            //cv.getElement().style.width = "100px";
-            panel.add(cv);
-            panel.add(new dialog_1.Label("Value"));
-            const value = new dialog_1.InputNumber(0, 255);
-            //value.getElement().style.width = "100px";
-            panel.add(value);
-            const writeCV = new dialog_1.Button("Write CV");
-            panel.add(writeCV);
-            writeCV.onclick = () => {
-                if (cv.value >= 0) {
-                    readCV.value = -1;
-                    readValue.value = -1;
-                    ws_1.wsClient.send({ type: dcc_1.ApiCommands.writeDccExDirectCommand, data: { command: '<1 PROG><W ' + cv.value + ' ' + value.value + '>' } });
+            this.pomCheckboxElement = new dialog_1.Checkbox(" <b>Write Configuration Variable on main track (POM)<b>");
+            tab.addComponent(this.pomCheckboxElement);
+            this.pomCheckboxElement.onchange = () => {
+                readGroupBoxElement.getElement().style.display = this.pomCheckboxElement.checked ? "none" : "block";
+                labelAddressElement.getElement().style.display = !this.pomCheckboxElement.checked ? "none" : "block";
+                this.writeAddressElement.getElement().style.display = !this.pomCheckboxElement.checked ? "none" : "block";
+            };
+            const writeGroupBoxElement = new dialog_1.GroupBox("Write CV");
+            tab.addComponent(writeGroupBoxElement);
+            const labelAddressElement = new dialog_1.Label("Address");
+            labelAddressElement.getElement().style.display = "none";
+            writeGroupBoxElement.add(labelAddressElement);
+            this.writeAddressElement = new dialog_1.InputNumber(0, 9999);
+            this.writeAddressElement.getElement().style.display = "none";
+            writeGroupBoxElement.add(this.writeAddressElement);
+            this.writeAddressElement.onchange = (e) => {
+                this.writeValidate();
+            };
+            this.writeAddressElement.getElement().onkeyup = (e) => {
+                this.writeValidate();
+            };
+            writeGroupBoxElement.add(new dialog_1.Label("CV"));
+            this.writeCVInputElement = new dialog_1.InputNumber(0, 9999);
+            writeGroupBoxElement.add(this.writeCVInputElement);
+            this.writeCVInputElement.onchange = (e) => {
+                this.writeValidate();
+            };
+            this.writeCVInputElement.getElement().onkeyup = (e) => {
+                this.writeValidate();
+            };
+            const valueLabel = new dialog_1.Label("Value: ");
+            writeGroupBoxElement.add(valueLabel);
+            this.writeValueInputElement = new dialog_1.Input("0");
+            this.writeValueInputElement.getElement().onkeyup = () => {
+                var vv = parseInt(this.writeValueInputElement.value);
+                if (vv > 255) {
+                    this.writeValueInputElement.value = '255';
+                }
+                else if (vv < 0) {
+                    this.writeValueInputElement.value = '0';
+                }
+                for (var i = 0; i < 8; i++) {
+                    this.writeBitElements[i].value = ((vv >> i) & 1) > 0;
+                }
+                //this.btnWriteElement!.enabled = !Number.isNaN(vv)
+                this.writeValidate();
+            };
+            this.writeValueInputElement.onchange = (inp) => {
+                this.writeValidate();
+            };
+            writeGroupBoxElement.add(this.writeValueInputElement);
+            var dd = document.createElement('div');
+            dd.style.display = "flex";
+            dd.style.alignItems = "start";
+            dd.style.gap = "1px";
+            for (var i = 7; i >= 0; i--) {
+                this.writeBitElements[i] = document.createElement("bit-element");
+                this.writeBitElements[i].style.scale = "0.7";
+                this.writeBitElements[i].onclick = (e) => {
+                    var vv = 0;
+                    var bit = e.target;
+                    bit.value = !bit.value;
+                    for (var i = 0; i < 8; i++) {
+                        var bv = this.writeBitElements[i].value ? 1 : 0;
+                        vv |= (bv << i);
+                    }
+                    this.writeValueInputElement.value = vv.toString();
+                    this.writeValidate();
+                };
+                dd.appendChild(this.writeBitElements[i]);
+            }
+            writeGroupBoxElement.fieldset.appendChild(dd);
+            this.btnWriteElement = new dialog_1.Button("Write");
+            this.btnWriteElement.enabled = false;
+            writeGroupBoxElement.add(this.btnWriteElement);
+            this.btnWriteElement.onclick = () => {
+                if (this.writeCVInputElement.value >= 0) {
+                    readCVInputElement.value = -1;
+                    readValueInputNumberElement.value = -1;
+                    if (this.pomCheckboxElement.checked) {
+                        ws_1.wsClient.send({ type: dcc_1.ApiCommands.writeDccExDirectCommand, data: { command: '<1 PROG><w ' + this.writeAddressElement.value + ' ' + this.writeCVInputElement.value + ' ' + this.writeValueInputElement.value + '>' } });
+                    }
+                    else {
+                        ws_1.wsClient.send({ type: dcc_1.ApiCommands.writeDccExDirectCommand, data: { command: '<1 PROG><W ' + this.writeCVInputElement.value + ' ' + this.writeValueInputElement.value + '>' } });
+                    }
                 }
             };
-            const readPanel = new dialog_1.GroupBox("Read CV");
-            //panel.getElement().style.backgroundColor = "whitesmoke";
-            tab.addComponent(readPanel);
-            readPanel.add(new dialog_1.Label("CV"));
-            const readCV = new dialog_1.InputNumber(-1, 9999);
-            //readCV.getElement().style.width = "100px";
-            readCV.value = 1;
-            readPanel.add(readCV);
-            readPanel.add(new dialog_1.Label("Value"));
-            const readValue = new dialog_1.InputNumber(-1, 255);
-            readValue.getElement().readOnly = true;
-            readValue.getElement().style.backgroundColor = "lightgray";
-            //readValue.getElement().style.width = "100px";
-            readPanel.add(readValue);
-            const readCV29 = new dialog_1.Button("Read CV");
-            readPanel.add(readCV29);
-            readCV29.onclick = () => {
-                if (readCV.value >= 0) {
-                    ws_1.wsClient.send({ type: dcc_1.ApiCommands.writeDccExDirectCommand, data: { command: '<1 PROG><R ' + readCV.value + '>' } });
+            const readGroupBoxElement = new dialog_1.GroupBox("Read CV");
+            tab.addComponent(readGroupBoxElement);
+            readGroupBoxElement.add(new dialog_1.Label("CV"));
+            const readCVInputElement = new dialog_1.InputNumber(-1, 9999);
+            readCVInputElement.value = 1;
+            readGroupBoxElement.add(readCVInputElement);
+            readGroupBoxElement.add(new dialog_1.Label("Value"));
+            const readValueInputNumberElement = new dialog_1.InputNumber(-1, 255);
+            readValueInputNumberElement.getElement().readOnly = true;
+            readValueInputNumberElement.getElement().style.backgroundColor = "whitesmoke";
+            readGroupBoxElement.add(readValueInputNumberElement);
+            readValueInputNumberElement.onchange = ((inp) => {
+                var vv = inp.value;
+                for (var i = 0; i < 8; i++) {
+                    this.readBitElements[i].value = ((vv >> i) & 1) > 0;
+                }
+            });
+            var dd = document.createElement('div');
+            readGroupBoxElement.fieldset.appendChild(dd);
+            dd.style.display = "flex";
+            dd.style.alignItems = "start";
+            dd.style.gap = "1px";
+            for (var i = 7; i >= 0; i--) {
+                this.readBitElements[i] = document.createElement("bit-element");
+                this.readBitElements[i].style.scale = "0.7";
+                this.readBitElements[i].onclick = (e) => { };
+                dd.appendChild(this.readBitElements[i]);
+                this.readBitElements[i].style.cursor = "default";
+            }
+            const btnReadElement = new dialog_1.Button("Read");
+            readGroupBoxElement.add(btnReadElement);
+            btnReadElement.onclick = () => {
+                if (readCVInputElement.value >= 0) {
+                    ws_1.wsClient.send({ type: dcc_1.ApiCommands.writeDccExDirectCommand, data: { command: '<1 PROG><R ' + readCVInputElement.value + '>' } });
                 }
             };
-            // const writeCV29 = new Button("Write CV29 9");
-            // panel.add(writeCV29);
-            // writeCV29.onclick = () => {
-            //     wsClient.send({ type: ApiCommands.writeDccExDirectCommand, data: { command: '<W 29 9>' } as iDccExDirectCommand});
-            // }
             window.directCommandResponse = (data) => {
                 const params = data.response.split(" ");
                 if (params.length > 1) {
@@ -81,8 +162,8 @@ For now, it only works on DCC-EX!
                     const cv = parseInt(params[1]);
                     const v = parseInt(params[2]);
                     if (v >= 0) {
-                        readCV.value = cv;
-                        readValue.value = v;
+                        readCVInputElement.value = cv;
+                        readValueInputNumberElement.value = v;
                         toastManager_1.toastManager.showToast("👍CV read successful!", "success");
                     }
                     else {
@@ -114,14 +195,6 @@ For now, it only works on DCC-EX!
             panel2.add(btnLeftSide2);
             const btnRightSide2 = new dialog_1.Button("Set Right Side");
             panel2.add(btnRightSide2);
-        }
-        process(data) {
-            const params = data.response.split(" ");
-            if (params.length > 1) {
-                const cv = parseInt(params[1]);
-                const value = parseInt(params[2]);
-                console.log("CV", cv, "Value", value);
-            }
         }
     }
     exports.ProgrammerDialog = ProgrammerDialog;

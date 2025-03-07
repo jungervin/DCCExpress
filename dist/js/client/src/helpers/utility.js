@@ -22,6 +22,7 @@ define(["require", "exports"], function (require, exports) {
     }
     function toDecimal(v) {
         var base = 10;
+        v = v.replace('_', '');
         if (v.startsWith('0b')) {
             v = v.slice(2);
             base = 2;

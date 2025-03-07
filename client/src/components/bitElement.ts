@@ -1,4 +1,5 @@
 export class BitElement extends HTMLElement {
+    
     onchanged?: (sender: BitElement) => void;
     constructor() {
         super()
@@ -8,7 +9,6 @@ export class BitElement extends HTMLElement {
     }
 
     connectedCallback() {
-        //this.className = "btnLocoFunction"
         this.style.display = "flex"
         this.style.alignItems = "center"
         this.style.justifyContent = "center"
@@ -41,6 +41,10 @@ export class BitElement extends HTMLElement {
         if(this.onchanged) {
             this.onchanged(this)
         }
+    }
+
+    setCursor(cursor: string) {
+        this.style.cursor = cursor
     }
 
 }

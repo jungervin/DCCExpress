@@ -147,14 +147,19 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
         else if (data.startsWith('p0')) {
             const params = data.split(" ");
             this.powerInfo.info = 0b00000000;
-            // this.powerInfo.trackVoltageOn = false;
-            // this.powerInfo.programmingModeActive = false;
-            if (params[1] == 'MAIN' || params[1] == 'A') {
-                this.powerInfo.trackVoltageOn = false;
+            if (params.length == 2) {
+                if (params[1] == 'MAIN' || params[1] == 'A') {
+                    this.powerInfo.trackVoltageOn = false;
+                }
+                else if (params[1] == 'PROG' || params[1] == 'B') {
+                    this.powerInfo.programmingModeActive = false;
+                }
             }
-            else if (params[1] == 'PROG' || params[1] == 'B') {
+            else {
+                this.powerInfo.trackVoltageOn = false;
                 this.powerInfo.programmingModeActive = false;
             }
+            (0, utility_1.log)("DCCEx PowerInfo: ", this.powerInfo);
             (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.powerInfo, data: this.powerInfo });
         }
         else if (data.startsWith("Q ")) {
