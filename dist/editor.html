@@ -274,6 +274,7 @@
 
     <script>
 
+        
         require.config({
             paths: {
                 "socket.io-client": "/socketio",
@@ -286,9 +287,12 @@
         //     const app = new appModule.App();
         // });
         require(['./app', './editor/editor', './editor/toolbar', './editor/speedometer'], (appModule, e1, e2, sm) => {
-            const app = new appModule.App();
-        });
 
+            
+            const app = new appModule.App();
+        
+        });
+    
     </script>
 
 </body>

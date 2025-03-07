@@ -1,4 +1,4 @@
-define(["require", "exports", "../helpers/math", "./track", "./view", "../../../common/src/dcc", "../helpers/graphics", "../helpers/ws"], function (require, exports, math_1, track_1, view_1, dcc_1, graphics_1, ws_1) {
+define(["require", "exports", "../helpers/math", "./track", "./view", "../../../common/src/dcc", "../helpers/graphics", "../helpers/ws", "../helpers/globals"], function (require, exports, math_1, track_1, view_1, dcc_1, graphics_1, ws_1, globals_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Signal4Element = exports.Signal3Element = exports.Signal2Element = exports.Signal1Element = exports.SignalStates = void 0;
@@ -232,7 +232,11 @@ define(["require", "exports", "../helpers/math", "./track", "./view", "../../../
             var r = this.width / 13;
             var d = 2 * r;
             var h = d + 4;
-            var a = this.aspect < 2 ? 2 : this.aspect;
+            var aa = this.aspect;
+            if (globals_1.Globals.Settings.EditorSettings.DispalyAsSingleLamp) {
+                aa = 1;
+            }
+            var a = aa < 2 ? 2 : aa;
             ctx.beginPath();
             ctx.lineWidth = 1;
             ctx.strokeStyle = "black";
@@ -251,12 +255,12 @@ define(["require", "exports", "../helpers/math", "./track", "./view", "../../../
             //ctx.fillRect(this.posLeft + this.width - 6, y - r / 2 - 4, 2, 11)
             ctx.fill();
             ctx.stroke();
-            x += this.aspect == 1 ? 3 : 1;
-            if (this.aspect == 1) {
+            x += aa == 1 ? 3 : 1;
+            if (aa == 1) {
                 this.drawCircle(ctx, x, y, r, this.lights[this.state].color);
             }
             else {
-                for (var i = 0; i < this.aspect; i++) {
+                for (var i = 0; i < aa; i++) {
                     if (this.lightsAll) {
                         this.drawCircle(ctx, x + i * d, y, r, this.lights[i].color);
                     }

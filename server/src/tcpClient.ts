@@ -2,7 +2,7 @@ import * as net from "net";
 import { log, logError } from "./utility";
 
 export class TCPClient {
-     socket: net.Socket | null = null;
+    socket: net.Socket | null = null;
     private isStopped: boolean = true;
     reconnectTimer: NodeJS.Timeout | undefined;
 
@@ -32,7 +32,9 @@ export class TCPClient {
 
     public send(message: string, callback: (err?: Error) => void) {
         if (this.socket && !this.socket.destroyed && !this.socket.closed) {
-            log(`TCP Küldés: ${message}`);
+            if (!message.startsWith('<#')) {
+                log(`TCP sending: ${message}`);
+            }
             //this.client.write(message + "\n");
             this.socket.write(message);
         } else {
@@ -48,7 +50,7 @@ export class TCPClient {
         this.socket.setTimeout(6000)
         this.socket.connect(this.port, this.host, () => {
             this.socket!.setTimeout(6000)
-            
+
             log(`tcpClient Connected: ${this.host}:${this.port}`);
             //this.startKeepAlive();
             if (this.onConnected) {
@@ -62,12 +64,12 @@ export class TCPClient {
             // if(this.socket) {
             //     this.socket.end();
             // }
-          });        
+        });
 
-          this.socket.on('end', () => {
+        this.socket.on('end', () => {
             log('socket timeout');
             this.reconnect()
-          });        
+        });
 
         this.socket.on("data", (data) => {
             const message = data.toString().trim();
@@ -82,7 +84,7 @@ export class TCPClient {
 
         this.socket.on("close", () => {
             log("tcpClient close");
-            
+
             this.reconnect();
         });
     }

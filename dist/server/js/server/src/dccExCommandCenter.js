@@ -17,7 +17,9 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     }
     put(msg) {
         // Mutex??
-        (0, utility_1.log)(`DCCEx ${this.name} put: ${msg}`);
+        if (!msg.startsWith('<#')) {
+            (0, utility_1.log)(`DCCEx ${this.name} put: ${msg}`);
+        }
         this.buffer.push(msg);
     }
     getConnectionString() {
@@ -245,12 +247,15 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
         }
     }
     connected() {
-        this.put('<T>');
-        this.put('<Q>');
+        this.put('<s>');
+        // this.put('<T>')
+        // this.put('<Q>')
     }
     received(buffer) {
         var msg = buffer.toString();
-        (0, utility_1.log)("TCP RECEIVED:", msg);
+        if (!buffer.startsWith('<#')) {
+            (0, utility_1.log)("TCP RECEIVED:", msg);
+        }
         for (var i = 0; i < msg.length; i++) {
             var c = msg[i];
             if (c == ">") {

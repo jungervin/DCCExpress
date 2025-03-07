@@ -52,7 +52,9 @@ class TCPClient {
     }
     send(message, callback) {
         if (this.socket && !this.socket.destroyed && !this.socket.closed) {
-            (0, utility_1.log)(`TCP Küldés: ${message}`);
+            if (!message.startsWith('<#')) {
+                (0, utility_1.log)(`TCP sending: ${message}`);
+            }
             //this.client.write(message + "\n");
             this.socket.write(message);
         }

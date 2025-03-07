@@ -20,7 +20,9 @@ export class DCCExCommandCenter extends CommandCenter {
 
     put(msg: string) {
         // Mutex??
-        log(`DCCEx ${this.name} put: ${msg}`)
+        if (!msg.startsWith('<#')) {
+            log(`DCCEx ${this.name} put: ${msg}`)
+        }
         this.buffer.push(msg)
     }
     getConnectionString(): string {
@@ -81,7 +83,7 @@ export class DCCExCommandCenter extends CommandCenter {
     stop(): void {
         //throw new Error("Method not implemented.");
     }
-    
+
     setTurnout(address: number, closed: boolean, mode: OutputModes): void {
         if (mode == OutputModes.dccExAccessory) {
             this.put(`<T ${address} ${closed ? DCCExTurnout.closed : DCCExTurnout.open}>`)
@@ -273,13 +275,16 @@ export class DCCExCommandCenter extends CommandCenter {
     }
 
     connected() {
-        this.put('<T>')
-        this.put('<Q>')
+        this.put('<s>')
+        // this.put('<T>')
+        // this.put('<Q>')
     }
 
     received(buffer: any) {
         var msg = buffer.toString()
-        log("TCP RECEIVED:", msg)
+        if (!buffer.startsWith('<#')) {
+            log("TCP RECEIVED:", msg)
+        }
 
         for (var i = 0; i < msg.length; i++) {
             var c = msg[i];

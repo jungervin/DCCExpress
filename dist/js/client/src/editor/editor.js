@@ -855,7 +855,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                         s2.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
                         s2.angle = this.cursorElement.angle;
                         // s2.cc = Globals.defaultDevice!
-                        s2.aspect = 1;
+                        //s2.aspect = 1
                         this.add(s2);
                         break;
                     case drawModes.signal3:
@@ -865,7 +865,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                         s3.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
                         s3.angle = this.cursorElement.angle;
                         // s3.cc = Globals.defaultDevice!
-                        s3.aspect = 1;
+                        //s3.aspect = 1
                         this.add(s3);
                         break;
                     case drawModes.signal4:
@@ -875,7 +875,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                         s4.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
                         s4.angle = this.cursorElement.angle;
                         // s4.cc = Globals.defaultDevice!
-                        s4.aspect = 1;
+                        //s4.aspect = 1
                         this.add(s4);
                         break;
                     case drawModes.block:
@@ -1486,7 +1486,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                                 s2.rbusAddress = elem.rbusAddress;
                                 s2.outputMode = (_6 = elem.outputMode) !== null && _6 !== void 0 ? _6 : dcc_1.OutputModes.accessory;
                                 // s2.cc = elem.cc == undefined ? undefined : elem.cc
-                                s2.aspect = 1; // elem.aspect ?? 1
+                                //s2.aspect = 1 // elem.aspect ?? 1
                                 s2.name = elem.name.replace("turnoutleft", "signal2-");
                                 this.add(s2);
                                 break;
@@ -1501,7 +1501,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                                 s3.rbusAddress = elem.rbusAddress;
                                 s3.outputMode = (_13 = elem.outputMode) !== null && _13 !== void 0 ? _13 : dcc_1.OutputModes.accessory;
                                 // s3.cc = elem.cc == undefined ? undefined : elem.cc
-                                s3.aspect = 1; //elem.aspect ?? 1
+                                //s3.aspect = 1; //elem.aspect ?? 1
                                 s3.name = elem.name.replace("turnoutleft", "signal3-");
                                 this.add(s3);
                                 break;
@@ -1517,7 +1517,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                                 s4.rbusAddress = elem.rbusAddress;
                                 s4.outputMode = (_21 = elem.outputMode) !== null && _21 !== void 0 ? _21 : dcc_1.OutputModes.accessory;
                                 // s4.cc = elem.cc == undefined ? undefined : elem.cc
-                                s4.aspect = 1; //elem.aspect ?? 1
+                                //s4.aspect = 1 //elem.aspect ?? 1
                                 s4.name = elem.name.replace("turnoutleft", "signal4-");
                                 this.add(s4);
                                 break;
