@@ -23,6 +23,9 @@ define(["require", "exports", "../controls/dialog", "../helpers/globals"], funct
             this.showAddress = new dialog_1.Checkbox("Show Address");
             this.showAddress.checked = globals_1.Globals.Settings.EditorSettings.ShowAddress;
             tab1.addComponent(this.showAddress);
+            this.showSingleLamp = new dialog_1.Checkbox("Display railway signals as single-lamp");
+            this.showSingleLamp.checked = globals_1.Globals.Settings.EditorSettings.DispalyAsSingleLamp;
+            tab1.addComponent(this.showSingleLamp);
             const fastClockGroup = new dialog_1.GroupBox("Fast Clock");
             tab1.addComponent(fastClockGroup);
             this.showClock = new dialog_1.Checkbox("Show Clock");

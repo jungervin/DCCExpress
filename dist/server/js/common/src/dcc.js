@@ -168,6 +168,7 @@ exports.defaultSettings = {
         interval: 500
     },
     EditorSettings: {
+        DispalyAsSingleLamp: true,
         ShowGrid: true,
         ShowAddress: false,
         ShowClock: true,

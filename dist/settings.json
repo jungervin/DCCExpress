@@ -29,6 +29,7 @@
         "Orientation": 1,
         "ShowGrid": true,
         "ShowClock": true,
-        "fastClockFactor": 1
+        "fastClockFactor": 1,
+        "DispalyAsSingleLamp": true
     }
 }

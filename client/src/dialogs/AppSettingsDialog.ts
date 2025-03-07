@@ -15,6 +15,7 @@ export class AppSettingsDialog extends Dialog {
     showGrid: Checkbox;
     showClock: Checkbox;
     fastClockFactor: InputNumber;
+    showSingleLamp: Checkbox;
     constructor() {
         super(800, 600, "Settings")
 
@@ -41,6 +42,12 @@ export class AppSettingsDialog extends Dialog {
         this.showAddress = new Checkbox("Show Address")
         this.showAddress.checked = Globals.Settings.EditorSettings.ShowAddress
         tab1.addComponent(this.showAddress)
+
+        this.showSingleLamp = new Checkbox("Display railway signals as single-lamp")
+        this.showSingleLamp.checked = Globals.Settings.EditorSettings.DispalyAsSingleLamp
+        tab1.addComponent(this.showSingleLamp)
+
+        
 
         const fastClockGroup = new GroupBox("Fast Clock")
         tab1.addComponent(fastClockGroup)

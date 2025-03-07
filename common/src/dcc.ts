@@ -327,6 +327,7 @@ export interface iSettings {
         interval: number
     },
     EditorSettings: {
+        DispalyAsSingleLamp: boolean;
         ShowGrid: boolean,
         ShowAddress: boolean,
         ShowClock: boolean,
@@ -362,6 +363,7 @@ export const defaultSettings: iSettings = {
         interval: 500
     },
     EditorSettings: {
+        DispalyAsSingleLamp: true,
         ShowGrid: true,
         ShowAddress: false,
         ShowClock: true,
