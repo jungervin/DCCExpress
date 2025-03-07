@@ -224,7 +224,7 @@ For now, it only works on DCC-EX v5.4!
 
         window.directCommandResponse = (data: iDccExDirectCommandResponse) => {
             const params = data.response.split(" ");
-            if (params.length > 1) {
+            if (params.length > 1 && params[0] == 'v') {
                 wsClient.send({ type: ApiCommands.writeDccExDirectCommand, data: { command: '<0 PROG>' } as iDccExDirectCommand });
                 const cv = parseInt(params[1]);
                 const v = parseInt(params[2]);
