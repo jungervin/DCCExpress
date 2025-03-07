@@ -47,7 +47,7 @@ export class DCCExCommandCenter extends CommandCenter {
         // <F cab funct state> - Turn loco decoder functions ON or OFF
         // 6 Response: <l cab reg speedByte functMap>
         //throw new Error("Method not implemented.");
-        this.put(`<F ${address} ${fn} ${on ? 1 : 0}`)
+        this.put(`<F ${address} ${fn} ${on ? 1 : 0}>`)
     }
     clientConnected(): void {
         broadcastAll({ type: ApiCommands.powerInfo, data: this.powerInfo } as iData)
