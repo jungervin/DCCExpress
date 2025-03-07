@@ -187,6 +187,9 @@ For now, it only works on DCC-EX v5.4!
                         readCVInputElement.value = cv;
                         readValueInputNumberElement.value = v;
                         toastManager_1.toastManager.showToast("👍CV read successful!", "success");
+                        for (var i = 0; i < 8; i++) {
+                            this.readBitElements[i].value = ((v >> i) & 1) > 0;
+                        }
                     }
                     else {
                         toastManager_1.toastManager.showToast("⚠️CV read failed!", "error");

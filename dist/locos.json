@@ -49,6 +49,12 @@
         "isOn": false
       },
       {
+        "id": 7,
+        "name": "Pörgetés",
+        "momentary": false,
+        "isOn": false
+      },
+      {
         "id": 8,
         "name": "Ajtó",
         "momentary": true,
@@ -63,13 +69,13 @@
       {
         "id": 10,
         "name": "Géptér ajtó",
-        "momentary": false,
+        "momentary": true,
         "isOn": false
       },
       {
         "id": 11,
         "name": "Fújás",
-        "momentary": false,
+        "momentary": true,
         "isOn": false
       },
       {
@@ -81,7 +87,7 @@
       {
         "id": 13,
         "name": "Homokoló",
-        "momentary": false,
+        "momentary": true,
         "isOn": false
       },
       {
@@ -93,7 +99,7 @@
       {
         "id": 15,
         "name": "Csatolás",
-        "momentary": false,
+        "momentary": true,
         "isOn": false
       },
       {
