@@ -38,6 +38,7 @@ var OutputModes;
 (function (OutputModes) {
     OutputModes[OutputModes["accessory"] = 0] = "accessory";
     OutputModes[OutputModes["output"] = 1] = "output";
+    OutputModes[OutputModes["dccExAccessory"] = 2] = "dccExAccessory";
 })(OutputModes || (exports.OutputModes = OutputModes = {}));
 var ApiCommands;
 (function (ApiCommands) {

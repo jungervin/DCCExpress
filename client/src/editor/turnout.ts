@@ -2,7 +2,7 @@ import { drawTextWithRoundedBackground } from "../helpers/graphics";
 import { degreesToRadians, getDirectionXy, Point } from "../helpers/math";
 import { RailView } from "./view";
 import { Colors } from "./view";
-import { iSetTurnout } from "../../../common/src/dcc";
+import { iSetTurnout, OutputModes } from "../../../common/src/dcc";
 import { wsClient } from "../helpers/ws";
 import { Globals } from "../helpers/globals";
 
@@ -13,6 +13,7 @@ export abstract class TurnoutElement extends RailView {
     t1OpenValue: boolean = false;
     address: number = 10
     showAddress: boolean = false
+    outputMode: OutputModes = OutputModes.dccExAccessory;
 
     constructor(uuid: string, address: number, x1: number, y1: number, name: string) {
         super(uuid, x1, y1, name)
@@ -76,6 +77,7 @@ export abstract class TurnoutElement extends RailView {
 }
 
 export class TurnoutRightElement extends TurnoutElement {
+    
     constructor(uuid: string, address: number, x1: number, y1: number, name: string) {
         super(uuid, address, x1, y1, name)
     }
@@ -282,6 +284,7 @@ export class TurnoutRightElement extends TurnoutElement {
 }
 
 export class TurnoutLeftElement extends TurnoutRightElement {
+    
     constructor(uuid: string, address: number, x1: number, y1: number, name: string) {
         super(uuid, address, x1, y1, name)
         //this.angleStep = 45
@@ -320,6 +323,7 @@ export class TurnoutLeftElement extends TurnoutRightElement {
 }
 
 export class TurnoutYShapeElement extends TurnoutElement {
+    
     constructor(uuid: string, address: number, x1: number, y1: number, name: string) {
         super(uuid, address, x1, y1, name)
         this.angleStep = 45
@@ -473,7 +477,6 @@ export class TurnoutDoubleElement extends TurnoutElement {
     //t2Closed = true
     t2ClosedValue: boolean = true;
     t2OpenValue: boolean = false;
-
 
     constructor(uuid: string, address1: number, address2: number, x1: number, y1: number, name: string) {
         super(uuid, address1, x1, y1, name)

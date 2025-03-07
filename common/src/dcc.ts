@@ -21,7 +21,8 @@ export enum DCCExTurnout {
 
 export enum OutputModes {
     accessory = 0,
-    output = 1
+    output = 1,
+    dccExAccessory = 2,
 }
 
 export enum ApiCommands {
@@ -113,6 +114,7 @@ export interface iLoco {
 export interface iSetTurnout {
     address: number,
     isClosed: boolean,
+    outputMode: OutputModes
 }
 
 export interface iTurnoutInfo {

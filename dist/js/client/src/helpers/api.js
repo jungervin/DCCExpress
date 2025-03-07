@@ -87,17 +87,17 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
                 if (Object.getPrototypeOf(turnout) == turnout_1.TurnoutDoubleElement.prototype) {
                     const td = turnout;
                     if (td.address === address) {
-                        var t = { address: address, isClosed: isClosed ? td.t1ClosedValue : td.t1OpenValue };
+                        var t = { address: address, isClosed: isClosed ? td.t1ClosedValue : td.t1OpenValue, outputMode: td.outputMode };
                         ws_1.wsClient.send({ type: dcc_1.ApiCommands.setTurnout, data: t });
                     }
                     else if (td.address2 === address) {
-                        var t = { address: address, isClosed: isClosed ? td.t2ClosedValue : td.t2OpenValue };
+                        var t = { address: address, isClosed: isClosed ? td.t2ClosedValue : td.t2OpenValue, outputMode: td.outputMode };
                         ws_1.wsClient.send({ type: dcc_1.ApiCommands.setTurnout, data: t });
                     }
                 }
                 else {
                     const to = turnout;
-                    var t = { address: address, isClosed: isClosed ? to.t1ClosedValue : to.t1OpenValue };
+                    var t = { address: address, isClosed: isClosed ? to.t1ClosedValue : to.t1OpenValue, outputMode: to.outputMode };
                     ws_1.wsClient.send({ type: dcc_1.ApiCommands.setTurnout, data: t });
                 }
             }

@@ -1,4 +1,4 @@
-define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view", "./view", "../helpers/ws", "../helpers/globals"], function (require, exports, graphics_1, math_1, view_1, view_2, ws_1, globals_1) {
+define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view", "./view", "../../../common/src/dcc", "../helpers/ws", "../helpers/globals"], function (require, exports, graphics_1, math_1, view_1, view_2, dcc_1, ws_1, globals_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.TurnoutDoubleElement = exports.TurnoutYShapeElement = exports.TurnoutLeftElement = exports.TurnoutRightElement = exports.TurnoutElement = void 0;
@@ -10,6 +10,7 @@ define(["require", "exports", "../helpers/graphics", "../helpers/math", "./view"
             this.t1OpenValue = false;
             this.address = 10;
             this.showAddress = false;
+            this.outputMode = dcc_1.OutputModes.dccExAccessory;
             this._locked = false;
             this.angleStep = -45;
             this.address = address;

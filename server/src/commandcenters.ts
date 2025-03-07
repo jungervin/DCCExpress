@@ -90,7 +90,8 @@ export class CommandCenters {
 
     setTurnout(t: iSetTurnout) {
         if (this.cc) {
-            this.cc.setTurnout(t.address, t.isClosed)
+            
+            this.cc.setTurnout(t.address, t.isClosed, t.outputMode)
         } else {
             log("Command Center doesn't exists!")
         }

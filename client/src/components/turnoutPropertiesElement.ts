@@ -2,10 +2,11 @@ import { propertiesChangedEvent } from "../editor/view";
 import { TurnoutDoubleElement, TurnoutElement, TurnoutLeftElement, TurnoutRightElement, TurnoutYShapeElement } from "../editor/turnout";
 import { BitElement } from "./bitElement";
 import { drawRectangle } from "../helpers/graphics";
-import { ApiCommands, iSetTurnout } from "../../../common/src/dcc";
+import { ApiCommands, CommandCenterTypes, iSetTurnout, OutputModes } from "../../../common/src/dcc";
 // import { IOConn } from "../helpers/iocon";
 //import { CommandCenterHTMLSelectElement } from "./CommandCenterHTMLSelectElement";
 import { TurnoutDoubleCanvasElement, TurnoutLeftCanvasElement, TurnoutRightCanvasElement, TurnoutYCanvasElement } from "./canvasElement";
+import { Globals } from "../helpers/globals";
 // import { DCCProtocols } from "../helpers/decoder";
 console.log(BitElement)
 //console.log(CommandCenterHTMLSelectElement)
@@ -20,12 +21,15 @@ export class TurnoutLeftPropertiesElement extends HTMLElement {
     canvas2Element: TurnoutLeftCanvasElement;
     bit2Element: BitElement;
     nameElement: HTMLInputElement;
+    accessoryModeElement: HTMLInputElement;
+    outputModeElement: HTMLInputElement;
+    shadow: ShadowRoot;
 
     constructor() {
         super()
 
-        const shadow = this.attachShadow({ mode: 'open' });
-        shadow.innerHTML = `
+        this.shadow = this.attachShadow({ mode: 'open' });
+        this.shadow.innerHTML = `
         <style>
             @import url("/bootstrap.css");
             @import url("/css/properties.css");
@@ -69,6 +73,19 @@ export class TurnoutLeftPropertiesElement extends HTMLElement {
                 </div>
             </div>
 
+            <div class="igroup" id="modeGroup">
+                    <div>Mode</div>
+                    <div>
+                        <input type="radio" id="accessory" name="mode" value="accessory" checked />
+                        <label for="accessory">Accessory (a)</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="output" name="mode" value="output" />
+                        <label for="output">DccEx Accessory (T)</label>
+                    </div>
+                </div>
+
             <div class="igroup">                
                 <div class="row">
                     <div>RBus Address</div>
@@ -81,18 +98,22 @@ export class TurnoutLeftPropertiesElement extends HTMLElement {
         </div>
     `;
 
-        this.nameElement = shadow.getElementById("name") as HTMLInputElement
+        this.nameElement = this.shadow.getElementById("name") as HTMLInputElement
 
        // this.deviceElement = shadow.getElementById("device") as CommandCenterHTMLSelectElement
-        this.addressElement = shadow.getElementById("address") as HTMLInputElement
+        this.addressElement = this.shadow.getElementById("address") as HTMLInputElement
 
-        this.canvas1Element = shadow.getElementById("turnout1") as TurnoutLeftCanvasElement
-        this.bit1Element = shadow.getElementById("bit1") as BitElement
+        this.canvas1Element = this.shadow.getElementById("turnout1") as TurnoutLeftCanvasElement
+        this.bit1Element = this.shadow.getElementById("bit1") as BitElement
 
-        this.canvas2Element = shadow.getElementById("turnout2") as TurnoutLeftCanvasElement
-        this.bit2Element = shadow.getElementById("bit2") as BitElement
+        this.canvas2Element = this.shadow.getElementById("turnout2") as TurnoutLeftCanvasElement
+        this.bit2Element = this.shadow.getElementById("bit2") as BitElement
 
-        this.rbusAddressElement = shadow.getElementById("rbusAddress") as HTMLInputElement
+        this.accessoryModeElement = this.shadow.getElementById("accessory") as HTMLInputElement
+        this.outputModeElement = this.shadow.getElementById("output") as HTMLInputElement
+
+
+        this.rbusAddressElement = this.shadow.getElementById("rbusAddress") as HTMLInputElement
 
     }
 
@@ -149,6 +170,18 @@ export class TurnoutLeftPropertiesElement extends HTMLElement {
         this.bit2Element.onchanged = (sender: BitElement) => {
             this.turnout!.t1OpenValue = this.bit2Element.value
         }
+
+        this.shadow!.getElementById("modeGroup")!.style.display = Globals.CommandCenterSetting.type == CommandCenterTypes.Z21 ? "none" : "block"
+        
+        this.accessoryModeElement.checked = this.turnout!.outputMode == OutputModes.accessory
+        this.accessoryModeElement.onchange = (e) => {
+            this.turnout!.outputMode = OutputModes.accessory
+        }
+        
+        this.outputModeElement.checked = this.turnout!.outputMode == OutputModes.dccExAccessory
+        this.outputModeElement.onchange = (e) => {
+            this.turnout!.outputMode = OutputModes.dccExAccessory
+        }
     }
 }
 customElements.define("turnout-left-properties-element", TurnoutLeftPropertiesElement)
@@ -163,12 +196,15 @@ export class TurnoutRightPropertiesElement extends HTMLElement {
     canvas2Element: TurnoutRightCanvasElement;
     bit2Element: BitElement;
     nameElement: HTMLInputElement;
+    accessoryModeElement: HTMLInputElement;
+    outputModeElement: HTMLInputElement;
+    shadow: ShadowRoot;
 
     constructor() {
         super()
 
-        const shadow = this.attachShadow({ mode: 'open' });
-        shadow.innerHTML = `
+        this.shadow = this.attachShadow({ mode: 'open' });
+        this.shadow.innerHTML = `
         <style>
             @import url("/bootstrap.css");
             @import url("/css/properties.css");
@@ -212,6 +248,20 @@ export class TurnoutRightPropertiesElement extends HTMLElement {
                 </div>
             </div>
 
+
+            <div class="igroup" id="modeGroup">
+                <div>Mode</div>
+                <div>
+                    <input type="radio" id="accessory" name="mode" value="accessory" checked />
+                    <label for="accessory">Accessory (a)</label>
+                </div>
+
+                <div>
+                    <input type="radio" id="output" name="mode" value="output" />
+                    <label for="output">DccEx Accessory (T)</label>
+                </div>
+            </div>      
+
             <div class="igroup">                
                 <div class="row">
                     <div>RBus Address</div>
@@ -224,17 +274,20 @@ export class TurnoutRightPropertiesElement extends HTMLElement {
         </div>
     `;
 
-        this.nameElement = shadow.getElementById("name") as HTMLInputElement
+        this.nameElement = this.shadow.getElementById("name") as HTMLInputElement
         // this.deviceElement = shadow.getElementById("device") as CommandCenterHTMLSelectElement
-        this.addressElement = shadow.getElementById("address") as HTMLInputElement
+        this.addressElement = this.shadow.getElementById("address") as HTMLInputElement
 
-        this.canvas1Element = shadow.getElementById("turnout1") as TurnoutRightCanvasElement
-        this.bit1Element = shadow.getElementById("bit1") as BitElement
+        this.canvas1Element = this.shadow.getElementById("turnout1") as TurnoutRightCanvasElement
+        this.bit1Element = this.shadow.getElementById("bit1") as BitElement
 
-        this.canvas2Element = shadow.getElementById("turnout2") as TurnoutRightCanvasElement
-        this.bit2Element = shadow.getElementById("bit2") as BitElement
+        this.canvas2Element = this.shadow.getElementById("turnout2") as TurnoutRightCanvasElement
+        this.bit2Element = this.shadow.getElementById("bit2") as BitElement
 
-        this.rbusAddressElement = shadow.getElementById("rbusAddress") as HTMLInputElement
+        this.accessoryModeElement = this.shadow.getElementById("accessory") as HTMLInputElement
+        this.outputModeElement = this.shadow.getElementById("output") as HTMLInputElement
+
+        this.rbusAddressElement = this.shadow.getElementById("rbusAddress") as HTMLInputElement
 
     }
 
@@ -296,6 +349,18 @@ export class TurnoutRightPropertiesElement extends HTMLElement {
         this.bit2Element.onchanged = (sender: BitElement) => {
             this.turnout!.t1OpenValue = this.bit2Element.value
         }
+
+        this.shadow!.getElementById("modeGroup")!.style.display = Globals.CommandCenterSetting.type == CommandCenterTypes.Z21 ? "none" : "block"
+        
+        this.accessoryModeElement.checked = this.turnout!.outputMode == OutputModes.accessory
+        this.accessoryModeElement.onchange = (e) => {
+            this.turnout!.outputMode = OutputModes.accessory
+        }
+        
+        this.outputModeElement.checked = this.turnout!.outputMode == OutputModes.dccExAccessory
+        this.outputModeElement.onchange = (e) => {
+            this.turnout!.outputMode = OutputModes.dccExAccessory
+        }
     }
 }
 customElements.define("turnout-right-properties-element", TurnoutRightPropertiesElement)
@@ -319,12 +384,15 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
     bit41Element: BitElement;
     bit42Element: BitElement;
     nameElement: HTMLInputElement;
+    accessoryModeElement: HTMLInputElement;
+    outputModeElement: HTMLInputElement;
+    shadow: ShadowRoot;
 
     constructor() {
         super()
 
-        const shadow = this.attachShadow({ mode: 'open' });
-        shadow.innerHTML = `
+        this.shadow = this.attachShadow({ mode: 'open' });
+        this.shadow.innerHTML = `
         <style>
             @import url("/bootstrap.css");
             @import url("/css/properties.css");
@@ -403,6 +471,19 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
 
             </div>
 
+                <div class="igroup" id="modeGroup">
+                    <div>Mode</div>
+                    <div>
+                        <input type="radio" id="accessory" name="mode" value="accessory" checked />
+                        <label for="accessory">Accessory (a)</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="output" name="mode" value="output" />
+                        <label for="output">DccEx Accessory (T)</label>
+                    </div>
+                </div>
+
             <div class="igroup">                
                 <div class="row">
                     <div>RBus Address</div>
@@ -415,28 +496,32 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
         </div>
     `;
 
-        this.nameElement = shadow.getElementById("name") as HTMLInputElement
+        this.nameElement = this.shadow.getElementById("name") as HTMLInputElement
         // this.deviceElement = shadow.getElementById("device") as CommandCenterHTMLSelectElement
-        this.address1Element = shadow.getElementById("address1") as HTMLInputElement
-        this.address2Element = shadow.getElementById("address2") as HTMLInputElement
+        this.address1Element = this.shadow.getElementById("address1") as HTMLInputElement
+        this.address2Element = this.shadow.getElementById("address2") as HTMLInputElement
 
-        this.canvas1Element = shadow.getElementById("turnout1") as TurnoutDoubleCanvasElement
-        this.bit11Element = shadow.getElementById("bit11") as BitElement
-        this.bit12Element = shadow.getElementById("bit12") as BitElement
+        this.canvas1Element = this.shadow.getElementById("turnout1") as TurnoutDoubleCanvasElement
+        this.bit11Element = this.shadow.getElementById("bit11") as BitElement
+        this.bit12Element = this.shadow.getElementById("bit12") as BitElement
 
-        this.canvas2Element = shadow.getElementById("turnout2") as TurnoutDoubleCanvasElement
-        this.bit21Element = shadow.getElementById("bit21") as BitElement
-        this.bit22Element = shadow.getElementById("bit22") as BitElement
+        this.canvas2Element = this.shadow.getElementById("turnout2") as TurnoutDoubleCanvasElement
+        this.bit21Element = this.shadow.getElementById("bit21") as BitElement
+        this.bit22Element = this.shadow.getElementById("bit22") as BitElement
 
-        this.canvas3Element = shadow.getElementById("turnout3") as TurnoutDoubleCanvasElement
-        this.bit31Element = shadow.getElementById("bit31") as BitElement
-        this.bit32Element = shadow.getElementById("bit32") as BitElement
+        this.canvas3Element = this.shadow.getElementById("turnout3") as TurnoutDoubleCanvasElement
+        this.bit31Element = this.shadow.getElementById("bit31") as BitElement
+        this.bit32Element = this.shadow.getElementById("bit32") as BitElement
 
-        this.canvas4Element = shadow.getElementById("turnout4") as TurnoutDoubleCanvasElement
-        this.bit41Element = shadow.getElementById("bit41") as BitElement
-        this.bit42Element = shadow.getElementById("bit42") as BitElement
+        this.canvas4Element = this.shadow.getElementById("turnout4") as TurnoutDoubleCanvasElement
+        this.bit41Element = this.shadow.getElementById("bit41") as BitElement
+        this.bit42Element = this.shadow.getElementById("bit42") as BitElement
 
-        this.rbusAddressElement = shadow.getElementById("rbusAddress") as HTMLInputElement
+        this.accessoryModeElement = this.shadow.getElementById("accessory") as HTMLInputElement
+        this.outputModeElement = this.shadow.getElementById("output") as HTMLInputElement
+
+
+        this.rbusAddressElement = this.shadow.getElementById("rbusAddress") as HTMLInputElement
 
     }
 
@@ -591,13 +676,23 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
             }
         }
 
-
+        this.shadow!.getElementById("modeGroup")!.style.display = Globals.CommandCenterSetting.type == CommandCenterTypes.Z21 ? "none" : "block"
+        
+        this.accessoryModeElement.checked = this.turnout!.outputMode == OutputModes.accessory
+        this.accessoryModeElement.onchange = (e) => {
+            this.turnout!.outputMode = OutputModes.accessory
+        }
+        
+        this.outputModeElement.checked = this.turnout!.outputMode == OutputModes.dccExAccessory
+        this.outputModeElement.onchange = (e) => {
+            this.turnout!.outputMode = OutputModes.dccExAccessory
+        }
     }
 }
 customElements.define("turnout-double-properties-element", TurnoutDoublePropertiesElement)
 
 export class TurnoutYPropertiesElement extends HTMLElement {
-    turnout?: TurnoutLeftElement;
+    turnout?: TurnoutYShapeElement | undefined;
     //deviceElement: CommandCenterHTMLSelectElement;
     addressElement: HTMLInputElement;
     rbusAddressElement: HTMLInputElement;
@@ -606,12 +701,16 @@ export class TurnoutYPropertiesElement extends HTMLElement {
     canvas2Element: TurnoutYCanvasElement;
     bit2Element: BitElement;
     nameElement: HTMLInputElement;
+    accessoryModeElement: any;
+    outputModeElement: any;
+    shadow: ShadowRoot;
+    
 
     constructor() {
         super()
 
-        const shadow = this.attachShadow({ mode: 'open' });
-        shadow.innerHTML = `
+        this.shadow = this.attachShadow({ mode: 'open' });
+        this.shadow.innerHTML = `
         <style>
             @import url("/bootstrap.css");
             @import url("/css/properties.css");
@@ -655,6 +754,19 @@ export class TurnoutYPropertiesElement extends HTMLElement {
                 </div>
             </div>
 
+               <div class="igroup" id="modeGroup">
+                    <div>Mode</div>
+                    <div>
+                        <input type="radio" id="accessory" name="mode" value="accessory" checked />
+                        <label for="accessory">Accessory (a)</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="output" name="mode" value="output" />
+                        <label for="output">DccEx Accessory (T)</label>
+                    </div>
+                </div>            
+
             <div class="igroup">                
                 <div class="row">
                     <div>RBus Address</div>
@@ -667,37 +779,40 @@ export class TurnoutYPropertiesElement extends HTMLElement {
         </div>
     `;
 
-        this.nameElement = shadow.getElementById("name") as HTMLInputElement
+        this.nameElement = this.shadow.getElementById("name") as HTMLInputElement
 
        // this.deviceElement = shadow.getElementById("device") as CommandCenterHTMLSelectElement
-        this.addressElement = shadow.getElementById("address") as HTMLInputElement
+        this.addressElement = this.shadow.getElementById("address") as HTMLInputElement
 
-        this.canvas1Element = shadow.getElementById("turnout1") as TurnoutYCanvasElement
-        this.bit1Element = shadow.getElementById("bit1") as BitElement
+        this.canvas1Element = this.shadow.getElementById("turnout1") as TurnoutYCanvasElement
+        this.bit1Element = this.shadow.getElementById("bit1") as BitElement
 
-        this.canvas2Element = shadow.getElementById("turnout2") as TurnoutYCanvasElement
-        this.bit2Element = shadow.getElementById("bit2") as BitElement
+        this.canvas2Element = this.shadow.getElementById("turnout2") as TurnoutYCanvasElement
+        this.bit2Element = this.shadow.getElementById("bit2") as BitElement
 
-        this.rbusAddressElement = shadow.getElementById("rbusAddress") as HTMLInputElement
+        this.accessoryModeElement = this.shadow.getElementById("accessory") as HTMLInputElement
+        this.outputModeElement = this.shadow.getElementById("output") as HTMLInputElement
+
+        this.rbusAddressElement = this.shadow.getElementById("rbusAddress") as HTMLInputElement
 
     }
 
     setTurnout(turnout: TurnoutYShapeElement) {
         this.turnout = turnout
        
-        this.nameElement.value = this.turnout.name
+        this.nameElement.value = this.turnout!.name
         this.nameElement.onchange = (e: Event) => {
             this.turnout!.name = this.nameElement.value
         }        
 
-        this.addressElement!.value = this.turnout.address.toString()
+        this.addressElement!.value = this.turnout!.address.toString()
         this.addressElement.onchange = (e: Event) => {
             this.turnout!.address = parseInt(this.addressElement!.value)
             //window.dispatchEvent(propertiesChangedEvent)
             window.invalidate()
         }
 
-        this.rbusAddressElement!.value = this.turnout.rbusAddress.toString()
+        this.rbusAddressElement!.value = this.turnout!.rbusAddress.toString()
         this.rbusAddressElement.onchange = (e: Event) => {
             this.turnout!.rbusAddress = parseInt(this.rbusAddressElement!.value)
             // window.dispatchEvent(propertiesChangedEvent)
@@ -715,7 +830,7 @@ export class TurnoutYPropertiesElement extends HTMLElement {
             this.canvas1Element.turnout!.send()
         }
 
-        this.bit1Element!.value = this.turnout.t1ClosedValue
+        this.bit1Element!.value = this.turnout!.t1ClosedValue
         this.bit1Element.onchanged = (sender: BitElement) => {
             this.turnout!.t1ClosedValue = this.bit1Element.value
         }
@@ -731,9 +846,21 @@ export class TurnoutYPropertiesElement extends HTMLElement {
             this.canvas2Element.turnout!.send()
         }
 
-        this.bit2Element!.value = this.turnout.t1OpenValue
+        this.bit2Element!.value = this.turnout!.t1OpenValue
         this.bit2Element.onchanged = (sender: BitElement) => {
             this.turnout!.t1OpenValue = this.bit2Element.value
+        }
+
+        this.shadow!.getElementById("modeGroup")!.style.display = Globals.CommandCenterSetting.type == CommandCenterTypes.Z21 ? "none" : "block"
+        
+        this.accessoryModeElement.checked = this.turnout!.outputMode == OutputModes.accessory
+        this.accessoryModeElement.onchange = (e: MouseEvent) => {
+            this.turnout!.outputMode = OutputModes.accessory
+        }
+        
+        this.outputModeElement.checked = this.turnout!.outputMode == OutputModes.dccExAccessory
+        this.outputModeElement.onchange = (e: MouseEvent) => {
+            this.turnout!.outputMode = OutputModes.dccExAccessory
         }
     }
 }

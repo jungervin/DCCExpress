@@ -69,9 +69,14 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     stop() {
         //throw new Error("Method not implemented.");
     }
-    setTurnout(address, closed) {
-        this.put(`<T ${address} ${closed ? dcc_1.DCCExTurnout.closed : dcc_1.DCCExTurnout.open}>`);
-        this.getTurnout(address);
+    setTurnout(address, closed, mode) {
+        if (mode == dcc_1.OutputModes.dccExAccessory) {
+            this.put(`<T ${address} ${closed ? dcc_1.DCCExTurnout.closed : dcc_1.DCCExTurnout.open}>`);
+            this.getTurnout(address);
+        }
+        else if (mode == dcc_1.OutputModes.accessory) {
+            this.setAccessoryDecoder(address, closed);
+        }
     }
     getTurnout(address) {
         this.put(`<JT ${address}>`);

@@ -193,9 +193,9 @@ export class RouteListElementProperties extends HTMLElement {
             // if (to instanceof TurnoutDoubleElement) {
             //     this.routeSwitch!.turnouts.push({ address: to.address2, isClosed: to.t2Closed ? to.t2ClosedValue : to.t2OpenValue, device: to.device })
             // }
-            this.routeSwitch!.turnouts.push({ address: to.address, isClosed: to.t1Closed })
+            this.routeSwitch!.turnouts.push({ address: to.address, isClosed: to.t1Closed, outputMode: to.outputMode })
             if (to instanceof TurnoutDoubleElement) {
-                this.routeSwitch!.turnouts.push({ address: to.address2, isClosed: to.t2Closed, })
+                this.routeSwitch!.turnouts.push({ address: to.address2, isClosed: to.t2Closed, outputMode: to.outputMode })
             }
 
         })

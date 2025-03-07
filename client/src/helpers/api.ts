@@ -97,16 +97,16 @@ export class Api {
             if (Object.getPrototypeOf(turnout) == TurnoutDoubleElement.prototype) {
                 const td = turnout as TurnoutDoubleElement
                 if (td.address === address) {
-                    var t: iSetTurnout = { address: address, isClosed: isClosed ? td.t1ClosedValue : td.t1OpenValue }
+                    var t: iSetTurnout = { address: address, isClosed: isClosed ? td.t1ClosedValue : td.t1OpenValue, outputMode: td.outputMode }
                     wsClient.send({ type: ApiCommands.setTurnout, data: t } as iData)
                 }
                 else if (td.address2 === address) {
-                    var t: iSetTurnout = { address: address, isClosed: isClosed ? td.t2ClosedValue : td.t2OpenValue }
+                    var t: iSetTurnout = { address: address, isClosed: isClosed ? td.t2ClosedValue : td.t2OpenValue, outputMode: td.outputMode }
                     wsClient.send({ type: ApiCommands.setTurnout, data: t } as iData)
                 }
             } else {
                 const to = turnout as TurnoutElement
-                var t: iSetTurnout = { address: address, isClosed: isClosed ? to.t1ClosedValue : to.t1OpenValue }
+                var t: iSetTurnout = { address: address, isClosed: isClosed ? to.t1ClosedValue : to.t1OpenValue, outputMode: to.outputMode }
                 wsClient.send({ type: ApiCommands.setTurnout, data: t } as iData)
             }
         }

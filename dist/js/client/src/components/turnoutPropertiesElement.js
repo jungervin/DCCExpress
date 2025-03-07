@@ -1,4 +1,4 @@
-define(["require", "exports", "./bitElement"], function (require, exports, bitElement_1) {
+define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../helpers/globals"], function (require, exports, bitElement_1, dcc_1, globals_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.TurnoutYPropertiesElement = exports.TurnoutDoublePropertiesElement = exports.TurnoutRightPropertiesElement = exports.TurnoutLeftPropertiesElement = void 0;
@@ -8,8 +8,8 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
     class TurnoutLeftPropertiesElement extends HTMLElement {
         constructor() {
             super();
-            const shadow = this.attachShadow({ mode: 'open' });
-            shadow.innerHTML = `
+            this.shadow = this.attachShadow({ mode: 'open' });
+            this.shadow.innerHTML = `
         <style>
             @import url("/bootstrap.css");
             @import url("/css/properties.css");
@@ -53,6 +53,19 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
                 </div>
             </div>
 
+            <div class="igroup" id="modeGroup">
+                    <div>Mode</div>
+                    <div>
+                        <input type="radio" id="accessory" name="mode" value="accessory" checked />
+                        <label for="accessory">Accessory (a)</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="output" name="mode" value="output" />
+                        <label for="output">DccEx Accessory (T)</label>
+                    </div>
+                </div>
+
             <div class="igroup">                
                 <div class="row">
                     <div>RBus Address</div>
@@ -64,14 +77,16 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
 
         </div>
     `;
-            this.nameElement = shadow.getElementById("name");
+            this.nameElement = this.shadow.getElementById("name");
             // this.deviceElement = shadow.getElementById("device") as CommandCenterHTMLSelectElement
-            this.addressElement = shadow.getElementById("address");
-            this.canvas1Element = shadow.getElementById("turnout1");
-            this.bit1Element = shadow.getElementById("bit1");
-            this.canvas2Element = shadow.getElementById("turnout2");
-            this.bit2Element = shadow.getElementById("bit2");
-            this.rbusAddressElement = shadow.getElementById("rbusAddress");
+            this.addressElement = this.shadow.getElementById("address");
+            this.canvas1Element = this.shadow.getElementById("turnout1");
+            this.bit1Element = this.shadow.getElementById("bit1");
+            this.canvas2Element = this.shadow.getElementById("turnout2");
+            this.bit2Element = this.shadow.getElementById("bit2");
+            this.accessoryModeElement = this.shadow.getElementById("accessory");
+            this.outputModeElement = this.shadow.getElementById("output");
+            this.rbusAddressElement = this.shadow.getElementById("rbusAddress");
         }
         setTurnout(turnout) {
             this.turnout = turnout;
@@ -119,6 +134,15 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
             this.bit2Element.onchanged = (sender) => {
                 this.turnout.t1OpenValue = this.bit2Element.value;
             };
+            this.shadow.getElementById("modeGroup").style.display = globals_1.Globals.CommandCenterSetting.type == dcc_1.CommandCenterTypes.Z21 ? "none" : "block";
+            this.accessoryModeElement.checked = this.turnout.outputMode == dcc_1.OutputModes.accessory;
+            this.accessoryModeElement.onchange = (e) => {
+                this.turnout.outputMode = dcc_1.OutputModes.accessory;
+            };
+            this.outputModeElement.checked = this.turnout.outputMode == dcc_1.OutputModes.dccExAccessory;
+            this.outputModeElement.onchange = (e) => {
+                this.turnout.outputMode = dcc_1.OutputModes.dccExAccessory;
+            };
         }
     }
     exports.TurnoutLeftPropertiesElement = TurnoutLeftPropertiesElement;
@@ -126,8 +150,8 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
     class TurnoutRightPropertiesElement extends HTMLElement {
         constructor() {
             super();
-            const shadow = this.attachShadow({ mode: 'open' });
-            shadow.innerHTML = `
+            this.shadow = this.attachShadow({ mode: 'open' });
+            this.shadow.innerHTML = `
         <style>
             @import url("/bootstrap.css");
             @import url("/css/properties.css");
@@ -171,6 +195,20 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
                 </div>
             </div>
 
+
+            <div class="igroup" id="modeGroup">
+                <div>Mode</div>
+                <div>
+                    <input type="radio" id="accessory" name="mode" value="accessory" checked />
+                    <label for="accessory">Accessory (a)</label>
+                </div>
+
+                <div>
+                    <input type="radio" id="output" name="mode" value="output" />
+                    <label for="output">DccEx Accessory (T)</label>
+                </div>
+            </div>      
+
             <div class="igroup">                
                 <div class="row">
                     <div>RBus Address</div>
@@ -182,14 +220,16 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
 
         </div>
     `;
-            this.nameElement = shadow.getElementById("name");
+            this.nameElement = this.shadow.getElementById("name");
             // this.deviceElement = shadow.getElementById("device") as CommandCenterHTMLSelectElement
-            this.addressElement = shadow.getElementById("address");
-            this.canvas1Element = shadow.getElementById("turnout1");
-            this.bit1Element = shadow.getElementById("bit1");
-            this.canvas2Element = shadow.getElementById("turnout2");
-            this.bit2Element = shadow.getElementById("bit2");
-            this.rbusAddressElement = shadow.getElementById("rbusAddress");
+            this.addressElement = this.shadow.getElementById("address");
+            this.canvas1Element = this.shadow.getElementById("turnout1");
+            this.bit1Element = this.shadow.getElementById("bit1");
+            this.canvas2Element = this.shadow.getElementById("turnout2");
+            this.bit2Element = this.shadow.getElementById("bit2");
+            this.accessoryModeElement = this.shadow.getElementById("accessory");
+            this.outputModeElement = this.shadow.getElementById("output");
+            this.rbusAddressElement = this.shadow.getElementById("rbusAddress");
         }
         setTurnout(turnout) {
             this.turnout = turnout;
@@ -241,6 +281,15 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
             this.bit2Element.onchanged = (sender) => {
                 this.turnout.t1OpenValue = this.bit2Element.value;
             };
+            this.shadow.getElementById("modeGroup").style.display = globals_1.Globals.CommandCenterSetting.type == dcc_1.CommandCenterTypes.Z21 ? "none" : "block";
+            this.accessoryModeElement.checked = this.turnout.outputMode == dcc_1.OutputModes.accessory;
+            this.accessoryModeElement.onchange = (e) => {
+                this.turnout.outputMode = dcc_1.OutputModes.accessory;
+            };
+            this.outputModeElement.checked = this.turnout.outputMode == dcc_1.OutputModes.dccExAccessory;
+            this.outputModeElement.onchange = (e) => {
+                this.turnout.outputMode = dcc_1.OutputModes.dccExAccessory;
+            };
         }
     }
     exports.TurnoutRightPropertiesElement = TurnoutRightPropertiesElement;
@@ -248,8 +297,8 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
     class TurnoutDoublePropertiesElement extends HTMLElement {
         constructor() {
             super();
-            const shadow = this.attachShadow({ mode: 'open' });
-            shadow.innerHTML = `
+            this.shadow = this.attachShadow({ mode: 'open' });
+            this.shadow.innerHTML = `
         <style>
             @import url("/bootstrap.css");
             @import url("/css/properties.css");
@@ -328,6 +377,19 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
 
             </div>
 
+                <div class="igroup" id="modeGroup">
+                    <div>Mode</div>
+                    <div>
+                        <input type="radio" id="accessory" name="mode" value="accessory" checked />
+                        <label for="accessory">Accessory (a)</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="output" name="mode" value="output" />
+                        <label for="output">DccEx Accessory (T)</label>
+                    </div>
+                </div>
+
             <div class="igroup">                
                 <div class="row">
                     <div>RBus Address</div>
@@ -339,23 +401,25 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
 
         </div>
     `;
-            this.nameElement = shadow.getElementById("name");
+            this.nameElement = this.shadow.getElementById("name");
             // this.deviceElement = shadow.getElementById("device") as CommandCenterHTMLSelectElement
-            this.address1Element = shadow.getElementById("address1");
-            this.address2Element = shadow.getElementById("address2");
-            this.canvas1Element = shadow.getElementById("turnout1");
-            this.bit11Element = shadow.getElementById("bit11");
-            this.bit12Element = shadow.getElementById("bit12");
-            this.canvas2Element = shadow.getElementById("turnout2");
-            this.bit21Element = shadow.getElementById("bit21");
-            this.bit22Element = shadow.getElementById("bit22");
-            this.canvas3Element = shadow.getElementById("turnout3");
-            this.bit31Element = shadow.getElementById("bit31");
-            this.bit32Element = shadow.getElementById("bit32");
-            this.canvas4Element = shadow.getElementById("turnout4");
-            this.bit41Element = shadow.getElementById("bit41");
-            this.bit42Element = shadow.getElementById("bit42");
-            this.rbusAddressElement = shadow.getElementById("rbusAddress");
+            this.address1Element = this.shadow.getElementById("address1");
+            this.address2Element = this.shadow.getElementById("address2");
+            this.canvas1Element = this.shadow.getElementById("turnout1");
+            this.bit11Element = this.shadow.getElementById("bit11");
+            this.bit12Element = this.shadow.getElementById("bit12");
+            this.canvas2Element = this.shadow.getElementById("turnout2");
+            this.bit21Element = this.shadow.getElementById("bit21");
+            this.bit22Element = this.shadow.getElementById("bit22");
+            this.canvas3Element = this.shadow.getElementById("turnout3");
+            this.bit31Element = this.shadow.getElementById("bit31");
+            this.bit32Element = this.shadow.getElementById("bit32");
+            this.canvas4Element = this.shadow.getElementById("turnout4");
+            this.bit41Element = this.shadow.getElementById("bit41");
+            this.bit42Element = this.shadow.getElementById("bit42");
+            this.accessoryModeElement = this.shadow.getElementById("accessory");
+            this.outputModeElement = this.shadow.getElementById("output");
+            this.rbusAddressElement = this.shadow.getElementById("rbusAddress");
         }
         setTurnout(turnout) {
             this.turnout = turnout;
@@ -494,6 +558,15 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
                     this.turnout.t2OpenValue = this.bit42Element.value;
                 };
             }
+            this.shadow.getElementById("modeGroup").style.display = globals_1.Globals.CommandCenterSetting.type == dcc_1.CommandCenterTypes.Z21 ? "none" : "block";
+            this.accessoryModeElement.checked = this.turnout.outputMode == dcc_1.OutputModes.accessory;
+            this.accessoryModeElement.onchange = (e) => {
+                this.turnout.outputMode = dcc_1.OutputModes.accessory;
+            };
+            this.outputModeElement.checked = this.turnout.outputMode == dcc_1.OutputModes.dccExAccessory;
+            this.outputModeElement.onchange = (e) => {
+                this.turnout.outputMode = dcc_1.OutputModes.dccExAccessory;
+            };
         }
     }
     exports.TurnoutDoublePropertiesElement = TurnoutDoublePropertiesElement;
@@ -501,8 +574,8 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
     class TurnoutYPropertiesElement extends HTMLElement {
         constructor() {
             super();
-            const shadow = this.attachShadow({ mode: 'open' });
-            shadow.innerHTML = `
+            this.shadow = this.attachShadow({ mode: 'open' });
+            this.shadow.innerHTML = `
         <style>
             @import url("/bootstrap.css");
             @import url("/css/properties.css");
@@ -546,6 +619,19 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
                 </div>
             </div>
 
+               <div class="igroup" id="modeGroup">
+                    <div>Mode</div>
+                    <div>
+                        <input type="radio" id="accessory" name="mode" value="accessory" checked />
+                        <label for="accessory">Accessory (a)</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="output" name="mode" value="output" />
+                        <label for="output">DccEx Accessory (T)</label>
+                    </div>
+                </div>            
+
             <div class="igroup">                
                 <div class="row">
                     <div>RBus Address</div>
@@ -557,14 +643,16 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
 
         </div>
     `;
-            this.nameElement = shadow.getElementById("name");
+            this.nameElement = this.shadow.getElementById("name");
             // this.deviceElement = shadow.getElementById("device") as CommandCenterHTMLSelectElement
-            this.addressElement = shadow.getElementById("address");
-            this.canvas1Element = shadow.getElementById("turnout1");
-            this.bit1Element = shadow.getElementById("bit1");
-            this.canvas2Element = shadow.getElementById("turnout2");
-            this.bit2Element = shadow.getElementById("bit2");
-            this.rbusAddressElement = shadow.getElementById("rbusAddress");
+            this.addressElement = this.shadow.getElementById("address");
+            this.canvas1Element = this.shadow.getElementById("turnout1");
+            this.bit1Element = this.shadow.getElementById("bit1");
+            this.canvas2Element = this.shadow.getElementById("turnout2");
+            this.bit2Element = this.shadow.getElementById("bit2");
+            this.accessoryModeElement = this.shadow.getElementById("accessory");
+            this.outputModeElement = this.shadow.getElementById("output");
+            this.rbusAddressElement = this.shadow.getElementById("rbusAddress");
         }
         setTurnout(turnout) {
             this.turnout = turnout;
@@ -611,6 +699,15 @@ define(["require", "exports", "./bitElement"], function (require, exports, bitEl
             this.bit2Element.value = this.turnout.t1OpenValue;
             this.bit2Element.onchanged = (sender) => {
                 this.turnout.t1OpenValue = this.bit2Element.value;
+            };
+            this.shadow.getElementById("modeGroup").style.display = globals_1.Globals.CommandCenterSetting.type == dcc_1.CommandCenterTypes.Z21 ? "none" : "block";
+            this.accessoryModeElement.checked = this.turnout.outputMode == dcc_1.OutputModes.accessory;
+            this.accessoryModeElement.onchange = (e) => {
+                this.turnout.outputMode = dcc_1.OutputModes.accessory;
+            };
+            this.outputModeElement.checked = this.turnout.outputMode == dcc_1.OutputModes.dccExAccessory;
+            this.outputModeElement.onchange = (e) => {
+                this.turnout.outputMode = dcc_1.OutputModes.dccExAccessory;
             };
         }
     }

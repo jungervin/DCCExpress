@@ -1,4 +1,4 @@
-import { accessories, ApiCommands, DCCExDirections, DCCExTurnout, iData, iDccExDirectCommandResponse, iLoco, iOutputInfo, iPowerInfo, iSensorInfo, iSetBasicAccessory, iSetOutput, iSystemStatus, iTurnoutInfo, locos, outputs, turnouts, Z21Directions } from "../../common/src/dcc";
+import { accessories, ApiCommands, DCCExDirections, DCCExTurnout, iData, iDccExDirectCommandResponse, iLoco, iOutputInfo, iPowerInfo, iSensorInfo, iSetBasicAccessory, iSetOutput, iSystemStatus, iTurnoutInfo, locos, OutputModes, outputs, turnouts, Z21Directions } from "../../common/src/dcc";
 import { CommandCenter } from "./commandcenter";
 import { log } from "./utility";
 import { broadcastAll } from "./ws";
@@ -81,9 +81,13 @@ export class DCCExCommandCenter extends CommandCenter {
     stop(): void {
         //throw new Error("Method not implemented.");
     }
-    setTurnout(address: number, closed: boolean): void {
+    setTurnout(address: number, closed: boolean, mode: OutputModes): void {
+        if(mode == OutputModes.dccExAccessory) {
         this.put(`<T ${address} ${closed ? DCCExTurnout.closed : DCCExTurnout.open}>`)
         this.getTurnout(address)
+        } else if(mode == OutputModes.accessory) {
+            this.setAccessoryDecoder(address, closed)
+        }
     }
     getTurnout(address: number): void {
         this.put(`<JT ${address}>`)

@@ -1352,7 +1352,7 @@ export class CustomCanvas extends HTMLElement {
                         t1ClosedValue: tor.t1ClosedValue,
                         t1OpenValue: tor.t1OpenValue,
                         rbusAddress: tor.rbusAddress,
-                        // cc: tor.cc
+                        outputMode: tor.outputMode,
                     })
                     break;
                 case 'turnoutLeft':
@@ -1363,7 +1363,7 @@ export class CustomCanvas extends HTMLElement {
                         t1ClosedValue: tol.t1ClosedValue,
                         t1OpenValue: tol.t1OpenValue,
                         rbusAddress: tol.rbusAddress,
-                        // cc: tol.cc
+                        outputMode: tol.outputMode,
                     })
                     break;
                 case 'turnoutY':
@@ -1375,7 +1375,7 @@ export class CustomCanvas extends HTMLElement {
                         t1ClosedValue: toy.t1ClosedValue,
                         t1OpenValue: toy.t1OpenValue,
                         rbusAddress: toy.rbusAddress,
-                        // cc: tol.cc
+                        outputMode: toy.outputMode,
                     })
                     break;
                 case 'turnoutDouble':
@@ -1389,7 +1389,7 @@ export class CustomCanvas extends HTMLElement {
                         t2ClosedValue: tod.t2ClosedValue,
                         t2OpenValue: tod.t2OpenValue,
                         rbusAddress: tod.rbusAddress,
-                        // cc: tod.cc
+                        outputMode: tod.outputMode,
                     })
                     break;
                 case 'curve':
@@ -1601,7 +1601,8 @@ export class CustomCanvas extends HTMLElement {
                             tor.t1ClosedValue = elem.t1ClosedValue ?? true
                             tor.t1OpenValue = elem.t1OpenValue ?? false
                             tor.rbusAddress = elem.rbusAddress
-                            // tor.cc = elem.cc == undefined ? undefined : elem.cc
+                            tor.outputMode = elem.outputMode ?? OutputModes.dccExAccessory
+
                             this.add(tor)
                             break;
                         case "turnoutLeft":
@@ -1611,7 +1612,8 @@ export class CustomCanvas extends HTMLElement {
                             tol.t1ClosedValue = elem.t1ClosedValue ?? true
                             tol.t1OpenValue = elem.t1OpenValue ?? false
                             tol.rbusAddress = elem.rbusAddress
-                            // tol.cc = elem.cc == undefined ? undefined : elem.cc
+                            tol.outputMode = elem.outputMode ?? OutputModes.dccExAccessory
+
                             this.add(tol)
                             break;
                         case "turnoutY":
@@ -1621,7 +1623,7 @@ export class CustomCanvas extends HTMLElement {
                             toy.t1ClosedValue = elem.t1ClosedValue ?? true
                             toy.t1OpenValue = elem.t1OpenValue ?? false
                             toy.rbusAddress = elem.rbusAddress
-                            // tol.cc = elem.cc == undefined ? undefined : elem.cc
+                            toy.outputMode = elem.outputMode ?? OutputModes.dccExAccessory
                             this.add(toy)
                             break;
                         case "turnoutDouble":
@@ -1635,7 +1637,7 @@ export class CustomCanvas extends HTMLElement {
                             tod.t2ClosedValue = elem.t2ClosedValue ?? true
                             tod.t2OpenValue = elem.t2OpenValue ?? false
                             tod.rbusAddress = elem.rbusAddress
-                            // tod.cc = elem.cc == undefined ? undefined : elem.cc
+                            tod.outputMode = elem.outputMode ?? OutputModes.dccExAccessory
 
                             this.add(tod)
                             break;

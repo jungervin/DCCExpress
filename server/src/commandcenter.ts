@@ -1,6 +1,6 @@
 // import { iBasicAccessory, iTurnout } from "../../common/src/dcc";
 
-import { CommandCenterTypes, iGetSensor, iPowerInfo, iSetBasicAccessory, iSetTurnout, iTurnoutInfo, Z21Directions } from "../../common/src/dcc";
+import { CommandCenterTypes, iGetSensor, iPowerInfo, iSetBasicAccessory, iSetTurnout, iTurnoutInfo, OutputModes, Z21Directions } from "../../common/src/dcc";
 
 export abstract class CommandCenter {
     //uuid: string = ""
@@ -36,7 +36,7 @@ export abstract class CommandCenter {
 
     // Ha újraindul a szerver
     abstract clientConnected(): void;
-    abstract setTurnout(address: number, closed: boolean): void;
+    abstract setTurnout(address: number, closed: boolean, mode: OutputModes): void;
     abstract getTurnout(address: number): void;
 
     abstract setAccessoryDecoder(address: number, on: boolean): void;
