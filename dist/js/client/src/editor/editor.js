@@ -433,6 +433,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                         globals_1.Globals.saveJson("/settings.json", globals_1.Globals.Settings);
                         //this.draw()
                         this.showAddresses(globals_1.Globals.Settings.EditorSettings.ShowAddress);
+                        this.setSignalSingleLamp(globals_1.Globals.Settings.EditorSettings.DispalyAsSingleLamp);
                         ws_1.wsClient.send({ type: dcc_1.ApiCommands.setTimeSettings, data: { scale: d.fastClockFactor.value } });
                     }
                 };
@@ -478,6 +479,12 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
             });
             this.views.getButtonElements().forEach((t) => {
                 t.showAddress = show;
+            });
+            this.draw();
+        }
+        setSignalSingleLamp(single) {
+            this.views.getSignalElements().forEach((t) => {
+                t.dispalyAsSingleLamp = single;
             });
             this.draw();
         }
@@ -853,6 +860,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                         this.unselectAll();
                         var s2 = new signals_1.Signal2Element((0, dcc_1.getUUID)(), 14, x, y, "signal2-" + num);
                         s2.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
+                        s2.dispalyAsSingleLamp = globals_1.Globals.Settings.EditorSettings.DispalyAsSingleLamp;
                         s2.angle = this.cursorElement.angle;
                         // s2.cc = Globals.defaultDevice!
                         //s2.aspect = 1
@@ -863,6 +871,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                         this.unselectAll();
                         var s3 = new signals_1.Signal3Element((0, dcc_1.getUUID)(), 14, x, y, "signal3-" + num);
                         s3.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
+                        s3.dispalyAsSingleLamp = globals_1.Globals.Settings.EditorSettings.DispalyAsSingleLamp;
                         s3.angle = this.cursorElement.angle;
                         // s3.cc = Globals.defaultDevice!
                         //s3.aspect = 1
@@ -873,6 +882,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                         this.unselectAll();
                         var s4 = new signals_1.Signal4Element((0, dcc_1.getUUID)(), 14, x, y, "signal4-" + num);
                         s4.showAddress = globals_1.Globals.Settings.EditorSettings.ShowAddress;
+                        s4.dispalyAsSingleLamp = globals_1.Globals.Settings.EditorSettings.DispalyAsSingleLamp;
                         s4.angle = this.cursorElement.angle;
                         // s4.cc = Globals.defaultDevice!
                         //s4.aspect = 1
@@ -1569,6 +1579,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                 // const route1 = new RouteSwitchElement(this.ctx!, 2, 2, "route1")
                 // this.add(route1)
                 this.showAddresses(globals_1.Globals.Settings.EditorSettings.ShowAddress);
+                this.setSignalSingleLamp(globals_1.Globals.Settings.EditorSettings.DispalyAsSingleLamp);
                 this.draw();
             }
             catch (error) {

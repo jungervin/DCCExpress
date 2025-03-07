@@ -440,7 +440,7 @@ export class LocoControlPanel extends HTMLElement {
                             wsClient.send({ type: ApiCommands.setLocoFunction, data: f } as iData)
                         }
                     } else {
-                        const on: boolean = ((this.currentLoco.functionMap >> btn.fn) & 1 ) > 0
+                        const on: boolean = ((this.currentLoco.functionMap >> btn.fn) & 1) > 0
 
                         var f: iSetLocoFunction = { id: btn.fn, address: this.currentLoco?.address, isOn: !on }
                         wsClient.send({ type: ApiCommands.setLocoFunction, data: f } as iData)
@@ -460,7 +460,7 @@ export class LocoControlPanel extends HTMLElement {
         }
     }
 
-  
+
 
     init() {
         this.fetchLocomotives()
@@ -482,7 +482,14 @@ export class LocoControlPanel extends HTMLElement {
                     var loco: iLoco = { address: l.address, direction: 0, funcMap: 0, speed: 0 }
                     wsClient.send({ type: ApiCommands.getLoco, data: loco } as iData)
                 })
-                this.currentLoco = this.locomotives[0]
+
+                const i = parseInt(window.localStorage.getItem("controlPanelSelectedLocoIndex")!) || 0;
+
+                if (i < this.locomotives.length) {
+                    this.currentLoco = this.locomotives[i]
+                } else {
+                    this.currentLoco = this.locomotives[0]
+                }
             }
         } catch (error) {
             console.error("Error fetching locomotives:", error);
@@ -509,6 +516,11 @@ export class LocoControlPanel extends HTMLElement {
             }
 
             locoItem.addEventListener("click", () => {
+                const i = this.locomotives.findIndex((l) => {
+                    return l.address == loco.address
+                })
+
+                window.localStorage.setItem("controlPanelSelectedLocoIndex", i.toString())
                 this.currentLoco = loco;
                 this.closeLocoSelector();
             });

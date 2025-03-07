@@ -108,7 +108,7 @@ export class App {
 
         this.editor.init()
 
-        wsClient.connect()
+        
 
         Globals.fetchJsonData("/settings.json").then((data: any) => {
             const s = data as iSettings
@@ -137,7 +137,7 @@ export class App {
         }).catch((reason: any) => {
             //toastManager.showToast("Settings Not Loaded<br>"+ reason, "error")
         }).finally(() => {
-
+            wsClient.connect()
         })
 
         wsClient.onConnected = () => {

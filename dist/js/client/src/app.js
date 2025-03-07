@@ -70,7 +70,6 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                 const cc = new commandCenterSettingsDialog_1.CommandCenterSettingsDialog();
             };
             this.editor.init();
-            ws_1.wsClient.connect();
             globals_1.Globals.fetchJsonData("/settings.json").then((data) => {
                 var _a, _b;
                 const s = data;
@@ -94,6 +93,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             }).catch((reason) => {
                 //toastManager.showToast("Settings Not Loaded<br>"+ reason, "error")
             }).finally(() => {
+                ws_1.wsClient.connect();
             });
             ws_1.wsClient.onConnected = () => {
                 this.toolbar.wsStatus.classList.remove("error");

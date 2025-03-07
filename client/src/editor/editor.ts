@@ -534,6 +534,7 @@ export class CustomCanvas extends HTMLElement {
                     Globals.saveJson("/settings.json", Globals.Settings)
                     //this.draw()
                     this.showAddresses(Globals.Settings.EditorSettings.ShowAddress)
+                    this.setSignalSingleLamp(Globals.Settings.EditorSettings.DispalyAsSingleLamp)
 
                     wsClient.send({ type: ApiCommands.setTimeSettings, data: { scale: d.fastClockFactor.value } as iSetTimeSettings })
                 }
@@ -583,6 +584,13 @@ export class CustomCanvas extends HTMLElement {
         })
         this.views.getButtonElements().forEach((t) => {
             t.showAddress = show;
+        })
+        this.draw()
+    }
+
+    setSignalSingleLamp(single: boolean) {
+        this.views.getSignalElements().forEach((t) => {
+            t.dispalyAsSingleLamp = single;
         })
         this.draw()
     }
@@ -1021,6 +1029,7 @@ export class CustomCanvas extends HTMLElement {
                     this.unselectAll()
                     var s2 = new Signal2Element(getUUID(), 14, x, y, "signal2-" + num);
                     s2.showAddress = Globals.Settings.EditorSettings.ShowAddress
+                    s2.dispalyAsSingleLamp = Globals.Settings.EditorSettings.DispalyAsSingleLamp
                     s2.angle = this.cursorElement!.angle
                     // s2.cc = Globals.defaultDevice!
                     //s2.aspect = 1
@@ -1031,6 +1040,7 @@ export class CustomCanvas extends HTMLElement {
                     this.unselectAll()
                     var s3 = new Signal3Element(getUUID(), 14, x, y, "signal3-" + num);
                     s3.showAddress = Globals.Settings.EditorSettings.ShowAddress
+                    s3.dispalyAsSingleLamp = Globals.Settings.EditorSettings.DispalyAsSingleLamp
                     s3.angle = this.cursorElement!.angle
                     // s3.cc = Globals.defaultDevice!
                     //s3.aspect = 1
@@ -1041,6 +1051,7 @@ export class CustomCanvas extends HTMLElement {
                     this.unselectAll()
                     var s4 = new Signal4Element(getUUID(), 14, x, y, "signal4-" + num);
                     s4.showAddress = Globals.Settings.EditorSettings.ShowAddress
+                    s4.dispalyAsSingleLamp = Globals.Settings.EditorSettings.DispalyAsSingleLamp
                     s4.angle = this.cursorElement!.angle
                     // s4.cc = Globals.defaultDevice!
                     //s4.aspect = 1
@@ -1789,6 +1800,7 @@ export class CustomCanvas extends HTMLElement {
             // this.add(route1)
 
             this.showAddresses(Globals.Settings.EditorSettings.ShowAddress)
+            this.setSignalSingleLamp(Globals.Settings.EditorSettings.DispalyAsSingleLamp)
 
             this.draw()
         } catch (error) {

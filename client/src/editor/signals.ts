@@ -40,6 +40,7 @@ export class Signal1Element extends RailView {
     ]
     lightsAll: boolean = false;
     showAddress: boolean = false;
+    dispalyAsSingleLamp: boolean = false;
     // showTrackElem: boolean = true;
 
     constructor(uuid: string, address: number, x1: number, y1: number, name: string) {
@@ -272,7 +273,7 @@ export class Signal1Element extends RailView {
         var d = 2 * r
         var h = d + 4
         var aa = this.aspect;
-        if(Globals.Settings.EditorSettings.DispalyAsSingleLamp) {
+        if(this.dispalyAsSingleLamp) {
             aa = 1;
         }
 

@@ -457,7 +457,13 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
                             var loco = { address: l.address, direction: 0, funcMap: 0, speed: 0 };
                             ws_1.wsClient.send({ type: dcc_1.ApiCommands.getLoco, data: loco });
                         });
-                        this.currentLoco = this.locomotives[0];
+                        const i = parseInt(window.localStorage.getItem("controlPanelSelectedLocoIndex")) || 0;
+                        if (i < this.locomotives.length) {
+                            this.currentLoco = this.locomotives[i];
+                        }
+                        else {
+                            this.currentLoco = this.locomotives[0];
+                        }
                     }
                 }
                 catch (error) {
@@ -483,6 +489,10 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
                     //setTimeout(() => locoItem.scrollIntoView({ behavior: "smooth", block: "center" }), 300);
                 }
                 locoItem.addEventListener("click", () => {
+                    const i = this.locomotives.findIndex((l) => {
+                        return l.address == loco.address;
+                    });
+                    window.localStorage.setItem("controlPanelSelectedLocoIndex", i.toString());
                     this.currentLoco = loco;
                     this.closeLocoSelector();
                 });

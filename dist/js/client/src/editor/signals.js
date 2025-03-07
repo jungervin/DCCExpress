@@ -1,4 +1,4 @@
-define(["require", "exports", "../helpers/math", "./track", "./view", "../../../common/src/dcc", "../helpers/graphics", "../helpers/ws", "../helpers/globals"], function (require, exports, math_1, track_1, view_1, dcc_1, graphics_1, ws_1, globals_1) {
+define(["require", "exports", "../helpers/math", "./track", "./view", "../../../common/src/dcc", "../helpers/graphics", "../helpers/ws"], function (require, exports, math_1, track_1, view_1, dcc_1, graphics_1, ws_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Signal4Element = exports.Signal3Element = exports.Signal2Element = exports.Signal1Element = exports.SignalStates = void 0;
@@ -32,6 +32,7 @@ define(["require", "exports", "../helpers/math", "./track", "./view", "../../../
             ];
             this.lightsAll = false;
             this.showAddress = false;
+            this.dispalyAsSingleLamp = false;
             this._aspect = 2;
             this._value = 0;
             this._state = SignalStates.red;
@@ -233,7 +234,7 @@ define(["require", "exports", "../helpers/math", "./track", "./view", "../../../
             var d = 2 * r;
             var h = d + 4;
             var aa = this.aspect;
-            if (globals_1.Globals.Settings.EditorSettings.DispalyAsSingleLamp) {
+            if (this.dispalyAsSingleLamp) {
                 aa = 1;
             }
             var a = aa < 2 ? 2 : aa;
