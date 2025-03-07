@@ -12,6 +12,9 @@ define(["require", "exports", "../controls/dialog", "../helpers/ws", "../../../c
             this.addBody(tabcontrol);
             this.mkDCCPanel(tabcontrol);
             this.mkDigiToolsPanel(tabcontrol);
+            this.onclose = (sender) => {
+                window.directCommandResponse = undefined;
+            };
         }
         writeValidate() {
             var v = parseInt(this.writeValueInputElement.value);

@@ -30,6 +30,9 @@ export class ProgrammerDialog extends Dialog {
 
         this.mkDCCPanel(tabcontrol);
         this.mkDigiToolsPanel(tabcontrol);
+        this.onclose =(sender) => {
+            window.directCommandResponse = undefined
+        }
 
     }
 
