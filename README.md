@@ -26,8 +26,10 @@ In the menu, reload the script by clicking on the **Dispatcher** | **Scheduler**
 ## 🚀Quick Start Guide
 
 1. **Download the ZIP file.**  
-2. **Extract it** and navigate to the `dist` folder.  
-3. **Run the server** by launching `DCCExpress.exe`.  
+~~2. **Extract it** and navigate to the dist folder.~~  
+~~3. **Run the server** by launching DCCExpress.exe.~~
+2. **Extract it** and navigate to the `extracted` folder.  
+3. **Run the server** by launching `start.bat`.  
 4. **Open your browser** and go to `127.0.0.1:3000`. 🚀
 5. **Configure the command center settings**
 
