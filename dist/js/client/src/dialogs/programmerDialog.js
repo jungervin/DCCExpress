@@ -182,7 +182,7 @@ For now, it only works on DCC-EX v5.4!
             };
             window.directCommandResponse = (data) => {
                 const params = data.response.split(" ");
-                if (params.length > 1 && params[0] == 'v') {
+                if (params.length > 1 && (params[0] == 'v' || params[0] == 'r')) {
                     ws_1.wsClient.send({ type: dcc_1.ApiCommands.writeDccExDirectCommand, data: { command: '<0 PROG>' } });
                     const cv = parseInt(params[1]);
                     const v = parseInt(params[2]);
