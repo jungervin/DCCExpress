@@ -200,9 +200,11 @@ class CommandCenters {
                 exports.commandCenters.cc = new z21commandcenter_1.Z21CommandCenter("z21", z21.ip, z21.port);
                 exports.commandCenters.cc.TURNOUT_WAIT_TIME = z21.turnoutActiveTime;
                 exports.commandCenters.cc.BASICACCESSORY_WAIT_TIME = z21.basicAccessoryDecoderActiveTime;
+                (0, utility_1.log)("============================================================================");
                 (0, utility_1.log)("Z21 Command Center Registered!");
                 (0, utility_1.log)("IP:", z21.ip);
                 (0, utility_1.log)("Port:", z21.port);
+                (0, utility_1.log)("============================================================================");
                 exports.commandCenters.start();
             }
             else if (ccSettings.type == dcc_1.CommandCenterTypes.DCCExTCP) {
@@ -210,9 +212,11 @@ class CommandCenters {
                 exports.commandCenters.cc = new dccExTCPCommandCenter_1.DCCExTCPCommandCenter("dcc-ex-tcp", dccextcp.ip, dccextcp.port);
                 exports.commandCenters.cc.TURNOUT_WAIT_TIME = 0; //dccextcp.turnoutActiveTime
                 exports.commandCenters.cc.BASICACCESSORY_WAIT_TIME = 0; //dccextcp.basicAccessoryDecoderActiveTime
+                (0, utility_1.log)("============================================================================");
                 (0, utility_1.log)("DCCEx TCP Command Center Registered!");
                 (0, utility_1.log)("IP:", dccextcp.ip);
                 (0, utility_1.log)("Port:", dccextcp.port);
+                (0, utility_1.log)("============================================================================");
                 exports.commandCenters.start();
             }
             else if (ccSettings.type == dcc_1.CommandCenterTypes.DCCExSerial) {
@@ -220,8 +224,10 @@ class CommandCenters {
                 exports.commandCenters.cc = new dccExSerialCommandCenter_1.DccExSerialCommandCenter("dcc-ex-serial", dccexserial.port, 115200);
                 exports.commandCenters.cc.TURNOUT_WAIT_TIME = 0; //dccextcp.turnoutActiveTime
                 exports.commandCenters.cc.BASICACCESSORY_WAIT_TIME = 0; //dccextcp.basicAccessoryDecoderActiveTime
+                (0, utility_1.log)("============================================================================");
                 (0, utility_1.log)("DCCEx Serial Command Center Registered!");
                 (0, utility_1.log)("Port:", dccexserial.port);
+                (0, utility_1.log)("============================================================================");
                 exports.commandCenters.start();
             }
         }

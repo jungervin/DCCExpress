@@ -183,9 +183,11 @@ export class CommandCenters {
                 commandCenters.cc = new Z21CommandCenter("z21", z21.ip, z21.port)
                 commandCenters.cc.TURNOUT_WAIT_TIME = z21.turnoutActiveTime
                 commandCenters.cc.BASICACCESSORY_WAIT_TIME = z21.basicAccessoryDecoderActiveTime
+                log("============================================================================")
                 log("Z21 Command Center Registered!")
                 log("IP:", z21.ip)
                 log("Port:", z21.port)
+                log("============================================================================")
                 commandCenters.start()
             }
             else if (ccSettings.type == CommandCenterTypes.DCCExTCP) {
@@ -193,9 +195,11 @@ export class CommandCenters {
                 commandCenters.cc = new DCCExTCPCommandCenter("dcc-ex-tcp", dccextcp.ip, dccextcp.port)
                 commandCenters.cc.TURNOUT_WAIT_TIME = 0 //dccextcp.turnoutActiveTime
                 commandCenters.cc.BASICACCESSORY_WAIT_TIME = 0 //dccextcp.basicAccessoryDecoderActiveTime
+                log("============================================================================")
                 log("DCCEx TCP Command Center Registered!")
                 log("IP:", dccextcp.ip)
                 log("Port:", dccextcp.port)
+                log("============================================================================")
                 commandCenters.start()
             }
             else if (ccSettings.type == CommandCenterTypes.DCCExSerial) {
@@ -203,8 +207,10 @@ export class CommandCenters {
                 commandCenters.cc = new DccExSerialCommandCenter("dcc-ex-serial", dccexserial.port, 115200)
                 commandCenters.cc.TURNOUT_WAIT_TIME = 0 //dccextcp.turnoutActiveTime
                 commandCenters.cc.BASICACCESSORY_WAIT_TIME = 0 //dccextcp.basicAccessoryDecoderActiveTime
+                log("============================================================================")
                 log("DCCEx Serial Command Center Registered!")
                 log("Port:", dccexserial.port)
+                log("============================================================================")
                 commandCenters.start()
             }
 

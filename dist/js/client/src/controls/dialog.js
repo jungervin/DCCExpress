@@ -112,7 +112,7 @@ define(["require", "exports"], function (require, exports) {
             this.dialogElement.style.position = "fixed";
             this.dialogElement.style.top = "50%";
             this.dialogElement.style.left = "50%";
-            this.dialogElement.style.transform = "translate(-50%, -60%)";
+            this.dialogElement.style.transform = "translate(-50%, -50%)";
             this.dialogElement.style.width = `${width}px`;
             this.dialogElement.style.height = `${height}px`;
             this.dialogElement.style.backgroundColor = "white";
