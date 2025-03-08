@@ -5,7 +5,10 @@
   "sourceMaps": true,
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "cd dist && node ./server/js/server/src/index.js",
+    "build:server": "tsc --project server/tsconfig.json",
+    "build:client": "tsc --project client/tsconfig.json",
+    "build": "npm run build:server && npm run build:client"    
   },
   "author": "",
   "license": "ISC",
