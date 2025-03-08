@@ -1,11 +1,12 @@
 import { SerialPort } from "serialport";
 import { log, logError } from "./utility";
+import { exit } from "node:process";
 
 export class SerialClient {
     private port: SerialPort | null = null;
     private readonly portName: string;
     private readonly baudRate: number;
-    private reconnectInterval: NodeJS.Timeout | null = null;
+    private reconnectInterval: NodeJS.Timeout | undefined;
     private readonly reconnectDelay = 5000; // 5 seconds
 
     // Callbacks
@@ -25,15 +26,23 @@ export class SerialClient {
         this.onConnected = onConnected;
         this.onDataReceived = onDataReceived;
         this.onError = onError;
-        this.connect();
+        // this.connect();
+    }
+
+    stop() {
+        if (this.port && this.port.isOpen) {
+            this.port.close()
+            this.port.destroy()
+            this.port = null
+        }
     }
 
     public connect() {
         log(`Attempting to connect to ${this.portName}...`);
 
-        if (this.reconnectInterval) {
-            clearTimeout(this.reconnectInterval); 
-            this.reconnectInterval = null;
+        if (this.port) {
+            logError("port is defined")
+            exit(1)
         }
 
         this.port = new SerialPort(
@@ -41,64 +50,74 @@ export class SerialClient {
                 path: this.portName,
                 baudRate: this.baudRate,
                 autoOpen: false,
+                rtscts: false
             },
             (err) => {
                 if (err) {
                     this.onError(new Error(`SerialPort error: ${err.message}`));
-                    this.reconnect();
                 }
             }
         );
 
-        this.port.on("open", () => {
-            log(`Connected to ${this.portName} at ${this.baudRate} baud.`);
-            if (this.reconnectInterval) {
-                clearTimeout(this.reconnectInterval);
-                this.reconnectInterval = null;
+        this.port!.set({ rts: false, dtr: false }, (err) => {
+            if (err) {
+                console.error('Error setting DTR/RTS:', err.message);
+            } else {
+                console.log('DTR and RTS disabled.');
             }
-            this.onConnected()
+        })
+
+
+        this.port.on("open", () => {
+            log(`Port Open:  ${this.portName} at ${this.baudRate} baud.`);
+
+            // RTS és DTR 
+            this.port!.set({ rts: false, dtr: false }, (err) => {
+                if (err) {
+                    console.error('Error setting DTR/RTS:', err.message);
+                } else {
+                    console.log('DTR and RTS disabled.');
+                }
+            })
+    
         });
 
         this.port.on("error", (err) => {
             this.onError(new Error(`Serial error: ${err.message}`));
-            this.reconnect();
         });
 
         this.port.on("close", () => {
             logError(`Connection to ${this.portName} lost. Reconnecting...`);
-            this.reconnect();
         });
 
         this.port.on("data", (data) => {
+            log("SERIAL.DATA", data.toString())
             this.onDataReceived(data.toString());
         });
 
-        this.port.open((err) => {
-            if (err) {
-                logError(`Failed to open serial port: ${err.message}`);
-                this.reconnect();
-            }
-        });
     }
 
-    private reconnect() {
-        if (!this.reconnectInterval) {
-            log(`Reconnecting in ${this.reconnectDelay / 1000} seconds...`);
-            this.reconnectInterval = setTimeout(() => this.connect(), this.reconnectDelay);
-        }
-    }
 
     public send(data: string) {
-        if (this.port && this.port.isOpen) {
-            this.port.write(data, (err) => {
-                if (err) {
-                    this.onError(new Error(`Write error: ${err.message}`));
-                }
-            });
-        } else {
-            logError("Serial port is not open. Cannot send data.");
+        log("SERIAL SEND()", data)
+        if (this.port) {
+            if (!this.port.isOpen) {
+                logError("Serial port is not open. Try to open.");
+                this.port.open()
+            }
+
+            if (this.port.isOpen) {
+                this.port.write(data, (err) => {
+                    if (err) {
+                        this.onError(new Error(`Write error: ${err.message}`));
+                    }
+                });
+
+            }
+        }
+        else {
+            logError("Port undefined!")
         }
     }
 }
-
 

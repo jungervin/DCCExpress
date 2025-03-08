@@ -25,7 +25,7 @@ class DccExSerialCommandCenter extends dccExCommandCenter_1.DCCExCommandCenter {
         }
     }
     error(err) {
-        console.log("DCCEx TCP Error:", err);
+        console.log("DCCEx Serial Error:", err);
     }
     start() {
         this.stop();
@@ -45,7 +45,7 @@ class DccExSerialCommandCenter extends dccExCommandCenter_1.DCCExCommandCenter {
             this.mainTask = undefined;
         }
         if (this.serialClient) {
-            //this.serialClient.stop()
+            this.serialClient.stop();
         }
     }
 }

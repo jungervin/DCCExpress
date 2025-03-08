@@ -130,7 +130,7 @@ For now, it only works on DCC-EX v5.4!
                             err += "Invalid value of Write value! (0..9999)\n";
                         }
                         if (err == "") {
-                            ws_1.wsClient.send({ type: dcc_1.ApiCommands.writeDccExDirectCommand, data: { command: `<1 PROG><w ${address} ${cv} ${value}>` } });
+                            ws_1.wsClient.send({ type: dcc_1.ApiCommands.writeDccExDirectCommand, data: { command: `<w ${address} ${cv} ${value}>` } });
                         }
                         else
                             alert(err);

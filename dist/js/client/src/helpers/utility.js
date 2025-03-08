@@ -1,17 +1,11 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getUUID = getUUID;
-    exports.byteToBinary = byteToBinary;
-    exports.toDecimal = toDecimal;
-    exports.moveUp = moveUp;
-    exports.moveDown = moveDown;
-    exports.moveToStart = moveToStart;
-    exports.moveToEnd = moveToEnd;
-    exports.isTouchDevice = isTouchDevice;
+    exports.isTouchDevice = exports.moveToEnd = exports.moveToStart = exports.moveDown = exports.moveUp = exports.toDecimal = exports.byteToBinary = exports.getUUID = void 0;
     function getUUID() {
         return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c => (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16));
     }
+    exports.getUUID = getUUID;
     function byteToBinary(byte, len = 8) {
         byte = byte & 0xff;
         // if (byte < 0 || byte > 255) {
@@ -20,6 +14,7 @@ define(["require", "exports"], function (require, exports) {
         const binaryString = byte.toString(2).padStart(len, "0");
         return `0b${binaryString}`;
     }
+    exports.byteToBinary = byteToBinary;
     function toDecimal(v) {
         var base = 10;
         v = v.replace('_', '');
@@ -33,6 +28,7 @@ define(["require", "exports"], function (require, exports) {
         }
         return parseInt(v, base);
     }
+    exports.toDecimal = toDecimal;
     /**
      * Egy elem helyét feljebb mozgatja egy hellyel.
      * @param {any[]} arr - A módosítandó tömb.
@@ -46,6 +42,7 @@ define(["require", "exports"], function (require, exports) {
         arr[index - 1] = arr[index];
         arr[index] = temp;
     }
+    exports.moveUp = moveUp;
     /**
      * Egy elem helyét lejjebb mozgatja egy hellyel.
      * @param {any[]} arr - A módosítandó tömb.
@@ -59,6 +56,7 @@ define(["require", "exports"], function (require, exports) {
         arr[index + 1] = arr[index];
         arr[index] = temp;
     }
+    exports.moveDown = moveDown;
     /**
     * Egy elem mozgatása a tömb elejére.
     * @param {any[]} arr - A módosítandó tömb.
@@ -72,6 +70,7 @@ define(["require", "exports"], function (require, exports) {
         // Illesszük be a tömb elejére:
         arr.unshift(item);
     }
+    exports.moveToStart = moveToStart;
     /**
      * Egy elem mozgatása a tömb végére.
      * @param {any[]} arr - A módosítandó tömb.
@@ -85,7 +84,9 @@ define(["require", "exports"], function (require, exports) {
         // Illesszük be a tömb végére:
         arr.push(item);
     }
+    exports.moveToEnd = moveToEnd;
     function isTouchDevice() {
         return navigator.maxTouchPoints > 0 || "ontouchstart" in window || window.matchMedia("(pointer: coarse)").matches;
     }
+    exports.isTouchDevice = isTouchDevice;
 });

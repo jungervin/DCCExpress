@@ -169,7 +169,7 @@ For now, it only works on DCC-EX v5.4!
                     }
 
                     if (err == "") {
-                        wsClient.send({ type: ApiCommands.writeDccExDirectCommand, data: { command: `<1 PROG><w ${address} ${cv} ${value}>` } as iDccExDirectCommand });
+                        wsClient.send({ type: ApiCommands.writeDccExDirectCommand, data: { command: `<w ${address} ${cv} ${value}>` } as iDccExDirectCommand });
                     }
                     else alert(err)
                 } else {

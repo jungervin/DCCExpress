@@ -5,6 +5,10 @@ const dcc_1 = require("../../common/src/dcc");
 const commandcenter_1 = require("./commandcenter");
 const utility_1 = require("./utility");
 const ws_1 = require("./ws");
+// Configure myAutomation.h - DCC Turnouts/Points
+// https://dcc-ex.com/exrail/creating-elements.html#configure-myautomation-h-dcc-turnouts-pointshttps://dcc-ex.com/exrail/creating-elements.html#configure-myautomation-h-dcc-turnouts-points
+// TURNOUT( id, addr, sub_addr [, "description"] )
+// https://dcc-ex.com/exrail/exrail-command-reference.html#objects-definition-and-control
 class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     constructor(name) {
         super(name);
@@ -13,15 +17,21 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     }
     put(msg) {
         // Mutex??
-        (0, utility_1.log)(`DCCEx ${this.name} put: ${msg}`);
+        if (!msg.startsWith('<#')) {
+            (0, utility_1.log)(`DCCEx ${this.name} put: ${msg}`);
+        }
         this.buffer.push(msg);
     }
     getConnectionString() {
         throw new Error("Method not implemented.");
     }
-    trackPower(on) {
+    setTrackPower(on) {
         (0, utility_1.log)("DCCEx ", `trackPower(${on})`);
-        this.put(on ? '<1>' : '<0>');
+        this.put(on ? '<1 MAIN>' : '<0>');
+    }
+    setProgPower(on) {
+        (0, utility_1.log)("DCCEx ", `progPower(${on})`);
+        this.put(on ? '<1 PROG>' : '<0 PROG>');
     }
     emergenyStop(stop) {
         this.put('<!>');
@@ -32,10 +42,14 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
         // <F cab funct state> - Turn loco decoder functions ON or OFF
         // 6 Response: <l cab reg speedByte functMap>
         //throw new Error("Method not implemented.");
-        this.put(`<F ${address} ${fn} ${on ? 1 : 0}`);
+        this.put(`<F ${address} ${fn} ${on ? 1 : 0}>`);
     }
     clientConnected() {
         (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.powerInfo, data: this.powerInfo });
+        this.put("<s>");
+        // this.put("<T>")
+        // this.put("<Q>")
+        // this.put("<Z>")
     }
     getLoco(address) {
         // <t cab>
@@ -57,11 +71,17 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     stop() {
         //throw new Error("Method not implemented.");
     }
-    setTurnout(address, closed) {
-        this.put(`<T ${address} ${closed ? dcc_1.DCCExTurnout.closed : dcc_1.DCCExTurnout.open}>`);
+    setTurnout(address, closed, mode) {
+        if (mode == dcc_1.OutputModes.dccExAccessory) {
+            this.put(`<T ${address} ${closed ? dcc_1.DCCExTurnout.closed : dcc_1.DCCExTurnout.open}>`);
+            this.getTurnout(address);
+        }
+        else if (mode == dcc_1.OutputModes.accessory) {
+            this.setAccessoryDecoder(address, closed);
+        }
     }
     getTurnout(address) {
-        this.put(`<T ${address} X>`);
+        this.put(`<JT ${address}>`);
     }
     // 'a': // ACCESSORY <a ADDRESS SUBADDRESS ACTIVATE [ONOFF]> or <a LINEARADDRESS ACTIVATE>
     setAccessoryDecoder(address, on) {
@@ -75,54 +95,96 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     }
     getAccessoryDecoder(address) {
         const a = dcc_1.accessories[address];
+        if (a) {
+            const turnoutInfo = { address: a.address, isClosed: a.value };
+            (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.turnoutInfo, data: turnoutInfo });
+        }
+        else {
+            var d = { type: dcc_1.ApiCommands.UnsuccessfulOperation, data: "DCCEx.getAccessory Unsuccessful Operation!" };
+            (0, ws_1.broadcastAll)(d);
+        }
+    }
+    setOutput(address, on) {
+        dcc_1.outputs[address] = { address: address, value: on };
+        this.put(`<Z ${address} ${on ? 1 : 0}>`);
+    }
+    getOutput(address) {
+        const o = dcc_1.outputs[address];
+        if (o) {
+            const outputInfo = { address: o.address, value: o.value };
+            (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.outputInfo, data: outputInfo });
+        }
+        else {
+            var d = { type: dcc_1.ApiCommands.UnsuccessfulOperation, data: "DCCEx.getOutput Unsuccessful Operation!" };
+            (0, ws_1.broadcastAll)(d);
+        }
     }
     getRBusInfo() {
         //throw new Error("Method not implemented.");
     }
+    getSensorInfo(address) {
+        this.put(`<Q ${address}>`);
+    }
     getSystemState() {
         //throw new Error("Method not implemented.");
     }
+    writeDirectCommand(command) {
+        this.put(command);
+    }
     parse(data) {
-        console.log("DCCEx Parse:", data);
-        if (data != "# 50") {
-            console.log('tcpClient Data: ', data);
+        if (data == "# 50") {
+            //log('DccEx Data: ', data);
+            return;
         }
+        //log("DCCEx Parse:", data)
         if (data.startsWith('p1')) {
+            const params = data.split(" ");
             this.powerInfo.info = 0b00000001;
-            this.powerInfo.trackVoltageOn = true;
-            (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.powerInfo, data: this.powerInfo });
+            if (params[1] == 'MAIN' || params[1] == 'A') {
+                //    if (!this.powerInfo.trackVoltageOn)
+                {
+                    this.powerInfo.trackVoltageOn = true;
+                    (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.powerInfo, data: this.powerInfo });
+                }
+            }
+            else if (params[1] == 'PROG' || params[1] == 'B') {
+                this.powerInfo.programmingModeActive = true;
+            }
         }
         else if (data.startsWith('p0')) {
+            const params = data.split(" ");
             this.powerInfo.info = 0b00000000;
-            this.powerInfo.trackVoltageOn = false;
+            if (params.length == 2) {
+                if (params[1] == 'MAIN' || params[1] == 'A') {
+                    this.powerInfo.trackVoltageOn = false;
+                }
+                else if (params[1] == 'PROG' || params[1] == 'B') {
+                    this.powerInfo.programmingModeActive = false;
+                }
+            }
+            else {
+                this.powerInfo.trackVoltageOn = false;
+                this.powerInfo.programmingModeActive = false;
+            }
+            (0, utility_1.log)("DCCEx PowerInfo: ", this.powerInfo);
             (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.powerInfo, data: this.powerInfo });
         }
         else if (data.startsWith("Q ")) {
-            var params = data.replace(">", "").split(" ");
-            console.log('tcpClient Data: processSensor');
-            var address = parseInt(params[1]);
+            const params = data.split(" ");
+            const si = { address: parseInt(params[1]), on: true };
+            (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.sensorInfo, data: si });
         }
         else if (data.startsWith("q ")) {
-            var params = data.replace(">", "").split(" ");
-            var address = parseInt(params[1]);
-            //processSensor(addr);
-            //var sensor = getSensor(addr)
+            const params = data.split(" ");
+            const si = { address: parseInt(params[1]), on: false };
+            (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.sensorInfo, data: si });
         }
         else if (data.startsWith('l')) {
-            console.log("TCP Rec:", data);
             var items = data.split(" ");
             var address = parseInt(items[1]);
             var speedByte = parseInt(items[3]);
             var funcMap = parseInt(items[4]);
             var direction = dcc_1.DCCExDirections.forward;
-            //var loco = locos[address] // this.getLoco(addr)
-            // if(speedByte == -1 && !this.powerInfo.emergencyStop) {
-            //     this.powerInfo.emergencyStop = true;
-            //     broadcastAll({type: ApiCommands.powerInfo, data: this.powerInfo})
-            // } else if(this.powerInfo.emergencyStop) {
-            //     this.powerInfo.emergencyStop = false;
-            //     broadcastAll({type: ApiCommands.powerInfo, data: this.powerInfo})
-            // }
             //if (loco) 
             {
                 var newSpeed = 0;
@@ -153,33 +215,46 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
                 //     this.powerInfo.emergencyStop = false;
                 //     broadcastAll({type: ApiCommands.powerInfo, data: this.powerInfo})
                 // }
-                // for (var i = 0; i <= 28; i++) {
-                //     var func = loco.functions.find(f => f.index == i)
-                //     if (func) {
-                //         func.isOn = ((loco.funcMap >> i) & 0x1) > 0;
-                //     }
-                // }
             }
         }
         else if (data.startsWith('H')) {
             var items = data.split(" ");
             var address = parseInt(items[1]);
-            var closed = parseInt(items[2]);
-            var t = { address: address, isClosed: closed == 0 };
+            var t = { address: address, isClosed: parseInt(items[2]) == 0 };
             (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.turnoutInfo, data: t });
+        }
+        else if (data.startsWith("jT")) {
+            var items = data.split(" ");
+            var address = parseInt(items[1]);
+            var t = { address: address, isClosed: items[2] == 'C' };
+            (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.turnoutInfo, data: t });
+        }
+        else if (data.startsWith("Y")) {
+            var items = data.split(" ");
+            var address = parseInt(items[1]);
+            var o = { address: address, value: items[items.length - 1] == '1' };
+            (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.outputInfo, data: o });
         }
         else if (data == "X") {
             console.log("A művelet nem sikerült!");
             var d = { type: dcc_1.ApiCommands.UnsuccessfulOperation, data: "DCCEx Unsuccessful Operation!" };
             (0, ws_1.broadcastAll)(d);
         }
+        else {
+            console.log("DCCExCommandCenter: Unknown data received: ", data);
+            (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.dccExDirectCommandResponse, data: { response: data } });
+        }
     }
     connected() {
-        this.put('<T>');
+        this.put('<s>');
+        // this.put('<T>')
+        // this.put('<Q>')
     }
     received(buffer) {
         var msg = buffer.toString();
-        console.log("TCP RECEIVED:", msg);
+        if (!buffer.startsWith('<#')) {
+            (0, utility_1.log)("RECEIVED:", msg);
+        }
         for (var i = 0; i < msg.length; i++) {
             var c = msg[i];
             if (c == ">") {

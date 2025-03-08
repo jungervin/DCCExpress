@@ -151,7 +151,7 @@ export class DCCExCommandCenter extends CommandCenter {
 
     parse(data: string) {
         if (data == "# 50") {
-            //log('tcpClient Data: ', data);
+            //log('DccEx Data: ', data);
             return
         }
 
@@ -200,9 +200,6 @@ export class DCCExCommandCenter extends CommandCenter {
             broadcastAll({ type: ApiCommands.sensorInfo, data: si } as iData)
         }
         else if (data.startsWith('l')) {
-
-
-            console.log("TCP Rec:", data)
 
             var items = data.split(" ")
             var address = parseInt(items[1])
@@ -283,7 +280,7 @@ export class DCCExCommandCenter extends CommandCenter {
     received(buffer: any) {
         var msg = buffer.toString()
         if (!buffer.startsWith('<#')) {
-            log("TCP RECEIVED:", msg)
+            log("RECEIVED:", msg)
         }
 
         for (var i = 0; i < msg.length; i++) {
