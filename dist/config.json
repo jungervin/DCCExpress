@@ -4,7 +4,7 @@
         "origX": 266,
         "origY": -67,
         "locoPanelVisible": true,
-        "propertyPanelVisible": false
+        "propertyPanelVisible": true
     },
     "pages": [
         {
@@ -1604,6 +1604,24 @@
                     "x": 13,
                     "y": 6,
                     "name": "tree146"
+                },
+                {
+                    "uuid": "afbfe271-16dd-475f-b656-86b8990fec6c",
+                    "type": "signal4",
+                    "address": 10,
+                    "name": "signal4-145",
+                    "x": 5,
+                    "y": 3,
+                    "angle": 0,
+                    "addressLength": 5,
+                    "isExtendedDecoder": false,
+                    "valueGreen": 1,
+                    "valueRed": 0,
+                    "valueYellow": 3,
+                    "valueWhite": 0,
+                    "rbusAddress": 0,
+                    "outputMode": 0,
+                    "aspect": 4
                 }
             ]
         }

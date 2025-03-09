@@ -1,12 +1,9 @@
-import { Alert } from "bootstrap";
 import { Button, Checkbox, Dialog, GroupBox, Input, InputNumber, Label, Panel, TabControl } from "../controls/dialog";
 import { wsClient } from "../helpers/ws";
-import { ApiCommands, iDccExDirectCommand, iDccExDirectCommandResponse, iPowerInfo } from "../../../common/src/dcc";
-import { read } from "fs";
+import { ApiCommands, iDccExDirectCommand, iDccExDirectCommandResponse, iPowerInfo, iSetBasicAccessory } from "../../../common/src/dcc";
 import { toastManager } from "../controls/toastManager";
-import { byteToBinary, toDecimal } from "../helpers/utility";
 import { BitElement } from "../components/bitElement";
-import e from "express";
+
 
 
 export class ProgrammerDialog extends Dialog {
@@ -274,8 +271,18 @@ For now, it only works on DCC-EX v5.4!
 
         const btnLeftSide2 = new Button("Set Left Side");
         panel2.add(btnLeftSide2);
+        btnLeftSide2.onclick = () => {
+            //Api.set(address2.value, true)
+            var a: iSetBasicAccessory = {address: address2.value, value: true}
+            wsClient.send({type: ApiCommands.setBasicAccessory, data: a})
+        }
+
         const btnRightSide2 = new Button("Set Right Side");
         panel2.add(btnRightSide2);
+        btnRightSide2.onclick = () => {
+            var a: iSetBasicAccessory = {address: address2.value, value: false}
+            wsClient.send({type: ApiCommands.setBasicAccessory, data: a})
+        }
 
     }
 }

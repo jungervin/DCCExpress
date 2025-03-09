@@ -9,7 +9,7 @@ class DCCExTCPCommandCenter extends dccExCommandCenter_1.DCCExCommandCenter {
     constructor(name, ip, port) {
         super(name);
         this.lastSentTime = 0;
-        this.MAIN_TASK_INTERVAL = 50;
+        this.MAIN_TASK_INTERVAL = 25;
         this.ip = ip;
         this.port = port;
         this.tcpClient = new tcpClient_1.TCPClient(ip, port, 5000, this.connected.bind(this), this.received.bind(this), this.error.bind(this));
@@ -22,10 +22,11 @@ class DCCExTCPCommandCenter extends dccExCommandCenter_1.DCCExCommandCenter {
             if (this.buffer.length > 0) {
                 var data = "";
                 var i = 0;
-                while (this.buffer.length > 0 && i < 10) {
+                while (this.buffer.length > 0 && i < 5) {
                     data += this.buffer.shift();
                     i++;
                 }
+                //data += this.buffer.shift()
                 this.tcpClient.send(data, (err) => {
                     if (err) {
                         console.log("tcpClient.write Error:", err);

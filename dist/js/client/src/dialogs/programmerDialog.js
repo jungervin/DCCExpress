@@ -221,8 +221,17 @@ For now, it only works on DCC-EX v5.4!
             panel2.add(address2);
             const btnLeftSide2 = new dialog_1.Button("Set Left Side");
             panel2.add(btnLeftSide2);
+            btnLeftSide2.onclick = () => {
+                //Api.set(address2.value, true)
+                var a = { address: address2.value, value: true };
+                ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBasicAccessory, data: a });
+            };
             const btnRightSide2 = new dialog_1.Button("Set Right Side");
             panel2.add(btnRightSide2);
+            btnRightSide2.onclick = () => {
+                var a = { address: address2.value, value: false };
+                ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBasicAccessory, data: a });
+            };
         }
     }
     exports.ProgrammerDialog = ProgrammerDialog;

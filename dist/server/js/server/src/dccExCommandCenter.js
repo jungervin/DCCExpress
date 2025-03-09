@@ -21,6 +21,7 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
             (0, utility_1.log)(`DCCEx ${this.name} put: ${msg}`);
         }
         this.buffer.push(msg);
+        this.buffer.push(msg);
     }
     getConnectionString() {
         throw new Error("Method not implemented.");
@@ -133,7 +134,7 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     }
     parse(data) {
         if (data == "# 50") {
-            //log('tcpClient Data: ', data);
+            //log('DccEx Data: ', data);
             return;
         }
         //log("DCCEx Parse:", data)
@@ -180,7 +181,6 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
             (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.sensorInfo, data: si });
         }
         else if (data.startsWith('l')) {
-            console.log("TCP Rec:", data);
             var items = data.split(" ");
             var address = parseInt(items[1]);
             var speedByte = parseInt(items[3]);
@@ -254,7 +254,7 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     received(buffer) {
         var msg = buffer.toString();
         if (!buffer.startsWith('<#')) {
-            (0, utility_1.log)("TCP RECEIVED:", msg);
+            (0, utility_1.log)("RECEIVED:", msg);
         }
         for (var i = 0; i < msg.length; i++) {
             var c = msg[i];

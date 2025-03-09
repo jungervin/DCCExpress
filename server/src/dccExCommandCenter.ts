@@ -24,6 +24,7 @@ export class DCCExCommandCenter extends CommandCenter {
             log(`DCCEx ${this.name} put: ${msg}`)
         }
         this.buffer.push(msg)
+        this.buffer.push(msg)
     }
     getConnectionString(): string {
         throw new Error("Method not implemented.");
