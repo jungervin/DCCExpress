@@ -27,7 +27,7 @@ export class SensorPropertiesElement extends HTMLElement {
                 <div class="igroup">
                     <div>Name</div>
                     <div>
-                        <input id="name" type="text" value="" readonly disabled>
+                        <input id="name" type="text" value="">
                     </div>
                 </div>
 

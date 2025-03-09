@@ -35,7 +35,7 @@ define(["require", "exports"], function (require, exports) {
             <div class="igroup">
                 <div>Name</div>
                 <div>
-                    <input id="name" type="text" value="" readonly disabled>
+                    <input id="name" type="text" value="">
                 </div>
             </div>
             

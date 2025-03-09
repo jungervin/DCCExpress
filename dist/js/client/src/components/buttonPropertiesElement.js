@@ -18,7 +18,7 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/globals"], 
                 <div class="igroup">
                     <div>Name</div>
                     <div>
-                        <input id="name" type="text" value="" readonly disabled>
+                        <input id="name" type="text" value="">
                     </div>
                 </div>
 

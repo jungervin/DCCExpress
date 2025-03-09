@@ -43,7 +43,7 @@ export class TurnoutLeftPropertiesElement extends HTMLElement {
                 <div class="igroup">
                     <div>Name</div>
                     <div>
-                        <input id="name" type="text" value="" readonly disabled>
+                        <input id="name" type="text" value="">
                     </div>
                 </div>
 
@@ -220,7 +220,7 @@ export class TurnoutRightPropertiesElement extends HTMLElement {
             <div class="igroup">
                 <div>Name</div>
                 <div>
-                    <input id="name" type="text" value="" readonly disabled>
+                    <input id="name" type="text" value="">
                 </div>
             </div>
 
@@ -412,7 +412,7 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
                 <div class="igroup">
                     <div>Name</div>
                     <div>
-                        <input id="name" type="text" value="" readonly disabled>
+                        <input id="name" type="text" value="">
                     </div>
                 </div>
         
@@ -738,7 +738,7 @@ export class TurnoutYPropertiesElement extends HTMLElement {
                 <div class="igroup">
                     <div>Name</div>
                     <div>
-                        <input id="name" type="text" value="" readonly disabled>
+                        <input id="name" type="text" value="">
                     </div>
                 </div>
 

@@ -30,6 +30,6 @@
         "ShowGrid": true,
         "ShowClock": false,
         "fastClockFactor": 1,
-        "DispalyAsSingleLamp": false
+        "DispalyAsSingleLamp": true
     }
 }

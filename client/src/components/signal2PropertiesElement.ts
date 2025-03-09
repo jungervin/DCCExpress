@@ -71,7 +71,7 @@ export class Signal2PropertiesElement extends HTMLElement {
                 <div class="igroup">
                     <div>Name</div>
                     <div>
-                        <input id="name" type="text" value="" readonly disabled>
+                        <input id="name" type="text" value="">
                     </div>
                 </div>
 
@@ -314,7 +314,7 @@ export class Signal3PropertiesElement extends HTMLElement {
                 <div class="igroup">
                     <div>Name</div>
                     <div>
-                        <input id="name" type="text" value="" readonly disabled>
+                        <input id="name" type="text" value="">
                     </div>
                 </div>
 
@@ -591,7 +591,7 @@ export class Signal4PropertiesElement extends HTMLElement {
                 <div class="igroup">
                     <div>Name</div>
                     <div>
-                        <input id="name" type="text" value="" readonly disabled>
+                        <input id="name" type="text" value="">
                     </div>
                 </div>
 

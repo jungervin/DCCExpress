@@ -4,7 +4,7 @@
         "origX": 266,
         "origY": -67,
         "locoPanelVisible": true,
-        "propertyPanelVisible": false
+        "propertyPanelVisible": true
     },
     "pages": [
         {
@@ -13,10 +13,10 @@
                 {
                     "uuid": "766e5ce8-373a-46aa-b4e5-040dce7b7216",
                     "type": "sensor",
-                    "address": 0,
+                    "address": 1,
                     "x": 11,
                     "y": 8,
-                    "name": "sensor144",
+                    "name": "sensor1441",
                     "valueOn": true,
                     "valueOff": false,
                     "colorOn": "lime",
@@ -204,7 +204,7 @@
                 {
                     "uuid": "8352b662-6cfa-41ce-9638-83618eb6fb82",
                     "type": "turnoutLeft",
-                    "name": "turnoutleft20",
+                    "name": "KK1",
                     "x": 10,
                     "y": 8,
                     "address": 21,
@@ -818,7 +818,7 @@
                 {
                     "uuid": "f67a4770-b792-4a61-9d92-abc995049a77",
                     "type": "turnoutDouble",
-                    "name": "turnoutdouble263",
+                    "name": "111",
                     "x": 20,
                     "y": 8,
                     "address1": 12,

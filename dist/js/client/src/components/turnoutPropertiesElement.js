@@ -23,7 +23,7 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
                 <div class="igroup">
                     <div>Name</div>
                     <div>
-                        <input id="name" type="text" value="" readonly disabled>
+                        <input id="name" type="text" value="">
                     </div>
                 </div>
 
@@ -167,7 +167,7 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
             <div class="igroup">
                 <div>Name</div>
                 <div>
-                    <input id="name" type="text" value="" readonly disabled>
+                    <input id="name" type="text" value="">
                 </div>
             </div>
 
@@ -318,7 +318,7 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
                 <div class="igroup">
                     <div>Name</div>
                     <div>
-                        <input id="name" type="text" value="" readonly disabled>
+                        <input id="name" type="text" value="">
                     </div>
                 </div>
         
@@ -603,7 +603,7 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
                 <div class="igroup">
                     <div>Name</div>
                     <div>
-                        <input id="name" type="text" value="" readonly disabled>
+                        <input id="name" type="text" value="">
                     </div>
                 </div>
 
