@@ -28,20 +28,22 @@ define(["require", "exports", "../controls/toastManager", "../helpers/api"], fun
             }
         }
         static exec() {
-            if (Dispatcher.currentScriptFunction) {
-                try {
-                    //Dispatcher.currentScriptFunction(Dispatcher.App, Api);
-                    if (window.dispatcherLoop) {
-                        window.dispatcherLoop();
+            if (Dispatcher.active) {
+                if (Dispatcher.currentScriptFunction) {
+                    try {
+                        //Dispatcher.currentScriptFunction(Dispatcher.App, Api);
+                        if (window.dispatcherLoop) {
+                            window.dispatcherLoop();
+                        }
+                        else {
+                            Dispatcher.currentScriptFunction(Dispatcher.App, api_1.Api);
+                        }
                     }
-                    else {
-                        Dispatcher.currentScriptFunction(Dispatcher.App, api_1.Api);
-                    }
-                }
-                catch (error) {
-                    console.error("❌Dispatcher: Hiba a script futtatása közben:", error);
-                    if (Dispatcher.onerror) {
-                        Dispatcher.onerror('Dispatcher: Hiba a script futtatása közben:', error);
+                    catch (error) {
+                        console.error("❌Dispatcher: Hiba a script futtatása közben:", error);
+                        if (Dispatcher.onerror) {
+                            Dispatcher.onerror('Dispatcher: Hiba a script futtatása közben:', error);
+                        }
                     }
                 }
             }

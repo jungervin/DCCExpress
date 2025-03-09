@@ -406,8 +406,10 @@ export class Z21CommandCenter extends CommandCenter {
     }
 
     setOutput(address: number, on: boolean): void { 
+        this.setAccessoryDecoder(address, on)
     }
     getOutput(address: number): void {
+        this.getAccessoryDecoder(address)
     }   
 
     getRBusInfo() {

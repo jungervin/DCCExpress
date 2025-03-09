@@ -33,19 +33,21 @@ export class Dispatcher {
     }
 
     static exec() {
-        if (Dispatcher.currentScriptFunction) {
-            try {
-                //Dispatcher.currentScriptFunction(Dispatcher.App, Api);
-                if(window.dispatcherLoop) {
-                    window.dispatcherLoop()
-                } else {
-                    Dispatcher.currentScriptFunction(Dispatcher.App, Api);
-                }
-    
-            } catch (error) {
-                console.error("❌Dispatcher: Hiba a script futtatása közben:", error);
-                if (Dispatcher.onerror) {
-                    Dispatcher.onerror('Dispatcher: Hiba a script futtatása közben:', error)
+        if (Dispatcher.active) {
+            if (Dispatcher.currentScriptFunction) {
+                try {
+                    //Dispatcher.currentScriptFunction(Dispatcher.App, Api);
+                    if (window.dispatcherLoop) {
+                        window.dispatcherLoop()
+                    } else {
+                        Dispatcher.currentScriptFunction(Dispatcher.App, Api);
+                    }
+
+                } catch (error) {
+                    console.error("❌Dispatcher: Hiba a script futtatása közben:", error);
+                    if (Dispatcher.onerror) {
+                        Dispatcher.onerror('Dispatcher: Hiba a script futtatása közben:', error)
+                    }
                 }
             }
         }
@@ -71,14 +73,14 @@ export class Dispatcher {
 
             // First Run
             this.currentScriptFunction(Dispatcher.App, Api);
-         
-            if(window.dispatcherInit) {
+
+            if (window.dispatcherInit) {
                 window.dispatcherInit()
             } else {
                 toastManager.showToast("Could not find window.dispatcherInit function", "warning")
             }
 
-            if(window.dispatcherLoop) {
+            if (window.dispatcherLoop) {
                 window.dispatcherLoop()
             } else {
                 toastManager.showToast("Could not find dispatcherLoop function", "warning")

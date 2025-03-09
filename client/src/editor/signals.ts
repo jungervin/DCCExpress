@@ -1,7 +1,7 @@
 import { degreesToRadians } from "../helpers/math";
 import { TrackElement } from "./track";
 import { RailView } from "./view";
-import { ApiCommands, iSetBasicAccessory, iData, OutputModes, iSetOutput } from "../../../common/src/dcc";
+import { ApiCommands, iSetBasicAccessory, iData, OutputModes, iSetOutput, CommandCenterTypes } from "../../../common/src/dcc";
 import { drawTextWithRoundedBackground } from "../helpers/graphics";
 import { wsClient } from "../helpers/ws";
 import { Globals } from "../helpers/globals";
@@ -23,6 +23,20 @@ class SignalLight {
 }
 export class Signal1Element extends RailView {
     outputMode: OutputModes = OutputModes.accessory;
+    
+    // private _outputMode : OutputModes = OutputModes.accessory;
+    // public get outputMode(): OutputModes {
+    //     if(Globals.CommandCenterSetting.type == CommandCenterTypes.Z21) {
+
+    //     }
+    //     return this._outputMode;
+    // }
+    // public set outputMode(v: OutputMode) {
+    //     this._outputMode = OutputModes 
+    // }
+    
+
+
     address: number;
     addressLength: number = 5; // Digitools signal decoder must be 5 address
     trackElem: TrackElement
@@ -363,6 +377,7 @@ export class Signal1Element extends RailView {
         for (var i = 0; i < len; i++) {
 
             const value = ((bits >> i) & 1) == 1; 
+            
             if (this.outputMode == OutputModes.accessory) {
                 var d: iSetBasicAccessory = { address: this.address + i, value: value }
                 wsClient.send({ type: ApiCommands.setBasicAccessory, data: d } as iData);

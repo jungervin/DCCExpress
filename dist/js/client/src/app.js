@@ -109,6 +109,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                     case dcc_1.ApiCommands.locoInfo:
                         if (this.locoControlPanel) {
                             this.locoControlPanel.processMessage(msg.data);
+                            dispatcher_1.Dispatcher.exec();
                         }
                         break;
                     // case ApiCommands.commandCenterInfos:
@@ -130,6 +131,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                         break;
                     case dcc_1.ApiCommands.sensorInfo:
                         this.sensorInfo(msg.data);
+                        dispatcher_1.Dispatcher.exec();
                         break;
                     case dcc_1.ApiCommands.blockInfo:
                         const blocks = msg.data;
@@ -149,6 +151,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
                             if (b.address == output.address) {
                                 b.on = output.value == b.valueOn;
                                 this.editor.draw();
+                                dispatcher_1.Dispatcher.exec();
                             }
                         });
                         break;

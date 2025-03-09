@@ -160,7 +160,7 @@ export class App {
                 case ApiCommands.locoInfo:
                     if (this.locoControlPanel) {
                         this.locoControlPanel.processMessage(msg.data as iLoco)
-
+                        Dispatcher.exec()
                     }
                     break
                 // case ApiCommands.commandCenterInfos:
@@ -185,6 +185,7 @@ export class App {
 
                 case ApiCommands.sensorInfo:
                     this.sensorInfo(msg.data as iSensorInfo)
+                    Dispatcher.exec()
                     break;
 
                 case ApiCommands.blockInfo:
@@ -204,8 +205,9 @@ export class App {
                     const output = msg.data as iOutputInfo
                     this.editor.views.getButtonElements().forEach((b) => {
                         if (b.address == output.address) {
-                            b.on = output.value == b.valueOn
+                            b.on = output.value == b.valueOn                           
                             this.editor.draw()
+                            Dispatcher.exec()
                         }
                     })
 

@@ -362,8 +362,10 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
         this.LAN_X_GET_TURNOUT_INFO(address);
     }
     setOutput(address, on) {
+        this.setAccessoryDecoder(address, on);
     }
     getOutput(address) {
+        this.getAccessoryDecoder(address);
     }
     getRBusInfo() {
         this.LAN_RMBUS_GETDATA();
