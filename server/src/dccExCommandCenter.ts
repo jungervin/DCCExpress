@@ -55,18 +55,12 @@ export class DCCExCommandCenter extends CommandCenter {
     clientConnected(): void {
         broadcastAll({ type: ApiCommands.powerInfo, data: this.powerInfo } as iData)
         this.put("<s>")
-        // this.put("<T>")
-        // this.put("<Q>")
-        // this.put("<Z>")
-
     }
     getLoco(address: number): void {
-        // <t cab>
         this.put(`<t ${address}>`)
     }
 
     setLoco(address: number, speed: number, direction: Z21Directions): void {
-        // <t cab speed dir>
         if (speed > 126) {
             speed = 126
         }
@@ -81,6 +75,7 @@ export class DCCExCommandCenter extends CommandCenter {
     start(): void {
         this._data = ""
     }
+
     stop(): void {
         //throw new Error("Method not implemented.");
     }
@@ -93,6 +88,7 @@ export class DCCExCommandCenter extends CommandCenter {
             this.setAccessoryDecoder(address, closed)
         }
     }
+
     getTurnout(address: number): void {
         this.put(`<JT ${address}>`)
     }
@@ -108,6 +104,7 @@ export class DCCExCommandCenter extends CommandCenter {
         broadcastAll({ type: ApiCommands.turnoutInfo, data: turnoutInfo } as iData)
         log('setAccessoryDecoder() BROADCAST ', turnoutInfo)
     }
+
     getAccessoryDecoder(address: number): void {
         const a = accessories[address];
         if (a) {
@@ -123,6 +120,7 @@ export class DCCExCommandCenter extends CommandCenter {
         outputs[address] = { address: address, value: on } as iSetOutput
         this.put(`<Z ${address} ${on ? 1 : 0}>`)
     }
+
     getOutput(address: number): void {
         const o = outputs[address];
         if (o) {
@@ -135,7 +133,6 @@ export class DCCExCommandCenter extends CommandCenter {
     }
 
     getRBusInfo(): void {
-        //throw new Error("Method not implemented.");
     }
 
     getSensorInfo(address: number): void {
@@ -143,7 +140,7 @@ export class DCCExCommandCenter extends CommandCenter {
     }
 
     getSystemState(): void {
-        //throw new Error("Method not implemented.");
+        this.put('<s>')
     }
 
     writeDirectCommand(command: string): void {
@@ -155,8 +152,6 @@ export class DCCExCommandCenter extends CommandCenter {
             //log('DccEx Data: ', data);
             return
         }
-
-        //log("DCCEx Parse:", data)
 
         if (data.startsWith('p1')) {
             const params = data.split(" ");
@@ -170,8 +165,6 @@ export class DCCExCommandCenter extends CommandCenter {
             } else if (params[1] == 'PROG' || params[1] == 'B') {
                 this.powerInfo.programmingModeActive = true;
             }
-
-
         }
         else if (data.startsWith('p0')) {
             const params = data.split(" ");
@@ -208,10 +201,8 @@ export class DCCExCommandCenter extends CommandCenter {
             var funcMap = parseInt(items[4]);
             var direction: DCCExDirections = DCCExDirections.forward
 
-            //if (loco) 
             {
                 var newSpeed = 0
-                //loco.funcMap = funcMap
                 if ((speedByte >= 2) && (speedByte <= 127)) {
                     newSpeed = speedByte - 1;
                     direction = DCCExDirections.reverse;
@@ -228,18 +219,11 @@ export class DCCExCommandCenter extends CommandCenter {
                     newSpeed = 0;
                     direction = DCCExDirections.forward;
                 } else {
-                    //loco.speed = 0;
                 }
-
 
                 var loco: iLoco = { address: address, speed: newSpeed, direction: direction, funcMap: funcMap }
                 broadcastAll({ type: ApiCommands.locoInfo, data: loco } as iData)
                 log("BROADCAST DCC-EX LOCO INFO:", loco)
-
-                // if(this.powerInfo.emergencyStop && newSpeed > 0) {
-                //     this.powerInfo.emergencyStop = false;
-                //     broadcastAll({type: ApiCommands.powerInfo, data: this.powerInfo})
-                // }
             }
         }
         else if (data.startsWith('H')) {
@@ -298,5 +282,4 @@ export class DCCExCommandCenter extends CommandCenter {
             }
         }
     }
-
 }

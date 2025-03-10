@@ -14,8 +14,6 @@ export class Locomanager {
 
     static init() {
 
-        
-
         app.post("/upload", upload.single("image"), (req: any, res: any) => {
             if (!req.file) {
                 return res.status(400).json({ error: "No file uploaded" });
@@ -46,16 +44,11 @@ export class Locomanager {
             }
         };
 
-
-        // Endpoints
-
-        // Get all locomotives
         app.get("/locomotives", (req, res) => {
             const locomotives = readLocosFile();
             res.json(locomotives);
         });
 
-        // Get a single locomotive by ID
         app.get("/locomotives/:id", (req, res) => {
             const { id } = req.params;
             const locomotives = readLocosFile();
@@ -67,7 +60,6 @@ export class Locomanager {
             }
         });
 
-        // Add a new locomotive
         app.post("/locomotives", (req, res) => {
             const { name, address, imageUrl, speedMode, functions } = req.body;
             const locomotives = readLocosFile();
@@ -84,7 +76,6 @@ export class Locomanager {
             res.status(201).json(newLocomotive);
         });
 
-        // Update an existing locomotive
         app.put("/locomotives/:id", (req, res) => {
             const { id } = req.params;
             const { name, address, imageUrl, speedMode, functions } = req.body;
@@ -106,7 +97,6 @@ export class Locomanager {
             }
         });
 
-        // Delete a locomotive
         app.delete("/locomotives/:id", (req, res) => {
             const { id } = req.params;
             const locomotives = readLocosFile();

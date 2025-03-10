@@ -37,7 +37,6 @@ export class CommandCenters {
         }
     }
 
-
     clientConnected() {
         if (this.cc) {
             this.cc.clientConnected()
@@ -62,7 +61,6 @@ export class CommandCenters {
         }
     }
 
-
     setOutput(a: iSetOutput) {
         if (this.cc) {
             this.cc.setOutput(a.address, a.value)
@@ -79,7 +77,6 @@ export class CommandCenters {
         }
     }
 
-
     getTurnout(t: iGetTurnout) {
         if (this.cc) {
             this.cc.getTurnout(t.address)
@@ -90,7 +87,6 @@ export class CommandCenters {
 
     setTurnout(t: iSetTurnout) {
         if (this.cc) {
-            
             this.cc.setTurnout(t.address, t.isClosed, t.outputMode)
         } else {
             log("Command Center doesn't exists!")
@@ -113,7 +109,6 @@ export class CommandCenters {
         }
     }
     
-
     getLoco(loco: iLoco) {
         if (this.cc) {
             this.cc!.getLoco(loco.address)
@@ -133,7 +128,6 @@ export class CommandCenters {
             this.cc!.setLocoFunction(loco.address, loco.id, loco.isOn)
         } else {
             log("Command Center doesn't exists!")
-
         }
     }
 
@@ -168,7 +162,6 @@ export class CommandCenters {
             log("Command Center doesn't exists!")
         }           
     }
-
 
     load() {
         log("CommandCenters.load()")
@@ -217,8 +210,6 @@ export class CommandCenters {
         } catch (error) {
             logError("ServerSetting Error:", error)
         }
-
-
     }
 }
 
