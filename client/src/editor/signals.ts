@@ -373,7 +373,7 @@ export class Signal1Element extends RailView {
     send(bits: number) {
 
         var addr = this.address;
-        var len = this.addressLength & 5;
+        var len = this.addressLength;
         for (var i = 0; i < len; i++) {
 
             const value = ((bits >> i) & 1) == 1; 

@@ -62,13 +62,10 @@ class Locomanager {
                 console.error("Error writing to locos.json:", error);
             }
         };
-        // Endpoints
-        // Get all locomotives
         server_1.app.get("/locomotives", (req, res) => {
             const locomotives = readLocosFile();
             res.json(locomotives);
         });
-        // Get a single locomotive by ID
         server_1.app.get("/locomotives/:id", (req, res) => {
             const { id } = req.params;
             const locomotives = readLocosFile();
@@ -80,7 +77,6 @@ class Locomanager {
                 res.status(404).json({ error: "Locomotive not found" });
             }
         });
-        // Add a new locomotive
         server_1.app.post("/locomotives", (req, res) => {
             const { name, address, imageUrl, speedMode, functions } = req.body;
             const locomotives = readLocosFile();
@@ -96,7 +92,6 @@ class Locomanager {
             writeLocosFile(locomotives);
             res.status(201).json(newLocomotive);
         });
-        // Update an existing locomotive
         server_1.app.put("/locomotives/:id", (req, res) => {
             const { id } = req.params;
             const { name, address, imageUrl, speedMode, functions } = req.body;
@@ -115,7 +110,6 @@ class Locomanager {
                 res.status(404).json({ error: "Locomotive not found" });
             }
         });
-        // Delete a locomotive
         server_1.app.delete("/locomotives/:id", (req, res) => {
             const { id } = req.params;
             const locomotives = readLocosFile();

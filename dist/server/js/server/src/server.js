@@ -82,16 +82,6 @@ exports.app.get("/require.js", (req, res) => {
     (0, utility_1.log)("Get Requirejs:", nm);
     res.sendFile(nm);
 });
-// app.get("/socketio.js", (req: any, res: { sendFile: (arg0: string) => void; }) => {
-//   var nm = path.resolve(modulesFolder, "socket.io/client-dist/socket.io.js")
-//   log("Get Requirejs:", nm)
-//   res.sendFile(nm);
-// });
-// app.get("/js/lodash.js", (req: any, res: { sendFile: (arg0: string) => void; }) => {
-//   var nm = path.join(modulesFolder, "lodash/cloneDeep.js")
-//   log("Get lodash:", nm)
-//   res.sendFile(nm);
-// });
 // Bootstrap CSS kiszolgálása
 exports.app.get("/bootstrap.css", (req, res) => {
     res.sendFile(path_1.default.resolve(exports.modulesFolder, "bootstrap/dist/css/bootstrap.min.css"));

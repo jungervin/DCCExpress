@@ -24,7 +24,7 @@ export class DCCExCommandCenter extends CommandCenter {
             log(`DCCEx ${this.name} put: ${msg}`)
         }
         this.buffer.push(msg)
-        this.buffer.push(msg)
+        
     }
     getConnectionString(): string {
         throw new Error("Method not implemented.");
@@ -96,7 +96,11 @@ export class DCCExCommandCenter extends CommandCenter {
     // 'a': // ACCESSORY <a ADDRESS SUBADDRESS ACTIVATE [ONOFF]> or <a LINEARADDRESS ACTIVATE>
     setAccessoryDecoder(address: number, on: boolean): void {
         accessories[address] = { address: address, value: on } as iSetBasicAccessory
+
         var msg = `<a ${address} ${(on ? 1 : 0)}>`
+
+        // Twice
+        this.put(msg)
         this.put(msg)
 
         // Accessory

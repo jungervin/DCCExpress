@@ -296,7 +296,7 @@ define(["require", "exports", "../helpers/math", "./track", "./view", "../../../
         }
         send(bits) {
             var addr = this.address;
-            var len = this.addressLength & 5;
+            var len = this.addressLength;
             for (var i = 0; i < len; i++) {
                 const value = ((bits >> i) & 1) == 1;
                 if (this.outputMode == dcc_1.OutputModes.accessory) {

@@ -10,7 +10,7 @@ export class DCCExTCPCommandCenter extends DCCExCommandCenter {
   mainTask?: NodeJS.Timeout;
   tcpClient: TCPClient
   lastSentTime: number = 0;
-  MAIN_TASK_INTERVAL: number = 25;
+  MAIN_TASK_INTERVAL: number = 50;
 
   constructor(name: string, ip: string, port: number) {
     super(name);
@@ -32,7 +32,7 @@ export class DCCExTCPCommandCenter extends DCCExCommandCenter {
         var data = ""
         var i = 0
 
-        while (this.buffer.length > 0 && i < 5) {
+        while (this.buffer.length > 0 && i < 25) {
           data += this.buffer.shift()
           i++
         }
