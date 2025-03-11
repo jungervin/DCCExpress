@@ -250,14 +250,47 @@ For now, it only works on DCC-EX v5.4!
         //panel.getElement().style.backgroundColor = "whitesmoke";
         tab.addComponent(panel);
 
+        panel.add(new Label('<p style="width:100%;text-align: center;background-color: gainsboro;padding:2px;border-radius:4px;border: solid 1px black">⚠️For DCC-Ex, the timing settings must be configured according to LENZ. Read the documentation!⚠️</p>'));
+
         panel.add(new Label('Address or Switching time <a href="https://digitools.hu/termek/digiswitch-8/" target="blank">Manual</a>'));
         const address = new InputNumber(0, 9999);
         panel.add(address);
 
-        const btnLeftSide = new Button("Set Left Side");
-        panel.add(btnLeftSide);
-        const btnRightSide = new Button("Set Right Side");
-        panel.add(btnRightSide);
+
+        const btnK1K4Address = new Button("Set K1..K4 Address");
+        panel.add(btnK1K4Address);
+        btnK1K4Address.onclick = () => {
+            //Api.set(address2.value, true)
+            var a: iSetBasicAccessory = {address: address.value, value: true}
+            wsClient.send({type: ApiCommands.setBasicAccessory, data: a})
+        }
+
+
+        const btnK5K8Address = new Button("Set K5..K8 Address");
+        btnK5K8Address.onclick = () => {
+            //Api.set(address2.value, true)
+            var a: iSetBasicAccessory = {address: address.value, value: false}
+            wsClient.send({type: ApiCommands.setBasicAccessory, data: a})
+        }
+        panel.add(btnK5K8Address);
+
+        const btnK1K4Time = new Button("Set K1..K4 Timing");
+        panel.add(btnK1K4Time);
+        btnK1K4Time.onclick = () => {
+            //Api.set(address2.value, true)
+            var a: iSetBasicAccessory = {address: address.value, value: true}
+            wsClient.send({type: ApiCommands.setBasicAccessory, data: a})
+        }
+
+        const btnK5K8Time = new Button("Set K5..K8 Timing");
+        panel.add(btnK5K8Time);
+        btnK5K8Time.onclick = () => {
+            //Api.set(address2.value, true)
+            var a: iSetBasicAccessory = {address: address.value, value: false}
+            wsClient.send({type: ApiCommands.setBasicAccessory, data: a})
+        }
+
+
 
 
         const panel2 = new GroupBox("DigiSignal");
@@ -269,7 +302,7 @@ For now, it only works on DCC-EX v5.4!
         const address2 = new InputNumber(0, 9999);
         panel2.add(address2);
 
-        const btnLeftSide2 = new Button("Set Left Side");
+        const btnLeftSide2 = new Button("Set A..B Address");
         panel2.add(btnLeftSide2);
         btnLeftSide2.onclick = () => {
             //Api.set(address2.value, true)
@@ -277,7 +310,7 @@ For now, it only works on DCC-EX v5.4!
             wsClient.send({type: ApiCommands.setBasicAccessory, data: a})
         }
 
-        const btnRightSide2 = new Button("Set Right Side");
+        const btnRightSide2 = new Button("Set C..D Address");
         panel2.add(btnRightSide2);
         btnRightSide2.onclick = () => {
             var a: iSetBasicAccessory = {address: address2.value, value: false}

@@ -160,11 +160,12 @@ export class TurnoutLeftPropertiesElement extends HTMLElement {
         this.canvas2Element.turnout!.t1Closed = false
         this.canvas2Element.turnout!.angle = turnout.angle
         this.canvas2Element.turnout!.address = turnout.address
-        // this.canvas2Element.turnout!.cc = turnout.cc
+        this.canvas2Element.turnout!.outputMode = this.turnout!.outputMode
         this.canvas2Element.draw()
         this.canvas2Element.onclick = (e: MouseEvent) => {
             this.canvas2Element.turnout!.address = turnout.address
             this.canvas2Element.turnout!.t1OpenValue = this.turnout!.t1OpenValue
+            this.canvas2Element.turnout!.outputMode = this.turnout!.outputMode
             this.canvas2Element.turnout!.send()
         }
 
@@ -579,7 +580,7 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
             this.canvas1Element.onclick = (e: MouseEvent) => {
                 this.canvas1Element.turnout!.address = this.turnout!.address
                 this.canvas1Element.turnout!.address2 = this.turnout!.address2
-   
+  
                 this.canvas1Element.turnout!.t1ClosedValue = this.turnout!.t1ClosedValue
                 this.canvas1Element.turnout!.t2OpenValue = this.turnout!.t2OpenValue
                 this.canvas1Element.turnout!.outputMode = this.turnout!.outputMode
@@ -612,7 +613,7 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
             this.canvas2Element.onclick = (e: MouseEvent) => {
                 this.canvas2Element.turnout!.address = this.turnout!.address
                 this.canvas2Element.turnout!.address2 = this.turnout!.address2
-                    this.canvas2Element.turnout!.t1ClosedValue = this.turnout!.t1ClosedValue
+                this.canvas2Element.turnout!.t1ClosedValue = this.turnout!.t1ClosedValue
                 this.canvas2Element.turnout!.t2ClosedValue = this.turnout!.t2ClosedValue
                 this.canvas2Element.turnout!.outputMode = this.turnout!.outputMode
                 this.canvas2Element.turnout!.send()

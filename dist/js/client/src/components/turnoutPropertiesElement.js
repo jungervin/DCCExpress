@@ -125,11 +125,12 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
             this.canvas2Element.turnout.t1Closed = false;
             this.canvas2Element.turnout.angle = turnout.angle;
             this.canvas2Element.turnout.address = turnout.address;
-            // this.canvas2Element.turnout!.cc = turnout.cc
+            this.canvas2Element.turnout.outputMode = this.turnout.outputMode;
             this.canvas2Element.draw();
             this.canvas2Element.onclick = (e) => {
                 this.canvas2Element.turnout.address = turnout.address;
                 this.canvas2Element.turnout.t1OpenValue = this.turnout.t1OpenValue;
+                this.canvas2Element.turnout.outputMode = this.turnout.outputMode;
                 this.canvas2Element.turnout.send();
             };
             this.bit2Element.value = this.turnout.t1OpenValue;

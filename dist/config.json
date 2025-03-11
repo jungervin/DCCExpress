@@ -4,7 +4,7 @@
         "origX": 268,
         "origY": -52,
         "locoPanelVisible": true,
-        "propertyPanelVisible": false
+        "propertyPanelVisible": true
     },
     "pages": [
         {
@@ -735,16 +735,16 @@
                 {
                     "uuid": "d67c47d9-cbe6-4442-aca6-f01c0eac9c40",
                     "type": "signal3",
-                    "address": 70,
+                    "address": 10,
                     "name": "signal3-100",
                     "x": 8,
                     "y": 6,
                     "angle": 180,
                     "addressLength": 5,
                     "isExtendedDecoder": false,
-                    "valueGreen": 1,
-                    "valueRed": 2,
-                    "valueYellow": 4,
+                    "valueGreen": 5,
+                    "valueRed": 0,
+                    "valueYellow": 7,
                     "rbusAddress": 18,
                     "outputMode": 0,
                     "aspect": 3
@@ -1622,6 +1622,19 @@
                     "rbusAddress": 0,
                     "outputMode": 0,
                     "aspect": 4
+                },
+                {
+                    "uuid": "0a742c4a-34b5-441e-b2dc-d0f7c380c949",
+                    "type": "turnoutLeft",
+                    "name": "turnoutleft146",
+                    "x": 16,
+                    "y": 3,
+                    "address": 100,
+                    "angle": 0,
+                    "t1ClosedValue": true,
+                    "t1OpenValue": false,
+                    "rbusAddress": 0,
+                    "outputMode": 0
                 }
             ]
         }

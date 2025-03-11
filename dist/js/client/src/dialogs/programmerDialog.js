@@ -206,27 +206,52 @@ For now, it only works on DCC-EX v5.4!
             const panel = new dialog_1.GroupBox("DigiSwitch");
             //panel.getElement().style.backgroundColor = "whitesmoke";
             tab.addComponent(panel);
+            panel.add(new dialog_1.Label('<p style="width:100%;text-align: center;background-color: gainsboro;padding:2px;border-radius:4px;border: solid 1px black">⚠️For DCC-Ex, the timing settings must be configured according to LENZ. Read the documentation!⚠️</p>'));
             panel.add(new dialog_1.Label('Address or Switching time <a href="https://digitools.hu/termek/digiswitch-8/" target="blank">Manual</a>'));
             const address = new dialog_1.InputNumber(0, 9999);
             panel.add(address);
-            const btnLeftSide = new dialog_1.Button("Set Left Side");
-            panel.add(btnLeftSide);
-            const btnRightSide = new dialog_1.Button("Set Right Side");
-            panel.add(btnRightSide);
+            const btnK1K4Address = new dialog_1.Button("Set K1..K4 Address");
+            panel.add(btnK1K4Address);
+            btnK1K4Address.onclick = () => {
+                //Api.set(address2.value, true)
+                var a = { address: address.value, value: true };
+                ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBasicAccessory, data: a });
+            };
+            const btnK5K8Address = new dialog_1.Button("Set K5..K8 Address");
+            btnK5K8Address.onclick = () => {
+                //Api.set(address2.value, true)
+                var a = { address: address.value, value: false };
+                ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBasicAccessory, data: a });
+            };
+            panel.add(btnK5K8Address);
+            const btnK1K4Time = new dialog_1.Button("Set K1..K4 Timing");
+            panel.add(btnK1K4Time);
+            btnK1K4Time.onclick = () => {
+                //Api.set(address2.value, true)
+                var a = { address: address.value, value: true };
+                ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBasicAccessory, data: a });
+            };
+            const btnK5K8Time = new dialog_1.Button("Set K5..K8 Timing");
+            panel.add(btnK5K8Time);
+            btnK5K8Time.onclick = () => {
+                //Api.set(address2.value, true)
+                var a = { address: address.value, value: false };
+                ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBasicAccessory, data: a });
+            };
             const panel2 = new dialog_1.GroupBox("DigiSignal");
             //panel2.getElement().style.backgroundColor = "whitesmoke";
             tab.addComponent(panel2);
             panel2.add(new dialog_1.Label('Address  <a href="https://digitools.hu/termek/digisignal-x4yyy/" target="blank">Manual</a>'));
             const address2 = new dialog_1.InputNumber(0, 9999);
             panel2.add(address2);
-            const btnLeftSide2 = new dialog_1.Button("Set Left Side");
+            const btnLeftSide2 = new dialog_1.Button("Set A..B Address");
             panel2.add(btnLeftSide2);
             btnLeftSide2.onclick = () => {
                 //Api.set(address2.value, true)
                 var a = { address: address2.value, value: true };
                 ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBasicAccessory, data: a });
             };
-            const btnRightSide2 = new dialog_1.Button("Set Right Side");
+            const btnRightSide2 = new dialog_1.Button("Set C..D Address");
             panel2.add(btnRightSide2);
             btnRightSide2.onclick = () => {
                 var a = { address: address2.value, value: false };

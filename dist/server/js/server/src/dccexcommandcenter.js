@@ -47,16 +47,11 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     clientConnected() {
         (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.powerInfo, data: this.powerInfo });
         this.put("<s>");
-        // this.put("<T>")
-        // this.put("<Q>")
-        // this.put("<Z>")
     }
     getLoco(address) {
-        // <t cab>
         this.put(`<t ${address}>`);
     }
     setLoco(address, speed, direction) {
-        // <t cab speed dir>
         if (speed > 126) {
             speed = 126;
         }
@@ -87,6 +82,8 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     setAccessoryDecoder(address, on) {
         dcc_1.accessories[address] = { address: address, value: on };
         var msg = `<a ${address} ${(on ? 1 : 0)}>`;
+        // Twice
+        this.put(msg);
         this.put(msg);
         // Accessory
         const turnoutInfo = { address: address, isClosed: on };
@@ -120,13 +117,12 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
         }
     }
     getRBusInfo() {
-        //throw new Error("Method not implemented.");
     }
     getSensorInfo(address) {
         this.put(`<Q ${address}>`);
     }
     getSystemState() {
-        //throw new Error("Method not implemented.");
+        this.put('<s>');
     }
     writeDirectCommand(command) {
         this.put(command);
@@ -136,7 +132,6 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
             //log('DccEx Data: ', data);
             return;
         }
-        //log("DCCEx Parse:", data)
         if (data.startsWith('p1')) {
             const params = data.split(" ");
             this.powerInfo.info = 0b00000001;
@@ -185,10 +180,8 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
             var speedByte = parseInt(items[3]);
             var funcMap = parseInt(items[4]);
             var direction = dcc_1.DCCExDirections.forward;
-            //if (loco) 
             {
                 var newSpeed = 0;
-                //loco.funcMap = funcMap
                 if ((speedByte >= 2) && (speedByte <= 127)) {
                     newSpeed = speedByte - 1;
                     direction = dcc_1.DCCExDirections.reverse;
@@ -206,15 +199,10 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
                     direction = dcc_1.DCCExDirections.forward;
                 }
                 else {
-                    //loco.speed = 0;
                 }
                 var loco = { address: address, speed: newSpeed, direction: direction, funcMap: funcMap };
                 (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.locoInfo, data: loco });
                 (0, utility_1.log)("BROADCAST DCC-EX LOCO INFO:", loco);
-                // if(this.powerInfo.emergencyStop && newSpeed > 0) {
-                //     this.powerInfo.emergencyStop = false;
-                //     broadcastAll({type: ApiCommands.powerInfo, data: this.powerInfo})
-                // }
             }
         }
         else if (data.startsWith('H')) {
