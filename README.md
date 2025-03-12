@@ -25,6 +25,7 @@ In the menu, reload the script by clicking on the **Dispatcher** | **Scheduler**
 
 ## 🚀Quick Start Guide
 
+
 ⚠️The NodeJS environment must be installed! ⚠️  
 ⚠️ It can be downloaded from here: [https://nodejs.org/en/download](https://nodejs.org/en/download). ⚠️
 
@@ -35,6 +36,8 @@ In the menu, reload the script by clicking on the **Dispatcher** | **Scheduler**
 3. **Run the server** by launching `start.bat`.  
 4. **Open your browser** and go to `127.0.0.1:3000`. 🚀
 5. **Configure the command center settings**
+
+### 📺 https://www.youtube.com/watch?v=YhDMJcTy7pI
 
 ## 💻 Installation & 🚂Setup & 🚀Run 
 
