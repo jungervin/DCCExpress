@@ -25,6 +25,8 @@ In the menu, reload the script by clicking on the **Dispatcher** | **Scheduler**
 
 ## 🚀Quick Start Guide
 
+``` ⚠️The NodeJS environment must be installed! It can be downloaded from here: https://nodejs.org/en/download. ⚠️```
+
 1. **Download the ZIP file.**  
 ~~2. **Extract it** and navigate to the dist folder.~~  
 ~~3. **Run the server** by launching DCCExpress.exe.~~
