@@ -125,6 +125,12 @@ export class CustomCanvas extends HTMLElement {
     private pointerMap = new Map<number, { x: number; y: number }>(); // Pointer ID-k mentése
     private lastDistance = 0;
     fastClock?: FastClock | null;
+    previousDistance: number | null = null;
+    previousMidpoint: { x: number, y: number } | null = null;
+    zoomSensitivity = 0.5;
+    panSensitivity = 1.0;
+    lastTouchEvent?: TouchEvent | null;
+    lastTouch?: Touch | null;
 
 
 
@@ -175,6 +181,172 @@ export class CustomCanvas extends HTMLElement {
         this.propertyPanel = document.getElementById("EditorPropertyPanel") as PropertyPanel
     }
 
+
+    // convertToMouse(ev: TouchEvent) {
+    //     if (ev.touches.length == 1) {
+    //         var type = "";
+
+    //         switch (ev.type) {
+    //             case "touchstart":
+    //                 type = "mousedown"; break;
+    //             case "touchmove":
+    //                 type = "mousemove"; break;
+    //             case "touchend":
+    //                 type = "mouseup"; break;
+    //             default:
+    //                 return;
+    //         }
+
+    //         var touch = ev.changedTouches[0];
+    //         var simulatedEvent = document.createEvent("MouseEvent");
+    //         simulatedEvent.initMouseEvent(type, true, true, window, 1, 
+    //                 touch.screenX, touch.screenY, 
+    //                 touch.clientX, touch.clientY, false, 
+    //                 false, false, false, 0, null);
+
+    //         touch.target.dispatchEvent(simulatedEvent);
+    //         ev.preventDefault();
+    //     }
+    // }
+
+    convertTouchEventToMouseEvent(event: TouchEvent, eventType: string): void {
+    
+        event.preventDefault()
+        const touch = event.touches[0];
+        const rect = this.canvas.getBoundingClientRect();
+        if (!touch) { 
+            var e = new MouseEvent(eventType, {
+                bubbles: true,
+                cancelable: true,
+                clientX: this.lastTouch!.clientX - rect.left,
+                clientY: this.lastTouch!.clientY - rect.top,
+                screenX: this.lastTouch!.screenX,
+                screenY: this.lastTouch!.screenY,
+                button: 0,
+                buttons: 1
+            });
+            this.handleMouseUp(e)    
+            return
+        }
+
+        this.lastTouch = touch;
+        this.downX =touch.clientX - rect.left
+        this.downY = touch.clientY - rect.top
+        
+        try {
+            var e = new MouseEvent(eventType, {
+                bubbles: true,
+                cancelable: true,
+                clientX: touch.clientX - rect.left,
+                clientY: touch.clientY - rect.top,
+                screenX: touch.screenX,
+                screenY: touch.screenY,
+                // button: 0,
+                // buttons: 1
+                button: 1,
+                buttons: 1
+            });
+
+
+            switch (eventType) {
+                case "mousedown":
+                    this.handleMouseDown(e)
+                    break;
+                case "mouseup":
+                    this.handleMouseUp(e)
+                    break;
+                case "mousemove":
+                    this.handleMouseMove(e)
+                    break
+                default: alert("EventType: " + eventType)
+                break;
+            }
+
+        } catch (error) {
+            alert("Error" + error)
+        }
+
+        return
+        // // if (event.touches.length === 2) {
+        // //     const touch1 = event.touches[0];
+        // //     const touch2 = event.touches[1];
+        // //     const distance = Math.hypot(touch2.clientX - touch1.clientX, touch2.clientY - touch1.clientY);
+
+        // //     if (this.previousDistance !== null && this.previousDistance != distance) {
+        // //         const deltaY = (this.previousDistance - distance) ;
+        // //         const wheelEvent = new WheelEvent("wheel", {
+        // //             bubbles: true,
+        // //             cancelable: true,
+        // //             deltaY: deltaY,
+        // //             clientX: touch1.clientX,
+        // //             clientY: touch1.clientY,
+        // //             screenX: touch1.screenX,
+        // //             screenY: touch1.screenY,
+
+        // //         });
+        // //         this.handleMouseWheel(wheelEvent);
+        // //     }
+        // //     this.previousDistance = distance;
+        // //     return
+        // // } else {
+        // //     this.previousDistance = null;
+        // // }        
+
+        // if (event.touches.length === 2) {
+        //     const touch1 = event.touches[0];
+        //     const touch2 = event.touches[1];
+
+        //     const midpoint = {
+        //         x: (touch1.clientX + touch2.clientX) / 2,
+        //         y: (touch1.clientY + touch2.clientY) / 2
+        //     };
+
+
+        //     const distance = Math.hypot(touch2.clientX - touch1.clientX, touch2.clientY - touch1.clientY);
+
+        //     if (this.previousDistance !== null && this.previousMidpoint !== null) {
+        //         if (Math.abs(this.previousDistance - distance) > 2) {
+        //             // Handle zoom
+        //             const deltaY = (this.previousDistance - distance) * this.zoomSensitivity;
+        //             const wheelEvent = new WheelEvent("wheel", {
+        //                 bubbles: true,
+        //                 cancelable: true,
+        //                 deltaY: deltaY,
+        //                 clientX: this.previousMidpoint.x - rect.left,
+        //                 clientY: this.previousMidpoint.y - rect.top,
+        //                 screenX: touch.screenX,
+        //                 screenY: touch.screenY,
+
+
+        //             });
+        //             this.handleMouseWheel(wheelEvent);
+        //         } else {
+        //             // Handle panning (two-finger drag)
+        //             const deltaX = (midpoint.x - this.previousMidpoint.x) * this.panSensitivity;
+        //             const deltaY = (midpoint.y - this.previousMidpoint.y) * this.panSensitivity;
+        //             const moveEvent = new MouseEvent("mousemove", {
+        //                 bubbles: true,
+        //                 cancelable: true,
+        //                 clientX: midpoint.x - rect.left,
+        //                 clientY: midpoint.y - rect.top,
+        //                 screenX: touch1.screenX,
+        //                 screenY: touch1.screenY,
+        //                 movementX: deltaX,
+        //                 movementY: deltaY,
+
+        //                 buttons: 2
+        //             });
+        //             this.handleMouseMove(moveEvent);
+        //         }
+        //     }
+        //     this.previousDistance = distance;
+        //     this.previousMidpoint = midpoint;
+        // } else {
+        //     this.previousDistance = null;
+        //     this.previousMidpoint = null;
+        // }
+
+    }
     init() {
 
         //this.fastClock!.setScaleFactor(Globals.Settings.EditorSettings.fastClockFactor)
@@ -185,6 +357,26 @@ export class CustomCanvas extends HTMLElement {
         this.canvas.addEventListener('mouseup', (e) => this.handleMouseUp(e));
         this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
         this.canvas.addEventListener('wheel', (e) => this.handleMouseWheel(e));
+
+
+        // this.canvas.ontouchstart = ((ev: TouchEvent) => {
+        //     this.lastTouchEvent = ev;
+        //     this.convertTouchEventToMouseEvent(ev, "mousedown")
+        // }).bind(this)
+
+        // this.canvas.ontouchend = ((ev:TouchEvent ) => {
+        //     this.convertTouchEventToMouseEvent(ev, "mouseup")
+        // }).bind(this);
+
+        // this.canvas.ontouchcancel = ((ev: TouchEvent) => {
+        //     this.lastTouchEvent = ev;
+        //     this.convertTouchEventToMouseEvent(ev, "mouseup")
+        // }).bind(this);
+
+        // this.canvas.ontouchmove = (ev) => {
+        //     this.lastTouchEvent = ev;
+        //     this.convertTouchEventToMouseEvent(ev, "mousemove")
+        // }
 
         this.cursorTrackElement = new TrackElement("", 0, 0, "cursor");
         this.cursorTrackElement.isSelected = true
@@ -434,7 +626,7 @@ export class CustomCanvas extends HTMLElement {
             // this.width = this.canvas.width / this.scale
             // this.height = this.canvas.height / this.scale
             this.views.elements.forEach((elem: View) => {
-                elem.x -= dx 
+                elem.x -= dx
                 elem.y -= dy + 1
             })
             this.draw()
@@ -473,19 +665,19 @@ export class CustomCanvas extends HTMLElement {
                 return;
             }
 
-            if(e.key === 'h' || e.key === 'H') {
+            if (e.key === 'h' || e.key === 'H') {
 
                 this.toolbar!.style.display = this.toolbar!.style.display == "none" ? "block" : "none"
                 this.canvas.width = window.innerWidth;
                 this.canvas.height = window.innerHeight;
                 this.draw()
-    
+
             }
             if (e.key === 'r' || e.key === 'R') {
                 if (this.cursorElement && this.cursorElement.canRotate) {
                     this.cursorElement.rotateRight()
                     this.draw()
-                    
+
                 }
                 else if (this.selectedElement && this.selectedElement.canRotate) {
                     this.selectedElement.rotateRight()
@@ -845,16 +1037,12 @@ export class CustomCanvas extends HTMLElement {
                 var x = this.getMouseGridX()
                 var y = this.getMouseGridY()
                 var elem = this.views.elements.find((e) => {
-                    //return e.x == x && e.y == y
                     return e.mouseInView(x, y)
                 })
 
                 if (this.drawMode == drawModes.pointer) {
 
                     if (elem) {
-                        if (this.selectedElement) {
-                            // this.selectedElement.isSelected = false;
-                        }
                         this.selectedElement = elem
                         this.selectedElement.isSelected = true;
                     } else {
@@ -1687,13 +1875,13 @@ export class CustomCanvas extends HTMLElement {
                             l.text = elem.text ?? "LABEL"
                             l.valign = elem.valign ?? "center"
                             l.fgColor = elem.fgColor ?? "black",
-                            l.bgColor = elem.bgColor ?? "white",
-                            l.fontSize = elem.fontSize ?? "10px",
-                            l.fontStyle = elem.fontStyle ?? "normal",
-                            l.fontName = elem.fontName ?? "Arial",
-                            l.textAlign = elem.textAlign ?? "center",
-                            l.textBaseline = elem.textBaseline ?? "middle"
-    
+                                l.bgColor = elem.bgColor ?? "white",
+                                l.fontSize = elem.fontSize ?? "10px",
+                                l.fontStyle = elem.fontStyle ?? "normal",
+                                l.fontName = elem.fontName ?? "Arial",
+                                l.textAlign = elem.textAlign ?? "center",
+                                l.textBaseline = elem.textBaseline ?? "middle"
+
                             this.add(l)
                             break;
                         case "routeSwitch":
