@@ -28,7 +28,7 @@
         "ShowAddress": false,
         "Orientation": 1,
         "ShowGrid": true,
-        "ShowClock": false,
+        "ShowClock": true,
         "fastClockFactor": 1,
         "DispalyAsSingleLamp": true
     }

@@ -23,7 +23,7 @@ export class DccExSerialCommandCenter extends DCCExCommandCenter {
                 var data = ""
                 var i = 0
 
-                while (this.buffer.length > 0 && i < 10) {
+                while (this.buffer.length > 0 && i < 5) {
                     data += this.buffer.shift()
                     i++
                 }

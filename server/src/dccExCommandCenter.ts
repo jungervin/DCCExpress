@@ -250,8 +250,8 @@ export class DCCExCommandCenter extends CommandCenter {
             broadcastAll({ type: ApiCommands.outputInfo, data: o } as iData)
         }
         else if (data == "X") {
-            console.log("A művelet nem sikerült!")
-            var d: iData = { type: ApiCommands.UnsuccessfulOperation, data: "DCCEx Unsuccessful Operation!" }
+            console.log("(<X>) UnsuccessfulOperation !")
+            var d: iData = { type: ApiCommands.UnsuccessfulOperation, data: "DCCEx (<X>) Unsuccessful Operation!" }
             broadcastAll(d)
         }
         else {

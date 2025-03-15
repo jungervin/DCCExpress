@@ -1,6 +1,10 @@
 # 📜 Changelog
 
 
+#### 2025-03-14
+* DCCEx Serialport max packet size to 5
+* Serial Port List: node .\bin\serialportList.js
+
 #### 2025-03-08
 * There may be issues with starting the EXE; instead, the server can be launched using the start.bat file in the extracted folder.
 * Serial port usage is mostly working, but further testing is needed.

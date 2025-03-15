@@ -15,7 +15,7 @@ class DccExSerialCommandCenter extends dccExCommandCenter_1.DCCExCommandCenter {
             if (this.buffer.length > 0) {
                 var data = "";
                 var i = 0;
-                while (this.buffer.length > 0 && i < 10) {
+                while (this.buffer.length > 0 && i < 5) {
                     data += this.buffer.shift();
                     i++;
                 }

@@ -224,8 +224,8 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
             (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.outputInfo, data: o });
         }
         else if (data == "X") {
-            console.log("A művelet nem sikerült!");
-            var d = { type: dcc_1.ApiCommands.UnsuccessfulOperation, data: "DCCEx Unsuccessful Operation!" };
+            console.log("(<X>) UnsuccessfulOperation !");
+            var d = { type: dcc_1.ApiCommands.UnsuccessfulOperation, data: "DCCEx (<X>) Unsuccessful Operation!" };
             (0, ws_1.broadcastAll)(d);
         }
         else {

@@ -1,1 +1,1 @@
-{"type":1,"commandCenter":{"ip":"192.168.1.137","port":2560,"init":""}}
+{"type":2,"commandCenter":{"port":"COM9"}}

@@ -2,20 +2,154 @@
 <html lang="en">
 
 <head>
-    <title></title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="css/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="/bootstrap.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCCExpress - Railway Model Control System</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
 </head>
 
 <body>
-    <ul>
-        <li><a href="/locoControl.html">LOCO (MOBILE PHONE)</a></li>
-        <li><a href="/locomotives.html">LOCOMOTIVES</a></li>
-        <li><a href="/editor.html">EDITOR</a></li>
-        <!-- <li><a href="/commandcenters.html">Command Centers</a></li> -->
-    </ul>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">🚂 DCCExpress</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="editor.html">Editor</a></li>
+                    <li class="nav-item"><a class="nav-link" href="locomotives.html">Locomotives</a></li>
+                    <li class="nav-item"><a class="nav-link" href="locoControl.html">Loco(Mobile)</a></li>
+                </ul>
+            </div> -->
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="bg-primary text-white text-center py-5">
+        <div class="container">
+            <h1 class="display-4">DCCExpress</h1>
+            <h2 class="display-4">Railway Model Control System</h2>
+            <p class="lead">Design, manage, and control your railway model layout effortlessly.</p>
+            <a href="editor.html" class="btn btn-light btn-lg mt-3">Get Started with the Editor</a>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section class="container py-5">
+        <div class="row text-center">
+            <!-- Editor -->
+            <div class="col-md-4">
+                <div class="card shadow-sm p-3 d-flex flex-column h-100">
+                    <div class="card-body d-flex flex-column">
+                        <h3 class="text-primary">🛠 Editor</h3>
+                        <p class="flex-grow-1">Create, manage and control railway layouts interactively.</p>
+                        <a href="editor.html" class="btn btn-outline-primary mt-auto">Open Editor</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Locomotives -->
+            <div class="col-md-4">
+                <div class="card shadow-sm p-3 d-flex flex-column h-100">
+                    <div class="card-body d-flex flex-column">
+                        <h3 class="text-success">🚂 Locomotives</h3>
+                        <p class="flex-grow-1">Manage locomotives on your digital railway.</p>
+                        <a href="locomotives.html" class="btn btn-outline-success mt-auto">View Locomotives</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Loco(Mobile) -->
+            <div class="col-md-4">
+                <div class="card shadow-sm p-3 d-flex flex-column h-100">
+                    <div class="card-body d-flex flex-column">
+                        <h3 class="text-danger">📱 Loco(Mobile)</h3>
+                        <p class="flex-grow-1">Control your railway system from your mobile device.</p>
+                        <a href="locoControl.html" class="btn btn-outline-danger mt-auto">Try LocoMobile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Why Choose DCCExpress Section -->
+    <!-- <section class="bg-light py-5">
+        <div class="container text-center">
+            <h2 class="mb-4">🚂 Why Choose DCCExpress?</h2>
+            <p class="lead text-muted">DCCExpress provides a powerful and user-friendly way to design and control model
+                railway layouts.</p>
+
+            <div class="row mt-4">
+                
+                <div class="col-md-4">
+                    <div class="card shadow-sm p-3 h-100">
+                        <div class="card-body">
+                            <h3 class="text-primary">🛠 Interactive Editor</h3>
+                            <p>Our modern track editor allows you to design complex railway layouts with ease.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card shadow-sm p-3 h-100">
+                        <div class="card-body">
+                            <h3 class="text-success">🚆 Real-Time Control</h3>
+                            <p>Manage locomotives, turnouts, and signals in real time with a smooth web interface.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card shadow-sm p-3 d-flex flex-column h-100">
+                        <div class="card-body">
+                            <h3 class="text-danger">📱 Mobile-Friendly</h3>
+                            <p>Access and control your layout from anywhere using your phone or tablet.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- How It Works Section -->
+    <!-- <section class="py-5">
+        <div class="container text-center">
+            <h2 class="mb-4">🛤 How It Works</h2>
+            <p class="lead text-muted">Getting started with DCCExpress is simple and intuitive.</p>
+
+            <div class="row mt-4">
+                
+                <div class="col-md-4">
+                    <div class="card shadow-sm p-4  d-flex flex-column h-100">
+                        <h3 class="text-primary">1️⃣ Design Your Layout</h3>
+                        <p>Use the interactive editor to create your custom railway layout.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card shadow-sm p-4  d-flex flex-column h-100">
+                        <h3 class="text-success">2️⃣ Add Locomotives & Signals</h3>
+                        <p>Define turnouts, signals, and occupancy sensors to bring your model to life.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card shadow-sm p-4  d-flex flex-column h-100">
+                        <h3 class="text-danger">3️⃣ Control & Run</h3>
+                        <p>Manage everything in real-time from your browser or mobile device.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <p>&copy; 2025 DCCExpress - All rights reserved.</p>
+    </footer>
+
 </body>
 
 </html>
