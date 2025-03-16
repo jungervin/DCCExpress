@@ -1,6 +1,10 @@
 # 📜 Changelog
 
 
+#### 2025-03-16
+* dcc-ex sensors
+* wiki Command-Centers: The sensors can also be used as RBus sensors
+
 #### 2025-03-15
 * index.html
 * wiki
