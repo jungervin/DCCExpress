@@ -440,6 +440,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             }
         }
         sensorInfo(sensor) {
+            this.sensors[sensor.address] = sensor.on;
             this.editor.views.getRailElements().forEach(elem => {
                 if (elem.rbusAddress == sensor.address) {
                     elem.occupied = sensor.on;
@@ -448,7 +449,6 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             this.editor.views.getSensorElements().forEach(elem => {
                 if (elem.address == sensor.address) {
                     elem.on = sensor.on == elem.valueOn;
-                    this.sensors[elem.address] = elem.on;
                 }
             });
             this.editor.draw();
