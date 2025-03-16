@@ -5,6 +5,9 @@ if (!Api.tasks.getTask("Task1")) {
     const task = Api.tasks.addTask("Task1")
     task.setLoco(3)
     
+    task.waitForSensor(6, true)
+    task.playSound("mav_szignal.mp3")
+    
     // ==========================================
     //  Szfvár P3 <=== P2 <== Szabadbattyán P3
     // ==========================================

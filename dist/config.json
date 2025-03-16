@@ -13,7 +13,7 @@
                 {
                     "uuid": "766e5ce8-373a-46aa-b4e5-040dce7b7216",
                     "type": "sensor",
-                    "address": 1,
+                    "address": 6,
                     "x": 11,
                     "y": 8,
                     "name": "sensor1441",
@@ -1081,7 +1081,7 @@
                     "x": 12,
                     "y": 10,
                     "angle": 0,
-                    "rbusAddress": 26
+                    "rbusAddress": 6
                 },
                 {
                     "uuid": "3355b24e-2122-4817-aebe-7d6d00f3efd1",
@@ -1126,7 +1126,7 @@
                     "x": 13,
                     "y": 10,
                     "angle": 0,
-                    "rbusAddress": 26
+                    "rbusAddress": 6
                 },
                 {
                     "uuid": "8a1d0862-b2b3-4a4e-afdd-4f5fc31c13c6",

@@ -18,7 +18,8 @@ enum StepTypes {
     restart = "restart",
     setRoute = "setRoute",
     waitForMinutes = "waitForMinutes",
-    startAtMinutes = "startAtMinutes"
+    startAtMinutes = "startAtMinutes",
+    playSound = "playSound"
 }
 interface iStep {
     type: StepTypes,
@@ -65,6 +66,10 @@ interface iWaitForMinute {
 
 interface iStartAtMinutes {
     minutes: number[]
+}
+
+interface iPlaySound {
+    fname: string
 }
 
 export enum TaskStatus {
@@ -273,6 +278,10 @@ export class Task {
     startAtMinutes(minutes: number[]) {
         this.steps.push({ type: StepTypes.startAtMinutes, data: { minutes: minutes } })
     }
+
+    playSound(fname: string) {
+        this.steps.push({type: StepTypes.playSound, data: {fname: fname} as iPlaySound } as iStep)
+    }
     procStep() {
         if (this.step) {
             switch (this.step.type) {
@@ -359,6 +368,10 @@ export class Task {
                         }
                     }
                     break;
+                case StepTypes.playSound:
+                    const fname = (this.step.data as iPlaySound).fname
+                    Api.playSound(fname)
+                    this.index++;
             }
         }
     }

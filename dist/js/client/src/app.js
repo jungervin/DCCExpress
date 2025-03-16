@@ -448,6 +448,7 @@ define(["require", "exports", "./editor/editor", "./editor/turnout", "./editor/v
             this.editor.views.getSensorElements().forEach(elem => {
                 if (elem.address == sensor.address) {
                     elem.on = sensor.on == elem.valueOn;
+                    this.sensors[elem.address] = elem.on;
                 }
             });
             this.editor.draw();

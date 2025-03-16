@@ -17,6 +17,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
         StepTypes["setRoute"] = "setRoute";
         StepTypes["waitForMinutes"] = "waitForMinutes";
         StepTypes["startAtMinutes"] = "startAtMinutes";
+        StepTypes["playSound"] = "playSound";
     })(StepTypes || (StepTypes = {}));
     var TaskStatus;
     (function (TaskStatus) {
@@ -191,6 +192,9 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
         startAtMinutes(minutes) {
             this.steps.push({ type: StepTypes.startAtMinutes, data: { minutes: minutes } });
         }
+        playSound(fname) {
+            this.steps.push({ type: StepTypes.playSound, data: { fname: fname } });
+        }
         procStep() {
             if (this.step) {
                 switch (this.step.type) {
@@ -273,6 +277,10 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                             }
                         }
                         break;
+                    case StepTypes.playSound:
+                        const fname = this.step.data.fname;
+                        api_1.Api.playSound(fname);
+                        this.index++;
                 }
             }
         }

@@ -20,6 +20,8 @@ const rb15 = Api.getSensor(15)
 const rb16 = Api.getSensor(16)
 const rb24 = Api.getSensor(24)
 
+const rb6 = Api.getSensor(6)
+
 
 const block198 = Api.getElement("block198")
 const block199 = Api.getElement("block199")
@@ -65,6 +67,11 @@ if (!App.init) {
 //======================================
 // A train is approaching the station
 //======================================
+
+if(rb6) {
+    Api.playSound("mav_szignal.mp3")
+}
+return;
 
 const re13 = Api.detectRisingEdge(13)
 
