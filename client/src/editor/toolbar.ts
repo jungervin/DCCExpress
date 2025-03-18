@@ -1,14 +1,10 @@
 import { CustomCanvas, drawModes } from "./editor";
-import { TurnoutRightElement } from "./turnout";
 import { RailView } from "./view";
-import * as bootstrap from "bootstrap";
+
 // Toolbar.ts
 export class Toolbar extends HTMLElement {
     canvas: CustomCanvas | undefined;
     currentModal: HTMLElement | undefined;
-    turnoutModal: bootstrap.Modal;
-    turnoutAddress: HTMLInputElement;
-    turnoutInverted: HTMLInputElement;
     btnPointer: any;
     btnTurnout: any;
     btnLine: any;
@@ -223,22 +219,6 @@ export class Toolbar extends HTMLElement {
         this.btnMoveToBottom =this.shadowRoot!.getElementById('btnMoveToBottom') as any
         this.btnMoveToTop =this.shadowRoot!.getElementById('btnMoveToTop') as any
         this.currentButton = this.shadowRoot!.getElementById('btnPointer') as any
-        const modalElement = document.getElementById('turnoutModal') as HTMLElement;
-        this.turnoutModal = new bootstrap.Modal(modalElement);
-        this.turnoutAddress = document.getElementById("turnoutAddress") as HTMLInputElement
-        this.turnoutInverted = document.getElementById("turnoutInverted") as HTMLInputElement
-
-        
-        const hiddenDiv = document.getElementById("hiddenDiv") as HTMLDivElement
-        document.getElementById("menuItem1")!.onclick = (e: MouseEvent) => {
-            hiddenDiv.style.display = 'none'
-            alert("OK")
-        }
-
-        window.addEventListener("click", (e: MouseEvent) => {
-            // if(hiddenDiv.style.display != 'none')
-            // hiddenDiv.style.display = 'none'
-        })
 
         this.debugButtonEnabled = false
         this.consoleButtonEnabled = false

@@ -4,7 +4,6 @@ import { RailView } from "./view";
 import { ApiCommands, iSetBasicAccessory, iData, OutputModes, iSetOutput, CommandCenterTypes } from "../../../common/src/dcc";
 import { drawTextWithRoundedBackground } from "../helpers/graphics";
 import { wsClient } from "../helpers/ws";
-import { Globals } from "../helpers/globals";
 
 export enum SignalStates {
     green,
@@ -24,24 +23,10 @@ class SignalLight {
 export class Signal1Element extends RailView {
     outputMode: OutputModes = OutputModes.accessory;
     
-    // private _outputMode : OutputModes = OutputModes.accessory;
-    // public get outputMode(): OutputModes {
-    //     if(Globals.CommandCenterSetting.type == CommandCenterTypes.Z21) {
-
-    //     }
-    //     return this._outputMode;
-    // }
-    // public set outputMode(v: OutputMode) {
-    //     this._outputMode = OutputModes 
-    // }
-    
-
-
     address: number;
     addressLength: number = 5; // Digitools signal decoder must be 5 address
     trackElem: TrackElement
     max: number = 1
-    //device?: iCommandCenter | null;
 
     isExtendedDecoder: boolean = false;
 

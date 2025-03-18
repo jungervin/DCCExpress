@@ -68,7 +68,6 @@ class WebSocketClient {
     }
 
     onMessage(message: iData): void {
-        // Itt dolgozhatod fel az üzeneteket
         console.log("Processing message:", message);
     }
 }

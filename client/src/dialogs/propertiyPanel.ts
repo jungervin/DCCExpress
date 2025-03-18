@@ -115,7 +115,9 @@ export class PropertyPanel extends HTMLElement {
         visibility: hidden;
     }
 
-    @import url("/bootstrap.css");
+        @import url("css/bootstrap.min.css");
+        @import url("css/properties.css");
+
       :host {
             color-scheme: dark; /* Aktiválja a sötét témát */
         }

@@ -11,8 +11,8 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
             this.shadow = this.attachShadow({ mode: 'open' });
             this.shadow.innerHTML = `
         <style>
-            @import url("/bootstrap.css");
-            @import url("/css/properties.css");
+                @import url("css/bootstrap.min.css");
+                @import url("css/properties.css");
             #canvas1, #canvas2 {
                 cursor: pointer;
             }
@@ -156,8 +156,8 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
             this.shadow = this.attachShadow({ mode: 'open' });
             this.shadow.innerHTML = `
         <style>
-            @import url("/bootstrap.css");
-            @import url("/css/properties.css");
+                @import url("css/bootstrap.min.css");
+                @import url("css/properties.css");
             #canvas1, #canvas2 {
                 cursor: pointer;
             }
@@ -307,8 +307,8 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
             this.shadow = this.attachShadow({ mode: 'open' });
             this.shadow.innerHTML = `
         <style>
-            @import url("/bootstrap.css");
-            @import url("/css/properties.css");
+                @import url("css/bootstrap.min.css");
+                @import url("css/properties.css");
             #canvas1, #canvas2 {
                 cursor: pointer;
             }
@@ -592,8 +592,8 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
             this.shadow = this.attachShadow({ mode: 'open' });
             this.shadow.innerHTML = `
         <style>
-            @import url("/bootstrap.css");
-            @import url("/css/properties.css");
+                @import url("css/bootstrap.min.css");
+                @import url("css/properties.css");
             #canvas1, #canvas2 {
                 cursor: pointer;
             }

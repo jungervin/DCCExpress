@@ -1,8 +1,7 @@
 import { Globals } from "../helpers/globals";
 import { DCCExDirections, iLocomotive } from "../../../common/src/dcc";
-import { drawTextWithRoundedBackground } from "../helpers/graphics";
-import { degreesToRadians, getDirection, getDirectionXy, Point } from "../helpers/math";
-import { RailView, View } from "./view";
+import { degreesToRadians, getDirection, Point } from "../helpers/math";
+import { View } from "./view";
 import { Api } from "../helpers/api";
 
 export class BlockElement extends View {

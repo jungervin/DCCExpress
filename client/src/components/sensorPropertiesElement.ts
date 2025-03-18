@@ -17,8 +17,8 @@ export class SensorPropertiesElement extends HTMLElement {
         this.shadow = this.attachShadow({ mode: 'open' });
         this.shadow.innerHTML = `
             <style>
-                @import url("/bootstrap.css");
-                @import url("/css/properties.css");
+                @import url("css/bootstrap.min.css");
+                @import url("css/properties.css");
 
                                
             </style>

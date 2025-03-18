@@ -52,21 +52,21 @@ app.get("/", (req: any, res: { sendFile: (arg0: string) => void; }) => {
   res.sendFile(path.resolve(distFolder, "index.html"));
 });
 
-app.get("/require.js", (req: any, res: { sendFile: (arg0: string) => void; }) => {
-  var nm = path.resolve(modulesFolder, "requirejs/require.js")
-  log("Get Requirejs:", nm)
-  res.sendFile(nm);
-});
+// app.get("/require.js", (req: any, res: { sendFile: (arg0: string) => void; }) => {
+//   var nm = path.resolve(modulesFolder, "requirejs/require.js")
+//   log("Get Requirejs:", nm)
+//   res.sendFile(nm);
+// });
 
 // Bootstrap CSS kiszolgálása
-app.get("/bootstrap.css", (req, res) => {
-  res.sendFile(path.resolve(modulesFolder, "bootstrap/dist/css/bootstrap.min.css"));
-});
+// app.get("/bootstrap.css", (req, res) => {
+//   res.sendFile(path.resolve(modulesFolder, "bootstrap/dist/css/bootstrap.min.css"));
+// });
 
-// Bootstrap JS kiszolgálása
-app.get("/bootstrap.js", (req, res) => {
-  res.sendFile(path.resolve(modulesFolder, "bootstrap/dist/js/bootstrap.bundle.min.js"));
-});
+// // Bootstrap JS kiszolgálása
+// app.get("/bootstrap.js", (req, res) => {
+//   res.sendFile(path.resolve(modulesFolder, "bootstrap/dist/js/bootstrap.bundle.min.js"));
+// });
 
 app.post("/save", async (req: any, res: any) => {
   try {

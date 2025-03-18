@@ -8,18 +8,14 @@ define(["require", "exports"], function (require, exports) {
     exports.drawPolarLine = drawPolarLine;
     const rad = Math.PI / 180.0;
     function drawTextWithBackground(ctx, x, y, text, textColor = 'black', rectColor = 'lightgray') {
-        // Szöveg méretezése
         const textMetrics = ctx.measureText(text);
-        const padding = 2; // Párnázás a szöveg körül
+        const padding = 2;
         const textWidth = textMetrics.width;
         const textHeight = textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent;
-        // Téglalap méretének kiszámítása
         const rectWidth = textWidth + 2 * padding;
         const rectHeight = textHeight + 2 * padding;
-        // Téglalap rajzolása
         ctx.fillStyle = rectColor;
         ctx.fillRect(x, y, rectWidth, rectHeight);
-        // Szöveg rajzolása középre
         ctx.fillStyle = textColor;
         const textX = x + padding;
         const textY = y + padding + textMetrics.actualBoundingBoxAscent;
@@ -46,7 +42,6 @@ define(["require", "exports"], function (require, exports) {
         ctx.quadraticCurveTo(x, y, x + borderRadius, y);
         ctx.closePath();
         ctx.fill();
-        // Szöveg rajzolása középre
         ctx.fillStyle = textColor;
         ctx.textAlign = "left";
         const textX = x + padding;
@@ -67,15 +62,13 @@ define(["require", "exports"], function (require, exports) {
         return { x: cx + r * Math.cos(theta * rad), y: cy + r * Math.sin(theta * rad) };
     }
     function drawPolarLine(ctx, centerX, centerY, r, theta, color = "black", lineWidth = 1) {
-        // Polar koordináták átalakítása derékszögű koordinátákká
         const x1 = centerX; //+ r1 * Math.cos(theta1);
         const y1 = centerY; //+ r1 * Math.sin(theta1);
         const x2 = centerX + r * Math.cos(theta * rad);
         const y2 = centerY + r * Math.sin(theta * rad);
-        // Rajzolás
         ctx.beginPath();
-        ctx.moveTo(x1, y1); // Kiindulási pont
-        ctx.lineTo(x2, y2); // Végpont
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
         ctx.strokeStyle = color;
         ctx.lineWidth = lineWidth;
         ctx.stroke();

@@ -1,4 +1,4 @@
-import { CommandCenterTypes, DCCExDirections, defaultCommandCenterSettings, defaultSettings, FileNames, iCommandCenter, iPowerInfo, iSettings, iZ21CommandCenter } from "../../../common/src/dcc";
+import { CommandCenterTypes, defaultCommandCenterSettings, defaultSettings, FileNames, iCommandCenter, iPowerInfo, iZ21CommandCenter } from "../../../common/src/dcc";
 
 declare global {
     interface Window {

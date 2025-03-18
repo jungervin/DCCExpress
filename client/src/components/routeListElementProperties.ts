@@ -20,8 +20,8 @@ export class RouteListElementProperties extends HTMLElement {
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.innerHTML = `
         <style>
-            @import url("/bootstrap.css");
-            @import url("/css/properties.css");
+                @import url("css/bootstrap.min.css");
+                @import url("css/properties.css");
             label {
                 display: inline-block;
                 white-space: nowrap;

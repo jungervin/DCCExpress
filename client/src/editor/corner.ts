@@ -1,6 +1,6 @@
 import { Globals } from "../helpers/globals";
-import { degreesToRadians, getDirectionXy, Point } from "../helpers/math";
-import { RailView, RailStates } from "./view";
+import { getDirectionXy, Point } from "../helpers/math";
+import { RailView } from "./view";
 import { Colors } from "./view";
 
 export class TrackCornerElement extends RailView {

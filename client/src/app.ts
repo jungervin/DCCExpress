@@ -22,6 +22,7 @@ console.log(ApiCommands)
 console.log(Dialog)
 console.log(ToastManager)
 console.log(LocoControlPanel)
+console.log(Toolbar)
 
 export class App {
     editor: CustomCanvas;

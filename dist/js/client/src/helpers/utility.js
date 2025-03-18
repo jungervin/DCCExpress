@@ -33,56 +33,30 @@ define(["require", "exports"], function (require, exports) {
         }
         return parseInt(v, base);
     }
-    /**
-     * Egy elem helyét feljebb mozgatja egy hellyel.
-     * @param {any[]} arr - A módosítandó tömb.
-     * @param {number} index - A mozgatandó elem indexe.
-     */
     function moveUp(arr, index) {
         if (index <= 0)
-            return; // már a legelső elemnél vagyunk
-        // A felcserélés:
+            return;
         const temp = arr[index - 1];
         arr[index - 1] = arr[index];
         arr[index] = temp;
     }
-    /**
-     * Egy elem helyét lejjebb mozgatja egy hellyel.
-     * @param {any[]} arr - A módosítandó tömb.
-     * @param {number} index - A mozgatandó elem indexe.
-     */
     function moveDown(arr, index) {
         if (index >= arr.length - 1)
-            return; // már az utolsó elemnél vagyunk
-        // A felcserélés:
+            return;
         const temp = arr[index + 1];
         arr[index + 1] = arr[index];
         arr[index] = temp;
     }
-    /**
-    * Egy elem mozgatása a tömb elejére.
-    * @param {any[]} arr - A módosítandó tömb.
-    * @param {number} index - A mozgatandó elem indexe.
-    */
     function moveToStart(arr, index) {
         if (index <= 0)
-            return; // Ha már elején van, nincs dolgunk
-        // Vágjuk ki az elemet a régi helyéről:
+            return;
         const [item] = arr.splice(index, 1);
-        // Illesszük be a tömb elejére:
         arr.unshift(item);
     }
-    /**
-     * Egy elem mozgatása a tömb végére.
-     * @param {any[]} arr - A módosítandó tömb.
-     * @param {number} index - A mozgatandó elem indexe.
-     */
     function moveToEnd(arr, index) {
         if (index >= arr.length - 1)
-            return; // Ha már a végén van, nincs dolgunk
-        // Vágjuk ki az elemet a régi helyéről:
+            return;
         const [item] = arr.splice(index, 1);
-        // Illesszük be a tömb végére:
         arr.push(item);
     }
     function isTouchDevice() {

@@ -1,31 +1,7 @@
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-define(["require", "exports", "bootstrap"], function (require, exports, bootstrap) {
+define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Toolbar = void 0;
-    bootstrap = __importStar(bootstrap);
     // Toolbar.ts
     class Toolbar extends HTMLElement {
         constructor() {
@@ -200,19 +176,6 @@ define(["require", "exports", "bootstrap"], function (require, exports, bootstra
             this.btnMoveToBottom = this.shadowRoot.getElementById('btnMoveToBottom');
             this.btnMoveToTop = this.shadowRoot.getElementById('btnMoveToTop');
             this.currentButton = this.shadowRoot.getElementById('btnPointer');
-            const modalElement = document.getElementById('turnoutModal');
-            this.turnoutModal = new bootstrap.Modal(modalElement);
-            this.turnoutAddress = document.getElementById("turnoutAddress");
-            this.turnoutInverted = document.getElementById("turnoutInverted");
-            const hiddenDiv = document.getElementById("hiddenDiv");
-            document.getElementById("menuItem1").onclick = (e) => {
-                hiddenDiv.style.display = 'none';
-                alert("OK");
-            };
-            window.addEventListener("click", (e) => {
-                // if(hiddenDiv.style.display != 'none')
-                // hiddenDiv.style.display = 'none'
-            });
             this.debugButtonEnabled = false;
             this.consoleButtonEnabled = false;
             this.programmerButtonEnabled = true;

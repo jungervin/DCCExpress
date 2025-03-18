@@ -4,7 +4,6 @@ export function getUUID() {
     );
 }
 
-
 export function byteToBinary(byte: number, len: number = 8): string {
 
     byte = byte & 0xff
@@ -30,55 +29,32 @@ export function toDecimal(v: string) {
     return parseInt(v, base)
 }
 
-/**
- * Egy elem helyét feljebb mozgatja egy hellyel.
- * @param {any[]} arr - A módosítandó tömb.
- * @param {number} index - A mozgatandó elem indexe.
- */
 export function moveUp(arr: any[], index: number) {
-    if (index <= 0) return; // már a legelső elemnél vagyunk
-    // A felcserélés:
+    if (index <= 0) return; 
+
     const temp = arr[index - 1];
     arr[index - 1] = arr[index];
     arr[index] = temp;
 }
 
-/**
- * Egy elem helyét lejjebb mozgatja egy hellyel.
- * @param {any[]} arr - A módosítandó tömb.
- * @param {number} index - A mozgatandó elem indexe.
- */
 export function moveDown(arr: any[], index: number) {
-    if (index >= arr.length - 1) return; // már az utolsó elemnél vagyunk
-    // A felcserélés:
+    if (index >= arr.length - 1) return; 
+    
     const temp = arr[index + 1];
     arr[index + 1] = arr[index];
     arr[index] = temp;
 }
 
-/**
-* Egy elem mozgatása a tömb elejére.
-* @param {any[]} arr - A módosítandó tömb.
-* @param {number} index - A mozgatandó elem indexe.
-*/
 export function moveToStart(arr: any[], index: number) {
-    if (index <= 0) return; // Ha már elején van, nincs dolgunk
-    // Vágjuk ki az elemet a régi helyéről:
+    if (index <= 0) return; 
     const [item] = arr.splice(index, 1);
-    // Illesszük be a tömb elejére:
+    
     arr.unshift(item);
 }
 
-/**
- * Egy elem mozgatása a tömb végére.
- * @param {any[]} arr - A módosítandó tömb.
- * @param {number} index - A mozgatandó elem indexe.
- */
 export function moveToEnd(arr: any[], index: number) {
-    if (index >= arr.length - 1) return; // Ha már a végén van, nincs dolgunk
-    // Vágjuk ki az elemet a régi helyéről:
+    if (index >= arr.length - 1) return;
     const [item] = arr.splice(index, 1);
-    // Illesszük be a tömb végére:
     arr.push(item);
 }
 

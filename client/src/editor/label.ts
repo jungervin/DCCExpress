@@ -1,6 +1,6 @@
 import { drawTextWithRoundedBackground } from "../helpers/graphics";
 import { Globals } from "../helpers/globals";
-import { RailView, View } from "./view";
+import { View } from "./view";
 
 export class Label2Element extends View {
     text: string = 'LABEL';

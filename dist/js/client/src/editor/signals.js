@@ -22,7 +22,6 @@ define(["require", "exports", "../helpers/math", "./track", "./view", "../../../
             this.outputMode = dcc_1.OutputModes.accessory;
             this.addressLength = 5; // Digitools signal decoder must be 5 address
             this.max = 1;
-            //device?: iCommandCenter | null;
             this.isExtendedDecoder = false;
             this.lights = [
                 { value: 0, color: "lime" },

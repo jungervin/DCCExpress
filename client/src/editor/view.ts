@@ -1,4 +1,4 @@
-import { CommandCenterTypes, DCCExDirections, getUUID } from "../../../common/src/dcc";
+import { getUUID } from "../../../common/src/dcc";
 import { degreesToRadians, getDirectionXy, Point } from "../helpers/math";
 import { Globals } from "../helpers/globals";
 

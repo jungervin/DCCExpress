@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="/bootstrap.css">
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
     </script>
 
 
-    <script data-main="js/client/src/app" src="/require.js"></script>
-    <!-- <script src="https://cdn.socket.io/4.8.1/socket.io.min.js" integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+" crossorigin="anonymous"></script> -->
+    <script data-main="js/client/src/app" src="js/require.js"></script>
+
     <style>
         .col-2 {
             margin: 0 10px 10px 0;
@@ -46,31 +46,9 @@
 
         </div>
         <property-panel id="EditorPropertyPanel" class="scrollable"></property-panel>
-        <!-- Modal -->
-
-        <!-- <div id="sidePanelRight">
-                 <div style="width: 100%;background-color: #333;float: left;">
-                    <svg id="btnSidePanelRightClose" xmlns=" http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                        fill="white">
-                        <path
-                            d="M19,3H16.3H7.7H5A2,2 0 0,0 3,5V7.7V16.4V19A2,2 0 0,0 5,21H7.7H16.4H19A2,2 0 0,0 21,19V16.3V7.7V5A2,2 0 0,0 19,3M15.6,17L12,13.4L8.4,17L7,15.6L10.6,12L7,8.4L8.4,7L12,10.6L15.6,7L17,8.4L13.4,12L17,15.6L15.6,17Z" />
-                    </svg>
-                </div>
-                <div id="sidePanelRightBody" ></div> -->
     </div>
-    <!-- </div> -->
-
-
-    <!-- <div id="pages">
-        <button class="btn">PAGE1</button>
-        <button class="btn">PAGE2</button>
-    </div> -->
 
     <div id="statusbar" style="height: 30px; background-color:#f0f0f0;;color: #333;border-top: solid 1px black">Status:
-    </div>
-
-
-    <!-- Button trigger modal -->
     </div>
 
     <div id="dialog-overlay" class="overlay hidden">
@@ -84,35 +62,6 @@
     </div>
 
     <div id="toastcontainer" class="toastcontainer">
-    </div>
-
-
-    <!-- turnoutModal -->
-    <div class="modal fade" id="turnoutModal" tabindex="-1" aria-labelledby="turnoutModalLabel" aria-hidden="false">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="turnoutModalLabel">Turnout</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="address" class="form-label">Address</label>
-                        <input type="number" class="form-control" id="turnoutAddress" placeholder="Enter address" />
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="turnoutInverted">
-                        <label class="form-check-label" for="inverted">
-                            Inverted
-                        </label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button id="btnOkTurnout" type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- // Elements -->
@@ -159,7 +108,7 @@
                         <div class="col-2 text-center">
                             <turnout-y-canvas-element id="tbTurnoutY"></turnout-y-canvas-element>
                             <div>Turnout Y</div>
-                        </div>                        
+                        </div>
                         <div class="col-2 text-center">
                             <turnout-double-canvas-element id="tbTurnoutDouble"></turnout-double-canvas-element>
                             <div>Turnout Double</div>
@@ -244,55 +193,22 @@
         </div>
     </div>
 
-    <!-- signal5Modal -->
-    <div class="modal fade" id="signal5Modal" tabindex="-1" aria-labelledby="signal5ModalLabel" aria-hidden="false">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="signal5ModalLabel">Signal5</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="signal5Address" class="form-label">Address</label>
-                        <input id="signal5Address" type="number" class="form-control" placeholder="Enter address" />
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button id="btnSignal5Ok" type="button" class="btn btn-primary">OK</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+<!--  
     <div class="hiddenDiv" id="hiddenDiv">
         <div id="menuItem1" class="menuItem">Elem 1</div>
         <div id="menuItem2" class="menuItem">Elem 2</div>
         <div id="menuItem3" class="menuItem">Elem 3</div>
-    </div>
+    </div> -->
 
     <script>
-
-        
         require.config({
             paths: {
-                "socket.io-client": "/socketio",
-                'bootstrap': '/bootstrap',
-                // 'loadsh': '/lodash'
+                'bootstrap': '/js/bootstrap/bootstrap.bundle.min',
             }
         });
-
-        // require(['./app', './editor/editor', './editor/toolbar'], (appModule, editor, toolbar, sio) => {
-        //     const app = new appModule.App();
-        // });
-        require(['./app', './editor/editor', './editor/toolbar', './editor/speedometer'], (appModule, e1, e2, sm) => {
-
-            
+        require(['./app'], (appModule) => {
             const app = new appModule.App();
-        
         });
-    
     </script>
 
 </body>

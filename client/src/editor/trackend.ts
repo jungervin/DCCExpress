@@ -1,7 +1,6 @@
 import { Globals } from "../helpers/globals";
-import { drawPolarLine } from "../helpers/graphics";
 import { degreesToRadians } from "../helpers/math";
-import {  RailView, RailStates } from "./view";
+import {  RailView } from "./view";
 import { Colors } from "./view";
 
 export class TrackEndElement extends RailView {

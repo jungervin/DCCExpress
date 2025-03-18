@@ -1,4 +1,3 @@
-import { toastManager } from "../controls/toastManager";
 import { Api } from "../helpers/api";
 
 export class Scheduler {

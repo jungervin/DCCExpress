@@ -56,7 +56,6 @@ define(["require", "exports", "../../../common/src/dcc"], function (require, exp
             }
         }
         onMessage(message) {
-            // Itt dolgozhatod fel az üzeneteket
             console.log("Processing message:", message);
         }
     }

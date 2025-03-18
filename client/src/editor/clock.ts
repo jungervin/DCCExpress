@@ -13,32 +13,10 @@ export class FastClock {
     constructor(ctx: CanvasRenderingContext2D, scaleFactor: number = 1) {
         this.ctx = ctx
 
-        // this.bufferCanvas = document.createElement("canvas");
-        // this.bufferCanvas.width = this.ctx.canvas.width;
-        // this.bufferCanvas.height = this.ctx.canvas.height;
-        // this.bufferCtx = this.bufferCanvas.getContext("2d")!;
-
         this.scaleFactor = scaleFactor;
-        //this.currentTime = new Date();
-        //this.start();
     }
 
-    // private start() {
-    //     if (this.interval) {
-    //         clearInterval(this.interval);
-    //     }
-    //     this.interval = setInterval(() =>
-    //         this.update(), 1000 / this.scaleFactor
-    //     );
-    // }
-
     public update() {
-        //this.currentTime.setSeconds(this.currentTime.getSeconds() + 1);
-        // const now = performance.now();
-        // const elapsedRealTime = now - this.lastUpdateTime;
-        // this.drawTime = new Date(this.currentTime.getTime() + elapsedRealTime * this.scaleFactor);
-        //this.lastUpdateTime = now;
-        
         requestAnimationFrame(() => {
             this.draw();
         })
