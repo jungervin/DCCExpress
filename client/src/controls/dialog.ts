@@ -116,9 +116,13 @@ export class Dialog {
     public dialogResult: DialogResult = DialogResult.cancel
     public dialogResultText = "";
     onclose?: (sender: Dialog) => void;
+    width: number;
+    height: number;
 
     constructor(width: number, height: number, title: string) {
 
+        this.width = width
+        this.height = height
         this.overlayElement = document.createElement("div");
         this.overlayElement.style.position = "fixed";
         this.overlayElement.style.top = "0";
@@ -770,7 +774,7 @@ export class Panel extends UIComponent {
     constructor() {
         super()
         this.panelElement = document.createElement("div");
-        this.panelElement.style.display = "block";
+        this.panelElement.style.display = "flex";
         this.panelElement.style.height = "100%";
 
     }
@@ -796,7 +800,7 @@ export class TabControl extends UIComponent{
         this.container = document.createElement("div");
         this.container.style.display = "flex";
         this.container.style.flexDirection = "column";
-        this.container.style.height = "100%";
+        //this.container.style.height = "100%";
 
         this.tabHeader = document.createElement("div");
         this.tabHeader.style.display = "flex";

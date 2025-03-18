@@ -99,6 +99,8 @@ define(["require", "exports"], function (require, exports) {
         constructor(width, height, title) {
             this.dialogResult = DialogResult.cancel;
             this.dialogResultText = "";
+            this.width = width;
+            this.height = height;
             this.overlayElement = document.createElement("div");
             this.overlayElement.style.position = "fixed";
             this.overlayElement.style.top = "0";
@@ -622,7 +624,7 @@ define(["require", "exports"], function (require, exports) {
         constructor() {
             super();
             this.panelElement = document.createElement("div");
-            this.panelElement.style.display = "block";
+            this.panelElement.style.display = "flex";
             this.panelElement.style.height = "100%";
         }
         getElement() {
@@ -640,7 +642,7 @@ define(["require", "exports"], function (require, exports) {
             this.container = document.createElement("div");
             this.container.style.display = "flex";
             this.container.style.flexDirection = "column";
-            this.container.style.height = "100%";
+            //this.container.style.height = "100%";
             this.tabHeader = document.createElement("div");
             this.tabHeader.style.display = "flex";
             this.tabHeader.style.borderBottom = "1px solid #ccc";
