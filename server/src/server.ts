@@ -52,26 +52,9 @@ app.get("/", (req: any, res: { sendFile: (arg0: string) => void; }) => {
   res.sendFile(path.resolve(distFolder, "index.html"));
 });
 
-// app.get("/require.js", (req: any, res: { sendFile: (arg0: string) => void; }) => {
-//   var nm = path.resolve(modulesFolder, "requirejs/require.js")
-//   log("Get Requirejs:", nm)
-//   res.sendFile(nm);
-// });
-
-// Bootstrap CSS kiszolgálása
-// app.get("/bootstrap.css", (req, res) => {
-//   res.sendFile(path.resolve(modulesFolder, "bootstrap/dist/css/bootstrap.min.css"));
-// });
-
-// // Bootstrap JS kiszolgálása
-// app.get("/bootstrap.js", (req, res) => {
-//   res.sendFile(path.resolve(modulesFolder, "bootstrap/dist/js/bootstrap.bundle.min.js"));
-// });
-
 app.post("/save", async (req: any, res: any) => {
   try {
     const { fileName, data } = req.body;
-
     if (!fileName || !data) {
       log('app.post /save: ', 400);
       res.status(400).json({ success: false, message: "Missing fileName or data" });
@@ -91,13 +74,8 @@ app.post("/save", async (req: any, res: any) => {
   }
 });
 
-
-
-
-// Multer konfiguráció
 const storage: StorageEngine = multer.diskStorage({
   destination: (req: Request, file: Express.Multer.File, cb: (error: Error | null, destination: string) => void) => {
-
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir);
     }
@@ -108,8 +86,4 @@ const storage: StorageEngine = multer.diskStorage({
   },
 });
 export const upload = multer({ storage });
-
-
-// Szerver indítása
-
 

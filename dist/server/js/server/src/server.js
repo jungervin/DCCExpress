@@ -77,19 +77,6 @@ exports.app.use(express_1.default.static(exports.distFolder));
 exports.app.get("/", (req, res) => {
     res.sendFile(path_1.default.resolve(exports.distFolder, "index.html"));
 });
-// app.get("/require.js", (req: any, res: { sendFile: (arg0: string) => void; }) => {
-//   var nm = path.resolve(modulesFolder, "requirejs/require.js")
-//   log("Get Requirejs:", nm)
-//   res.sendFile(nm);
-// });
-// Bootstrap CSS kiszolgálása
-// app.get("/bootstrap.css", (req, res) => {
-//   res.sendFile(path.resolve(modulesFolder, "bootstrap/dist/css/bootstrap.min.css"));
-// });
-// // Bootstrap JS kiszolgálása
-// app.get("/bootstrap.js", (req, res) => {
-//   res.sendFile(path.resolve(modulesFolder, "bootstrap/dist/js/bootstrap.bundle.min.js"));
-// });
 exports.app.post("/save", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { fileName, data } = req.body;
@@ -109,7 +96,6 @@ exports.app.post("/save", (req, res) => __awaiter(void 0, void 0, void 0, functi
         (0, utility_1.logError)('app.post /save: 500', error);
     }
 }));
-// Multer konfiguráció
 const storage = multer_1.default.diskStorage({
     destination: (req, file, cb) => {
         if (!fs.existsSync(exports.uploadDir)) {
@@ -122,5 +108,4 @@ const storage = multer_1.default.diskStorage({
     },
 });
 exports.upload = (0, multer_1.default)({ storage });
-// Szerver indítása
 //# sourceMappingURL=server.js.map

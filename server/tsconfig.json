@@ -14,12 +14,6 @@
         "@common/*": [
             "../../common/src/*"
         ],
-        "@client/*": [
-            "client/src/*"
-        ],
-        "@server/*": [
-            "server/src/*"
-        ]
     },
     "include": [
         "src/**/*"
