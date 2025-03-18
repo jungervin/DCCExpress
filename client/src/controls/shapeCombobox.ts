@@ -1,9 +1,7 @@
-import { INSPECT_MAX_BYTES } from "buffer";
+
 import { CanvasShapeElement } from "../components/canvasElement";
 import { RailView, View } from "../editor/view";
 import { Component } from "./dialog";
-import { drop } from "lodash";
-
 
 export class ShapeCombobox implements Component {
     private container: HTMLDivElement;

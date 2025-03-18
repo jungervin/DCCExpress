@@ -1,5 +1,3 @@
-import { Socket } from "socket.io-client";
-import { TurnoutRightElement } from "./turnout";
 import { CommandCenterTypes, DCCExDirections, getUUID } from "../../../common/src/dcc";
 import { degreesToRadians, getDirectionXy, Point } from "../helpers/math";
 import { Globals } from "../helpers/globals";

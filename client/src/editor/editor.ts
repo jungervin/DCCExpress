@@ -1,4 +1,3 @@
-import { protocol, Socket } from "socket.io-client";
 import { TrackElement } from "./track";
 import { RectangleElement } from "./rectangle";
 import { Toolbar } from "./toolbar";

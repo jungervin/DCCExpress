@@ -1,4 +1,3 @@
-import { add } from "lodash";
 import { Globals } from "../helpers/globals";
 import { AccessoryAddressElement } from "./button";
 import { View } from "./view";

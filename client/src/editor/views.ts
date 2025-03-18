@@ -1,4 +1,3 @@
-import { Socket } from "socket.io-client"
 import { TurnoutElement, TurnoutLeftElement, TurnoutRightElement } from "./turnout"
 import { RailStates, RailView, View } from "./view"
 import { RouteSwitchElement } from "./route"

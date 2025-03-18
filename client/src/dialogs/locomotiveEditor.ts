@@ -7,7 +7,6 @@
 import { getUUID } from "../helpers/utility";
 import { ApiCommands, iLocoFunction, iLocomotive, iSetLocoFunction } from "../../../common/src/dcc";
 import { wsClient } from "../helpers/ws";
-import { remove } from "lodash";
 
 
 class LocomotiveManager {
