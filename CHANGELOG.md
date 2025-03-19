@@ -2,6 +2,7 @@
 
 
 #### 2025-03-19
+* blocks
 * WebSocket sensor handling, e.g., Node-RED
 ```js
 // NodeRed: toggle sensor 6
