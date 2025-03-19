@@ -10,6 +10,7 @@ export class SchedulerButtonPropertiesElement extends HTMLElement {
     btnStart: HTMLButtonElement;
     btnStop: HTMLButtonElement;
     btnResume: HTMLButtonElement;
+    btnFinish: HTMLButtonElement;
     // btnAbort: HTMLButtonElement;
 
     constructor() {
@@ -38,14 +39,14 @@ export class SchedulerButtonPropertiesElement extends HTMLElement {
                  
                     <div style="margin-top: 8px">Steps</div>
                     
-                    <div style="height: 460px; overflow: auto" id="steps">
+                    <div style="height: 460px; overflow: auto; border-radius: 4px;" id="steps">
                     </div>
                     <div id="buttons" style="margin: 10px 0">
                     <div id="status" style="padding: 4px; border: solid 1px gray;border-radius: 4px; margin: 4px 0" >Status: </div>
                     <button id="btnStart" class="btn btn-secondary">START</button>
                     <button id="btnStop" class="btn btn-secondary">STOP</button>
                     <button id="btnResume" class="btn btn-secondary">RESUME</button>
-                    <!--<button id="btnAbort" class="btn btn-secondary">ABORT</button>-->
+                    <button id="btnFinish" class="btn btn-secondary">FINISH</button>
                     </div>
                 </div>
             </div>
@@ -67,15 +68,15 @@ export class SchedulerButtonPropertiesElement extends HTMLElement {
         this.btnResume.onclick = (e) => {
             Api.tasks.resumeTask(this.button!.taskName)
         }
-        // this.btnAbort = this.shadow.getElementById("btnAbort") as HTMLButtonElement
-        // this.btnAbort.onclick = (e) => {
-        //     Api.tasks.abortTask(this.button!.taskName)
-        // }
+        this.btnFinish = this.shadow.getElementById("btnFinish") as HTMLButtonElement
+        this.btnFinish.onclick = (e) => {
+            Api.tasks.finishTask(this.button!.taskName)
+        }
 
         window.addEventListener('taskChangedEvent', (e: Event) => {
-            var task = (e as CustomEvent).detail
+            var task = (e as CustomEvent).detail as Task
 
-            statusElement.innerHTML = task.status
+            statusElement.innerHTML = task.status + (task.stopOnComplete ? " 🏁FINISH" : "")
 
             this.renderTask()
             if (task.status == TaskStatus.running) {

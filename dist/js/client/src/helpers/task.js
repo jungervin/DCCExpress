@@ -7,7 +7,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
     (function (StepTypes) {
         StepTypes["setLoco"] = "setLoco";
         StepTypes["setTurnout"] = "setTurnout";
-        StepTypes["forward"] = "foward";
+        StepTypes["forward"] = "forward";
         StepTypes["reverse"] = "reverse";
         StepTypes["stopLoco"] = "stop";
         StepTypes["delay"] = "delay";
@@ -84,11 +84,11 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                 task.resumeTask();
             }
         }
-        abortTask(name) {
+        finishTask(name) {
             console.log(`abortTask: ${name}`);
             const task = this.getTask(name);
             if (task) {
-                task.taskAbort();
+                task.taskFinish();
             }
         }
         getTask(name) {
@@ -160,8 +160,9 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
             this.num = 0;
             this.delayEnd = 0;
             this.autoStart = false;
-            this.stopOnComplete = true;
+            //    stopOnComplete: boolean = true;
             this.prevSpeed = 0;
+            this._stopOnComplete = false;
             this._status = TaskStatus.stopped;
             this._index = 0;
             this.name = name;
@@ -239,19 +240,16 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                     case StepTypes.forward:
                         const speed = this.step.data.speed;
                         this.prevSpeed = speed;
-                        //console.log(`TASK: ${this.name} foward: ${speed} started!`)
                         api_1.Api.setLoco(this.locoAddress, speed, dcc_1.Z21Directions.forward);
                         this.index++;
                         break;
                     case StepTypes.reverse:
                         const rspeed = this.step.data.speed;
                         this.prevSpeed = rspeed;
-                        //console.log(`TASK: ${this.name} reverse: ${rspeed} started!`)
                         api_1.Api.setLoco(this.locoAddress, rspeed, dcc_1.Z21Directions.reverse);
                         this.index++;
                         break;
                     case StepTypes.stopLoco:
-                        //console.log(`TASK: ${this.name} stop started!`)
                         this.prevSpeed = 0;
                         api_1.Api.setLocoSpeed(this.locoAddress, 0);
                         this.index++;
@@ -287,6 +285,9 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                         if (!this.stopOnComplete) {
                             this.index = 0;
                             this.prevIndex = -1;
+                        }
+                        else {
+                            this.status = TaskStatus.stopped;
                         }
                         break;
                     case StepTypes.waitForMinutes:
@@ -326,7 +327,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                 case StepTypes.setTurnout:
                     return (`setTurnout: ${step.data.address} closed: ${step.data.closed}`);
                 case StepTypes.forward:
-                    return (`foward: ${step.data.speed}`);
+                    return (`forward: ${step.data.speed}`);
                 case StepTypes.reverse:
                     return (`reverse: ${step.data.speed}`);
                 case StepTypes.stopLoco:
@@ -368,7 +369,8 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                 }
                 else {
                     console.log(`TASK: ${this.name} finished! Exit!`);
-                    this.status = TaskStatus.completted;
+                    //this.status = TaskStatus.completted
+                    this.status = TaskStatus.stopped;
                 }
             }
         }
@@ -382,18 +384,11 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
             this.prevSpeed = 0;
             this.delayEnd = 0;
             this.status = TaskStatus.running;
-            this.stopOnComplete = false;
+            //this.stopOnComplete = false;
             toastManager_1.toastManager.showToast(Tasks.icon + ` TASK: ${this.name} started!`, "success");
         }
-        taskAbort() {
-            console.log(`TASK: ${this.name} aborted!`);
-            api_1.Api.setLocoSpeed(this.locoAddress, 0);
-            this.index = 0;
-            this.prevIndex = -1;
-            this.prevSpeed = 0;
-            this.status = TaskStatus.stopped;
-            this.stopOnComplete = false;
-            toastManager_1.toastManager.showToast(Tasks.icon + ` TASK: ${this.name} aborted!`, "success");
+        taskFinish() {
+            this.stopOnComplete = !this.stopOnComplete;
         }
         taskStop() {
             if (this.status != TaskStatus.stopped) {
@@ -409,6 +404,17 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
             if (this.prevSpeed > 0) {
                 api_1.Api.setLocoSpeed(this.locoAddress, this.prevSpeed);
             }
+        }
+        get stopOnComplete() {
+            return this._stopOnComplete;
+        }
+        set stopOnComplete(v) {
+            this._stopOnComplete = v;
+            window.dispatchEvent(new CustomEvent("taskChangedEvent", {
+                detail: this,
+                bubbles: true,
+                composed: true,
+            }));
         }
         get status() {
             return this._status;

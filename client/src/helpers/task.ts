@@ -10,7 +10,7 @@ export const tasksCompleteEvent = new Event("tasksCompleteEvent");
 enum StepTypes {
     setLoco = "setLoco",
     setTurnout = "setTurnout",
-    forward = "foward",
+    forward = "forward",
     reverse = "reverse",
     stopLoco = "stop",
     delay = "delay",
@@ -156,11 +156,11 @@ export class Tasks {
         }
     }
 
-    abortTask(name: string) {
+    finishTask(name: string) {
         console.log(`abortTask: ${name}`)
         const task = this.getTask(name)
         if (task) {
-            task.taskAbort();
+            task.taskFinish();
         }
     }
 
@@ -241,7 +241,7 @@ export class Task {
     delayEnd: number = 0;
     autoStart = false
 
-    stopOnComplete: boolean = true;
+//    stopOnComplete: boolean = true;
     prevSpeed: number = 0;
     constructor(name: string) {
         this.name = name
@@ -337,7 +337,6 @@ export class Task {
                 case StepTypes.forward:
                     const speed = (this.step.data as iForwardStep).speed
                     this.prevSpeed = speed
-                    //console.log(`TASK: ${this.name} foward: ${speed} started!`)
                     Api.setLoco(this.locoAddress, speed, Z21Directions.forward)
                     this.index++;
                     break;
@@ -345,13 +344,11 @@ export class Task {
                 case StepTypes.reverse:
                     const rspeed = (this.step.data as iForwardStep).speed
                     this.prevSpeed = rspeed
-                    //console.log(`TASK: ${this.name} reverse: ${rspeed} started!`)
                     Api.setLoco(this.locoAddress, rspeed, Z21Directions.reverse)
                     this.index++;
                     break;
 
                 case StepTypes.stopLoco:
-                    //console.log(`TASK: ${this.name} stop started!`)
                     this.prevSpeed = 0
                     Api.setLocoSpeed(this.locoAddress, 0)
                     this.index++;
@@ -387,6 +384,8 @@ export class Task {
                     if (!this.stopOnComplete) {
                         this.index = 0;
                         this.prevIndex = -1;
+                    } else {
+                        this.status = TaskStatus.stopped
                     }
                     break;
                 case StepTypes.waitForMinutes:
@@ -427,7 +426,7 @@ export class Task {
             case StepTypes.setTurnout:
                 return (`setTurnout: ${(step.data as iSetTurnoutStep).address} closed: ${(step.data as iSetTurnoutStep).closed}`)
             case StepTypes.forward:
-                return (`foward: ${(step.data as iForwardStep).speed}`)
+                return (`forward: ${(step.data as iForwardStep).speed}`)
             case StepTypes.reverse:
                 return (`reverse: ${(step.data as iForwardStep).speed}`)
             case StepTypes.stopLoco:
@@ -469,7 +468,8 @@ export class Task {
                 }
             } else {
                 console.log(`TASK: ${this.name} finished! Exit!`)
-                this.status = TaskStatus.completted
+                //this.status = TaskStatus.completted
+                this.status = TaskStatus.stopped
             }
         }
     }
@@ -485,20 +485,12 @@ export class Task {
         this.prevSpeed = 0;
         this.delayEnd = 0;
         this.status = TaskStatus.running
-        this.stopOnComplete = false;
+        //this.stopOnComplete = false;
         toastManager.showToast(Tasks.icon + ` TASK: ${this.name} started!`, "success")
     }
 
-    taskAbort() {
-        console.log(`TASK: ${this.name} aborted!`)
-        Api.setLocoSpeed(this.locoAddress, 0)
-        this.index = 0;
-        this.prevIndex = -1;
-        this.prevSpeed = 0;
-        this.status = TaskStatus.stopped
-        this.stopOnComplete = false;
-        toastManager.showToast(Tasks.icon + ` TASK: ${this.name} aborted!`, "success")
-
+    taskFinish() {
+        this.stopOnComplete = !this.stopOnComplete;
     }
 
 
@@ -520,6 +512,22 @@ export class Task {
             Api.setLocoSpeed(this.locoAddress, this.prevSpeed)
         }
     }
+
+
+private _stopOnComplete : boolean = false;
+public get stopOnComplete() : boolean {
+    return this._stopOnComplete;
+}
+public set stopOnComplete(v : boolean) {
+    this._stopOnComplete = v;
+    window.dispatchEvent(
+        new CustomEvent("taskChangedEvent", {
+            detail: this,
+            bubbles: true,
+            composed: true,
+        })
+    );
+}
 
 
     private _status: TaskStatus = TaskStatus.stopped;

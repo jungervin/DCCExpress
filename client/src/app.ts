@@ -300,7 +300,7 @@ export class App {
         worker.onmessage = function (e) {
             Api.app.tasks.exec()
             Dispatcher.exec()
-            worker.postMessage("msg")
+            worker.postMessage("p")
         };
     }
     task1() {

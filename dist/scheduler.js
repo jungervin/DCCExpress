@@ -3,8 +3,8 @@ if (!Api.tasks.getTask("Task1")) {
 
     const task = Api.tasks.addTask("Task1")
 
-    task.autoStart = false
-    task.stopOnComplete = false
+    task.autoStart = true
+    task.stopOnComplete = true
     task.setLoco(10)
     
     // task.waitForSensor(6, true)
@@ -34,7 +34,7 @@ if (!Api.tasks.getTask("Task1")) {
     task.waitForSensor(16, true)
 
     task.setFunctionMs(3, true, 500)
-    task.delay(3000)
+    task.delay(2500)
     task.stopLoco()
 
     

@@ -1,5 +1,5 @@
 self.onmessage = function(e) {
     setTimeout(() => {
-        self.postMessage("tick");
-    }, 250);
+        self.postMessage("t");
+    }, 100);
 };
