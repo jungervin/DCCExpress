@@ -78,9 +78,9 @@ define(["require", "exports", "../controls/toastManager", "../helpers/api"], fun
                         toastManager_1.toastManager.showToast("Could not find dispatcherLoop function", "warning");
                     }
                     toastManager_1.toastManager.showToast(Dispatcher.icon + " Dispathcer Started!", "success");
-                    this.intervalId = setInterval(() => {
-                        Dispatcher.exec();
-                    }, Dispatcher.interval);
+                    // this.intervalId = setInterval(() => {
+                    //     Dispatcher.exec()
+                    // }, Dispatcher.interval);
                     Dispatcher.isRunning = true;
                     console.log("✅Dispatcher: Script sikeresen elindult és folyamatosan fut!");
                 }
@@ -97,10 +97,10 @@ define(["require", "exports", "../controls/toastManager", "../helpers/api"], fun
                 console.warn("⚠️Dispatcher: Nincs futó script.");
                 return;
             }
-            if (Dispatcher.intervalId) {
-                clearInterval(Dispatcher.intervalId);
-                Dispatcher.intervalId = null;
-            }
+            // if (Dispatcher.intervalId) {
+            //     clearInterval(Dispatcher.intervalId);
+            //     Dispatcher.intervalId = null;
+            // }
             Dispatcher.currentScriptFunction = null;
             Dispatcher.isRunning = false;
             console.log("⏹Dispatcher: Script leállítva.");
@@ -112,7 +112,7 @@ define(["require", "exports", "../controls/toastManager", "../helpers/api"], fun
     Dispatcher.currentScriptFunction = null;
     //private static scriptContext: any = {};
     Dispatcher.isRunning = false;
-    Dispatcher.intervalId = null;
-    Dispatcher.interval = 888; // 1 másodpercenként hívogatjuk
+    // private static intervalId: NodeJS.Timeout | null = null;
+    // public static interval: number = 888; // 1 másodpercenként hívogatjuk
     Dispatcher._active = false;
 });

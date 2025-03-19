@@ -231,6 +231,7 @@ define(["require", "exports", "./editor/editor", "./editor/toolbar", "./editor/t
             worker.postMessage("msg");
             worker.onmessage = function (e) {
                 api_1.Api.app.tasks.exec();
+                dispatcher_1.Dispatcher.exec();
                 worker.postMessage("msg");
             };
         }

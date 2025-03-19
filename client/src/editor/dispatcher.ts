@@ -11,8 +11,8 @@ export class Dispatcher {
     private static currentScriptFunction: Function | null = null;
     //private static scriptContext: any = {};
     private static isRunning: boolean = false;
-    private static intervalId: NodeJS.Timeout | null = null;
-    public static interval: number = 888; // 1 másodpercenként hívogatjuk
+    // private static intervalId: NodeJS.Timeout | null = null;
+    // public static interval: number = 888; // 1 másodpercenként hívogatjuk
 
 
     private static _active: boolean = false;
@@ -88,9 +88,9 @@ export class Dispatcher {
 
 
             toastManager.showToast(Dispatcher.icon + " Dispathcer Started!", "success")
-            this.intervalId = setInterval(() => {
-                Dispatcher.exec()
-            }, Dispatcher.interval);
+            // this.intervalId = setInterval(() => {
+            //     Dispatcher.exec()
+            // }, Dispatcher.interval);
 
             Dispatcher.isRunning = true;
             console.log("✅Dispatcher: Script sikeresen elindult és folyamatosan fut!");
@@ -109,10 +109,10 @@ export class Dispatcher {
             return;
         }
 
-        if (Dispatcher.intervalId) {
-            clearInterval(Dispatcher.intervalId);
-            Dispatcher.intervalId = null;
-        }
+        // if (Dispatcher.intervalId) {
+        //     clearInterval(Dispatcher.intervalId);
+        //     Dispatcher.intervalId = null;
+        // }
 
         Dispatcher.currentScriptFunction = null;
         Dispatcher.isRunning = false;

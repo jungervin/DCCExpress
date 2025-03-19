@@ -134,6 +134,6 @@ if(re13 && rb14 ) {
     }
 }
 
-App.num += 1;
-console.log(App.num)
+// App.num += 1;
+// console.log(App.num)
 
