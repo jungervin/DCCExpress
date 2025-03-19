@@ -1,8 +1,10 @@
-define(["require", "exports", "../editor/sensor"], function (require, exports, sensor_1) {
+define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.SensorPropertiesElement = void 0;
     class SensorPropertiesElement extends HTMLElement {
+        // dccSensorInputElement: HTMLInputElement;
+        // wsSensorInputElement: HTMLInputElement;
         constructor() {
             super();
             this.shadow = this.attachShadow({ mode: 'open' });
@@ -37,6 +39,7 @@ define(["require", "exports", "../editor/sensor"], function (require, exports, s
                     </div>
                 </div>
 
+            <!--
                <div class="igroup" id="modeGroup">
                     <div>Source</div>
                     <div>
@@ -49,7 +52,7 @@ define(["require", "exports", "../editor/sensor"], function (require, exports, s
                         <label for="ws_sensor">WS Sensor</label>
                     </div>
                 </div>            
-
+            -->
             </div>
         `;
             this.nameElement = this.shadow.getElementById("name");
@@ -58,8 +61,8 @@ define(["require", "exports", "../editor/sensor"], function (require, exports, s
             this.sensorOnElement = this.shadow.getElementById("btnOn");
             this.valueOffElement = this.shadow.getElementById("valueOff");
             this.valueOnElement = this.shadow.getElementById("valueOn");
-            this.dccSensorInputElement = this.shadow.getElementById("dcc_sensor");
-            this.wsSensorInputElement = this.shadow.getElementById("ws_sensor");
+            // this.dccSensorInputElement = this.shadow.getElementById("dcc_sensor") as HTMLInputElement
+            // this.wsSensorInputElement = this.shadow.getElementById("ws_sensor") as HTMLInputElement
         }
         setSensor(sensor) {
             this.sensor = sensor;
@@ -94,14 +97,14 @@ define(["require", "exports", "../editor/sensor"], function (require, exports, s
             this.valueOnElement.onchanged = (e) => {
                 this.sensor.valueOn = this.valueOnElement.value;
             };
-            this.dccSensorInputElement.checked = this.sensor.source == sensor_1.SensorSources.dcc;
-            this.dccSensorInputElement.onchange = (e) => {
-                this.sensor.source = sensor_1.SensorSources.dcc;
-            };
-            this.wsSensorInputElement.checked = this.sensor.source == sensor_1.SensorSources.ws;
-            this.wsSensorInputElement.onchange = (e) => {
-                this.sensor.source = sensor_1.SensorSources.ws;
-            };
+            // this.dccSensorInputElement.checked = this.sensor!.source == SensorSources.dcc
+            // this.dccSensorInputElement.onchange = (e: Event) => {
+            //     this.sensor!.source = SensorSources.dcc
+            // }
+            // this.wsSensorInputElement.checked = this.sensor!.source == SensorSources.ws
+            // this.wsSensorInputElement.onchange = (e: Event) => {
+            //     this.sensor!.source = SensorSources.ws
+            // }
         }
     }
     exports.SensorPropertiesElement = SensorPropertiesElement;
