@@ -1,4 +1,5 @@
 import { CommandCenterTypes, defaultCommandCenterSettings, defaultSettings, FileNames, iCommandCenter, iPowerInfo, iZ21CommandCenter } from "../../../common/src/dcc";
+import { Task } from "./task";
 
 declare global {
     interface Window {
@@ -8,7 +9,7 @@ declare global {
         powerChanged: (pi: iPowerInfo) => void;
 
         directCommandResponse?: (data: any) => void;
-        
+        //taskChanged: (task: Task) => void;
     }
 }
 

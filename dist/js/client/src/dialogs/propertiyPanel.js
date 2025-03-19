@@ -1,4 +1,4 @@
-define(["require", "exports", "../components/turnoutPropertiesElement", "../editor/turnout", "../components/routeListElementProperties", "../editor/route", "../editor/track", "../components/trackPropertiesElement", "../editor/trackend", "../editor/corner", "../editor/curve", "../editor/signals", "../components/blockPropertiesElement", "../editor/block", "../components/locoComboboxElement", "../components/signal2PropertiesElement", "../components/canvasElement", "../components/labelPropertiesElement", "../editor/label", "../components/audioButtonPropetiesElement", "../editor/audioButton", "../components/buttonPropertiesElement", "../editor/button", "../components/sensorPropertiesElement", "../editor/sensor", "../editor/crossing"], function (require, exports, turnoutPropertiesElement_1, turnout_1, routeListElementProperties_1, route_1, track_1, trackPropertiesElement_1, trackend_1, corner_1, curve_1, signals_1, blockPropertiesElement_1, block_1, locoComboboxElement_1, signal2PropertiesElement_1, canvasElement_1, labelPropertiesElement_1, label_1, audioButtonPropetiesElement_1, audioButton_1, buttonPropertiesElement_1, button_1, sensorPropertiesElement_1, sensor_1, crossing_1) {
+define(["require", "exports", "../components/turnoutPropertiesElement", "../editor/turnout", "../components/routeListElementProperties", "../editor/route", "../editor/track", "../components/trackPropertiesElement", "../editor/trackend", "../editor/corner", "../editor/curve", "../editor/signals", "../components/blockPropertiesElement", "../editor/block", "../components/locoComboboxElement", "../components/signal2PropertiesElement", "../components/canvasElement", "../components/labelPropertiesElement", "../editor/label", "../components/audioButtonPropetiesElement", "../editor/audioButton", "../components/buttonPropertiesElement", "../editor/button", "../components/sensorPropertiesElement", "../editor/sensor", "../editor/crossing", "../components/schedulerButtonPropertiesElement", "../editor/schedulerButton"], function (require, exports, turnoutPropertiesElement_1, turnout_1, routeListElementProperties_1, route_1, track_1, trackPropertiesElement_1, trackend_1, corner_1, curve_1, signals_1, blockPropertiesElement_1, block_1, locoComboboxElement_1, signal2PropertiesElement_1, canvasElement_1, labelPropertiesElement_1, label_1, audioButtonPropetiesElement_1, audioButton_1, buttonPropertiesElement_1, button_1, sensorPropertiesElement_1, sensor_1, crossing_1, schedulerButtonPropertiesElement_1, schedulerButton_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.PropertyPanel = void 0;
@@ -13,6 +13,7 @@ define(["require", "exports", "../components/turnoutPropertiesElement", "../edit
     console.log(buttonPropertiesElement_1.ButtonPropertiesElement);
     console.log(sensorPropertiesElement_1.SensorPropertiesElement);
     console.log(audioButtonPropetiesElement_1.AudioButtonPropertiesElement);
+    console.log(schedulerButtonPropertiesElement_1.SchedulerButtonPropertiesElement);
     class PropertyPanel extends HTMLElement {
         constructor() {
             super();
@@ -111,6 +112,7 @@ define(["require", "exports", "../components/turnoutPropertiesElement", "../edit
             this.buttonPropertiesElement = document.createElement('button-properties-element');
             this.sensorPropertiesElement = document.createElement('sensor-properties-element');
             this.audioButtonPropertiesElement = document.createElement('audio-button-properties-element');
+            this.schedulerButtonPropertiesElement = document.createElement('scheduler-button-properties-element');
         }
         open() {
             this.propTitle.innerHTML = "Property Panel";
@@ -176,6 +178,10 @@ define(["require", "exports", "../components/turnoutPropertiesElement", "../edit
                 else if (Object.getPrototypeOf(v) == audioButton_1.AudioButtonShapeElement.prototype) {
                     this.container.appendChild(this.audioButtonPropertiesElement);
                     this.audioButtonPropertiesElement.setButton(this.selectedObject);
+                }
+                else if (Object.getPrototypeOf(v) == schedulerButton_1.SchedulerButtonShapeElement.prototype) {
+                    this.container.appendChild(this.schedulerButtonPropertiesElement);
+                    this.schedulerButtonPropertiesElement.setButton(this.selectedObject);
                 }
                 else if (Object.getPrototypeOf(v) == track_1.TrackElement.prototype) {
                     this.container.appendChild(this.trackPropertiesElement);

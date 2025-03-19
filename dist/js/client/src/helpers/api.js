@@ -116,6 +116,9 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
             }
             return undefined;
         }
+        static getTaskButton(taskName) {
+            return Api.app.editor.views.getSchedulerButtonByTaskName(taskName);
+        }
         static getSignal(address) {
             return Api.app.editor.views.getSignal(address);
         }

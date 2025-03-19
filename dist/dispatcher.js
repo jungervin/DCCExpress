@@ -68,10 +68,10 @@ if (!App.init) {
 // A train is approaching the station
 //======================================
 
-if(rb6) {
-    Api.playSound("mav_szignal.mp3")
-}
-return;
+// if(rb6) {
+//     Api.playSound("mav_szignal.mp3")
+// }
+// return;
 
 const re13 = Api.detectRisingEdge(13)
 
@@ -79,14 +79,14 @@ if (Api.detectRisingEdge(24) && Api.getSensor(12)) {
     if (block198) {
         Api.setBlock("block198", 3)
     }
-    Api.playSound("mav_szignal.mp3")
+    //Api.playSound("mav_szignal.mp3")
 }
 
 if (Api.detectRisingEdge(16) && Api.getSensor(13)) {
     if (block199) {
         Api.setBlock("block199", 3)
     }
-    Api.playSound("mav_szignal.mp3")
+    //Api.playSound("mav_szignal.mp3")
 }
 
 if(Api.detectRisingEdge(14) && Api.getSensor(12)) {

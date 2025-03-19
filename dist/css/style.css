@@ -308,6 +308,7 @@ html, body {
     left: 0;
     width: 25%;
     min-width: 400px;
+    max-width: 420px;
     height: 100%;
     background: black;
     color: whitesmoke;

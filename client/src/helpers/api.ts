@@ -8,6 +8,7 @@ import { Tasks } from "./task";
 import { audioManager } from "../editor/audioButton";
 
 export class Api {
+
     static app: App
     static edges:{ [key: number]: boolean } = {}
 
@@ -126,6 +127,10 @@ export class Api {
         }
         return undefined
     }
+    static getTaskButton(taskName: string) {
+        return Api.app.editor.views.getSchedulerButtonByTaskName(taskName)
+    }
+
 
     static getSignal(address: number) {
         return Api.app.editor.views.getSignal(address)

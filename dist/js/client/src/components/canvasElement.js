@@ -1,7 +1,7 @@
-define(["require", "exports", "../helpers/graphics", "../editor/turnout", "../editor/track", "../editor/trackend", "../editor/corner", "../editor/curve", "../editor/signals", "../editor/route", "../editor/button", "../editor/sensor", "../editor/emergencyButton", "../editor/audioButton", "../editor/label", "../editor/block", "../editor/tree", "../editor/crossing"], function (require, exports, graphics_1, turnout_1, track_1, trackend_1, corner_1, curve_1, signals_1, route_1, button_1, sensor_1, emergencyButton_1, audioButton_1, label_1, block_1, tree_1, crossing_1) {
+define(["require", "exports", "../helpers/graphics", "../editor/turnout", "../editor/track", "../editor/trackend", "../editor/corner", "../editor/curve", "../editor/signals", "../editor/route", "../editor/button", "../editor/sensor", "../editor/emergencyButton", "../editor/audioButton", "../editor/label", "../editor/block", "../editor/tree", "../editor/crossing", "../editor/schedulerButton"], function (require, exports, graphics_1, turnout_1, track_1, trackend_1, corner_1, curve_1, signals_1, route_1, button_1, sensor_1, emergencyButton_1, audioButton_1, label_1, block_1, tree_1, crossing_1, schedulerButton_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.BlockCanvasElement = exports.TreeCanvasElement = exports.LabelCanvasElement = exports.SensorCanvasElement = exports.EmergencyButtonCanvasElement = exports.AudioButtonCanvasElement = exports.ButtonCanvasElement = exports.RouteSwitchCanvasElement = exports.Signal4CanvasElement = exports.Signal3CanvasElement = exports.Signal2CanvasElement = exports.TurnoutDoubleCanvasElement = exports.TurnoutYCanvasElement = exports.TurnoutRightCanvasElement = exports.TurnoutLeftCanvasElement = exports.TrackCrossingCanvasElement = exports.TrackCurveCanvasElement = exports.TrackCornerCanvasElement = exports.TrackEndCanvasElement = exports.TrackCanvasElement = exports.CanvasShapeElement = exports.CanvasElement = void 0;
+    exports.SchedulerButtonCanvasElement = exports.BlockCanvasElement = exports.TreeCanvasElement = exports.LabelCanvasElement = exports.SensorCanvasElement = exports.EmergencyButtonCanvasElement = exports.AudioButtonCanvasElement = exports.ButtonCanvasElement = exports.RouteSwitchCanvasElement = exports.Signal4CanvasElement = exports.Signal3CanvasElement = exports.Signal2CanvasElement = exports.TurnoutDoubleCanvasElement = exports.TurnoutYCanvasElement = exports.TurnoutRightCanvasElement = exports.TurnoutLeftCanvasElement = exports.TrackCrossingCanvasElement = exports.TrackCurveCanvasElement = exports.TrackCornerCanvasElement = exports.TrackEndCanvasElement = exports.TrackCanvasElement = exports.CanvasShapeElement = exports.CanvasElement = void 0;
     class CanvasElement extends HTMLElement {
         constructor() {
             super();
@@ -427,4 +427,20 @@ define(["require", "exports", "../helpers/graphics", "../editor/turnout", "../ed
     }
     exports.BlockCanvasElement = BlockCanvasElement;
     customElements.define("block-canvas-element", BlockCanvasElement);
+    class SchedulerButtonCanvasElement extends CanvasElement {
+        constructor() {
+            super();
+            this.element = new schedulerButton_1.SchedulerButtonShapeElement("", 0, 0, "");
+            this.element.angle = 0;
+        }
+        connectedCallback() {
+            this.draw();
+        }
+        draw() {
+            super.draw();
+            this.element.draw(this.ctx);
+        }
+    }
+    exports.SchedulerButtonCanvasElement = SchedulerButtonCanvasElement;
+    customElements.define("scheduler-button-canvas-element", SchedulerButtonCanvasElement);
 });

@@ -16,6 +16,7 @@ import { Task, Tasks } from "./helpers/task";
 import { Scheduler } from "./helpers/scheduler";
 import { CommandCenterSettingsDialog } from "./dialogs/commandCenterSettingsDialog";
 import { ProgrammerDialog } from "./dialogs/programmerDialog";
+import { matchesGlob } from "path";
 
 console.log(Dispatcher)
 console.log(ApiCommands)
@@ -77,6 +78,9 @@ export class App {
         })
 
 
+        Scheduler.onerror = (msg, err) => {
+            alert(msg + "\n\n" + err)
+        }
 
         this.toolbar = document.getElementById("toolbar") as Toolbar
         this.editor = document.getElementById("editorCanvas") as CustomCanvas
@@ -109,7 +113,7 @@ export class App {
 
         this.editor.init()
 
-        
+
 
         Globals.fetchJsonData("/settings.json").then((data: any) => {
             const s = data as iSettings
@@ -206,7 +210,7 @@ export class App {
                     const output = msg.data as iOutputInfo
                     this.editor.views.getButtonElements().forEach((b) => {
                         if (b.address == output.address) {
-                            b.on = output.value == b.valueOn                           
+                            b.on = output.value == b.valueOn
                             this.editor.draw()
                             Dispatcher.exec()
                         }
@@ -239,7 +243,7 @@ export class App {
                     break;
                 case ApiCommands.dccExDirectCommandResponse:
                     console.log("dccExDirectCommandResponse", msg.data)
-                    if(window.directCommandResponse) {
+                    if (window.directCommandResponse) {
                         window.directCommandResponse(msg.data as iDccExDirectCommandResponse)
                     }
                     break;
@@ -290,6 +294,13 @@ export class App {
                 const d = new ProgrammerDialog()
             }
         }
+
+        const worker = new Worker("js/worker.js");
+        worker.postMessage("msg")
+        worker.onmessage = function (e) {
+            Api.app.tasks.exec()
+            worker.postMessage("msg")
+        };
     }
     task1() {
 
@@ -542,12 +553,12 @@ export class App {
                 }
             }
             this.editor.draw()
-        } 
+        }
     }
     sensorInfo(sensor: iSensorInfo) {
 
         this.sensors[sensor.address] = sensor.on
-        
+
         this.editor.views.getRailElements().forEach(elem => {
             if (elem.rbusAddress == sensor.address) {
                 elem.occupied = sensor.on
@@ -556,7 +567,7 @@ export class App {
         this.editor.views.getSensorElements().forEach(elem => {
             if (elem.address == sensor.address) {
                 elem.on = sensor.on == elem.valueOn
-                
+
             }
         });
         this.editor.draw()

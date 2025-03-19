@@ -24,6 +24,8 @@ export class FastClock {
 
     public draw() {
         if (this.visible) {
+
+            this.ctx.save()
             const ctx = this.ctx;
             const width = 120;
             const height = width;
@@ -117,6 +119,8 @@ export class FastClock {
             ctx.arc(centerX, centerY, 2, 0, Math.PI * 2);
             ctx.fillStyle = "red";
             ctx.fill();
+
+            this.ctx.restore()
         }
         
     }

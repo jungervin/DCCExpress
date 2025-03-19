@@ -21,20 +21,20 @@ define(["require", "exports", "../helpers/api"], function (require, exports, api
                 try {
                     const response = yield fetch(filePath);
                     if (!response.ok) {
-                        throw new Error(`Scheduler: Nem sikerült betölteni a fájlt: ${filePath}`);
+                        throw new Error(`Scheduler: could not load: ${filePath}`);
                         //Hiba a script betöltése közben:
                     }
                     this.scriptContent = yield response.text();
-                    console.log(`📥Scheduler: Betöltött fájl: ${filePath}`);
+                    console.log(`📥Scheduler: loaded file: ${filePath}`);
                     this.currentScriptFunction = new Function("App", "Api", "with (App, Api) { " + this.scriptContent + " }");
                     this.currentScriptFunction(api_1.Api.app, api_1.Api);
                     this.isLoaded = true;
-                    console.log("✅Scheduler:Script sikeresen elindult és folyamatosan fut!");
+                    console.log("✅Scheduler: started!");
                 }
                 catch (error) {
-                    console.error("❌Scheduler: Hiba a script betöltése közben:", error);
+                    console.error("❌Scheduler: Error while loading the script:", error);
                     if (Scheduler.onerror) {
-                        Scheduler.onerror('Scheduler: Hiba a script betöltése közben:', error);
+                        Scheduler.onerror('Scheduler: Error while loading the script:', error);
                     }
                 }
             });

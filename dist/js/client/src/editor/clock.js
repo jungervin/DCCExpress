@@ -18,6 +18,7 @@ define(["require", "exports"], function (require, exports) {
         }
         draw() {
             if (this.visible) {
+                this.ctx.save();
                 const ctx = this.ctx;
                 const width = 120;
                 const height = width;
@@ -92,6 +93,7 @@ define(["require", "exports"], function (require, exports) {
                 ctx.arc(centerX, centerY, 2, 0, Math.PI * 2);
                 ctx.fillStyle = "red";
                 ctx.fill();
+                this.ctx.restore();
             }
         }
         drawHand(x, y, angle, length, width, color) {

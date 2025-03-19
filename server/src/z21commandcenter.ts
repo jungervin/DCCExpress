@@ -441,6 +441,8 @@ export class Z21CommandCenter extends CommandCenter {
     }
 
     clientConnected(): void {
+        this.getSystemState()
+        this.getRBusInfo()
         // log("clientConnected() => broadcast")
         // for( const [k,v] of Object.entries(this.turnouts)) {
         //     broadcastAll({ type: ApiCommands.turnoutInfo, data: v} as iData )

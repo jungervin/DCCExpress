@@ -1,8 +1,8 @@
 {
     "settings": {
-        "scale": 1.3441426433156556,
-        "origX": 268,
-        "origY": -52,
+        "scale": 1.08119568150947,
+        "origX": 299,
+        "origY": 61,
         "locoPanelVisible": true,
         "propertyPanelVisible": true
     },
@@ -1635,6 +1635,56 @@
                     "t1OpenValue": false,
                     "rbusAddress": 0,
                     "outputMode": 0
+                },
+                {
+                    "uuid": "166bb074-32f4-4a29-8f1a-fb3d3424759c",
+                    "type": "schedulerButton",
+                    "x": 9,
+                    "y": 12,
+                    "name": "schedulerButton147",
+                    "taskName": "Task1"
+                },
+                {
+                    "uuid": "682a6277-a5e5-4a34-91d5-1acfd22f7331",
+                    "type": "label2",
+                    "name": "label149",
+                    "x": 10,
+                    "y": 12,
+                    "angle": 0,
+                    "text": "Task1",
+                    "valign": "center",
+                    "fgColor": "black",
+                    "bgColor": "red",
+                    "fontSize": "10px",
+                    "fontStyle": "normal",
+                    "fontName": "Arial",
+                    "textAlign": "left",
+                    "textBaseline": "top"
+                },
+                {
+                    "uuid": "1892a630-4613-47e6-b245-c339c996dbec",
+                    "type": "schedulerButton",
+                    "x": 9,
+                    "y": 13,
+                    "name": "schedulerButton149",
+                    "taskName": "Task2"
+                },
+                {
+                    "uuid": "1e58c072-50d3-4380-94dc-c7ee7549087c",
+                    "type": "label2",
+                    "name": "label150",
+                    "x": 10,
+                    "y": 13,
+                    "angle": 0,
+                    "text": "Task2",
+                    "valign": "center",
+                    "fgColor": "black",
+                    "bgColor": "red",
+                    "fontSize": "10px",
+                    "fontStyle": "normal",
+                    "fontName": "Arial",
+                    "textAlign": "left",
+                    "textBaseline": "top"
                 }
             ]
         }

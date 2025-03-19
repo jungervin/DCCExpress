@@ -6,6 +6,7 @@ import { Signal1Element } from "./signals"
 import { AccessoryAddressElement, ButtonShapeElement } from "./button"
 import { BlockElement } from "./block"
 import { SensorShapeElement } from "./sensor"
+import { SchedulerButtonShapeElement } from "./schedulerButton"
 
 
 export class Views {
@@ -170,6 +171,22 @@ export class Views {
             return elem.x == point.x && elem.y == point.y
         })
         return elem
+    }
+
+    getSchedulerButtonElements(): SchedulerButtonShapeElement[] {
+        var items: SchedulerButtonShapeElement[] = []
+        this.elements.forEach((elem: View) => {
+            if (elem instanceof SchedulerButtonShapeElement) {
+                items.push(elem)
+            }
+        })
+        return items
+    }
+
+    getSchedulerButtonByTaskName(taskName: string) {
+        return this.getSchedulerButtonElements().find((elem: SchedulerButtonShapeElement) => {
+            return elem.taskName == taskName
+        })
     }
 
     startWalk(obj: RailView) {

@@ -34,6 +34,9 @@ import { EmergencyButtonShapeElement } from "./emergencyButton";
 import { TreeShapeElement } from "./tree";
 import { SensorShapeElement, SensorTypes } from "./sensor";
 import { TrackCrossingShapeElement } from "./crossing";
+import { SchedulerButtonShapeElement } from "./schedulerButton";
+import { Task, TaskStatus } from "../helpers/task";
+import { Api } from "../helpers/api";
 
 console.log(PropertyPanel)
 
@@ -63,6 +66,7 @@ export enum drawModes {
     sensor,
     trackCrossing,
     turnoutY,
+    scheduler,
 }
 
 export class CustomCanvas extends HTMLElement {
@@ -120,6 +124,7 @@ export class CustomCanvas extends HTMLElement {
     cursorEmergencyButtonElement: EmergencyButtonShapeElement | undefined;
     cursorTreeShapeElement: TreeShapeElement | undefined;
     cursorSensorShapeElement: SensorShapeElement | undefined;
+    cursorSchedulerButtonShapeElement: SchedulerButtonShapeElement | undefined
     private pointerMap = new Map<number, { x: number; y: number }>(); // Pointer ID-k mentése
     private lastDistance = 0;
     fastClock?: FastClock | null;
@@ -150,6 +155,23 @@ export class CustomCanvas extends HTMLElement {
         window.invalidate = () => {
             this.draw()
         }
+
+        window.addEventListener('taskChangedEvent', (e: Event) => {
+            var task = (e as CustomEvent).detail
+            const btn = Api.getTaskButton(task.name)
+            if(btn) {
+                if(btn.status != task.status) {
+                    btn.status = task.status
+                    this.draw();
+                }
+            }
+        })
+        // window.taskChanged = (task: Task) => {
+        //     const t = Api.getTaskButton(task.name)    
+        //     if(t) {
+        //         t.status = task.status
+        //     }
+        // }
 
         window.powerChanged = (power) => {
             this.locoControlPanel!.power = power
@@ -208,11 +230,11 @@ export class CustomCanvas extends HTMLElement {
     // }
 
     convertTouchEventToMouseEvent(event: TouchEvent, eventType: string): void {
-    
+
         event.preventDefault()
         const touch = event.touches[0];
         const rect = this.canvas.getBoundingClientRect();
-        if (!touch) { 
+        if (!touch) {
             var e = new MouseEvent(eventType, {
                 bubbles: true,
                 cancelable: true,
@@ -223,14 +245,14 @@ export class CustomCanvas extends HTMLElement {
                 button: 0,
                 buttons: 1
             });
-            this.handleMouseUp(e)    
+            this.handleMouseUp(e)
             return
         }
 
         this.lastTouch = touch;
-        this.downX =touch.clientX - rect.left
+        this.downX = touch.clientX - rect.left
         this.downY = touch.clientY - rect.top
-        
+
         try {
             var e = new MouseEvent(eventType, {
                 bubbles: true,
@@ -257,7 +279,7 @@ export class CustomCanvas extends HTMLElement {
                     this.handleMouseMove(e)
                     break
                 default: alert("EventType: " + eventType)
-                break;
+                    break;
             }
 
         } catch (error) {
@@ -421,7 +443,8 @@ export class CustomCanvas extends HTMLElement {
         this.cursorLabel2Element.isSelected = true
         this.cursorTreeShapeElement = new TreeShapeElement("", 0, 0, "cursor")
         this.cursorTreeShapeElement.isSelected = true
-
+        this.cursorSchedulerButtonShapeElement = new SchedulerButtonShapeElement("", 0, 0, "")
+        this.cursorSchedulerButtonShapeElement.isSelected = true;
 
         const shapesModalElement = document.getElementById("shapesModal") as HTMLElement;
         this.shapesModal = new bootstrap.Modal(shapesModalElement);
@@ -565,6 +588,13 @@ export class CustomCanvas extends HTMLElement {
             this.unselectAll()
             this.drawMode = drawModes.sensor
             this.cursorElement = this.cursorSensorShapeElement
+        }
+
+        document.getElementById("tbScheduler")!.onclick = (e: MouseEvent) => {
+            this.shapesModal!.hide()
+            this.unselectAll()
+            this.drawMode = drawModes.scheduler
+            this.cursorElement = this.cursorSchedulerButtonShapeElement
         }
 
         this.drawEnabled = localStorage.getItem("drawEnabled") == "true"
@@ -1287,6 +1317,12 @@ export class CustomCanvas extends HTMLElement {
                     var tree = new TreeShapeElement(getUUID(), x, y, "tree" + num);
                     this.add(tree)
                     break;
+                case drawModes.scheduler:
+                    //this.removeIfExists(x, y)
+                    this.unselectAll()
+                    var sb = new SchedulerButtonShapeElement(getUUID(), x, y, "schedulerButton" + num);
+                    this.add(sb)
+                    break;
             }
 
             this.draw()
@@ -1733,6 +1769,12 @@ export class CustomCanvas extends HTMLElement {
                     var tree = elem as TreeShapeElement
                     elems.push({ uuid: tree.UUID, type: tree.type, x: tree.x, y: tree.y, name: tree.name })
                     break;
+                case 'schedulerButton':
+                    var schedulerButton = elem as SchedulerButtonShapeElement
+                    elems.push({ uuid: schedulerButton.UUID, type: schedulerButton.type, x: schedulerButton.x, y: schedulerButton.y, name: schedulerButton.name, 
+                        taskName: schedulerButton.taskName
+                    })
+                    break;
             }
         })
 
@@ -1968,6 +2010,11 @@ export class CustomCanvas extends HTMLElement {
                         case "tree":
                             var tree = new TreeShapeElement(elem.uuid, elem.x, elem.y, elem.name);
                             this.add(tree)
+                            break;
+                        case "schedulerButton":
+                            var schedulerButton = new SchedulerButtonShapeElement(elem.uuid, elem.x, elem.y, elem.name);
+                            schedulerButton.taskName = elem.taskName ?? ""
+                            this.add(schedulerButton)
                             break;
                         case "sensor":
                             var sensor = new SensorShapeElement(elem.uuid, elem.address ?? 0, elem.x, elem.y, elem.name);

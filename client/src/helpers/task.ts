@@ -2,6 +2,7 @@ import { toastManager } from "../controls/toastManager";
 import { Z21Directions } from "../../../common/src/dcc";
 import { Api } from "./api";
 import { Globals } from "./globals";
+import { text } from "stream/consumers";
 
 
 export const tasksCompleteEvent = new Event("tasksCompleteEvent");
@@ -19,9 +20,10 @@ enum StepTypes {
     setRoute = "setRoute",
     waitForMinutes = "waitForMinutes",
     startAtMinutes = "startAtMinutes",
-    playSound = "playSound"
+    playSound = "playSound",
+    label = "label"
 }
-interface iStep {
+export interface iStep {
     type: StepTypes,
     data: object
 }
@@ -72,48 +74,55 @@ interface iPlaySound {
     fname: string
 }
 
+interface iLabel {
+    text: string
+}
+
 export enum TaskStatus {
-    running,
-    paused,
-    stopped,
-    finished
+    running = "🚂 RUNNING",
+    paused = "paused",
+    stopped = "🛑 STOPPED",
+    completted = "completted"
 }
 
 export class Tasks {
     static icon = '<svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 0 24 24"><title>Tasks</title><path d="M15,13H16.5V15.82L18.94,17.23L18.19,18.53L15,16.69V13M19,8H5V19H9.67C9.24,18.09 9,17.07 9,16A7,7 0 0,1 16,9C17.07,9 18.09,9.24 19,9.67V8M5,21C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H6V1H8V3H16V1H18V3H19A2,2 0 0,1 21,5V11.1C22.24,12.36 23,14.09 23,16A7,7 0 0,1 16,23C14.09,23 12.36,22.24 11.1,21H5M16,11.15A4.85,4.85 0 0,0 11.15,16C11.15,18.68 13.32,20.85 16,20.85A4.85,4.85 0 0,0 20.85,16C20.85,13.32 18.68,11.15 16,11.15Z" /></svg>'
 
     tasks: Task[] = []
-    timer: NodeJS.Timeout;
+    //timer: NodeJS.Timeout;
     running: boolean = false;
     prevRuning: boolean = false;
     //private worker: Worker;
     constructor() {
-        this.timer = setInterval(() => {
-            var running = false;
-            this.tasks.forEach(t => {
-                t.proc()
-                this.running ||= t.status ==  TaskStatus.running
-            })
+        // this.timer = setInterval(() => {
+        //     var running = false;
+        //     this.tasks.forEach(t => {
+        //         t.proc()
+        //         this.running ||= t.status == TaskStatus.running
+        //     })
 
-            if(!this.running != running) {
-                this.running = running
-                window.dispatchEvent(tasksCompleteEvent)
-            }
+        //     if (!this.running != running) {
+        //         this.running = running
+        //         window.dispatchEvent(tasksCompleteEvent)
+        //     }
 
-        }, 50)
-        //this.worker = new Worker(new URL("./worker.ts", import.meta.url));
-        // this.worker = new Worker(new URL("./worker.js", import.meta.url), { type: "module" });
+        // }, 50)
 
-        // // Fogadjuk a Worker által küldött Tick eseményeket
-        // this.worker.onmessage = () => {
-        //     this.tasks.forEach(t => t.proc());
-        // };
 
-        // // Küldjük a workernek a kívánt intervallumot
-        // this.worker.postMessage({ interval: 50 });
     }
 
     exec() {
+
+        var running = false;
+        this.tasks.forEach(t => {
+            t.proc()
+            this.running ||= t.status == TaskStatus.running
+        })
+
+        if (!this.running != running) {
+            this.running = running
+            window.dispatchEvent(tasksCompleteEvent)
+        }
 
     }
     addTask(name: string) {
@@ -136,6 +145,22 @@ export class Tasks {
         const task = this.getTask(name)
         if (task) {
             task.taskStop()
+        }
+    }
+
+    resumeTask(name: string) {
+        console.log(`resumeTask: ${name}`)
+        const task = this.getTask(name)
+        if (task) {
+            task.resumeTask()
+        }
+    }
+
+    abortTask(name: string) {
+        console.log(`abortTask: ${name}`)
+        const task = this.getTask(name)
+        if (task) {
+            task.taskAbort();
         }
     }
 
@@ -184,7 +209,11 @@ export class Tasks {
     startAllTask() {
         console.log('startAllTask()')
         this.tasks.forEach(t => {
-            t.taskStart()
+            if (t.autoStart) {
+                t.taskStart()
+            } else {
+                t.status = TaskStatus.stopped
+            }
         })
     }
 
@@ -201,7 +230,7 @@ export class Tasks {
 
 export class Task {
     name: string;
-    index: number = 0;
+
     prevIndex: number = -1;
     steps: any[] = []
     //delayTimer?: NodeJS.Timeout | undefined;
@@ -210,13 +239,16 @@ export class Task {
     num: number = 0;
     step: iStep | undefined;
     delayEnd: number = 0;
-    status: TaskStatus = TaskStatus.stopped;
+    autoStart = false
+
     stopOnComplete: boolean = true;
+    prevSpeed: number = 0;
     constructor(name: string) {
         this.name = name
     }
 
     setLoco(address: number) {
+        this.locoAddress = address
         this.steps.push({ type: StepTypes.setLoco, data: { address: address } as iLocoStep } as iStep)
     }
 
@@ -280,8 +312,13 @@ export class Task {
     }
 
     playSound(fname: string) {
-        this.steps.push({type: StepTypes.playSound, data: {fname: fname} as iPlaySound } as iStep)
+        this.steps.push({ type: StepTypes.playSound, data: { fname: fname } as iPlaySound } as iStep)
     }
+
+    label(text: string) {
+        this.steps.push({ type: StepTypes.label, data: { text: text } as iLabel } as iStep)
+    }
+
     procStep() {
         if (this.step) {
             switch (this.step.type) {
@@ -299,6 +336,7 @@ export class Task {
 
                 case StepTypes.forward:
                     const speed = (this.step.data as iForwardStep).speed
+                    this.prevSpeed = speed
                     //console.log(`TASK: ${this.name} foward: ${speed} started!`)
                     Api.setLoco(this.locoAddress, speed, Z21Directions.forward)
                     this.index++;
@@ -306,6 +344,7 @@ export class Task {
 
                 case StepTypes.reverse:
                     const rspeed = (this.step.data as iForwardStep).speed
+                    this.prevSpeed = rspeed
                     //console.log(`TASK: ${this.name} reverse: ${rspeed} started!`)
                     Api.setLoco(this.locoAddress, rspeed, Z21Directions.reverse)
                     this.index++;
@@ -313,6 +352,7 @@ export class Task {
 
                 case StepTypes.stopLoco:
                     //console.log(`TASK: ${this.name} stop started!`)
+                    this.prevSpeed = 0
                     Api.setLocoSpeed(this.locoAddress, 0)
                     this.index++;
                     break;
@@ -372,40 +412,48 @@ export class Task {
                     const fname = (this.step.data as iPlaySound).fname
                     Api.playSound(fname)
                     this.index++;
+                    break;
+                case StepTypes.label:
+                    this.index++;
+                    break;
             }
         }
     }
 
-    logStep(step: iStep) {
+    logStep(step: iStep): string {
         switch (step.type) {
             case StepTypes.setLoco:
-                console.log(`TASK: ${this.name} index: ${this.index} loco: ${(step.data as iLocoStep).address}`)
-                break;
+                return (`setLoco: ${(step.data as iLocoStep).address}`)
             case StepTypes.setTurnout:
-                console.log(`TASK: ${this.name} index: ${this.index} setTurnout: ${(step.data as iSetTurnoutStep).address} closed: ${(step.data as iSetTurnoutStep).closed}`)
-                break;
+                return (`setTurnout: ${(step.data as iSetTurnoutStep).address} closed: ${(step.data as iSetTurnoutStep).closed}`)
             case StepTypes.forward:
-                console.log(`TASK: ${this.name} index: ${this.index} foward: ${(step.data as iForwardStep).speed}`)
-                break;
+                return (`foward: ${(step.data as iForwardStep).speed}`)
             case StepTypes.reverse:
-                console.log(`TASK: ${this.name} index: ${this.index} reverse: ${(step.data as iForwardStep).speed}`)
-                break;
+                return (`reverse: ${(step.data as iForwardStep).speed}`)
             case StepTypes.stopLoco:
-                console.log(`TASK: ${this.name} index: ${this.index} stop`)
-                break;
+                return (`stopLoco`)
             case StepTypes.delay:
-                console.log(`TASK: ${this.name} index: ${this.index} delay: ${(step.data as iDelayStep).ms}`)
-                break;
+                return (`delay: ${(step.data as iDelayStep).ms}`)
             case StepTypes.waitForSensor:
-                console.log(`TASK: ${this.name} index: ${this.index} waitForSensor: ${(step.data as iWaitForSensor).address}`)
-                break;
+                return (`waitForSensor: ${(step.data as iWaitForSensor).address}`)
             case StepTypes.setFunction:
-                console.log(`TASK: ${this.name} index: ${this.index} function: ${(step.data as iFunctionStep).fn}`)
+                return (`setFunction: ${(step.data as iFunctionStep).fn} on: ${(step.data as iFunctionStep).on}`)
                 break;
             case StepTypes.restart:
-                console.log(`TASK: ${this.name} index: ${this.index} restart`)
-                break;
+                return (`restart`)
+            case StepTypes.playSound:
+                return (`playSound: ${(step.data as iPlaySound).fname}`)
+            case StepTypes.setRoute:
+                return (`setRoute: ${(step.data as iRouteStep).routeName}`)
+            case StepTypes.startAtMinutes:
+                return (`startAtMinutes: ${(step.data as iStartAtMinutes).minutes}`)
+            case StepTypes.waitForMinutes:
+                return (`waitForMinute: ${(step.data as iWaitForMinute).minute}`)
+            case StepTypes.label:
+                return (`label: ${(step.data as iLabel).text}`)
+
         }
+        return "Unknown"
     }
     proc() {
         if (this.status == TaskStatus.running) {
@@ -421,7 +469,7 @@ export class Task {
                 }
             } else {
                 console.log(`TASK: ${this.name} finished! Exit!`)
-                this.status = TaskStatus.finished
+                this.status = TaskStatus.completted
             }
         }
     }
@@ -432,21 +480,77 @@ export class Task {
 
     taskStart() {
         console.log(`TASK: ${this.name} started!`)
-        this.stopLoco()
         this.index = 0;
         this.prevIndex = -1;
+        this.prevSpeed = 0;
+        this.delayEnd = 0;
         this.status = TaskStatus.running
         this.stopOnComplete = false;
-        toastManager.showToast(Tasks.icon + ` TASK: ${this.name} started!` , "success")
+        toastManager.showToast(Tasks.icon + ` TASK: ${this.name} started!`, "success")
+    }
+
+    taskAbort() {
+        console.log(`TASK: ${this.name} aborted!`)
+        Api.setLocoSpeed(this.locoAddress, 0)
+        this.index = 0;
+        this.prevIndex = -1;
+        this.prevSpeed = 0;
+        this.status = TaskStatus.stopped
+        this.stopOnComplete = false;
+        toastManager.showToast(Tasks.icon + ` TASK: ${this.name} aborted!`, "success")
 
     }
+
 
     taskStop() {
-        if(this.status != TaskStatus.stopped) {
-            toastManager.showToast(Tasks.icon + ` TASK: ${this.name} stopped!` , "info")
+        if (this.status != TaskStatus.stopped) {
+            toastManager.showToast(Tasks.icon + ` TASK: ${this.name} stopped!`, "info")
         }
         this.status = TaskStatus.stopped
-        this.stopLoco()
+        this.delayEnd = 0;
+
+        Api.setLocoSpeed(this.locoAddress, 0)
 
     }
+
+    resumeTask() {
+        this.status = TaskStatus.running
+        this.delayEnd = 0;
+        if (this.prevSpeed > 0) {
+            Api.setLocoSpeed(this.locoAddress, this.prevSpeed)
+        }
+    }
+
+
+    private _status: TaskStatus = TaskStatus.stopped;
+    public get status(): TaskStatus {
+        return this._status;
+    }
+    public set status(v: TaskStatus) {
+        this._status = v;
+        window.dispatchEvent(
+            new CustomEvent("taskChangedEvent", {
+                detail: this,
+                bubbles: true,
+                composed: true,
+            })
+        );
+    }
+
+    private _index: number = 0;
+    public get index(): number {
+        return this._index;
+    }
+    public set index(v: number) {
+        this._index = v;
+        this.delayEnd = 0;
+        window.dispatchEvent(
+            new CustomEvent("taskChangedEvent", {
+                detail: this,
+                bubbles: true,
+                composed: true,
+            })
+        );
+    }
+
 }

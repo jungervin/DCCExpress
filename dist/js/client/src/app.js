@@ -48,6 +48,9 @@ define(["require", "exports", "./editor/editor", "./editor/toolbar", "./editor/t
             window.addEventListener("schedulerCompleted", () => {
                 alert("schedulerCompleted");
             });
+            scheduler_1.Scheduler.onerror = (msg, err) => {
+                alert(msg + "\n\n" + err);
+            };
             this.toolbar = document.getElementById("toolbar");
             this.editor = document.getElementById("editorCanvas");
             this.editor.toolbar = this.toolbar;
@@ -223,6 +226,12 @@ define(["require", "exports", "./editor/editor", "./editor/toolbar", "./editor/t
                 if (this.toolbar.programmerButtonEnabled) {
                     const d = new programmerDialog_1.ProgrammerDialog();
                 }
+            };
+            const worker = new Worker("js/worker.js");
+            worker.postMessage("msg");
+            worker.onmessage = function (e) {
+                api_1.Api.app.tasks.exec();
+                worker.postMessage("msg");
             };
         }
         task1() {

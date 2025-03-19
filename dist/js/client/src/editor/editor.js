@@ -21,7 +21,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", "bootstrap", "./curve", "./corner", "./signals", "./trackend", "./route", "../controls/dialog", "../../../common/src/dcc", "../dialogs/propertiyPanel", "./block", "../helpers/globals", "../dialogs/AppSettingsDialog", "../dialogs/dlgSignal2Select", "../dialogs/turnoutsPopup", "../helpers/ws", "./label", "../helpers/utility", "../dialogs/codeEditor", "./dispatcher", "./button", "./audioButton", "./clock", "./emergencyButton", "./tree", "./sensor", "./crossing"], function (require, exports, track_1, rectangle_1, turnout_1, views_1, bootstrap, curve_1, corner_1, signals_1, trackend_1, route_1, dialog_1, dcc_1, propertiyPanel_1, block_1, globals_1, AppSettingsDialog_1, dlgSignal2Select_1, turnoutsPopup_1, ws_1, label_1, utility_1, codeEditor_1, dispatcher_1, button_1, audioButton_1, clock_1, emergencyButton_1, tree_1, sensor_1, crossing_1) {
+define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", "bootstrap", "./curve", "./corner", "./signals", "./trackend", "./route", "../controls/dialog", "../../../common/src/dcc", "../dialogs/propertiyPanel", "./block", "../helpers/globals", "../dialogs/AppSettingsDialog", "../dialogs/dlgSignal2Select", "../dialogs/turnoutsPopup", "../helpers/ws", "./label", "../helpers/utility", "../dialogs/codeEditor", "./dispatcher", "./button", "./audioButton", "./clock", "./emergencyButton", "./tree", "./sensor", "./crossing", "./schedulerButton", "../helpers/api"], function (require, exports, track_1, rectangle_1, turnout_1, views_1, bootstrap, curve_1, corner_1, signals_1, trackend_1, route_1, dialog_1, dcc_1, propertiyPanel_1, block_1, globals_1, AppSettingsDialog_1, dlgSignal2Select_1, turnoutsPopup_1, ws_1, label_1, utility_1, codeEditor_1, dispatcher_1, button_1, audioButton_1, clock_1, emergencyButton_1, tree_1, sensor_1, crossing_1, schedulerButton_1, api_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CustomCanvas = exports.drawModes = void 0;
@@ -54,6 +54,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
         drawModes[drawModes["sensor"] = 23] = "sensor";
         drawModes[drawModes["trackCrossing"] = 24] = "trackCrossing";
         drawModes[drawModes["turnoutY"] = 25] = "turnoutY";
+        drawModes[drawModes["scheduler"] = 26] = "scheduler";
     })(drawModes || (exports.drawModes = drawModes = {}));
     class CustomCanvas extends HTMLElement {
         constructor() {
@@ -92,6 +93,22 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
             window.invalidate = () => {
                 this.draw();
             };
+            window.addEventListener('taskChangedEvent', (e) => {
+                var task = e.detail;
+                const btn = api_1.Api.getTaskButton(task.name);
+                if (btn) {
+                    if (btn.status != task.status) {
+                        btn.status = task.status;
+                        this.draw();
+                    }
+                }
+            });
+            // window.taskChanged = (task: Task) => {
+            //     const t = Api.getTaskButton(task.name)    
+            //     if(t) {
+            //         t.status = task.status
+            //     }
+            // }
             window.powerChanged = (power) => {
                 this.locoControlPanel.power = power;
                 this.draw();
@@ -325,6 +342,8 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
             this.cursorLabel2Element.isSelected = true;
             this.cursorTreeShapeElement = new tree_1.TreeShapeElement("", 0, 0, "cursor");
             this.cursorTreeShapeElement.isSelected = true;
+            this.cursorSchedulerButtonShapeElement = new schedulerButton_1.SchedulerButtonShapeElement("", 0, 0, "");
+            this.cursorSchedulerButtonShapeElement.isSelected = true;
             const shapesModalElement = document.getElementById("shapesModal");
             this.shapesModal = new bootstrap.Modal(shapesModalElement);
             if (this.toolbar) {
@@ -456,6 +475,12 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                 this.unselectAll();
                 this.drawMode = drawModes.sensor;
                 this.cursorElement = this.cursorSensorShapeElement;
+            };
+            document.getElementById("tbScheduler").onclick = (e) => {
+                this.shapesModal.hide();
+                this.unselectAll();
+                this.drawMode = drawModes.scheduler;
+                this.cursorElement = this.cursorSchedulerButtonShapeElement;
             };
             this.drawEnabled = localStorage.getItem("drawEnabled") == "true";
             this.toolbar.btnEdit.onclick = (e) => {
@@ -1092,6 +1117,12 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                         var tree = new tree_1.TreeShapeElement((0, dcc_1.getUUID)(), x, y, "tree" + num);
                         this.add(tree);
                         break;
+                    case drawModes.scheduler:
+                        //this.removeIfExists(x, y)
+                        this.unselectAll();
+                        var sb = new schedulerButton_1.SchedulerButtonShapeElement((0, dcc_1.getUUID)(), x, y, "schedulerButton" + num);
+                        this.add(sb);
+                        break;
                 }
                 this.draw();
             }
@@ -1505,6 +1536,12 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                         var tree = elem;
                         elems.push({ uuid: tree.UUID, type: tree.type, x: tree.x, y: tree.y, name: tree.name });
                         break;
+                    case 'schedulerButton':
+                        var schedulerButton = elem;
+                        elems.push({ uuid: schedulerButton.UUID, type: schedulerButton.type, x: schedulerButton.x, y: schedulerButton.y, name: schedulerButton.name,
+                            taskName: schedulerButton.taskName
+                        });
+                        break;
                 }
             });
             var config = {
@@ -1541,7 +1578,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                 //var elems = config.elems
                 config.pages.forEach((page) => {
                     page.elems.forEach((elem) => {
-                        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29;
+                        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30;
                         console.log(elem);
                         switch (elem.type) {
                             case "track":
@@ -1725,12 +1762,17 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                                 var tree = new tree_1.TreeShapeElement(elem.uuid, elem.x, elem.y, elem.name);
                                 this.add(tree);
                                 break;
+                            case "schedulerButton":
+                                var schedulerButton = new schedulerButton_1.SchedulerButtonShapeElement(elem.uuid, elem.x, elem.y, elem.name);
+                                schedulerButton.taskName = (_25 = elem.taskName) !== null && _25 !== void 0 ? _25 : "";
+                                this.add(schedulerButton);
+                                break;
                             case "sensor":
-                                var sensor = new sensor_1.SensorShapeElement(elem.uuid, (_25 = elem.address) !== null && _25 !== void 0 ? _25 : 0, elem.x, elem.y, elem.name);
-                                sensor.kind = (_26 = elem.kind) !== null && _26 !== void 0 ? _26 : sensor_1.SensorTypes.rect;
-                                sensor.colorOn = (_27 = elem.fillColor) !== null && _27 !== void 0 ? _27 : "lime";
-                                sensor.valueOff = (_28 = elem.valueOff) !== null && _28 !== void 0 ? _28 : false;
-                                sensor.valueOn = (_29 = elem.valueOn) !== null && _29 !== void 0 ? _29 : true;
+                                var sensor = new sensor_1.SensorShapeElement(elem.uuid, (_26 = elem.address) !== null && _26 !== void 0 ? _26 : 0, elem.x, elem.y, elem.name);
+                                sensor.kind = (_27 = elem.kind) !== null && _27 !== void 0 ? _27 : sensor_1.SensorTypes.rect;
+                                sensor.colorOn = (_28 = elem.fillColor) !== null && _28 !== void 0 ? _28 : "lime";
+                                sensor.valueOff = (_29 = elem.valueOff) !== null && _29 !== void 0 ? _29 : false;
+                                sensor.valueOn = (_30 = elem.valueOn) !== null && _30 !== void 0 ? _30 : true;
                                 this.add(sensor);
                                 break;
                         }

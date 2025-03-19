@@ -1,4 +1,4 @@
-define(["require", "exports", "./turnout", "./view", "./route", "./signals", "./button", "./block", "./sensor"], function (require, exports, turnout_1, view_1, route_1, signals_1, button_1, block_1, sensor_1) {
+define(["require", "exports", "./turnout", "./view", "./route", "./signals", "./button", "./block", "./sensor", "./schedulerButton"], function (require, exports, turnout_1, view_1, route_1, signals_1, button_1, block_1, sensor_1, schedulerButton_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Views = void 0;
@@ -137,6 +137,20 @@ define(["require", "exports", "./turnout", "./view", "./route", "./signals", "./
                 return elem.x == point.x && elem.y == point.y;
             });
             return elem;
+        }
+        getSchedulerButtonElements() {
+            var items = [];
+            this.elements.forEach((elem) => {
+                if (elem instanceof schedulerButton_1.SchedulerButtonShapeElement) {
+                    items.push(elem);
+                }
+            });
+            return items;
+        }
+        getSchedulerButtonByTaskName(taskName) {
+            return this.getSchedulerButtonElements().find((elem) => {
+                return elem.taskName == taskName;
+            });
         }
         startWalk(obj) {
             // Lehet meg kellene vizsgálni, hogy a következő elem az

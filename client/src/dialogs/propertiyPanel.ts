@@ -25,6 +25,8 @@ import { ButtonShapeElement } from "../editor/button";
 import { SensorPropertiesElement } from "../components/sensorPropertiesElement";
 import { SensorShapeElement } from "../editor/sensor";
 import { TrackCrossingShapeElement } from "../editor/crossing";
+import { SchedulerButtonPropertiesElement } from "../components/schedulerButtonPropertiesElement";
+import { SchedulerButtonShapeElement } from "../editor/schedulerButton";
 
 console.log(TurnoutLeftPropertiesElement)
 console.log(RouteListElementProperties)
@@ -37,6 +39,7 @@ console.log(TurnoutLeftCanvasElement)
 console.log(ButtonPropertiesElement)
 console.log(SensorPropertiesElement)
 console.log(AudioButtonPropertiesElement)
+console.log(SchedulerButtonPropertiesElement)
 
 export class PropertyPanel extends HTMLElement {
 
@@ -59,6 +62,7 @@ export class PropertyPanel extends HTMLElement {
     buttonPropertiesElement: ButtonPropertiesElement;
     sensorPropertiesElement: SensorPropertiesElement;
     audioButtonPropertiesElement: AudioButtonPropertiesElement;
+    schedulerButtonPropertiesElement: SchedulerButtonPropertiesElement;
 
     constructor() {
         super()
@@ -158,6 +162,7 @@ export class PropertyPanel extends HTMLElement {
         this.buttonPropertiesElement = document.createElement('button-properties-element') as ButtonPropertiesElement
         this.sensorPropertiesElement = document.createElement('sensor-properties-element') as SensorPropertiesElement
         this.audioButtonPropertiesElement = document.createElement('audio-button-properties-element') as AudioButtonPropertiesElement
+        this.schedulerButtonPropertiesElement = document.createElement('scheduler-button-properties-element') as SchedulerButtonPropertiesElement
     }
 
     private open() {
@@ -233,6 +238,10 @@ export class PropertyPanel extends HTMLElement {
             else if (Object.getPrototypeOf(v) == AudioButtonShapeElement.prototype) {
                 this.container.appendChild(this.audioButtonPropertiesElement)
                 this.audioButtonPropertiesElement.setButton(this.selectedObject as AudioButtonShapeElement)
+            }
+            else if (Object.getPrototypeOf(v) == SchedulerButtonShapeElement.prototype) {
+                this.container.appendChild(this.schedulerButtonPropertiesElement)
+                this.schedulerButtonPropertiesElement.setButton(this.selectedObject as SchedulerButtonShapeElement)
             }
             else if (Object.getPrototypeOf(v) == TrackElement.prototype) {
                 this.container.appendChild(this.trackPropertiesElement)

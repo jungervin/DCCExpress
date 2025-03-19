@@ -16,6 +16,7 @@ import { Label2Element } from "../editor/label";
 import { BlockElement } from "../editor/block";
 import { TreeShapeElement } from "../editor/tree";
 import { TrackCrossingShapeElement } from "../editor/crossing";
+import { SchedulerButtonShapeElement } from "../editor/schedulerButton";
 
 export class CanvasElement extends HTMLElement {
     ctx?: CanvasRenderingContext2D
@@ -492,3 +493,21 @@ export class BlockCanvasElement extends CanvasElement {
     }
 }
 customElements.define("block-canvas-element", BlockCanvasElement)
+
+export class SchedulerButtonCanvasElement extends CanvasElement {
+    element: SchedulerButtonShapeElement;
+    constructor() {
+        super()
+        this.element = new SchedulerButtonShapeElement("", 0, 0,  "")
+        this.element.angle = 0
+    }
+
+    connectedCallback() {
+        this.draw()
+    }
+    draw() {
+        super.draw()
+        this.element.draw(this.ctx!)
+    }
+}
+customElements.define("scheduler-button-canvas-element", SchedulerButtonCanvasElement)
