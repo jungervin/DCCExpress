@@ -91,18 +91,19 @@ define(["require", "exports", "./editor/editor", "./editor/toolbar", "./editor/t
                     ws_1.wsClient.send({ type: dcc_1.ApiCommands.getRBusInfo, data: "" });
                     toastManager_1.toastManager.showToast("Config Loaded", "success");
                 }).catch((reason) => {
-                    //toastManager.showToast("Config Not Loaded<br>"+ reason, "error")
                 }).finally(() => {
+                    ws_1.wsClient.connect();
                 });
             }).catch((reason) => {
-                //toastManager.showToast("Settings Not Loaded<br>"+ reason, "error")
             }).finally(() => {
-                ws_1.wsClient.connect();
             });
             ws_1.wsClient.onConnected = () => {
                 this.toolbar.wsStatus.classList.remove("error");
                 this.toolbar.wsStatus.classList.add("success");
-                this.locoControlPanel.init();
+                //this.locoControlPanel.init()
+                this.locoControlPanel.fetchLocomotives().then(() => {
+                    api_1.Api.getBlocks();
+                });
             };
             ws_1.wsClient.onError = () => {
                 this.toolbar.wsStatus.classList.remove("success");
@@ -191,9 +192,9 @@ define(["require", "exports", "./editor/editor", "./editor/toolbar", "./editor/t
                         break;
                 }
             };
-            // A settings betöltése után
-            api_1.Api.loadLocomotives().then((locos) => {
-            });
+            // A settings betöltése után??
+            // Api.loadLocomotives().then((locos) => {
+            // })
             this.locoControlPanel = document.getElementById("locoControlPanel");
             this.locos = this.locoControlPanel.locomotives;
             this.tasks = new task_1.Tasks();

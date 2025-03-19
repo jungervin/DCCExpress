@@ -54,7 +54,8 @@ define(["require", "exports"], function (require, exports) {
         ApiCommands["setBasicAccessory"] = "setBasicAccessory";
         ApiCommands["basicAccessoryInfo"] = "basicAccessoryInfo";
         ApiCommands["setBlock"] = "setBlock";
-        ApiCommands["getBlock"] = "getBlock";
+        // getBlock = "getBlock",
+        ApiCommands["getBlocks"] = "getBlocks";
         ApiCommands["blockInfo"] = "blockInfo";
         ApiCommands["getRBusInfo"] = "getRBusInfo";
         ApiCommands["rbusInfo"] = "rbusInfo";

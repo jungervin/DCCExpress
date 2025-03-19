@@ -470,7 +470,7 @@ export class LocoControlPanel extends HTMLElement {
     }
 
 
-    private async fetchLocomotives() {
+    public async fetchLocomotives() {
         try {
             const response = await fetch(`/locomotives`);
             const locos = await response.json();

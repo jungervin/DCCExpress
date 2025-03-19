@@ -1,4 +1,4 @@
-import { iSetBasicAccessory, iSetTurnout, iGetTurnout, iLoco, iSetLocoFunction, iSetPower, CommandCenterTypes, iZ21CommandCenter, iCommandCenter, iDCCExTcp, iDCCExSerial, iGetSensor, iSetOutput, iDccExDirectCommand } from "../../common/src/dcc";
+import { iSetBasicAccessory, iSetTurnout, iGetTurnout, iLoco, iSetLocoFunction, iSetPower, CommandCenterTypes, iZ21CommandCenter, iCommandCenter, iDCCExTcp, iDCCExSerial, iGetSensor, iSetOutput, iDccExDirectCommand, iData, ApiCommands, blocks } from "../../common/src/dcc";
 import { CommandCenter } from "./commandcenter";
 import { COMMANDCENTER_SETTING_FILE } from "./server";
 import * as fs from "fs";
@@ -6,6 +6,7 @@ import { Z21CommandCenter } from "./z21commandcenter";
 import { DCCExTCPCommandCenter } from "./dccExTCPCommandCenter";
 import { DccExSerialCommandCenter } from "./dccExSerialCommandCenter";
 import { log, logError } from "./utility";
+import { broadcastAll } from "./ws";
 
 export class CommandCenters {
 

@@ -19,8 +19,9 @@ export function broadcastAll(msg: iData) {
     });
 }
 
-function send(s: WebSocket, type: ApiCommands, data: any) {
-    s.send(JSON.stringify({ type: type, data: data } as iData))
+function send(s: WebSocket, msg: iData) {
+    //s.send(JSON.stringify({ type: type, data: data } as iData))
+    s.send(JSON.stringify(msg));
 }
 
 wsServer.on("connection", (ws, req) => {
@@ -163,6 +164,10 @@ wsServer.on("connection", (ws, req) => {
 
 
                     log("BROADCAST BLOCKS", blocks)
+                    broadcastAll({ type: ApiCommands.blockInfo, data: { blocks } } as iData)
+                    break;
+
+                case ApiCommands.getBlocks:
                     broadcastAll({ type: ApiCommands.blockInfo, data: { blocks } } as iData)
                     break;
 

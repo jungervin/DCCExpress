@@ -895,7 +895,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                     var elem = this.views.elements.find((e) => {
                         return e.mouseInView(x, y);
                     });
-                    if (elem && elem instanceof schedulerButton_1.SchedulerButtonShapeElement) {
+                    if (elem && (elem instanceof schedulerButton_1.SchedulerButtonShapeElement || elem instanceof block_1.BlockElement)) {
                         this.selectedElement = elem;
                         this.selectedElement.isSelected = false;
                         this.propertyPanelVisibility = true;

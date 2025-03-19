@@ -1080,7 +1080,7 @@ export class CustomCanvas extends HTMLElement {
                     return e.mouseInView(x, y)
                 })
 
-                if (elem && elem instanceof SchedulerButtonShapeElement) {
+                if (elem && (elem instanceof SchedulerButtonShapeElement || elem instanceof BlockElement)) {
                     this.selectedElement = elem
                     this.selectedElement.isSelected = false;
                     this.propertyPanelVisibility = true

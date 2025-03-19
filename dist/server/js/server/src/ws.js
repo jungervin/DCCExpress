@@ -41,8 +41,9 @@ function broadcastAll(msg) {
         }
     });
 }
-function send(s, type, data) {
-    s.send(JSON.stringify({ type: type, data: data }));
+function send(s, msg) {
+    //s.send(JSON.stringify({ type: type, data: data } as iData))
+    s.send(JSON.stringify(msg));
 }
 exports.wsServer.on("connection", (ws, req) => {
     const ip = req.socket.remoteAddress;
@@ -172,6 +173,9 @@ exports.wsServer.on("connection", (ws, req) => {
                         (0, utility_1.logError)(error);
                     }
                     (0, utility_1.log)("BROADCAST BLOCKS", dcc_1.blocks);
+                    broadcastAll({ type: dcc_1.ApiCommands.blockInfo, data: { blocks: dcc_1.blocks } });
+                    break;
+                case dcc_1.ApiCommands.getBlocks:
                     broadcastAll({ type: dcc_1.ApiCommands.blockInfo, data: { blocks: dcc_1.blocks } });
                     break;
                 case dcc_1.ApiCommands.setTimeSettings:

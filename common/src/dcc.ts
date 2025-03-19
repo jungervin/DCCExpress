@@ -38,7 +38,8 @@ export enum ApiCommands {
     basicAccessoryInfo = "basicAccessoryInfo",
 
     setBlock = "setBlock",
-    getBlock = "getBlock",
+    // getBlock = "getBlock",
+    getBlocks = "getBlocks",
     blockInfo = "blockInfo",
 
     getRBusInfo = "getRBusInfo",
@@ -68,6 +69,7 @@ export enum ApiCommands {
     
     dccExDirectCommandResponse = "dccExDirectCommandResponse",
     wsSensorInfo = "wsSensorInfo",
+    
 }
 
 export interface iData {

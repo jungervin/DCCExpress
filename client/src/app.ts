@@ -113,7 +113,8 @@ export class App {
 
         this.editor.init()
 
-
+        
+        
 
         Globals.fetchJsonData("/settings.json").then((data: any) => {
             const s = data as iSettings
@@ -129,29 +130,35 @@ export class App {
             toastManager.showToast("Settings Loaded", "success")
             Globals.fetchJsonData('/config.json').then((conf: any) => {
                 this.configLoaded(conf)
+                
                 wsClient.send({ type: ApiCommands.getRBusInfo, data: "" })
-
+                
+                
                 toastManager.showToast("Config Loaded", "success")
 
 
             }).catch((reason) => {
-                //toastManager.showToast("Config Not Loaded<br>"+ reason, "error")
+            
             }).finally(() => {
+                wsClient.connect()
             })
 
         }).catch((reason: any) => {
-            //toastManager.showToast("Settings Not Loaded<br>"+ reason, "error")
+            
         }).finally(() => {
-            wsClient.connect()
+            
         })
 
         wsClient.onConnected = () => {
             this.toolbar.wsStatus!.classList.remove("error")
             this.toolbar.wsStatus!.classList.add("success")
 
-            this.locoControlPanel.init()
+            //this.locoControlPanel.init()
+            this.locoControlPanel.fetchLocomotives().then(() => {
+                Api.getBlocks()
+            })
 
-
+            
 
         }
         wsClient.onError = () => {
@@ -252,10 +259,10 @@ export class App {
             }
         }
 
-        // A settings betöltése után
-        Api.loadLocomotives().then((locos) => {
-
-        })
+        // A settings betöltése után??
+        // Api.loadLocomotives().then((locos) => {
+            
+        // })
 
         this.locoControlPanel = document.getElementById("locoControlPanel") as LocoControlPanel
         this.locos = this.locoControlPanel.locomotives

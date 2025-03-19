@@ -22,6 +22,9 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
             const b = { blockName: blockName, locoAddress: locoAddress };
             ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBlock, data: b });
         }
+        static getBlocks() {
+            ws_1.wsClient.send({ type: dcc_1.ApiCommands.getBlocks, data: "" });
+        }
         static getSensor(address) {
             return Api.app.sensors[address];
         }

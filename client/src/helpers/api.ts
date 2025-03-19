@@ -24,6 +24,12 @@ export class Api {
         const b: iSetBlock = {blockName: blockName, locoAddress: locoAddress}
         wsClient.send({type: ApiCommands.setBlock, data: b} as iData)
     }
+    static getBlocks() {
+        
+        wsClient.send({type: ApiCommands.getBlocks, data: ""} as iData)
+    }
+
+
     static getSensor(address: number): boolean {
         return Api.app.sensors[address]
     }
