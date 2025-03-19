@@ -126,6 +126,15 @@ exports.wsServer.on("connection", (ws, req) => {
                         (0, utility_1.log)("WS ApiCommands.getRBusInfo:", error);
                     }
                     break;
+                case dcc_1.ApiCommands.wsSensorInfo:
+                    try {
+                        const si = data;
+                        broadcastAll({ type: dcc_1.ApiCommands.sensorInfo, data: si });
+                    }
+                    catch (error) {
+                        (0, utility_1.log)("WS ApiCommands.getRBusInfo:", error);
+                    }
+                    break;
                 case dcc_1.ApiCommands.saveCommandCenter:
                     try {
                         fs.writeFileSync(server_1.COMMANDCENTER_SETTING_FILE, JSON.stringify(data), 'utf8');

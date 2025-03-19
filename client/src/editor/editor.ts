@@ -32,7 +32,7 @@ import { AudioButtonShapeElement } from "./audioButton";
 import { FastClock } from "./clock";
 import { EmergencyButtonShapeElement } from "./emergencyButton";
 import { TreeShapeElement } from "./tree";
-import { SensorShapeElement, SensorTypes } from "./sensor";
+import { SensorShapeElement, SensorSources, SensorTypes } from "./sensor";
 import { TrackCrossingShapeElement } from "./crossing";
 import { SchedulerButtonShapeElement } from "./schedulerButton";
 import { Task, TaskStatus } from "../helpers/task";
@@ -159,8 +159,8 @@ export class CustomCanvas extends HTMLElement {
         window.addEventListener('taskChangedEvent', (e: Event) => {
             var task = (e as CustomEvent).detail
             const btn = Api.getTaskButton(task.name)
-            if(btn) {
-                if(btn.status != task.status) {
+            if (btn) {
+                if (btn.status != task.status) {
                     btn.status = task.status
                     this.draw();
                 }
@@ -1055,12 +1055,6 @@ export class CustomCanvas extends HTMLElement {
         this.downX = e.offsetX
         this.downY = e.offsetY
         if (this.drawEnabled) {
-
-
-            var offsetX = this.getMouseX(e)
-            var offsetY = this.getMouseY(e)
-
-
             if (e.button <= 1) {
                 var x = this.getMouseGridX()
                 var y = this.getMouseGridY()
@@ -1069,7 +1063,6 @@ export class CustomCanvas extends HTMLElement {
                 })
 
                 if (this.drawMode == drawModes.pointer) {
-
                     if (elem) {
                         this.selectedElement = elem
                         this.selectedElement.isSelected = true;
@@ -1078,12 +1071,25 @@ export class CustomCanvas extends HTMLElement {
                     }
                 }
                 this.draw()
-
             }
         } else {
+            if (e.button <= 1) {
+                var x = this.getMouseGridX()
+                var y = this.getMouseGridY()
+                var elem = this.views.elements.find((e) => {
+                    return e.mouseInView(x, y)
+                })
 
+                if (elem && elem instanceof SchedulerButtonShapeElement) {
+                    this.selectedElement = elem
+                    this.selectedElement.isSelected = false;
+                    this.propertyPanelVisibility = true
+                } else {
+                    this.unselectAll()
+                    this.propertyPanelVisibility = false
+                }
+            }
         }
-
     }
 
     private add(view: View) {
@@ -1754,6 +1760,7 @@ export class CustomCanvas extends HTMLElement {
                         valueOff: sensor.valueOff,
                         colorOn: sensor.colorOn,
                         kind: sensor.kind,
+                        source: sensor.source
                     })
                     break;
 
@@ -1771,7 +1778,8 @@ export class CustomCanvas extends HTMLElement {
                     break;
                 case 'schedulerButton':
                     var schedulerButton = elem as SchedulerButtonShapeElement
-                    elems.push({ uuid: schedulerButton.UUID, type: schedulerButton.type, x: schedulerButton.x, y: schedulerButton.y, name: schedulerButton.name, 
+                    elems.push({
+                        uuid: schedulerButton.UUID, type: schedulerButton.type, x: schedulerButton.x, y: schedulerButton.y, name: schedulerButton.name,
                         taskName: schedulerButton.taskName
                     })
                     break;
@@ -2022,6 +2030,7 @@ export class CustomCanvas extends HTMLElement {
                             sensor.colorOn = elem.fillColor ?? "lime"
                             sensor.valueOff = elem.valueOff ?? false
                             sensor.valueOn = elem.valueOn ?? true
+                            sensor.source = elem.source ?? SensorSources.dcc
                             this.add(sensor)
                             break;
 

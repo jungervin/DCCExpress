@@ -33,6 +33,7 @@ export class RouteListElementProperties extends HTMLElement {
     
         <div class="container">
             <div class="igroup">
+                <p>ℹ️Select the turnouts and set them to the desired position!</p>
                 <div>Name</div>
                 <div>
                     <input id="name" type="text" value="">

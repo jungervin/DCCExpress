@@ -1,4 +1,4 @@
-import { SensorShapeElement } from "../editor/sensor";
+import { SensorShapeElement, SensorSources } from "../editor/sensor";
 import { BitElement } from "./bitElement";
 import { SensorCanvasElement } from "./canvasElement";
 
@@ -11,6 +11,8 @@ export class SensorPropertiesElement extends HTMLElement {
     valueOffElement: BitElement;
     sensor?: SensorShapeElement;
     nameElement: HTMLInputElement;
+    dccSensorInputElement: HTMLInputElement;
+    wsSensorInputElement: HTMLInputElement;
     constructor() {
         super();
 
@@ -45,16 +47,34 @@ export class SensorPropertiesElement extends HTMLElement {
                         <bit-element id="valueOn"></bit-element>
                     </div>
                 </div>
+
+               <div class="igroup" id="modeGroup">
+                    <div>Source</div>
+                    <div>
+                        <input type="radio" id="dcc_sensor" name="source" />
+                        <label for="dcc_sensor">DCC Sensor</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="ws_sensor" name="source" />
+                        <label for="ws_sensor">WS Sensor</label>
+                    </div>
+                </div>            
+
             </div>
         `
 
         this.nameElement = this.shadow.getElementById("name") as HTMLInputElement
-        
+
         this.addressInputElement = this.shadow.getElementById('address') as HTMLInputElement
         this.sensorOffElement = this.shadow.getElementById("btnOff") as SensorCanvasElement
         this.sensorOnElement = this.shadow.getElementById("btnOn") as SensorCanvasElement
         this.valueOffElement = this.shadow.getElementById("valueOff") as BitElement
         this.valueOnElement = this.shadow.getElementById("valueOn") as BitElement
+
+        this.dccSensorInputElement = this.shadow.getElementById("dcc_sensor") as HTMLInputElement
+        this.wsSensorInputElement = this.shadow.getElementById("ws_sensor") as HTMLInputElement
+
     }
 
     setSensor(sensor: SensorShapeElement) {
@@ -95,6 +115,17 @@ export class SensorPropertiesElement extends HTMLElement {
         this.valueOnElement.onchanged = (e) => {
             this.sensor!.valueOn = this.valueOnElement.value
         }
+
+        this.dccSensorInputElement.checked = this.sensor!.source == SensorSources.dcc
+        this.dccSensorInputElement.onchange = (e: Event) => {
+            this.sensor!.source = SensorSources.dcc
+        }
+
+        this.wsSensorInputElement.checked = this.sensor!.source == SensorSources.ws
+        this.wsSensorInputElement.onchange = (e: Event) => {
+            this.sensor!.source = SensorSources.ws
+        }
+
     }
 }
 customElements.define("sensor-properties-element", SensorPropertiesElement)

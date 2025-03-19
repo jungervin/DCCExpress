@@ -67,6 +67,7 @@ export enum ApiCommands {
     writeDccExDirectCommand = "writeDirectCommand",
     
     dccExDirectCommandResponse = "dccExDirectCommandResponse",
+    wsSensorInfo = "wsSensorInfo",
 }
 
 export interface iData {

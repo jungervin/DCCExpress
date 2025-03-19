@@ -3,9 +3,13 @@ import { AccessoryAddressElement } from "./button";
 
 export enum SensorTypes { circle, rect }
 
+export enum SensorSources {
+    dcc,
+    ws
+}
 export class SensorShapeElement extends AccessoryAddressElement {
     kind = SensorTypes.rect
-
+    source: SensorSources = SensorSources.dcc
     constructor(uuid: string, address: number, x1: number, y1: number, name: string) {
         super(uuid, address, x1, y1, name)
         this.cursor = "default"

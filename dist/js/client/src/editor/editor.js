@@ -870,8 +870,6 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
             this.downX = e.offsetX;
             this.downY = e.offsetY;
             if (this.drawEnabled) {
-                var offsetX = this.getMouseX(e);
-                var offsetY = this.getMouseY(e);
                 if (e.button <= 1) {
                     var x = this.getMouseGridX();
                     var y = this.getMouseGridY();
@@ -891,6 +889,22 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                 }
             }
             else {
+                if (e.button <= 1) {
+                    var x = this.getMouseGridX();
+                    var y = this.getMouseGridY();
+                    var elem = this.views.elements.find((e) => {
+                        return e.mouseInView(x, y);
+                    });
+                    if (elem && elem instanceof schedulerButton_1.SchedulerButtonShapeElement) {
+                        this.selectedElement = elem;
+                        this.selectedElement.isSelected = false;
+                        this.propertyPanelVisibility = true;
+                    }
+                    else {
+                        this.unselectAll();
+                        this.propertyPanelVisibility = false;
+                    }
+                }
             }
         }
         add(view) {
@@ -1522,6 +1536,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                             valueOff: sensor.valueOff,
                             colorOn: sensor.colorOn,
                             kind: sensor.kind,
+                            source: sensor.source
                         });
                         break;
                     case 'audiobutton':
@@ -1538,7 +1553,8 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                         break;
                     case 'schedulerButton':
                         var schedulerButton = elem;
-                        elems.push({ uuid: schedulerButton.UUID, type: schedulerButton.type, x: schedulerButton.x, y: schedulerButton.y, name: schedulerButton.name,
+                        elems.push({
+                            uuid: schedulerButton.UUID, type: schedulerButton.type, x: schedulerButton.x, y: schedulerButton.y, name: schedulerButton.name,
                             taskName: schedulerButton.taskName
                         });
                         break;
@@ -1578,7 +1594,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                 //var elems = config.elems
                 config.pages.forEach((page) => {
                     page.elems.forEach((elem) => {
-                        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30;
+                        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31;
                         console.log(elem);
                         switch (elem.type) {
                             case "track":
@@ -1773,6 +1789,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                                 sensor.colorOn = (_28 = elem.fillColor) !== null && _28 !== void 0 ? _28 : "lime";
                                 sensor.valueOff = (_29 = elem.valueOff) !== null && _29 !== void 0 ? _29 : false;
                                 sensor.valueOn = (_30 = elem.valueOn) !== null && _30 !== void 0 ? _30 : true;
+                                sensor.source = (_31 = elem.source) !== null && _31 !== void 0 ? _31 : sensor_1.SensorSources.dcc;
                                 this.add(sensor);
                                 break;
                         }

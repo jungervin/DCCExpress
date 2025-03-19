@@ -32,10 +32,12 @@ export class BitElement extends HTMLElement {
         this._value = v;
        
         if (v) {
-            this.style.backgroundColor = "orangered"
+            this.style.backgroundColor = "lime"
+            this.style.color = "black"
             this.innerHTML = '1'
         } else {
             this.style.backgroundColor = "#2a2a2a"
+            this.style.color = "white"
             this.innerHTML = '0'
         }
         if(this.onchanged) {

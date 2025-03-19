@@ -1,8 +1,8 @@
 {
     "settings": {
-        "scale": 1.08119568150947,
-        "origX": 299,
-        "origY": 61,
+        "scale": 2.602026322504432,
+        "origX": -611,
+        "origY": -605,
         "locoPanelVisible": true,
         "propertyPanelVisible": true
     },
@@ -14,13 +14,14 @@
                     "uuid": "766e5ce8-373a-46aa-b4e5-040dce7b7216",
                     "type": "sensor",
                     "address": 6,
-                    "x": 11,
-                    "y": 8,
+                    "x": 13,
+                    "y": 10,
                     "name": "sensor1441",
                     "valueOn": true,
                     "valueOff": false,
                     "colorOn": "lime",
-                    "kind": 1
+                    "kind": 1,
+                    "source": 0
                 },
                 {
                     "uuid": "52e18bcc-3d9d-4ab4-b1f9-e940cbe04419",
@@ -301,7 +302,7 @@
                     "t1ClosedValue": true,
                     "t1OpenValue": false,
                     "rbusAddress": 14,
-                    "outputMode": 2
+                    "outputMode": 0
                 },
                 {
                     "uuid": "961fa06c-9433-4504-9b62-e52827a59eb2",
@@ -1090,7 +1091,7 @@
                     "x": 14,
                     "y": 10,
                     "angle": 0,
-                    "rbusAddress": 26
+                    "rbusAddress": 6
                 },
                 {
                     "uuid": "2c4db664-7b80-416c-a6b1-dfa4ab16a94d",

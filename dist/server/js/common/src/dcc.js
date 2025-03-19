@@ -78,6 +78,7 @@ var ApiCommands;
     ApiCommands["setProgPower"] = "setProgPower";
     ApiCommands["writeDccExDirectCommand"] = "writeDirectCommand";
     ApiCommands["dccExDirectCommandResponse"] = "dccExDirectCommandResponse";
+    ApiCommands["wsSensorInfo"] = "wsSensorInfo";
 })(ApiCommands || (exports.ApiCommands = ApiCommands = {}));
 var Z21POWERINFO;
 (function (Z21POWERINFO) {

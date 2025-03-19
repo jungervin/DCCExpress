@@ -1,16 +1,22 @@
 define(["require", "exports", "../helpers/globals", "./button"], function (require, exports, globals_1, button_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.SensorShapeElement = exports.SensorTypes = void 0;
+    exports.SensorShapeElement = exports.SensorSources = exports.SensorTypes = void 0;
     var SensorTypes;
     (function (SensorTypes) {
         SensorTypes[SensorTypes["circle"] = 0] = "circle";
         SensorTypes[SensorTypes["rect"] = 1] = "rect";
     })(SensorTypes || (exports.SensorTypes = SensorTypes = {}));
+    var SensorSources;
+    (function (SensorSources) {
+        SensorSources[SensorSources["dcc"] = 0] = "dcc";
+        SensorSources[SensorSources["ws"] = 1] = "ws";
+    })(SensorSources || (exports.SensorSources = SensorSources = {}));
     class SensorShapeElement extends button_1.AccessoryAddressElement {
         constructor(uuid, address, x1, y1, name) {
             super(uuid, address, x1, y1, name);
             this.kind = SensorTypes.rect;
+            this.source = SensorSources.dcc;
             this.cursor = "default";
         }
         get type() {
