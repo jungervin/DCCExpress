@@ -1786,7 +1786,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                             case "sensor":
                                 var sensor = new sensor_1.SensorShapeElement(elem.uuid, (_26 = elem.address) !== null && _26 !== void 0 ? _26 : 0, elem.x, elem.y, elem.name);
                                 sensor.kind = (_27 = elem.kind) !== null && _27 !== void 0 ? _27 : sensor_1.SensorTypes.rect;
-                                sensor.colorOn = (_28 = elem.fillColor) !== null && _28 !== void 0 ? _28 : "lime";
+                                sensor.colorOn = (_28 = elem.colorOn) !== null && _28 !== void 0 ? _28 : "lime";
                                 sensor.valueOff = (_29 = elem.valueOff) !== null && _29 !== void 0 ? _29 : false;
                                 sensor.valueOn = (_30 = elem.valueOn) !== null && _30 !== void 0 ? _30 : true;
                                 sensor.source = (_31 = elem.source) !== null && _31 !== void 0 ? _31 : sensor_1.SensorSources.dcc;

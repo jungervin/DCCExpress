@@ -2027,7 +2027,7 @@ export class CustomCanvas extends HTMLElement {
                         case "sensor":
                             var sensor = new SensorShapeElement(elem.uuid, elem.address ?? 0, elem.x, elem.y, elem.name);
                             sensor.kind = elem.kind ?? SensorTypes.rect
-                            sensor.colorOn = elem.fillColor ?? "lime"
+                            sensor.colorOn = elem.colorOn ?? "lime"
                             sensor.valueOff = elem.valueOff ?? false
                             sensor.valueOn = elem.valueOn ?? true
                             sensor.source = elem.source ?? SensorSources.dcc

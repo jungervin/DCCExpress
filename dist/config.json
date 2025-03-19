@@ -1,8 +1,8 @@
 {
     "settings": {
-        "scale": 0.7597631272118728,
-        "origX": 288,
-        "origY": 55,
+        "scale": 1.5794929748384672,
+        "origX": -194,
+        "origY": -302,
         "locoPanelVisible": true,
         "propertyPanelVisible": true
     },
@@ -19,7 +19,7 @@
                     "name": "sensor1441",
                     "valueOn": true,
                     "valueOff": false,
-                    "colorOn": "lime",
+                    "colorOn": "white",
                     "kind": 1,
                     "source": 0
                 },

@@ -39,20 +39,21 @@ define(["require", "exports"], function (require, exports) {
                     </div>
                 </div>
 
-            <!--
-               <div class="igroup" id="modeGroup">
-                    <div>Source</div>
-                    <div>
-                        <input type="radio" id="dcc_sensor" name="source" />
-                        <label for="dcc_sensor">DCC Sensor</label>
+            
+               <div class="igroup">
+                    <div>Other Settings</div>
+                        <div style="padding: 8px 0">
+                            <select id="colorSelect">
+                                <option value="lime">Green</option>
+                                <option value="red">Red</option>
+                                <option value="yellow">Yellow</option>
+                                <option value="cornflowerblue">Blue</option>
+                                <option value="white">White</option>
+                            </select>
+                            <label for="colorSelect"> Color</label>                        
+                        </div>
                     </div>
-
-                    <div>
-                        <input type="radio" id="ws_sensor" name="source" />
-                        <label for="ws_sensor">WS Sensor</label>
-                    </div>
-                </div>            
-            -->
+                </div>
             </div>
         `;
             this.nameElement = this.shadow.getElementById("name");
@@ -61,8 +62,12 @@ define(["require", "exports"], function (require, exports) {
             this.sensorOnElement = this.shadow.getElementById("btnOn");
             this.valueOffElement = this.shadow.getElementById("valueOff");
             this.valueOnElement = this.shadow.getElementById("valueOn");
-            // this.dccSensorInputElement = this.shadow.getElementById("dcc_sensor") as HTMLInputElement
-            // this.wsSensorInputElement = this.shadow.getElementById("ws_sensor") as HTMLInputElement
+            this.colorSelectElement = this.shadow.getElementById("colorSelect");
+            this.colorSelectElement.addEventListener("change", () => {
+                this.sensor.colorOn = this.colorSelectElement.value;
+                this.sensorOnElement.sensor.colorOn = this.colorSelectElement.value;
+                this.sensorOnElement.draw();
+            });
         }
         setSensor(sensor) {
             this.sensor = sensor;
@@ -79,6 +84,7 @@ define(["require", "exports"], function (require, exports) {
             this.sensorOnElement.sensor.address = sensor.address;
             this.sensorOnElement.sensor.address = sensor.address;
             this.sensorOnElement.sensor.on = true;
+            this.sensorOnElement.sensor.colorOn = sensor.colorOn;
             this.sensorOnElement.draw();
             this.sensorOnElement.onclick = (e) => {
                 // const data: iSetBasicAccessory = { address: sensor.address, value: this.valueOnElement.value } as iSetBasicAccessory
@@ -105,6 +111,7 @@ define(["require", "exports"], function (require, exports) {
             // this.wsSensorInputElement.onchange = (e: Event) => {
             //     this.sensor!.source = SensorSources.ws
             // }
+            this.colorSelectElement.value = this.sensor.colorOn;
         }
     }
     exports.SensorPropertiesElement = SensorPropertiesElement;
