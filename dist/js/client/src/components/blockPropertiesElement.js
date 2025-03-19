@@ -1,4 +1,4 @@
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", "../helpers/api"], function (require, exports, api_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.BlockPropertiesElement = void 0;
@@ -10,25 +10,7 @@ define(["require", "exports"], function (require, exports) {
         <style>
                 @import url("css/bootstrap.min.css");
                 @import url("css/properties.css");
-            label {
-                display: inline-block;
-                white-space: nowrap;
-            }
-            .row {
-                margin: 0;
-            }                
-
-
-            div {
-                color: white;
-            }
-            #loco {
-                color: 'black';
-                width: 100%;
-                margin: 0px;
-                padding: 0;
-                overflow: hide;
-            }
+           
         </style>
     
         <div class="container">
@@ -40,16 +22,15 @@ define(["require", "exports"], function (require, exports) {
             </div>
             
             <div class="igroup">
-                <div>Loco</div>
-                <div>
-                    <locomotive-combo-box id="loco"></locomotive-combo-box>
+                <div>Locos</div>
+                <div id="locos" style="height: 460px; overflow: auto; border-radius: 4px;">
                 </div>
             </div>
 
         </div>
     `;
             this.nameElement = shadow.getElementById("name");
-            this.loco = shadow.getElementById("loco");
+            this.locos = shadow.getElementById("locos");
         }
         setBlock(block) {
             this.block = block;
@@ -57,19 +38,49 @@ define(["require", "exports"], function (require, exports) {
             this.nameElement.onchange = (e) => {
                 block.name = this.nameElement.value;
             };
-            const locomotives = [
-                { id: "1", name: "M41 2182", address: 10, imageUrl: "./images/locos/csorgo.png" },
-                { id: "2", name: "M41 2169", address: 11, imageUrl: "./images/locos/csorgo.png" },
-                { id: "3", name: "M44 148", address: 18, imageUrl: "./images/locos/bobo.png" },
-            ];
-            // Locomotive adatok betöltése
-            this.loco.setLocomotives(locomotives);
-            this.loco.selectByAddress(this.block.locoAddress);
-            this.loco.onChange((loco) => {
-                this.block.locoAddress = loco.address;
-                this.block.text = loco.name;
-                //window.dispatchEvent(propertiesChangedEvent)
-                window.invalidate();
+            this.renderLocos();
+        }
+        renderLocos() {
+            this.locos.innerHTML = "";
+            const table = document.createElement("table");
+            table.style.width = "100%";
+            table.style.cursor = "pointer";
+            api_1.Api.loadLocomotives().then((locomotives) => {
+                locomotives.forEach((loco, i) => {
+                    var _a;
+                    const row = document.createElement('tr');
+                    row.dataset.index = loco.address.toString();
+                    table.appendChild(row);
+                    const isActive = i % 2;
+                    var bg = isActive ? "#777" : "#888";
+                    if (loco.address == ((_a = this.block) === null || _a === void 0 ? void 0 : _a.locoAddress)) {
+                        bg = "lime";
+                    }
+                    // const bg = isActive ? "whitesmoke" : "gainsboro";
+                    const fg = isActive ? "white" : "black";
+                    const col1 = document.createElement("td");
+                    col1.style.textAlign = "center";
+                    row.appendChild(col1);
+                    col1.style.color = fg;
+                    col1.style.backgroundColor = bg;
+                    col1.style.padding = "8px 10px";
+                    const img = document.createElement('img');
+                    img.style.height = "32px";
+                    img.src = loco.imageUrl;
+                    col1.appendChild(img);
+                    const div = document.createElement('div');
+                    div.innerHTML = `#${loco.address} ${loco.name}`;
+                    col1.appendChild(div);
+                });
+                table.addEventListener("click", (event) => {
+                    const targetRow = event.target.closest("tr");
+                    if (targetRow && targetRow.dataset.index) {
+                        const addr = parseInt(targetRow.dataset.index, 10);
+                        api_1.Api.setBlock(this.block.name, addr);
+                        //this.renderLocos()
+                    }
+                });
+                this.locos.appendChild(table);
             });
         }
     }
