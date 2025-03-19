@@ -111,6 +111,7 @@ define(["require", "exports"], function (require, exports) {
             //this.overlayElement.style.zIndex = "999";
             // Dialógusablak fő elem
             this.dialogElement = document.createElement("div");
+            this.dialogElement.id = "dialogElement";
             this.dialogElement.style.position = "fixed";
             this.dialogElement.style.top = "50%";
             this.dialogElement.style.left = "50%";
@@ -135,6 +136,7 @@ define(["require", "exports"], function (require, exports) {
             this.dialogElement.appendChild(this.headerElement);
             // Tartalom (body) rész
             this.bodyElement = document.createElement("div");
+            this.bodyElement.id = "bodyElement";
             this.bodyElement.style.flex = "1";
             this.bodyElement.style.padding = "8px";
             this.bodyElement.style.overflowY = "auto";

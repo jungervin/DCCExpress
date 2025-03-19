@@ -205,6 +205,7 @@ export class PropertyPanel extends HTMLElement {
 
         if (this._selectedObject) {
             this.container.classList.add('hidden')
+            
             this.container.innerHTML = ""
 
             if (Object.getPrototypeOf(v) == Signal2Element.prototype) {

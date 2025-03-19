@@ -8,8 +8,9 @@ export class CodeEditor extends Dialog {
     btnOk: Button;
     schedulerTextArea: TextArea;
     constructor() {
-        super(900, 700, "dispatcher.js Preview")
-
+        super(900, 700, "Code Preview")
+        
+        this.bodyElement.style.overflowY = "hidden"
         const label = new Label("ℹ️ VS Code is recommended for editing! ℹ️")
         this.addBody(label)
 

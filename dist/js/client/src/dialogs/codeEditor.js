@@ -4,7 +4,8 @@ define(["require", "exports", "../controls/dialog", "../helpers/globals"], funct
     exports.CodeEditor = void 0;
     class CodeEditor extends dialog_1.Dialog {
         constructor() {
-            super(900, 700, "dispatcher.js Preview");
+            super(900, 700, "Code Preview");
+            this.bodyElement.style.overflowY = "hidden";
             const label = new dialog_1.Label("ℹ️ VS Code is recommended for editing! ℹ️");
             this.addBody(label);
             const height = (this.height - 190) + "px";

@@ -1,6 +1,5 @@
 
 
-
 const t10 = Api.getTurnout(10)
 const t11 = Api.getTurnout(11)
 const t12 = Api.getTurnout(12)
@@ -43,6 +42,8 @@ window.dispatcherLoop2 = function() {
 //==================================
 // INIT
 //==================================
+
+var loco = 10
 if (!App.init) {
     
     // Uncomment to debug
@@ -52,7 +53,7 @@ if (!App.init) {
     App.num = 0;
 
     if (block198) {
-        Api.setBlock("block198", 3)
+        Api.setBlock("block198", loco)
     }
    
 
@@ -77,24 +78,26 @@ const re13 = Api.detectRisingEdge(13)
 
 if (Api.detectRisingEdge(24) && Api.getSensor(12)) {
     if (block198) {
-        Api.setBlock("block198", 3)
+        Api.setBlock("block198", loco)
     }
-    //Api.playSound("mav_szignal.mp3")
 }
 
 if (Api.detectRisingEdge(16) && Api.getSensor(13)) {
     if (block199) {
-        Api.setBlock("block199", 3)
+        Api.setBlock("block199", loco)
     }
-    //Api.playSound("mav_szignal.mp3")
 }
 
 if(Api.detectRisingEdge(14) && Api.getSensor(12)) {
-    Api.setBlock("block203", 3)
+    Api.setBlock("block203", loco)
 }
 
 if(re13 && rb14 ) {
-    Api.setBlock("block202", 3)
+    Api.setBlock("block202", loco)
+}
+
+if(re13 && rb16) {
+    Api.setBlock("block202", loco)
 }
 
 //======================================

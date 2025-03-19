@@ -108,7 +108,7 @@ export class Popup {
 }
 
 export class Dialog {
-    private dialogElement: HTMLDivElement;
+    dialogElement: HTMLDivElement;
     private headerElement: HTMLDivElement;
     bodyElement: HTMLDivElement;
     private footerElement: HTMLDivElement;
@@ -134,6 +134,7 @@ export class Dialog {
 
         // Dialógusablak fő elem
         this.dialogElement = document.createElement("div");
+        this.dialogElement.id = "dialogElement"
         this.dialogElement.style.position = "fixed";
         this.dialogElement.style.top = "50%";
         this.dialogElement.style.left = "50%";
@@ -160,6 +161,7 @@ export class Dialog {
 
         // Tartalom (body) rész
         this.bodyElement = document.createElement("div");
+        this.bodyElement.id = "bodyElement"
         this.bodyElement.style.flex = "1";
         this.bodyElement.style.padding = "8px";
         this.bodyElement.style.overflowY = "auto";

@@ -39,7 +39,7 @@ export class SchedulerButtonPropertiesElement extends HTMLElement {
                  
                     <div style="margin-top: 8px">Steps</div>
                     
-                    <div style="height: 460px; overflow: auto; border-radius: 4px;" id="steps">
+                    <div style="height: 420px; overflow: auto; border-radius: 4px;" id="steps">
                     </div>
                     <div id="buttons" style="margin: 10px 0">
                     <div id="status" style="padding: 4px; border: solid 1px gray;border-radius: 4px; margin: 4px 0" >Status: </div>

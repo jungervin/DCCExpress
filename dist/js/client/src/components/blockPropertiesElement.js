@@ -23,13 +23,11 @@ define(["require", "exports", "../helpers/api"], function (require, exports, api
             
             <div class="igroup">
                 <div>Locos</div>
-                <div id="locos" style="height: 360px; overflow: auto; border-radius: 4px;">
+                <div id="locos" style="height: 420px; overflow: auto; border-radius: 4px;">
                 </div>
-            </div>
-            <div style="text-align: center; margin-top: 8px">
-               
+            <div style="text-align: center; margin: 8px 0">
                 <button id="btnRemove" class="btn btn-secondary">REMOVE</button>
-                
+            </div>
             </div>
 
         </div>
