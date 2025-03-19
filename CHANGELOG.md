@@ -1,6 +1,25 @@
 # 📜 Changelog
 
 
+#### 2025-03-19
+* WebSocket sensor handling, e.g., Node-RED
+```js
+// NodeRed: toggle sensor 6
+var on = global.get("ws_on") || false;
+msg.payload = {
+    type: "wsSensorInfo",
+    data: {
+        address: 6,
+        on: on
+    }
+};
+global.set("ws_on", !on);
+return msg;
+```
+* Task button
+* Task list with controls
+* worker.js implementation
+
 #### 2025-03-16
 * dcc-ex sensors
 * wiki Command-Centers: The sensors can also be used as RBus sensors
