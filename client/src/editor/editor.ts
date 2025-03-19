@@ -1082,7 +1082,7 @@ export class CustomCanvas extends HTMLElement {
 
                 if (elem && (elem instanceof SchedulerButtonShapeElement || elem instanceof BlockElement)) {
                     this.selectedElement = elem
-                    this.selectedElement.isSelected = false;
+                    this.selectedElement.isSelected = true;
                     this.propertyPanelVisibility = true
                 } else {
                     this.unselectAll()
@@ -1437,7 +1437,7 @@ export class CustomCanvas extends HTMLElement {
             return
         }
 
-        if (this.dragEnabled) {
+        if (this.dragEnabled && this.drawEnabled) {
             if (e.buttons === 1) {
                 if (this.selectedElement) {
                     //this.selectedElement.x = this.getMouseGridX()

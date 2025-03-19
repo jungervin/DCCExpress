@@ -11,6 +11,7 @@ export class BlockPropertiesElement extends HTMLElement {
     //loco: LocomotiveComboBox;
     nameElement: HTMLInputElement;
     locos: HTMLElement;
+    btnRemove: HTMLButtonElement;
 
     constructor() {
         super()
@@ -33,8 +34,13 @@ export class BlockPropertiesElement extends HTMLElement {
             
             <div class="igroup">
                 <div>Locos</div>
-                <div id="locos" style="height: 460px; overflow: auto; border-radius: 4px;">
+                <div id="locos" style="height: 360px; overflow: auto; border-radius: 4px;">
                 </div>
+            </div>
+            <div style="text-align: center; margin-top: 8px">
+               
+                <button id="btnRemove" class="btn btn-secondary">REMOVE</button>
+                
             </div>
 
         </div>
@@ -42,6 +48,10 @@ export class BlockPropertiesElement extends HTMLElement {
 
         this.nameElement = shadow.getElementById("name") as HTMLInputElement
         this.locos = shadow.getElementById("locos") as HTMLElement
+        this.btnRemove = shadow.getElementById("btnRemove") as HTMLButtonElement
+        this.btnRemove.onclick = (e) => {
+            Api.setBlock(this.block!.name, 0)
+        }
     }
 
     setBlock(block: BlockElement) {
@@ -69,11 +79,7 @@ export class BlockPropertiesElement extends HTMLElement {
                 table.appendChild(row)
 
                 const isActive = i % 2;
-                var bg = isActive ? "#777" : "#888";
-                if(loco.address == this.block?.locoAddress) {
-                        bg = "lime"
-                }
-                // const bg = isActive ? "whitesmoke" : "gainsboro";
+                const bg = isActive ? "#777" : "#888";
                 const fg = isActive ? "white" : "black";
 
                 const col1 = document.createElement("td");

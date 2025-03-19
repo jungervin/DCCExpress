@@ -23,14 +23,23 @@ define(["require", "exports", "../helpers/api"], function (require, exports, api
             
             <div class="igroup">
                 <div>Locos</div>
-                <div id="locos" style="height: 460px; overflow: auto; border-radius: 4px;">
+                <div id="locos" style="height: 360px; overflow: auto; border-radius: 4px;">
                 </div>
+            </div>
+            <div style="text-align: center; margin-top: 8px">
+               
+                <button id="btnRemove" class="btn btn-secondary">REMOVE</button>
+                
             </div>
 
         </div>
     `;
             this.nameElement = shadow.getElementById("name");
             this.locos = shadow.getElementById("locos");
+            this.btnRemove = shadow.getElementById("btnRemove");
+            this.btnRemove.onclick = (e) => {
+                api_1.Api.setBlock(this.block.name, 0);
+            };
         }
         setBlock(block) {
             this.block = block;
@@ -47,16 +56,11 @@ define(["require", "exports", "../helpers/api"], function (require, exports, api
             table.style.cursor = "pointer";
             api_1.Api.loadLocomotives().then((locomotives) => {
                 locomotives.forEach((loco, i) => {
-                    var _a;
                     const row = document.createElement('tr');
                     row.dataset.index = loco.address.toString();
                     table.appendChild(row);
                     const isActive = i % 2;
-                    var bg = isActive ? "#777" : "#888";
-                    if (loco.address == ((_a = this.block) === null || _a === void 0 ? void 0 : _a.locoAddress)) {
-                        bg = "lime";
-                    }
-                    // const bg = isActive ? "whitesmoke" : "gainsboro";
+                    const bg = isActive ? "#777" : "#888";
                     const fg = isActive ? "white" : "black";
                     const col1 = document.createElement("td");
                     col1.style.textAlign = "center";

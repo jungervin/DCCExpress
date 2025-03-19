@@ -897,7 +897,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                     });
                     if (elem && (elem instanceof schedulerButton_1.SchedulerButtonShapeElement || elem instanceof block_1.BlockElement)) {
                         this.selectedElement = elem;
-                        this.selectedElement.isSelected = false;
+                        this.selectedElement.isSelected = true;
                         this.propertyPanelVisibility = true;
                     }
                     else {
@@ -1233,7 +1233,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                 this.draw();
                 return;
             }
-            if (this.dragEnabled) {
+            if (this.dragEnabled && this.drawEnabled) {
                 if (e.buttons === 1) {
                     if (this.selectedElement) {
                         //this.selectedElement.x = this.getMouseGridX()
