@@ -3,7 +3,7 @@ if (!Api.tasks.getTask("Task1")) {
 
     const task = Api.tasks.addTask("Task1")
 
-    task.autoStart = true
+    task.autoStart = false
     task.finishOnComplete = true
     task.setLoco(10)
     
@@ -19,8 +19,29 @@ if (!Api.tasks.getTask("Task1")) {
     task.setRoute("routeSwitch112")
     task.playSound("mav_szignal.mp3")
     task.waitMs(3000, 5000)
-    
+    task.ifClosed(21) 
+        task.break()
+        task.delay(3000)
+        task.goto("21 Closed")
+    task.else() 
+        task.break()
+        task.delay(3000)
+        task.goto("21 Open")
+    task.endIf()
 
+    
+    task.label("21 Closed")
+    task.break()
+    task.playSound("mav_szignal.mp3")
+    task.delay(3000)
+    task.goto("resume")
+
+    task.label("21 Open")
+    task.break()
+    task.playSound("mav_szignal.mp3")
+    task.delay(3000)
+
+    task.label("resume")
     // Whistle
     task.setFunctionMs(17, true, 500)
     task.waitMs(3000, 5000)

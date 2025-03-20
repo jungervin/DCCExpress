@@ -138,6 +138,22 @@ export class Api {
         }
         return undefined
     }
+    
+    static getTurnoutState(address: number) {
+        for (let t of Api.app.editor.views.getTurnoutElements()) {
+            if (t.address === address) {
+                return t.t1Closed
+            }
+            if (Object.getPrototypeOf(t) == TurnoutDoubleElement.prototype) {
+                const to = t as TurnoutDoubleElement
+                if (to.address === address || to.address2 === address) {
+                    return to.t2Closed
+                }
+            }
+        }
+        return undefined
+    }
+    
     static getTaskButton(taskName: string) {
         return Api.app.editor.views.getSchedulerButtonByTaskName(taskName)
     }

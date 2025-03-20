@@ -21,7 +21,15 @@ enum StepTypes {
     waitForMinutes = "waitForMinutes",
     startAtMinutes = "startAtMinutes",
     playSound = "playSound",
-    label = "label"
+    label = "label",
+    ifFree = "ifFree",
+    goto = "goto",
+
+    ifClosed = "ifClosed",
+    ifOpen = "ifOpen",
+    else = "else",
+    endIf = "endIf",
+    break = "break"
 }
 export interface iStep {
     type: StepTypes,
@@ -77,6 +85,23 @@ interface iPlaySound {
 interface iLabel {
     text: string
 }
+
+interface iGoto {
+    text: string
+}
+
+interface iBreak {
+    text: string
+}
+
+interface iIfClosed {
+    address: number
+}
+
+interface iIfOpen {
+    address: number
+}
+
 
 export enum TaskStatus {
     running = "🚂 RUNNING",
@@ -241,7 +266,7 @@ export class Task {
     delayEnd: number = 0;
     autoStart = false
 
-//    stopOnComplete: boolean = true;
+    //    stopOnComplete: boolean = true;
     prevSpeed: number = 0;
     constructor(name: string) {
         this.name = name
@@ -317,6 +342,65 @@ export class Task {
 
     label(text: string) {
         this.steps.push({ type: StepTypes.label, data: { text: text } as iLabel } as iStep)
+    }
+
+    ifClosed(address: number) {
+        this.steps.push({ type: StepTypes.ifClosed, data: { address } as iIfClosed } as iStep)
+    }
+
+    ifOpen(address: number) {
+        this.steps.push({ type: StepTypes.ifOpen, data: { address } as iIfOpen } as iStep)
+    }
+
+    endIf() {
+        this.steps.push({ type: StepTypes.endIf, data: {} } as iStep)
+    }
+
+    else() {
+        this.steps.push({ type: StepTypes.else, data: {} } as iStep)
+    }
+
+    goto(label: string) {
+        this.steps.push({ type: StepTypes.goto, data: { text: label } as iGoto } as iStep)
+    }
+
+    break(text: string = "") {
+        this.steps.push({ type: StepTypes.break, data: { text: text } as iBreak } as iStep)
+    }
+
+    gotoNextElse() {
+        const i = this.steps.findIndex((step, i) => {
+            return (i > this.index && step.type == StepTypes.else)
+        })
+        if (i >= 0) {
+            this.index = i
+        } else {
+            this.status = TaskStatus.stopped
+            toastManager.showToast("Could not find any endIf! STOPPED")
+        }
+    }
+    gotoNextEndOrElse() {
+        const i = this.steps.findIndex((step, i) => {
+            return (i > this.index && (step.type == StepTypes.endIf || step.type == StepTypes.else))
+        })
+        if (i >= 0) {
+            this.index = i
+        } else {
+            this.status = TaskStatus.stopped
+            toastManager.showToast("Could not find any else or endIf! STOPPED", "error")
+        }
+    }
+
+    gotoLabel(label: string) {
+        const i = this.steps.findIndex((step, i) => {
+            return (step.type == StepTypes.label && label == (step.data as iGoto).text)
+        })
+        if (i >= 0) {
+            this.index = i
+        } else {
+            this.status = TaskStatus.stopped
+            toastManager.showToast(`Could not find label named: ${label}! STOPPED`, "error")
+        }
     }
 
     procStep() {
@@ -415,6 +499,39 @@ export class Task {
                 case StepTypes.label:
                     this.index++;
                     break;
+                case StepTypes.ifClosed:
+                    var t = Api.getTurnoutState((this.step.data as iIfClosed).address)
+                    if (t) {
+                        this.index++
+                    } else {
+                        this.gotoNextEndOrElse();
+                    }
+                    break;
+                case StepTypes.ifOpen:
+                    var t = Api.getTurnoutState((this.step.data as iIfClosed).address)
+                    if (!t) {
+                        this.index++
+                    } else {
+                        this.gotoNextEndOrElse();
+                    }
+                    break;
+                case StepTypes.else:
+                    this.gotoNextEndOrElse();
+                    break;
+                case StepTypes.endIf:
+                    this.index++
+                    break;
+                case StepTypes.goto:
+                    this.gotoLabel((this.step.data as iGoto).text)
+                    break;
+                case StepTypes.break:
+                    if (this.status != TaskStatus.stopped) {
+                        this.status = TaskStatus.stopped
+                        toastManager.showToast("Break", "warning")
+                    }
+                    break;
+
+
             }
         }
     }
@@ -439,7 +556,7 @@ export class Task {
                 return (`setFunction: ${(step.data as iFunctionStep).fn} on: ${(step.data as iFunctionStep).on}`)
                 break;
             case StepTypes.restart:
-                return (`restart`)
+                return (`<b style="color: yellow">restart</b>`)
             case StepTypes.playSound:
                 return (`playSound: ${(step.data as iPlaySound).fname}`)
             case StepTypes.setRoute:
@@ -450,6 +567,18 @@ export class Task {
                 return (`waitForMinute: ${(step.data as iWaitForMinute).minute}`)
             case StepTypes.label:
                 return (`label: ${(step.data as iLabel).text}`)
+            case StepTypes.ifClosed:
+                return (`<b>ifClosed</b>: ${(step.data as iIfClosed).address}`)
+            case StepTypes.ifOpen:
+                return (`<b>ifOpen:</b> ${(step.data as iIfOpen).address}`)
+            case StepTypes.else:
+                return (`<b>else</b>`)
+            case StepTypes.endIf:
+                return (`<b>endIf</b>`)
+            case StepTypes.goto:
+                return (`<b>goto:</b> ${(step.data as iGoto).text}`)
+            case StepTypes.break:
+                return (`<b style="color: yellow">break:</b> ${(step.data as iBreak).text}`)
 
         }
         return "Unknown"
@@ -506,6 +635,10 @@ export class Task {
     }
 
     resumeTask() {
+        if (this.step?.type == StepTypes.break && this.index < this.steps.length - 1) {
+            this.index++
+        }
+
         this.status = TaskStatus.running
         this.delayEnd = 0;
         if (this.prevSpeed > 0) {
@@ -514,20 +647,20 @@ export class Task {
     }
 
 
-private _stopOnComplete : boolean = false;
-public get finishOnComplete() : boolean {
-    return this._stopOnComplete;
-}
-public set finishOnComplete(v : boolean) {
-    this._stopOnComplete = v;
-    window.dispatchEvent(
-        new CustomEvent("taskChangedEvent", {
-            detail: this,
-            bubbles: true,
-            composed: true,
-        })
-    );
-}
+    private _stopOnComplete: boolean = false;
+    public get finishOnComplete(): boolean {
+        return this._stopOnComplete;
+    }
+    public set finishOnComplete(v: boolean) {
+        this._stopOnComplete = v;
+        window.dispatchEvent(
+            new CustomEvent("taskChangedEvent", {
+                detail: this,
+                bubbles: true,
+                composed: true,
+            })
+        );
+    }
 
 
     private _status: TaskStatus = TaskStatus.stopped;

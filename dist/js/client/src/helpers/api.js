@@ -122,6 +122,20 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
             }
             return undefined;
         }
+        static getTurnoutState(address) {
+            for (let t of Api.app.editor.views.getTurnoutElements()) {
+                if (t.address === address) {
+                    return t.t1Closed;
+                }
+                if (Object.getPrototypeOf(t) == turnout_1.TurnoutDoubleElement.prototype) {
+                    const to = t;
+                    if (to.address === address || to.address2 === address) {
+                        return to.t2Closed;
+                    }
+                }
+            }
+            return undefined;
+        }
         static getTaskButton(taskName) {
             return Api.app.editor.views.getSchedulerButtonByTaskName(taskName);
         }

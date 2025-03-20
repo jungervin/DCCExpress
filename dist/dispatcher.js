@@ -96,7 +96,7 @@ if(re13 && rb14 ) {
     Api.setBlock("block202", loco)
 }
 
-if(re13 && rb16) {
+if(re13 && !rb16) {
     Api.setBlock("block202", loco)
 }
 

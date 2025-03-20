@@ -19,6 +19,13 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
         StepTypes["startAtMinutes"] = "startAtMinutes";
         StepTypes["playSound"] = "playSound";
         StepTypes["label"] = "label";
+        StepTypes["ifFree"] = "ifFree";
+        StepTypes["goto"] = "goto";
+        StepTypes["ifClosed"] = "ifClosed";
+        StepTypes["ifOpen"] = "ifOpen";
+        StepTypes["else"] = "else";
+        StepTypes["endIf"] = "endIf";
+        StepTypes["break"] = "break";
     })(StepTypes || (StepTypes = {}));
     var TaskStatus;
     (function (TaskStatus) {
@@ -224,6 +231,60 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
         label(text) {
             this.steps.push({ type: StepTypes.label, data: { text: text } });
         }
+        ifClosed(address) {
+            this.steps.push({ type: StepTypes.ifClosed, data: { address } });
+        }
+        ifOpen(address) {
+            this.steps.push({ type: StepTypes.ifOpen, data: { address } });
+        }
+        endIf() {
+            this.steps.push({ type: StepTypes.endIf, data: {} });
+        }
+        else() {
+            this.steps.push({ type: StepTypes.else, data: {} });
+        }
+        goto(label) {
+            this.steps.push({ type: StepTypes.goto, data: { text: label } });
+        }
+        break(text = "") {
+            this.steps.push({ type: StepTypes.break, data: { text: text } });
+        }
+        gotoNextElse() {
+            const i = this.steps.findIndex((step, i) => {
+                return (i > this.index && step.type == StepTypes.else);
+            });
+            if (i >= 0) {
+                this.index = i;
+            }
+            else {
+                this.status = TaskStatus.stopped;
+                toastManager_1.toastManager.showToast("Could not find any endIf! STOPPED");
+            }
+        }
+        gotoNextEndOrElse() {
+            const i = this.steps.findIndex((step, i) => {
+                return (i > this.index && (step.type == StepTypes.endIf || step.type == StepTypes.else));
+            });
+            if (i >= 0) {
+                this.index = i;
+            }
+            else {
+                this.status = TaskStatus.stopped;
+                toastManager_1.toastManager.showToast("Could not find any else or endIf! STOPPED", "error");
+            }
+        }
+        gotoLabel(label) {
+            const i = this.steps.findIndex((step, i) => {
+                return (step.type == StepTypes.label && label == step.data.text);
+            });
+            if (i >= 0) {
+                this.index = i;
+            }
+            else {
+                this.status = TaskStatus.stopped;
+                toastManager_1.toastManager.showToast(`Could not find label named: ${label}! STOPPED`, "error");
+            }
+        }
         procStep() {
             if (this.step) {
                 switch (this.step.type) {
@@ -317,6 +378,39 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                     case StepTypes.label:
                         this.index++;
                         break;
+                    case StepTypes.ifClosed:
+                        var t = api_1.Api.getTurnoutState(this.step.data.address);
+                        if (t) {
+                            this.index++;
+                        }
+                        else {
+                            this.gotoNextEndOrElse();
+                        }
+                        break;
+                    case StepTypes.ifOpen:
+                        var t = api_1.Api.getTurnoutState(this.step.data.address);
+                        if (!t) {
+                            this.index++;
+                        }
+                        else {
+                            this.gotoNextEndOrElse();
+                        }
+                        break;
+                    case StepTypes.else:
+                        this.gotoNextEndOrElse();
+                        break;
+                    case StepTypes.endIf:
+                        this.index++;
+                        break;
+                    case StepTypes.goto:
+                        this.gotoLabel(this.step.data.text);
+                        break;
+                    case StepTypes.break:
+                        if (this.status != TaskStatus.stopped) {
+                            this.status = TaskStatus.stopped;
+                            toastManager_1.toastManager.showToast("Break", "warning");
+                        }
+                        break;
                 }
             }
         }
@@ -340,7 +434,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                     return (`setFunction: ${step.data.fn} on: ${step.data.on}`);
                     break;
                 case StepTypes.restart:
-                    return (`restart`);
+                    return (`<b style="color: yellow">restart</b>`);
                 case StepTypes.playSound:
                     return (`playSound: ${step.data.fname}`);
                 case StepTypes.setRoute:
@@ -351,6 +445,18 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                     return (`waitForMinute: ${step.data.minute}`);
                 case StepTypes.label:
                     return (`label: ${step.data.text}`);
+                case StepTypes.ifClosed:
+                    return (`<b>ifClosed</b>: ${step.data.address}`);
+                case StepTypes.ifOpen:
+                    return (`<b>ifOpen:</b> ${step.data.address}`);
+                case StepTypes.else:
+                    return (`<b>else</b>`);
+                case StepTypes.endIf:
+                    return (`<b>endIf</b>`);
+                case StepTypes.goto:
+                    return (`<b>goto:</b> ${step.data.text}`);
+                case StepTypes.break:
+                    return (`<b style="color: yellow">break:</b> ${step.data.text}`);
             }
             return "Unknown";
         }
@@ -399,6 +505,10 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
             api_1.Api.setLocoSpeed(this.locoAddress, 0);
         }
         resumeTask() {
+            var _a;
+            if (((_a = this.step) === null || _a === void 0 ? void 0 : _a.type) == StepTypes.break && this.index < this.steps.length - 1) {
+                this.index++;
+            }
             this.status = TaskStatus.running;
             this.delayEnd = 0;
             if (this.prevSpeed > 0) {
