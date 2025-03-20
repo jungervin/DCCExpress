@@ -52,7 +52,7 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
         super(name);
         this.ip = "";
         this.port = 21105;
-        this.lastMessageReceivedTime = 0;
+        this.lastSentTime = 0;
         this.taskId = undefined;
         this.buffer = [];
         this.type = dcc_1.CommandCenterTypes.Z21;
@@ -418,13 +418,13 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
                 }
                 else {
                     (0, utility_1.log)('Z21 Task Üzenet elküldve:', bytes);
-                    this.lastMessageReceivedTime = performance.now();
+                    this.lastSentTime = performance.now();
                 }
             });
         }
-        if (performance.now() - this.lastMessageReceivedTime > 55000) {
+        if (performance.now() - this.lastSentTime > 55000) {
             this.LAN_GET_SERIAL_NUMBER();
-            this.lastMessageReceivedTime = performance.now() - 50000;
+            this.lastSentTime = performance.now() - 50000;
         }
         //this.mutex.unlock()
     }

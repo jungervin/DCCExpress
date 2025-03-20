@@ -44,7 +44,7 @@ export class Z21CommandCenter extends CommandCenter {
     ip: string = ""
     port: number = 21105
     udpClient: UDPClient
-    lastMessageReceivedTime: number = 0;
+    lastSentTime: number = 0;
     taskId?: NodeJS.Timeout = undefined;
     buffer: any[] = []
     //accessories: { [address: number]: iSetBasicAccessory } = {};
@@ -471,14 +471,14 @@ export class Z21CommandCenter extends CommandCenter {
                     logError("Z21 Hiba az üzenet küldésekor:", err);
                 } else {
                     log('Z21 Task Üzenet elküldve:', bytes);
-                    this.lastMessageReceivedTime = performance.now()
+                    this.lastSentTime = performance.now()
                 }
             })
         }
 
-        if (performance.now() - this.lastMessageReceivedTime > 55000) {
+        if (performance.now() - this.lastSentTime > 55000) {
             this.LAN_GET_SERIAL_NUMBER()
-            this.lastMessageReceivedTime = performance.now() - 50000
+            this.lastSentTime = performance.now() - 50000
         }
 
         //this.mutex.unlock()
