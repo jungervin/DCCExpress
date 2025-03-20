@@ -26,7 +26,7 @@ export class TrackPropertiesElement extends HTMLElement {
             -->
 
             <div class="igroup">
-                <div>RBus Address</div>
+                <div>RBus or Sensor address</div>
                 <div>
                     <input id="rbusAddress" type="number" value="0">
                 </div>

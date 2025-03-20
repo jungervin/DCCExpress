@@ -68,7 +68,7 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
 
             <div class="igroup">                
                 <div class="row">
-                    <div>RBus Address</div>
+                    <div>RBus or Sensor address</div>
                     <div>
                         <input id="rbusAddress" type="number" value="0">
                     </div>
@@ -214,7 +214,7 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
 
             <div class="igroup">                
                 <div class="row">
-                    <div>RBus Address</div>
+                    <div>RBus or Sensor address</div>
                     <div>
                         <input id="rbusAddress" type="number" value="0">
                     </div>
@@ -399,7 +399,7 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
 
             <div class="igroup">                
                 <div class="row">
-                    <div>RBus Address</div>
+                    <div>RBus or Sensor address</div>
                     <div>
                         <input id="rbusAddress" type="number" value="0">
                     </div>
@@ -649,7 +649,7 @@ define(["require", "exports", "./bitElement", "../../../common/src/dcc", "../hel
 
             <div class="igroup">                
                 <div class="row">
-                    <div>RBus Address</div>
+                    <div>RBus or Sensor address</div>
                     <div>
                         <input id="rbusAddress" type="number" value="0">
                     </div>

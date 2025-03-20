@@ -104,7 +104,7 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
                 </div>
 
                 <div class="igroup">
-                    <div>RBus Address</div>
+                    <div>RBus or Sensor address</div>
                     <div>
                         <input id="rbusAddress" type="number" value="0">
                     </div>
@@ -301,7 +301,7 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
 
 
                 <div class="igroup">
-                    <div>RBus Address</div>
+                    <div>RBus or Sensor address</div>
                     <div>
                         <input id="rbusAddress" type="number" value="0">
                     </div>
@@ -524,7 +524,7 @@ define(["require", "exports", "../helpers/graphics", "../editor/signals", "../he
                 </div>
 
                 <div class="igroup">
-                    <div>RBus Address</div>
+                    <div>RBus or Sensor address</div>
                     <div>
                         <input id="rbusAddress" type="number" value="0">
                     </div>

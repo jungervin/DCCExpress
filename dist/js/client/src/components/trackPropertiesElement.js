@@ -21,7 +21,7 @@ define(["require", "exports"], function (require, exports) {
             -->
 
             <div class="igroup">
-                <div>RBus Address</div>
+                <div>RBus or Sensor address</div>
                 <div>
                     <input id="rbusAddress" type="number" value="0">
                 </div>

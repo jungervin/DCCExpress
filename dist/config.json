@@ -3,8 +3,8 @@
         "scale": 1.7326225946353349,
         "origX": -2,
         "origY": 39,
-        "locoPanelVisible": false,
-        "propertyPanelVisible": false
+        "locoPanelVisible": true,
+        "propertyPanelVisible": true
     },
     "pages": [
         {
@@ -1655,6 +1655,22 @@
                     "fontName": "Arial",
                     "textAlign": "left",
                     "textBaseline": "top"
+                },
+                {
+                    "uuid": "ed484297-364b-4bed-837a-72cf6d4395b3",
+                    "type": "signal2",
+                    "address": 14,
+                    "name": "signal2-149",
+                    "x": 10,
+                    "y": 1,
+                    "angle": 0,
+                    "addressLength": 5,
+                    "isExtendedDecoder": false,
+                    "valueGreen": 0,
+                    "valueRed": 0,
+                    "rbusAddress": 0,
+                    "outputMode": 0,
+                    "aspect": 2
                 }
             ]
         }

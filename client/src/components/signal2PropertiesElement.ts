@@ -125,7 +125,7 @@ export class Signal2PropertiesElement extends HTMLElement {
                 </div>
 
                 <div class="igroup">
-                    <div>RBus Address</div>
+                    <div>RBus or Sensor address</div>
                     <div>
                         <input id="rbusAddress" type="number" value="0">
                     </div>
@@ -376,7 +376,7 @@ export class Signal3PropertiesElement extends HTMLElement {
 
 
                 <div class="igroup">
-                    <div>RBus Address</div>
+                    <div>RBus or Sensor address</div>
                     <div>
                         <input id="rbusAddress" type="number" value="0">
                     </div>
@@ -659,7 +659,7 @@ export class Signal4PropertiesElement extends HTMLElement {
                 </div>
 
                 <div class="igroup">
-                    <div>RBus Address</div>
+                    <div>RBus or Sensor address</div>
                     <div>
                         <input id="rbusAddress" type="number" value="0">
                     </div>

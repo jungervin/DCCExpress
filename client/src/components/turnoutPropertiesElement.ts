@@ -88,7 +88,7 @@ export class TurnoutLeftPropertiesElement extends HTMLElement {
 
             <div class="igroup">                
                 <div class="row">
-                    <div>RBus Address</div>
+                    <div>RBus or Sensor address</div>
                     <div>
                         <input id="rbusAddress" type="number" value="0">
                     </div>
@@ -267,7 +267,7 @@ export class TurnoutRightPropertiesElement extends HTMLElement {
 
             <div class="igroup">                
                 <div class="row">
-                    <div>RBus Address</div>
+                    <div>RBus or Sensor address</div>
                     <div>
                         <input id="rbusAddress" type="number" value="0">
                     </div>
@@ -493,7 +493,7 @@ export class TurnoutDoublePropertiesElement extends HTMLElement {
 
             <div class="igroup">                
                 <div class="row">
-                    <div>RBus Address</div>
+                    <div>RBus or Sensor address</div>
                     <div>
                         <input id="rbusAddress" type="number" value="0">
                     </div>
@@ -784,7 +784,7 @@ export class TurnoutYPropertiesElement extends HTMLElement {
 
             <div class="igroup">                
                 <div class="row">
-                    <div>RBus Address</div>
+                    <div>RBus or Sensor address</div>
                     <div>
                         <input id="rbusAddress" type="number" value="0">
                     </div>
