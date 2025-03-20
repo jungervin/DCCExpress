@@ -429,7 +429,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                 case StepTypes.delay:
                     return (`delay: ${step.data.ms}`);
                 case StepTypes.waitForSensor:
-                    return (`waitForSensor: ${step.data.address}`);
+                    return (`waitForSensor: ${step.data.address} on: ${step.data.on}`);
                 case StepTypes.setFunction:
                     return (`setFunction: ${step.data.fn} on: ${step.data.on}`);
                     break;

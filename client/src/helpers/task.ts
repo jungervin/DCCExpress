@@ -551,7 +551,7 @@ export class Task {
             case StepTypes.delay:
                 return (`delay: ${(step.data as iDelayStep).ms}`)
             case StepTypes.waitForSensor:
-                return (`waitForSensor: ${(step.data as iWaitForSensor).address}`)
+                return (`waitForSensor: ${(step.data as iWaitForSensor).address} on: ${(step.data as iWaitForSensor).on}`)
             case StepTypes.setFunction:
                 return (`setFunction: ${(step.data as iFunctionStep).fn} on: ${(step.data as iFunctionStep).on}`)
                 break;
