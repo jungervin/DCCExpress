@@ -478,6 +478,7 @@ export class Z21CommandCenter extends CommandCenter {
 
         if (performance.now() - this.lastMessageReceivedTime > 55000) {
             this.LAN_GET_SERIAL_NUMBER()
+            this.lastMessageReceivedTime = performance.now() - 50000
         }
 
         //this.mutex.unlock()
