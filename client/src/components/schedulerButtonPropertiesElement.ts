@@ -76,7 +76,7 @@ export class SchedulerButtonPropertiesElement extends HTMLElement {
         window.addEventListener('taskChangedEvent', (e: Event) => {
             var task = (e as CustomEvent).detail as Task
 
-            statusElement.innerHTML = task.status + (task.stopOnComplete ? " 🏁FINISH" : "")
+            statusElement.innerHTML = task.status + (task.finishOnComplete ? " 🏁FINISH" : "")
 
             this.renderTask()
             if (task.status == TaskStatus.running) {

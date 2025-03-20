@@ -124,7 +124,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
         stopOnCompletion() {
             console.log('stopAllTask()');
             this.tasks.forEach(t => {
-                t.stopOnComplete = true;
+                t.finishOnComplete = true;
             });
         }
         startAllTask() {
@@ -282,7 +282,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                         this.index++;
                         break;
                     case StepTypes.restart:
-                        if (!this.stopOnComplete) {
+                        if (!this.finishOnComplete) {
                             this.index = 0;
                             this.prevIndex = -1;
                         }
@@ -388,7 +388,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
             toastManager_1.toastManager.showToast(Tasks.icon + ` TASK: ${this.name} started!`, "success");
         }
         taskFinish() {
-            this.stopOnComplete = !this.stopOnComplete;
+            this.finishOnComplete = !this.finishOnComplete;
         }
         taskStop() {
             if (this.status != TaskStatus.stopped) {
@@ -405,10 +405,10 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                 api_1.Api.setLocoSpeed(this.locoAddress, this.prevSpeed);
             }
         }
-        get stopOnComplete() {
+        get finishOnComplete() {
             return this._stopOnComplete;
         }
-        set stopOnComplete(v) {
+        set finishOnComplete(v) {
             this._stopOnComplete = v;
             window.dispatchEvent(new CustomEvent("taskChangedEvent", {
                 detail: this,

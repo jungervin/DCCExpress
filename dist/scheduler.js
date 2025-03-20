@@ -4,7 +4,7 @@ if (!Api.tasks.getTask("Task1")) {
     const task = Api.tasks.addTask("Task1")
 
     task.autoStart = true
-    task.stopOnComplete = true
+    task.finishOnComplete = true
     task.setLoco(10)
     
     // task.waitForSensor(6, true)

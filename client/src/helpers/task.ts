@@ -202,7 +202,7 @@ export class Tasks {
     stopOnCompletion() {
         console.log('stopAllTask()')
         this.tasks.forEach(t => {
-            t.stopOnComplete = true;
+            t.finishOnComplete = true;
         })
     }
 
@@ -381,7 +381,7 @@ export class Task {
                     this.index++;
                     break;
                 case StepTypes.restart:
-                    if (!this.stopOnComplete) {
+                    if (!this.finishOnComplete) {
                         this.index = 0;
                         this.prevIndex = -1;
                     } else {
@@ -490,7 +490,7 @@ export class Task {
     }
 
     taskFinish() {
-        this.stopOnComplete = !this.stopOnComplete;
+        this.finishOnComplete = !this.finishOnComplete;
     }
 
 
@@ -515,10 +515,10 @@ export class Task {
 
 
 private _stopOnComplete : boolean = false;
-public get stopOnComplete() : boolean {
+public get finishOnComplete() : boolean {
     return this._stopOnComplete;
 }
-public set stopOnComplete(v : boolean) {
+public set finishOnComplete(v : boolean) {
     this._stopOnComplete = v;
     window.dispatchEvent(
         new CustomEvent("taskChangedEvent", {

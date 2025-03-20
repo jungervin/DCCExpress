@@ -62,7 +62,7 @@ define(["require", "exports", "../helpers/task", "../helpers/api"], function (re
             };
             window.addEventListener('taskChangedEvent', (e) => {
                 var task = e.detail;
-                statusElement.innerHTML = task.status + (task.stopOnComplete ? " 🏁FINISH" : "");
+                statusElement.innerHTML = task.status + (task.finishOnComplete ? " 🏁FINISH" : "");
                 this.renderTask();
                 if (task.status == task_1.TaskStatus.running) {
                     this.btnStart.classList.add("btn-primary");
