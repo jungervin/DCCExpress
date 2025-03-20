@@ -190,9 +190,9 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
         setFunction(fn, on) {
             this.steps.push({ type: StepTypes.setFunction, data: { fn: fn, on: on } });
         }
-        setFunctionMs(fn, on, wait) {
+        setFunctionMs(fn, on, duration) {
             this.setFunction(fn, on);
-            this.delay(wait);
+            this.delay(duration);
             this.setFunction(fn, !on);
         }
         delay(ms) {
@@ -209,8 +209,8 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
         waitForSensor(address, on) {
             this.steps.push({ type: StepTypes.waitForSensor, data: { address: address, on: on } });
         }
-        setRoute(route) {
-            this.steps.push({ type: StepTypes.setRoute, data: { routeName: route } });
+        setRoute(routeName) {
+            this.steps.push({ type: StepTypes.setRoute, data: { routeName: routeName } });
         }
         waitForMinutes(minute) {
             this.steps.push({ type: StepTypes.waitForMinutes, data: { minute: minute } });

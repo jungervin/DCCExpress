@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turnout", "../editor/audioButton"], function (require, exports, dcc_1, ws_1, turnout_1, audioButton_1) {
+define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turnout", "../editor/audioButton", "../../../common/src/logicCircuits"], function (require, exports, dcc_1, ws_1, turnout_1, audioButton_1, logicCircuits_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Api = void 0;
@@ -27,6 +27,9 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
         }
         static getSensor(address) {
             return Api.app.sensors[address];
+        }
+        static getSensorDuration(address, state) {
+            logicCircuits_1.PulseDetector.getSensor(address, state);
         }
         static detectRisingEdge(address) {
             const currentState = Api.getSensor(address);

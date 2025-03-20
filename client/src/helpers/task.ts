@@ -275,9 +275,9 @@ export class Task {
         this.steps.push({ type: StepTypes.setFunction, data: { fn: fn, on: on } as iFunctionStep } as iStep)
     }
 
-    setFunctionMs(fn: number, on: boolean, wait: number): void {
+    setFunctionMs(fn: number, on: boolean, duration: number): void {
         this.setFunction(fn, on)
-        this.delay(wait)
+        this.delay(duration)
         this.setFunction(fn, !on)
     }
 
@@ -299,8 +299,8 @@ export class Task {
         this.steps.push({ type: StepTypes.waitForSensor, data: { address: address, on: on } as iWaitForSensor } as iStep)
     }
 
-    setRoute(route: string) {
-        this.steps.push({ type: StepTypes.setRoute, data: { routeName: route } as iRouteStep } as iStep)
+    setRoute(routeName: string) {
+        this.steps.push({ type: StepTypes.setRoute, data: { routeName: routeName } as iRouteStep } as iStep)
     }
 
     waitForMinutes(minute: number) {

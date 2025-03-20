@@ -6,11 +6,12 @@ import { RouteSwitchElement } from "../editor/route";
 import { FastClock } from "../editor/clock";
 import { Tasks } from "./task";
 import { audioManager } from "../editor/audioButton";
+import { PulseDetector } from "../../../common/src/logicCircuits"
 
 export class Api {
 
     static app: App
-    static edges:{ [key: number]: boolean } = {}
+    static edges: { [key: number]: boolean } = {}
 
     static init(app: App) {
         Api.app = app
@@ -21,12 +22,12 @@ export class Api {
     }
 
     static setBlock(blockName: string, locoAddress: number) {
-        const b: iSetBlock = {blockName: blockName, locoAddress: locoAddress}
-        wsClient.send({type: ApiCommands.setBlock, data: b} as iData)
+        const b: iSetBlock = { blockName: blockName, locoAddress: locoAddress }
+        wsClient.send({ type: ApiCommands.setBlock, data: b } as iData)
     }
     static getBlocks() {
-        
-        wsClient.send({type: ApiCommands.getBlocks, data: ""} as iData)
+
+        wsClient.send({ type: ApiCommands.getBlocks, data: "" } as iData)
     }
 
 
@@ -34,20 +35,24 @@ export class Api {
         return Api.app.sensors[address]
     }
 
+    static getSensorDuration(address: number, state: boolean) {
+        PulseDetector.getSensor(address, state)
+    }
+
     static detectRisingEdge(address: number): boolean {
-        const currentState = Api.getSensor(address); 
+        const currentState = Api.getSensor(address);
         if (!(address in Api.edges)) {
             Api.edges[address] = currentState;
             return false;
         }
-    
+
         const rising = !Api.edges[address] && currentState;
         Api.edges[address] = currentState;
         return rising;
     }
-    
+
     static detectFallingEdge(address: number): boolean {
-        const currentState = Api.getSensor(address); 
+        const currentState = Api.getSensor(address);
         if (!(address in Api.edges)) {
             Api.edges[address] = currentState;
             return false;
@@ -55,8 +60,8 @@ export class Api {
         const falling = Api.edges[address] && !currentState;
         Api.edges[address] = currentState;
         return falling;
-    }  
-    
+    }
+
     static emergencyStop() {
         wsClient.send({ type: ApiCommands.emergencyStop, data: "" } as iData)
     }
@@ -170,12 +175,12 @@ export class Api {
         return Api.app.editor.views.getElement(name)
     }
 
-    
+
     static get tasks(): Tasks {
         return Api.app.tasks
     }
 
-    static async loadLocomotives(): Promise<iLocomotive[] | undefined>{
+    static async loadLocomotives(): Promise<iLocomotive[] | undefined> {
         try {
             const response = await fetch(`/locomotives`);
             return await response.json();
