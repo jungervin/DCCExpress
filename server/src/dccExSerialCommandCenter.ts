@@ -8,8 +8,8 @@ export class DccExSerialCommandCenter extends DCCExCommandCenter {
     lastSentTime: number = 0;
     MAIN_TASK_INTERVAL: number = 50;
 
-    constructor(name: string, portName: string, baudRate: number) {
-        super(name);
+    constructor(name: string, portName: string, baudRate: number, init: string) {
+        super(name, init);
         this.serialClient = new SerialClient(portName, baudRate,
             this.connected.bind(this),
             this.received.bind(this),

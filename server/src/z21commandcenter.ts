@@ -51,8 +51,8 @@ export class Z21CommandCenter extends CommandCenter {
     polingTask?: NodeJS.Timeout;
 
 
-    constructor(name: string, ip: string, port: number) {
-        super(name)
+    constructor(name: string, ip: string, port: number, init: string) {
+        super(name, init)
         this.type = CommandCenterTypes.Z21
         this.ip = ip
         this.port = port

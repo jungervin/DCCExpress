@@ -174,7 +174,7 @@ export class CommandCenters {
             const ccSettings = JSON.parse(fs.readFileSync(COMMANDCENTER_SETTING_FILE, 'utf8')) as iCommandCenter;
             if (ccSettings.type == CommandCenterTypes.Z21) {
                 const z21 = ccSettings.commandCenter as iZ21CommandCenter
-                commandCenters.cc = new Z21CommandCenter("z21", z21.ip, z21.port)
+                commandCenters.cc = new Z21CommandCenter("z21", z21.ip, z21.port, "")
                 commandCenters.cc.TURNOUT_WAIT_TIME = z21.turnoutActiveTime
                 commandCenters.cc.BASICACCESSORY_WAIT_TIME = z21.basicAccessoryDecoderActiveTime
                 log("============================================================================")
@@ -186,7 +186,7 @@ export class CommandCenters {
             }
             else if (ccSettings.type == CommandCenterTypes.DCCExTCP) {
                 const dccextcp = ccSettings.commandCenter as iDCCExTcp
-                commandCenters.cc = new DCCExTCPCommandCenter("dcc-ex-tcp", dccextcp.ip, dccextcp.port)
+                commandCenters.cc = new DCCExTCPCommandCenter("dcc-ex-tcp", dccextcp.ip, dccextcp.port, dccextcp.init)
                 commandCenters.cc.TURNOUT_WAIT_TIME = 0 //dccextcp.turnoutActiveTime
                 commandCenters.cc.BASICACCESSORY_WAIT_TIME = 0 //dccextcp.basicAccessoryDecoderActiveTime
                 log("============================================================================")
@@ -198,7 +198,7 @@ export class CommandCenters {
             }
             else if (ccSettings.type == CommandCenterTypes.DCCExSerial) {
                 const dccexserial = ccSettings.commandCenter as iDCCExSerial
-                commandCenters.cc = new DccExSerialCommandCenter("dcc-ex-serial", dccexserial.port, 115200)
+                commandCenters.cc = new DccExSerialCommandCenter("dcc-ex-serial", dccexserial.port, 115200, dccexserial.init)
                 commandCenters.cc.TURNOUT_WAIT_TIME = 0 //dccextcp.turnoutActiveTime
                 commandCenters.cc.BASICACCESSORY_WAIT_TIME = 0 //dccextcp.basicAccessoryDecoderActiveTime
                 log("============================================================================")

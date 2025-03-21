@@ -10,10 +10,12 @@ const ws_1 = require("./ws");
 // TURNOUT( id, addr, sub_addr [, "description"] )
 // https://dcc-ex.com/exrail/exrail-command-reference.html#objects-definition-and-control
 class DCCExCommandCenter extends commandcenter_1.CommandCenter {
-    constructor(name) {
-        super(name);
+    constructor(name, init) {
+        super(name, init);
         this.buffer = [];
         this._data = "";
+        this.init = "";
+        this.init = init;
     }
     put(msg) {
         // Mutex??
@@ -46,7 +48,7 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
     }
     clientConnected() {
         (0, ws_1.broadcastAll)({ type: dcc_1.ApiCommands.powerInfo, data: this.powerInfo });
-        this.put("<s>");
+        //this.put("<s>")
     }
     getLoco(address) {
         this.put(`<t ${address}>`);
@@ -234,9 +236,16 @@ class DCCExCommandCenter extends commandcenter_1.CommandCenter {
         }
     }
     connected() {
+        (0, utility_1.log)("==== COMAND CENTER CONNECTED ====");
+        if (this.init.trim() != "") {
+            (0, utility_1.log)("==== COMAND CENTER INIT ====");
+            const lines = this.init.trim().split("\n");
+            lines.forEach((l) => {
+                this.put(l.trim());
+            });
+            (0, utility_1.log)("============================");
+        }
         this.put('<s>');
-        // this.put('<T>')
-        // this.put('<Q>')
     }
     received(buffer) {
         var msg = buffer.toString();

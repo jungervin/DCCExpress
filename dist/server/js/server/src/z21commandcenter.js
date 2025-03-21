@@ -48,8 +48,8 @@ class Z21CommandCenter extends commandcenter_1.CommandCenter {
             this.LAN_X_SET_STOP();
         }
     }
-    constructor(name, ip, port) {
-        super(name);
+    constructor(name, ip, port, init) {
+        super(name, init);
         this.ip = "";
         this.port = 21105;
         this.lastSentTime = 0;

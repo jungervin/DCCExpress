@@ -626,7 +626,7 @@ define(["require", "exports"], function (require, exports) {
         constructor() {
             super();
             this.panelElement = document.createElement("div");
-            this.panelElement.style.display = "flex";
+            //this.panelElement.style.display = "flex";
             this.panelElement.style.height = "100%";
         }
         getElement() {

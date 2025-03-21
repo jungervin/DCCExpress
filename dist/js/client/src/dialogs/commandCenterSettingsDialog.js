@@ -41,10 +41,12 @@ define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "
                             const dtcp = globals_1.Globals.CommandCenterSetting.commandCenter;
                             ccIp.value = dtcp.ip;
                             ccPort.value = dtcp.port.toString();
+                            initTextAreaElement.value = dtcp.init;
                         }
                         else {
                             ccIp.value = "";
                             ccPort.value = "2560";
+                            initTextAreaElement.value = "";
                         }
                         // turnoutActiveTime.value = dtcp.turnoutActiveTime
                         // baActiveTime.value = dtcp.basicAccessoryDecoderActiveTime
@@ -53,6 +55,7 @@ define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "
                         if (globals_1.Globals.CommandCenterSetting.type == dcc_1.CommandCenterTypes.DCCExSerial) {
                             const dserial = globals_1.Globals.CommandCenterSetting.commandCenter;
                             ccSerialPort.value = dserial.port.toString();
+                            initTextAreaElement.value = dserial.init;
                         }
                         else {
                             ccSerialPort.value = "";
@@ -61,9 +64,10 @@ define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "
                         // baActiveTime.value = dtcp.basicAccessoryDecoderActiveTime
                         break;
                 }
-                label2.visible = label3.visible = ccIp.visible = ccPort.visible = sender.value == dcc_1.CommandCenterTypes.Z21.toString() ||
-                    sender.value == dcc_1.CommandCenterTypes.DCCExTCP.toString();
+                label2.visible = label3.visible = ccIp.visible = ccPort.visible =
+                    (sender.value == dcc_1.CommandCenterTypes.Z21.toString() || sender.value == dcc_1.CommandCenterTypes.DCCExTCP.toString());
                 label4.visible = ccSerialPort.visible = sender.value == dcc_1.CommandCenterTypes.DCCExSerial.toString();
+                dccExPanel.visible = (sender.value == dcc_1.CommandCenterTypes.DCCExTCP.toString() || sender.value == dcc_1.CommandCenterTypes.DCCExSerial.toString());
                 label5.visible =
                     turnoutActiveTime.visible =
                         label6.visible =
@@ -110,6 +114,17 @@ define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "
                 //Globals.Settings.CommandCenter.basicAccessoryDecoderActiveTime = sender.value
             };
             tab1.addComponent(baActiveTime);
+            const dccExPanel = new dialog_1.Panel();
+            tab1.addComponent(dccExPanel);
+            const initLabelElem = new dialog_1.Label("Init Devices (e.g: &lt;T 1 1&gt;&lt;Z 10 1&gt;)");
+            dccExPanel.addComponent(initLabelElem);
+            const initTextAreaElement = new dialog_1.TextArea("");
+            dccExPanel.addComponent(initTextAreaElement);
+            const initButtonElement = new dialog_1.Button("INIT");
+            dccExPanel.addComponent(initButtonElement);
+            initButtonElement.onclick = () => {
+                ws_1.wsClient.send({ type: dcc_1.ApiCommands.writeDccExDirectCommand, data: { command: initTextAreaElement.value } });
+            };
             const btnOk = new dialog_1.Button("OK");
             btnOk.onclick = () => {
                 switch (ccCombobox.value) {
@@ -131,7 +146,7 @@ define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "
                             commandCenter: {
                                 ip: ccIp.value,
                                 port: parseInt(ccPort.value),
-                                init: "",
+                                init: initTextAreaElement.value,
                             }
                         };
                         ws_1.wsClient.send({ type: dcc_1.ApiCommands.saveCommandCenter, data: globals_1.Globals.CommandCenterSetting });
@@ -141,6 +156,7 @@ define(["require", "exports", "../controls/dialog", "../../../common/src/dcc", "
                             type: dcc_1.CommandCenterTypes.DCCExSerial,
                             commandCenter: {
                                 port: ccSerialPort.value,
+                                init: initTextAreaElement.value,
                             }
                         };
                         ws_1.wsClient.send({ type: dcc_1.ApiCommands.saveCommandCenter, data: globals_1.Globals.CommandCenterSetting });

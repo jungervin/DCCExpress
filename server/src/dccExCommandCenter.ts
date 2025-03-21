@@ -13,9 +13,11 @@ import { broadcastAll } from "./ws";
 export class DCCExCommandCenter extends CommandCenter {
     buffer: string[] = []
     private _data: string = ""
+    init: string = "";
 
-    constructor(name: string) {
-        super(name)
+    constructor(name: string, init: string) {
+        super(name, init)
+        this.init = init
     }
 
     put(msg: string) {
@@ -54,7 +56,7 @@ export class DCCExCommandCenter extends CommandCenter {
     }
     clientConnected(): void {
         broadcastAll({ type: ApiCommands.powerInfo, data: this.powerInfo } as iData)
-        this.put("<s>")
+        //this.put("<s>")
     }
     getLoco(address: number): void {
         this.put(`<t ${address}>`)
@@ -261,9 +263,17 @@ export class DCCExCommandCenter extends CommandCenter {
     }
 
     connected() {
+        log("==== COMAND CENTER CONNECTED ====")
+        if(this.init.trim() != "") {
+            log("==== COMAND CENTER INIT ====")
+            const lines = this.init.trim().split("\n")
+            lines.forEach((l) => {
+                this.put(l.trim())
+            })
+            log("============================")
+        }
+
         this.put('<s>')
-        // this.put('<T>')
-        // this.put('<Q>')
     }
 
     received(buffer: any) {

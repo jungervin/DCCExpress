@@ -12,8 +12,8 @@ export class DCCExTCPCommandCenter extends DCCExCommandCenter {
   lastSentTime: number = 0;
   MAIN_TASK_INTERVAL: number = 50;
 
-  constructor(name: string, ip: string, port: number) {
-    super(name);
+  constructor(name: string, ip: string, port: number, init: string) {
+    super(name, init);
     this.ip = ip;
     this.port = port;
     this.tcpClient = new TCPClient(ip, port, 5000,

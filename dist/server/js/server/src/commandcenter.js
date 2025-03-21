@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommandCenter = void 0;
 class CommandCenter {
-    constructor(name) {
+    constructor(name, init) {
         //uuid: string = ""
         this.name = "";
         this.locos = {};

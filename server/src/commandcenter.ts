@@ -17,7 +17,7 @@ export abstract class CommandCenter {
 
     powerInfo: iPowerInfo
 
-    constructor(name: string) {
+    constructor(name: string, init: string) {
         // this.uuid = uuid
         this.name = name
         this.powerInfo = {

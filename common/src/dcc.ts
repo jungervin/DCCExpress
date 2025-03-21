@@ -395,7 +395,7 @@ export interface iDCCExTcp extends iDCCEx {
     port: number
 }
 
-export interface iDCCExSerial {
+export interface iDCCExSerial extends iDCCEx{
     port: string
 }
 

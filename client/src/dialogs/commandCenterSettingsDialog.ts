@@ -1,6 +1,6 @@
-import { Dialog, Input, Button, InputNumber, DialogResult, TabControl, Combobox, Label, ThemeColors } from "../controls/dialog";
+import { Dialog, Input, Button, InputNumber, DialogResult, TabControl, Combobox, Label, ThemeColors, TextArea, Panel } from "../controls/dialog";
 
-import { ApiCommands, CommandCenterTypes, FileNames, iCommandCenter, iData, iDCCExSerial, iDCCExTcp, iZ21CommandCenter } from "../../../common/src/dcc";
+import { ApiCommands, CommandCenterTypes, FileNames, iCommandCenter, iData, iDccExDirectCommand, iDCCExSerial, iDCCExTcp, iZ21CommandCenter } from "../../../common/src/dcc";
 import { Globals } from "../helpers/globals";
 import { wsClient } from "../helpers/ws";
 
@@ -52,9 +52,11 @@ export class CommandCenterSettingsDialog extends Dialog {
                         const dtcp = Globals.CommandCenterSetting.commandCenter as iDCCExTcp
                         ccIp.value = dtcp.ip
                         ccPort.value = dtcp.port.toString()
+                        initTextAreaElement.value = dtcp.init
                     } else {
                         ccIp.value = ""
                         ccPort.value = "2560"
+                        initTextAreaElement.value = ""
                     }
                     // turnoutActiveTime.value = dtcp.turnoutActiveTime
                     // baActiveTime.value = dtcp.basicAccessoryDecoderActiveTime
@@ -63,6 +65,7 @@ export class CommandCenterSettingsDialog extends Dialog {
                     if (Globals.CommandCenterSetting.type == CommandCenterTypes.DCCExSerial) {
                         const dserial = Globals.CommandCenterSetting.commandCenter as iDCCExSerial
                         ccSerialPort.value = dserial.port.toString()
+                        initTextAreaElement.value = dserial.init
                     } else {
                         ccSerialPort.value = ""
                     }
@@ -72,10 +75,13 @@ export class CommandCenterSettingsDialog extends Dialog {
             }
 
 
-            label2.visible = label3.visible = ccIp.visible = ccPort.visible = sender.value == CommandCenterTypes.Z21.toString() ||
-                sender.value == CommandCenterTypes.DCCExTCP.toString()
+            label2.visible = label3.visible = ccIp.visible = ccPort.visible = 
+            (sender.value == CommandCenterTypes.Z21.toString() || sender.value == CommandCenterTypes.DCCExTCP.toString())
+            
             label4.visible = ccSerialPort.visible = sender.value == CommandCenterTypes.DCCExSerial.toString()
 
+            dccExPanel.visible = (sender.value == CommandCenterTypes.DCCExTCP.toString() || sender.value == CommandCenterTypes.DCCExSerial.toString())
+            
             label5.visible =
                 turnoutActiveTime.visible =
                 label6.visible =
@@ -134,6 +140,21 @@ export class CommandCenterSettingsDialog extends Dialog {
 
 
 
+        const dccExPanel = new Panel()
+        tab1.addComponent(dccExPanel)
+
+        const initLabelElem = new Label("Init Devices (e.g: &lt;T 1 1&gt;&lt;Z 10 1&gt;)")
+        dccExPanel.addComponent(initLabelElem)
+        const initTextAreaElement = new TextArea("")
+        dccExPanel.addComponent(initTextAreaElement)
+
+
+        const initButtonElement = new Button("INIT")
+        dccExPanel.addComponent(initButtonElement)
+        initButtonElement.onclick = () => {
+            wsClient.send({type: ApiCommands.writeDccExDirectCommand, data: {command: initTextAreaElement.value} as iDccExDirectCommand} as iData)
+        }
+
         const btnOk = new Button("OK")
         btnOk.onclick = () => {
             switch (ccCombobox.value) {
@@ -156,7 +177,7 @@ export class CommandCenterSettingsDialog extends Dialog {
                         commandCenter: {
                             ip: ccIp.value,
                             port: parseInt(ccPort.value),
-                            init: "",
+                            init: initTextAreaElement.value,
                         } as iDCCExTcp
                     } as iCommandCenter
                     wsClient.send({ type: ApiCommands.saveCommandCenter, data: Globals.CommandCenterSetting } as iData)
@@ -167,6 +188,7 @@ export class CommandCenterSettingsDialog extends Dialog {
                         type: CommandCenterTypes.DCCExSerial,
                         commandCenter: {
                             port: ccSerialPort.value,
+                            init: initTextAreaElement.value,
                         } as iDCCExSerial
                     } as iCommandCenter
                     wsClient.send({ type: ApiCommands.saveCommandCenter, data: Globals.CommandCenterSetting } as iData)

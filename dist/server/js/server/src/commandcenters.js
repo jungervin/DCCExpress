@@ -197,7 +197,7 @@ class CommandCenters {
             const ccSettings = JSON.parse(fs.readFileSync(server_1.COMMANDCENTER_SETTING_FILE, 'utf8'));
             if (ccSettings.type == dcc_1.CommandCenterTypes.Z21) {
                 const z21 = ccSettings.commandCenter;
-                exports.commandCenters.cc = new z21commandcenter_1.Z21CommandCenter("z21", z21.ip, z21.port);
+                exports.commandCenters.cc = new z21commandcenter_1.Z21CommandCenter("z21", z21.ip, z21.port, "");
                 exports.commandCenters.cc.TURNOUT_WAIT_TIME = z21.turnoutActiveTime;
                 exports.commandCenters.cc.BASICACCESSORY_WAIT_TIME = z21.basicAccessoryDecoderActiveTime;
                 (0, utility_1.log)("============================================================================");
@@ -209,7 +209,7 @@ class CommandCenters {
             }
             else if (ccSettings.type == dcc_1.CommandCenterTypes.DCCExTCP) {
                 const dccextcp = ccSettings.commandCenter;
-                exports.commandCenters.cc = new dccExTCPCommandCenter_1.DCCExTCPCommandCenter("dcc-ex-tcp", dccextcp.ip, dccextcp.port);
+                exports.commandCenters.cc = new dccExTCPCommandCenter_1.DCCExTCPCommandCenter("dcc-ex-tcp", dccextcp.ip, dccextcp.port, dccextcp.init);
                 exports.commandCenters.cc.TURNOUT_WAIT_TIME = 0; //dccextcp.turnoutActiveTime
                 exports.commandCenters.cc.BASICACCESSORY_WAIT_TIME = 0; //dccextcp.basicAccessoryDecoderActiveTime
                 (0, utility_1.log)("============================================================================");
@@ -221,7 +221,7 @@ class CommandCenters {
             }
             else if (ccSettings.type == dcc_1.CommandCenterTypes.DCCExSerial) {
                 const dccexserial = ccSettings.commandCenter;
-                exports.commandCenters.cc = new dccExSerialCommandCenter_1.DccExSerialCommandCenter("dcc-ex-serial", dccexserial.port, 115200);
+                exports.commandCenters.cc = new dccExSerialCommandCenter_1.DccExSerialCommandCenter("dcc-ex-serial", dccexserial.port, 115200, dccexserial.init);
                 exports.commandCenters.cc.TURNOUT_WAIT_TIME = 0; //dccextcp.turnoutActiveTime
                 exports.commandCenters.cc.BASICACCESSORY_WAIT_TIME = 0; //dccextcp.basicAccessoryDecoderActiveTime
                 (0, utility_1.log)("============================================================================");

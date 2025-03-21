@@ -4,8 +4,8 @@ exports.DccExSerialCommandCenter = void 0;
 const dccExCommandCenter_1 = require("./dccExCommandCenter");
 const serialClient_1 = require("./serialClient");
 class DccExSerialCommandCenter extends dccExCommandCenter_1.DCCExCommandCenter {
-    constructor(name, portName, baudRate) {
-        super(name);
+    constructor(name, portName, baudRate, init) {
+        super(name, init);
         this.lastSentTime = 0;
         this.MAIN_TASK_INTERVAL = 50;
         this.serialClient = new serialClient_1.SerialClient(portName, baudRate, this.connected.bind(this), this.received.bind(this), this.error.bind(this));

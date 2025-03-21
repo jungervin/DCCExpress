@@ -6,8 +6,8 @@ const dccExCommandCenter_1 = require("./dccExCommandCenter");
 const tcpClient_1 = require("./tcpClient");
 const ws_1 = require("./ws");
 class DCCExTCPCommandCenter extends dccExCommandCenter_1.DCCExCommandCenter {
-    constructor(name, ip, port) {
-        super(name);
+    constructor(name, ip, port, init) {
+        super(name, init);
         this.lastSentTime = 0;
         this.MAIN_TASK_INTERVAL = 50;
         this.ip = ip;

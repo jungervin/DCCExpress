@@ -776,7 +776,7 @@ export class Panel extends UIComponent {
     constructor() {
         super()
         this.panelElement = document.createElement("div");
-        this.panelElement.style.display = "flex";
+        //this.panelElement.style.display = "flex";
         this.panelElement.style.height = "100%";
 
     }
