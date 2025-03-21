@@ -158,7 +158,15 @@ export class SchedulerButtonPropertiesElement extends HTMLElement {
                     }
                     switch (s.type) {
                         case StepTypes.setLoco:
+                        case StepTypes.reverse:
+                        case StepTypes.forward:
+                        case StepTypes.stopLoco:
+
                             col1.innerHTML = "🚂"
+                            break;
+                        case StepTypes.delay:
+                        case StepTypes.waitForSensor:
+                            col1.innerHTML = "⌛"
                             break;
                         case StepTypes.startAtMinutes:
                             col1.innerHTML = "🕔"
@@ -181,10 +189,14 @@ export class SchedulerButtonPropertiesElement extends HTMLElement {
                             col1.innerHTML = "🔴"
                             break;
                         case StepTypes.goto:
-                            col1.innerHTML = "🔵"
+                            col1.innerHTML = "⬅️"
                             break;
                         case StepTypes.label:
-                            col1.innerHTML = "🟣"
+                            col1.innerHTML = "➡️"
+                            break;
+                        case StepTypes.setAccessory:
+                        case StepTypes.setOutput:
+                            col1.innerHTML = "🟢"
                             break;
 
                     }

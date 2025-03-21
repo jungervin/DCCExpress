@@ -131,7 +131,14 @@ define(["require", "exports", "../helpers/task", "../helpers/api"], function (re
                         }
                         switch (s.type) {
                             case task_1.StepTypes.setLoco:
+                            case task_1.StepTypes.reverse:
+                            case task_1.StepTypes.forward:
+                            case task_1.StepTypes.stopLoco:
                                 col1.innerHTML = "🚂";
+                                break;
+                            case task_1.StepTypes.delay:
+                            case task_1.StepTypes.waitForSensor:
+                                col1.innerHTML = "⌛";
                                 break;
                             case task_1.StepTypes.startAtMinutes:
                                 col1.innerHTML = "🕔";
@@ -154,10 +161,14 @@ define(["require", "exports", "../helpers/task", "../helpers/api"], function (re
                                 col1.innerHTML = "🔴";
                                 break;
                             case task_1.StepTypes.goto:
-                                col1.innerHTML = "🔵";
+                                col1.innerHTML = "⬅️";
                                 break;
                             case task_1.StepTypes.label:
-                                col1.innerHTML = "🟣";
+                                col1.innerHTML = "➡️";
+                                break;
+                            case task_1.StepTypes.setAccessory:
+                            case task_1.StepTypes.setOutput:
+                                col1.innerHTML = "🟢";
                                 break;
                         }
                         const col2 = document.createElement("td");

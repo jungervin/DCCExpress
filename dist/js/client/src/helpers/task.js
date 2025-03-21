@@ -183,6 +183,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
             this.num = 0;
             this.delayEnd = 0;
             this.autoStart = false;
+            this.stepByStep = false;
             this.ident = 0;
             //    stopOnComplete: boolean = true;
             this.prevSpeed = 0;
@@ -478,7 +479,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                     case StepTypes.break:
                         if (this.status != TaskStatus.stopped) {
                             this.status = TaskStatus.stopped;
-                            toastManager_1.toastManager.showToast("Break", "warning");
+                            //toastManager.showToast("Break", "warning")
                         }
                         break;
                     case StepTypes.setOutput:
@@ -672,9 +673,12 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
             if (this.status == TaskStatus.running) {
                 if (this.index < this.steps.length) {
                     if (this.index != this.prevIndex) {
+                        // if(this.stepByStep) {
+                        //     this.status = TaskStatus.stopped
+                        // }
                         this.prevIndex = this.index;
                         this.step = this.steps[this.index];
-                        this.logStep(this.step);
+                        //this.logStep(this.step!)
                         //console.log(`TASK: ${this.name} index: ${this.index} step: ${this.step!.type}`)
                     }
                     if (this.status == TaskStatus.running) {

@@ -349,6 +349,7 @@ export class Task {
     step: iStep | undefined;
     delayEnd: number = 0;
     autoStart = false
+    stepByStep = false
     ident: number = 0;
     //    stopOnComplete: boolean = true;
     prevSpeed: number = 0;
@@ -676,7 +677,7 @@ export class Task {
                 case StepTypes.break:
                     if (this.status != TaskStatus.stopped) {
                         this.status = TaskStatus.stopped
-                        toastManager.showToast("Break", "warning")
+                        //toastManager.showToast("Break", "warning")
                     }
                     break;
                 case StepTypes.setOutput:
@@ -875,9 +876,13 @@ export class Task {
         if (this.status == TaskStatus.running) {
             if (this.index < this.steps.length) {
                 if (this.index != this.prevIndex) {
+                    // if(this.stepByStep) {
+                    //     this.status = TaskStatus.stopped
+                    // }
                     this.prevIndex = this.index;
                     this.step = this.steps[this.index]
-                    this.logStep(this.step!)
+            
+                    //this.logStep(this.step!)
                     //console.log(`TASK: ${this.name} index: ${this.index} step: ${this.step!.type}`)
                 }
                 if (this.status == TaskStatus.running) {
@@ -976,6 +981,7 @@ export class Task {
         if (v >= this.steps.length) {
             this._index = this.steps.length - 1
         }
+
 
         this.delayEnd = 0;
         window.dispatchEvent(
