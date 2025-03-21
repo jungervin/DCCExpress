@@ -15,9 +15,9 @@ export class Toolbar extends HTMLElement {
     // btnRotateLeft: any;
     btnRotateRight: any;
     btnProperties: HTMLElement;
-//    btnOpen: any;
+    //    btnOpen: any;
     btnSave: any;
-//    btnCopy: any;
+    //    btnCopy: any;
     btnEdit: any;
     toolbarEdit: any;
     toolbarPlay: any;
@@ -40,6 +40,11 @@ export class Toolbar extends HTMLElement {
     btnDebug: HTMLElement;
     btnConsole: HTMLElement;
     btnProgrammer: HTMLElement;
+    btnTaskStartAll: any;
+    btnTaskStopAll: any;
+    btnTaskResumeAll: any;
+    btnTaskFinishAll: any;
+    btnTaskProperties: any;
 
 
     constructor() {
@@ -139,8 +144,25 @@ export class Toolbar extends HTMLElement {
             <div class="toolbar">
                
                 <svg id="btnLoco" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Train</title><path d="M12,2C8,2 4,2.5 4,6V15.5A3.5,3.5 0 0,0 7.5,19L6,20.5V21H8.23L10.23,19H14L16,21H18V20.5L16.5,19A3.5,3.5 0 0,0 20,15.5V6C20,2.5 16.42,2 12,2M7.5,17A1.5,1.5 0 0,1 6,15.5A1.5,1.5 0 0,1 7.5,14A1.5,1.5 0 0,1 9,15.5A1.5,1.5 0 0,1 7.5,17M11,10H6V6H11V10M13,10V6H18V10H13M16.5,17A1.5,1.5 0 0,1 15,15.5A1.5,1.5 0 0,1 16.5,14A1.5,1.5 0 0,1 18,15.5A1.5,1.5 0 0,1 16.5,17Z" /></svg>
+
+                <svg class="separator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9,3H11V5H9V3M13,3H15V5H13V3M9,7H11V9H9V7M13,7H15V9H13V7M9,11H11V13H9V11M13,11H15V13H13V11M9,15H11V17H9V15M13,15H15V17H13V15M9,19H11V21H9V19M13,19H15V21H13V19Z" /></svg>
                 <svg id="btnDispatcher" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 451.68"><title>Dispatcher</title><path d="m269.13 380.42 7.07 44.83 37.72-91.14-49.96 14.51 18.49 18.49-13.32 13.31zm-31.92 42.31 7.15-41.81-13.77-13.81 17.57-17.62-47.64-14.76 36.69 88zm-86.43-273.1c15.59-9.22 43.71-15.3 75.01-17.66 6.7 11.66 16.58 19.35 28.91 23.86 12.53-4.71 22.41-12.57 29.07-23.86 29.15 2.23 56.16 7.94 73.65 17.66h2.61c3.92 0 2.64 20.55 3.14 25.97 3.6.99 6.2 3.39 7.98 6.62 5.54 10 1.82 27.54-2.11 37.5l-.04.13c-2.32 5.91-5.42 11.29-9.02 15.26-3.01 3.22-6.41 5.54-10.09 6.45-.7 2.27-1.49 4.63-2.06 6.95-4.1 13.81-7.32 24.68-15.84 35.48a84.995 84.995 0 0 1-5.96 6.78 69.96 69.96 0 0 1-4.46 4.34c.37 3.97.12 20.1.12 25.27 2.03-.99 4.42-1.2 6.7-.29C430.04 361.11 511.92 366.03 512 451.68H0c3.76-97.14 88.17-94 180.14-129.36 1.78-.66 5.17-2.36 6.99-2.64v-24.44c0-.91.24-1.78.62-2.53-.87-.78-1.7-1.61-2.48-2.4-7.24-7.44-12.29-14.47-16.71-24.31-3.02-6.7-5.42-13.94-8.19-22.13l-1.45-4.26c-3.14-.41-6.08-1.86-8.72-4.01-3.31-2.73-6.16-6.7-8.48-11.29-5.54-10.91-12.61-39.08.99-47.59 1.08-.71 2.28-1.2 3.6-1.53.83-8.19-2.4-25.81 4.47-25.56zM310.48 304c-10.87 6.83-21.58 11.79-34.32 14.68-23.94 5.59-46.23.5-67.61-10.58-3.39-1.78-6.78-3.73-10.22-5.92v20.31l56.12 17.37 56.03-16.26V304zM145.85 133.83v-21.96l-17.74-13.6c-25.43-28.21-20.3-27.38 6.66-34.95C174.14 52.24 200.85 28.3 224.05 13c26.31-17.33 34.45-17.33 60.75 0 23.16 15.3 49.92 39.24 89.24 50.32 26.97 7.57 32.09 6.74 6.7 34.95L363 111.87v21.96c-24.07-9.1-48.26-15.13-72.45-18.15 2.52-9.43 3.6-14.27 2.98-26.88-11.29 1.03-24.44-3.31-38.96-12.53-12.57 9.76-25.55 12.61-38.79 11.95-.37 12.94.83 17.91 3.35 27.33-24.48 2.98-48.96 9.06-73.28 18.28zm25.35 37.3-3.39 20.02c-.33 1.98-2.69 3.02-4.26 1.9l-6.28-4.01c-2.36-1.53-6.04-4.72-8.36-.99-4.13 6.7.79 24.07 4.02 30.6 1.57 3.1 3.35 5.66 5.21 7.19 3.39 2.69 4.5-.33 8.14 1.62 3.11 1.69 3.81 5.87 4.88 8.97l1.29 3.8c2.48 7.45 4.75 14.07 7.4 20.06 5.5 12.28 12.86 21.05 23.49 29.16 11.33 8.6 24.06 14.47 38.04 17.12 10.26 1.9 20.76 1.9 31.02-.17a85.537 85.537 0 0 0 36.31-16.87c4.92-3.89 9.42-8.31 13.39-13.36 3.48-4.34 5.96-8.97 7.99-14.06 2.1-5.21 3.8-10.83 5.66-17.16 1.08-3.64 2.15-7.28 3.31-10.92 1.78-6.9 7.15-2.27 11.83-7.4 2.35-2.69 4.59-6.82 6.41-11.45 1.49-3.85 7.94-26.8.82-29.16-1.9-.83-4.79 1.53-6.28 2.56-3.44 2.28-5.05 3.35-10.47 4.97-3.51.99-3.63-2.77-3.8-5.01l-1.7-18.9c-49.91 21.71-121.49 21.09-164.67 1.49z"/></svg>
+
+                <svg class="separator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9,3H11V5H9V3M13,3H15V5H13V3M9,7H11V9H9V7M13,7H15V9H13V7M9,11H11V13H9V11M13,11H15V13H13V11M9,15H11V17H9V15M13,15H15V17H13V15M9,19H11V21H9V19M13,19H15V21H13V19Z" /></svg>
                 <svg id="btnTasks" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Tasks</title><path d="M15,13H16.5V15.82L18.94,17.23L18.19,18.53L15,16.69V13M19,8H5V19H9.67C9.24,18.09 9,17.07 9,16A7,7 0 0,1 16,9C17.07,9 18.09,9.24 19,9.67V8M5,21C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H6V1H8V3H16V1H18V3H19A2,2 0 0,1 21,5V11.1C22.24,12.36 23,14.09 23,16A7,7 0 0,1 16,23C14.09,23 12.36,22.24 11.1,21H5M16,11.15A4.85,4.85 0 0,0 11.15,16C11.15,18.68 13.32,20.85 16,20.85A4.85,4.85 0 0,0 20.85,16C20.85,13.32 18.68,11.15 16,11.15Z" /></svg>
+                <div id="taskButtons" style="display: flex; gap: 4px">
+                    <svg id="btnTaskStartAll" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Start All Task</title><path d="M8,5.14V19.14L19,12.14L8,5.14Z" /></svg>
+                    <svg id="btnTaskStopAll" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Stop All Task</title><path d="M15.73,3H8.27L3,8.27V15.73L8.27,21H15.73L21,15.73V8.27" /></svg>
+                    <svg id="btnTaskResumeAll" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Resume All Task</title><path d="M13.5,5.5C14.59,5.5 15.5,4.58 15.5,3.5C15.5,2.38 14.59,1.5 13.5,1.5C12.39,1.5 11.5,2.38 11.5,3.5C11.5,4.58 12.39,5.5 13.5,5.5M9.89,19.38L10.89,15L13,17V23H15V15.5L12.89,13.5L13.5,10.5C14.79,12 16.79,13 19,13V11C17.09,11 15.5,10 14.69,8.58L13.69,7C13.29,6.38 12.69,6 12,6C11.69,6 11.5,6.08 11.19,6.08L6,8.28V13H8V9.58L9.79,8.88L8.19,17L3.29,16L2.89,18L9.89,19.38Z" /></svg>                    
+                    <svg id="btnTaskFinishAll" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Finish All Task</title><path d="M14.4,6H20V16H13L12.6,14H7V21H5V4H14L14.4,6M14,14H16V12H18V10H16V8H14V10L13,8V6H11V8H9V6H7V8H9V10H7V12H9V10H11V12H13V10L14,12V14M11,10V8H13V10H11M14,10H16V12H14V10Z" /></svg>
+                    <svg id="btnTaskProperties" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Task Properties</title><path d="M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10M10,22C9.75,22 9.54,21.82 9.5,21.58L9.13,18.93C8.5,18.68 7.96,18.34 7.44,17.94L4.95,18.95C4.73,19.03 4.46,18.95 4.34,18.73L2.34,15.27C2.21,15.05 2.27,14.78 2.46,14.63L4.57,12.97L4.5,12L4.57,11L2.46,9.37C2.27,9.22 2.21,8.95 2.34,8.73L4.34,5.27C4.46,5.05 4.73,4.96 4.95,5.05L7.44,6.05C7.96,5.66 8.5,5.32 9.13,5.07L9.5,2.42C9.54,2.18 9.75,2 10,2H14C14.25,2 14.46,2.18 14.5,2.42L14.87,5.07C15.5,5.32 16.04,5.66 16.56,6.05L19.05,5.05C19.27,4.96 19.54,5.05 19.66,5.27L21.66,8.73C21.79,8.95 21.73,9.22 21.54,9.37L19.43,11L19.5,12L19.43,13L21.54,14.63C21.73,14.78 21.79,15.05 21.66,15.27L19.66,18.73C19.54,18.95 19.27,19.04 19.05,18.95L16.56,17.95C16.04,18.34 15.5,18.68 14.87,18.93L14.5,21.58C14.46,21.82 14.25,22 14,22H10M11.25,4L10.88,6.61C9.68,6.86 8.62,7.5 7.85,8.39L5.44,7.35L4.69,8.65L6.8,10.2C6.4,11.37 6.4,12.64 6.8,13.8L4.68,15.36L5.43,16.66L7.86,15.62C8.63,16.5 9.68,17.14 10.87,17.38L11.24,20H12.76L13.13,17.39C14.32,17.14 15.37,16.5 16.14,15.62L18.57,16.66L19.32,15.36L17.2,13.81C17.6,12.64 17.6,11.37 17.2,10.2L19.31,8.65L18.56,7.35L16.15,8.39C15.38,7.5 14.32,6.86 13.12,6.62L12.75,4H11.25Z" /></svg>                    
+
+                </div>
+                <svg id="btnEmergencyStop" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Emergency Stop</title><path d="M13 13H11V7H13M11 15H13V17H11M15.73 3H8.27L3 8.27V15.73L8.27 21H15.73L21 15.73V8.27L15.73 3Z" /></svg>                    
+
+
+                <svg class="separator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9,3H11V5H9V3M13,3H15V5H13V3M9,7H11V9H9V7M13,7H15V9H13V7M9,11H11V13H9V11M13,11H15V13H13V11M9,15H11V17H9V15M13,15H15V17H13V15M9,19H11V21H9V19M13,19H15V21H13V19Z" /></svg>
+
                 <svg id="btnEdit" class="toolbarButton"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Edit</title><path d="M5,5H7V7H5V5M1,1H11V11H1V1M3,3V9H9V3H3M5,17H7V19H5V17M1,13H11V23H1V13M3,15V21H9V15H3M13,13H17V15H19V13H23V15H19V17H23V23H19V21H15V23H13V21H15V19H13V13M21,21V19H19V21H21M19,17H17V15H15V19H19V17M22.7,3.35L21.7,4.35L19.65,2.35L20.65,1.35C20.85,1.14 21.19,1.13 21.42,1.35L22.7,2.58C22.91,2.78 22.92,3.12 22.7,3.35M13,8.94L19.07,2.88L21.12,4.93L15.06,11H13V8.94Z" /></svg>
                 <div id="toolbarEdit" style="display: none">
                     <svg id="btnSave" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Save</title><path d="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z" /></svg>
@@ -178,7 +200,6 @@ export class Toolbar extends HTMLElement {
 
                 <div class="wsStatus">
                     <svg id="btnPower" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Power</title><path d="M16.56,5.44L15.11,6.89C16.84,7.94 18,9.83 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12C6,9.83 7.16,7.94 8.88,6.88L7.44,5.44C5.36,6.88 4,9.28 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12C20,9.28 18.64,6.88 16.56,5.44M13,3H11V13H13" /></svg>
-                    <svg id="btnEmergencyStop" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Emergency Stop</title><path d="M13 13H11V7H13M11 15H13V17H11M15.73 3H8.27L3 8.27V15.73L8.27 21H15.73L21 15.73V8.27L15.73 3Z" /></svg>                    
                     <svg id="wsStatus" class="toolbarButton" style="cursor: default" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Connection Status</title><path d="M4.93,3.93C3.12,5.74 2,8.24 2,11C2,13.76 3.12,16.26 4.93,18.07L6.34,16.66C4.89,15.22 4,13.22 4,11C4,8.79 4.89,6.78 6.34,5.34L4.93,3.93M19.07,3.93L17.66,5.34C19.11,6.78 20,8.79 20,11C20,13.22 19.11,15.22 17.66,16.66L19.07,18.07C20.88,16.26 22,13.76 22,11C22,8.24 20.88,5.74 19.07,3.93M7.76,6.76C6.67,7.85 6,9.35 6,11C6,12.65 6.67,14.15 7.76,15.24L9.17,13.83C8.45,13.11 8,12.11 8,11C8,9.89 8.45,8.89 9.17,8.17L7.76,6.76M16.24,6.76L14.83,8.17C15.55,8.89 16,9.89 16,11C16,12.11 15.55,13.11 14.83,13.83L16.24,15.24C17.33,14.15 18,12.65 18,11C18,9.35 17.33,7.85 16.24,6.76M12,9A2,2 0 0,0 10,11A2,2 0 0,0 12,13A2,2 0 0,0 14,11A2,2 0 0,0 12,9M11,15V19H10A1,1 0 0,0 9,20H2V22H9A1,1 0 0,0 10,23H14A1,1 0 0,0 15,22H22V20H15A1,1 0 0,0 14,19H13V15H11Z" /></svg>
                 </div>
             </div>
@@ -186,6 +207,12 @@ export class Toolbar extends HTMLElement {
 
         this.btnDispatcher = this.shadowRoot!.getElementById("btnDispatcher") as any
         this.btnTasks = this.shadowRoot!.getElementById("btnTasks") as any
+        this.btnTaskStartAll = this.shadowRoot!.getElementById("btnTaskStartAll") as any
+        this.btnTaskStopAll = this.shadowRoot!.getElementById("btnTaskStopAll") as any
+        this.btnTaskResumeAll = this.shadowRoot!.getElementById("btnTaskResumeAll") as any
+        this.btnTaskFinishAll = this.shadowRoot!.getElementById("btnTaskFinishAll") as any
+        this.btnTaskProperties = this.shadowRoot!.getElementById("btnTaskProperties") as any
+
         this.btnPower = this.shadowRoot!.getElementById("btnPower")
         this.btnEmergencyStop = this.shadowRoot!.getElementById("btnEmergencyStop")
         this.wsStatus = this.shadowRoot!.getElementById("wsStatus")
@@ -193,17 +220,17 @@ export class Toolbar extends HTMLElement {
         this.btnEdit = this.shadowRoot!.getElementById('btnEdit') as any
         this.toolbarEdit = this.shadowRoot!.getElementById('toolbarEdit') as any
         this.toolbarPlay = this.shadowRoot!.getElementById('toolbarPlay') as any
-        
+
 
         // this.btnOpen = this.shadowRoot!.getElementById('btnOpen') as any
-        
+
         this.btnSave = this.shadowRoot!.getElementById('btnSave') as any
         this.btnAppSettings = this.shadowRoot!.getElementById('btnAppSettings') as any
         this.btnCommandCenterSettings = this.shadowRoot?.getElementById("btnCommandCenterSettings") as any
         this.btnDebug = this.shadowRoot?.getElementById("btnDebug") as HTMLElement
         this.btnConsole = this.shadowRoot?.getElementById("btnConsole") as HTMLElement
         this.btnProgrammer = this.shadowRoot?.getElementById("btnProgrammer") as HTMLElement
-        
+
 
         this.toolbarExt = this.shadowRoot!.getElementById("toolbarExt") as HTMLSpanElement
 
@@ -214,16 +241,17 @@ export class Toolbar extends HTMLElement {
         this.btnCodeEditor = this.shadowRoot!.getElementById('btnCodeEditor') as any
 
 
-        this.btnProperties =this.shadowRoot!.getElementById('btnProperties') as any
-        this.btnRotateRight =this.shadowRoot!.getElementById('btnRotateRight') as any
-        this.btnMoveToBottom =this.shadowRoot!.getElementById('btnMoveToBottom') as any
-        this.btnMoveToTop =this.shadowRoot!.getElementById('btnMoveToTop') as any
+        this.btnProperties = this.shadowRoot!.getElementById('btnProperties') as any
+        this.btnRotateRight = this.shadowRoot!.getElementById('btnRotateRight') as any
+        this.btnMoveToBottom = this.shadowRoot!.getElementById('btnMoveToBottom') as any
+        this.btnMoveToTop = this.shadowRoot!.getElementById('btnMoveToTop') as any
         this.currentButton = this.shadowRoot!.getElementById('btnPointer') as any
 
         this.debugButtonEnabled = false
         this.consoleButtonEnabled = false
         this.programmerButtonEnabled = true
 
+        this.taskButtonsEnabled = false;
     }
 
     save() {
@@ -255,43 +283,67 @@ export class Toolbar extends HTMLElement {
         }
     }
 
-    
-    private _currentButton : any | undefined;
-    public get currentButton() : any {
+
+    private _currentButton: any | undefined;
+    public get currentButton(): any {
         return this._currentButton!;
     }
-    public set currentButton(v : any) {
-        if(this.currentButton) {
+    public set currentButton(v: any) {
+        if (this.currentButton) {
             this.currentButton.classList.remove("active")
         }
         this._currentButton = v;
-        if(this.currentButton) {
+        if (this.currentButton) {
             this.currentButton.classList.add("active")
         }
     }
 
-    
-    private _tasks : boolean = false;
-    public get tasks() : boolean {
+
+    private _tasks: boolean = false;
+    public get tasks(): boolean {
         return this._tasks;
     }
-    public set tasks(v : boolean) {
+    public set tasks(v: boolean) {
         this._tasks = v;
-        if(this.tasks) {
+        if (this.tasks) {
             this.btnTasks.classList.add("active")
         } else {
             this.btnTasks.classList.remove("active")
         }
     }
-    
-    
-    private _debugButtonEnabled : boolean = false;
-    public get debugButtonEnabled() : boolean  {
+
+
+
+    private _taskButtonsEnabled: boolean = false;
+    public get taskButtonsEnabled(): boolean {
+        return this._taskButtonsEnabled;
+    }
+    public set taskButtonsEnabled(v: boolean) {
+        this._taskButtonsEnabled = v;
+        if (v) {
+            this.btnTaskStartAll.classList.remove("disabled")
+            this.btnTaskStopAll.classList.remove("disabled")
+            this.btnTaskResumeAll.classList.remove("disabled")
+            this.btnTaskFinishAll.classList.remove("disabled")
+            this.btnTaskProperties.classList.remove("disabled")
+        }
+        else {
+            this.btnTaskStartAll.classList.add("disabled")
+            this.btnTaskStopAll.classList.add("disabled")
+            this.btnTaskResumeAll.classList.add("disabled")
+            this.btnTaskFinishAll.classList.add("disabled")
+            this.btnTaskProperties.classList.add("disabled")
+        }
+    }
+
+
+    private _debugButtonEnabled: boolean = false;
+    public get debugButtonEnabled(): boolean {
         return this._debugButtonEnabled;
     }
-    public set debugButtonEnabled(v : boolean ) {
+    public set debugButtonEnabled(v: boolean) {
         this._debugButtonEnabled = v;
-        if(v) {
+        if (v) {
             this.btnDebug.classList.remove("disabled")
         }
         else {
@@ -299,13 +351,13 @@ export class Toolbar extends HTMLElement {
         }
     }
 
-    private _consoleButtonEnabled : boolean = false;
-    public get consoleButtonEnabled() : boolean  {
+    private _consoleButtonEnabled: boolean = false;
+    public get consoleButtonEnabled(): boolean {
         return this._consoleButtonEnabled;
     }
-    public set consoleButtonEnabled(v : boolean ) {
+    public set consoleButtonEnabled(v: boolean) {
         this._consoleButtonEnabled = v;
-        if(v) {
+        if (v) {
             this.btnConsole.classList.remove("disabled")
         }
         else {
@@ -313,13 +365,13 @@ export class Toolbar extends HTMLElement {
         }
     }
 
-    private _programmerButtonEnabled : boolean = false;
-    public get programmerButtonEnabled() : boolean  {
+    private _programmerButtonEnabled: boolean = false;
+    public get programmerButtonEnabled(): boolean {
         return this._programmerButtonEnabled;
     }
-    public set programmerButtonEnabled(v : boolean ) {
+    public set programmerButtonEnabled(v: boolean) {
         this._programmerButtonEnabled = v;
-        if(v) {
+        if (v) {
             this.btnProgrammer.classList.remove("disabled")
         }
         else {
@@ -329,7 +381,7 @@ export class Toolbar extends HTMLElement {
 
 
 
-    
+
 }
 
 customElements.define('custom-toolbar', Toolbar);
