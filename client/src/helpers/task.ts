@@ -522,10 +522,15 @@ export class Task {
     }
     gotoNextEndOrElse() {
         const i = this.steps.findIndex((step, i) => {
-            return (i > this.index && (step.type == StepTypes.endIf || step.type == StepTypes.else))
+            return (i >= this.index && (step.type == StepTypes.endIf || step.type == StepTypes.else))
         })
         if (i >= 0) {
+            const step = this.steps[i] as iStep
             this.index = i
+            if(step.type == StepTypes.else) {
+                this.index++;
+            }
+
         } else {
             this.status = TaskStatus.stopped
             toastManager.showToast("Could not find any else or endIf! STOPPED", "error")
@@ -964,6 +969,10 @@ export class Task {
     }
     public set index(v: number) {
         this._index = v;
+        if(v >= this.steps.length) {
+            this._index = this.steps.length - 1
+        }
+
         this.delayEnd = 0;
         window.dispatchEvent(
             new CustomEvent("taskChangedEvent", {
