@@ -509,9 +509,6 @@ export class Task {
         this.steps.push({ type: StepTypes.ifSensorIsOff, data: { address: address } as iIfSensorIsOff } as iStep)
     }
 
-
-
-
     gotoNextElse() {
         const i = this.steps.findIndex((step, i) => {
             return (i > this.index && step.type == StepTypes.else)
@@ -828,6 +825,40 @@ export class Task {
                 return (`<b>goto:</b> ${(step.data as iGoto).text}`)
             case StepTypes.break:
                 return (`<b style="color: yellow">break:</b> ${(step.data as iBreak).text}`)
+
+            case StepTypes.setOutput:
+                return (`setOutput: ${(step.data as iSetOutput).address} on: ${(step.data as iSetOutput).on}`)
+            case StepTypes.ifOutputIsOn:
+                return (`ifOutputIsOn: ${(step.data as iIfOutputIsOn).address}`)
+            case StepTypes.ifOutputIsOff:
+                return (`ifOutputIsOff: ${(step.data as iIfOutputIsOff).address}`)
+
+            case StepTypes.setAccessory:
+                return (`setAccessory: ${(step.data as iSetAccessory).address} on: ${(step.data as iSetAccessory).on}`)
+            case StepTypes.ifAccessoryIsOn:
+                return (`ifAccessoryIsOn: ${(step.data as iIfAccessoryIsOn).address}`)
+            case StepTypes.ifAccessoryIsOff:
+                return (`ifAccessoryIsOff: ${(step.data as iIfAccessoryIsOff).address}`)
+
+            case StepTypes.setSignalGreen:
+                return (`setSignalGreen: ${(step.data as iSetSignalGreen).address}`)
+            case StepTypes.ifSignalIsGreen:
+                return (`ifSignalIsGreen: ${(step.data as iIfSignalIsGreen).address}`)
+
+            case StepTypes.setSignalRed:
+                return (`setSignalRed: ${(step.data as iSetSignalRed).address}`)
+            case StepTypes.ifSignalIsRed:
+                return (`ifSignalIsRed: ${(step.data as iIfSignalIsRed).address}`)
+
+            case StepTypes.setSignalYellow:
+                return (`setSignalYellow: ${(step.data as iSetSignalYellow).address}`)
+            case StepTypes.ifSignalIsYellow:
+                return (`ifSignalIsYellow: ${(step.data as iIfSignalIsYellow).address}`)
+
+            case StepTypes.ifSensorIsOn:
+                return (`ifSensorIsOn: ${(step.data as iIfSensorIsOn).address}`)
+            case StepTypes.ifSensorIsOff:
+                return (`ifSensorIsOff: ${(step.data as iIfSensorIsOff).address}`)
 
         }
         return "Unknown"

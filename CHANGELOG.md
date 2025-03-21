@@ -2,34 +2,35 @@
 
 #### 2025-03-20
 * DCCEx Comman Center Initialization (Command Center Dialog)
+
 New task manager instructions added:
-* setOutput(address: number, on: boolean)
-* ifOutputIsOn(address: number)
-ifOutputIsOff(address: number)
-setAccessory(address: number, on: boolean)
-ifAccessoryIsOn(address: number)
-ifAccessoryIsOff(address: number)
-setSignalGreen(address: number)
-ifSignalIsGreen(address: number)
-setSignalRed(address: number)
-ifSignalIsRed(address: number)
-setSignalYellow(address: number)
-ifSignalIsYellow(address: number)
-setSignalWhite(address: number)
-fSignalIsWhite(address: number)
-ifSensorIsOn(address: number)
-ifSensorIsOff(address: number)
+* `setOutput(address: number, on: boolean)`
+* `ifOutputIsOn(address: number)`
+* `ifOutputIsOff(address: number)`
+* `setAccessory(address: number, on: boolean)`
+* `ifAccessoryIsOn(address: number)`
+* `ifAccessoryIsOff(address: number)`
+* `setSignalGreen(address: number)`
+* `ifSignalIsGreen(address: number)`
+* `setSignalRed(address: number)`
+* `ifSignalIsRed(address: number)`
+* `setSignalYellow(address: number)`
+* `ifSignalIsYellow(address: number)`
+* `setSignalWhite(address: number)`
+* `fSignalIsWhite(address: number)`
+* `ifSensorIsOn(address: number)`
+* `ifSensorIsOff(address: number)`
 
 
 #### 2025-03-20
 New task manager instructions added:
 
-* ifClosed(address: number)
-* ifOpen(address: number)
-* else()
-* endIf()
-* goto(label: string)
-* break(text: string = "")
+* `ifClosed(address: number)`
+* `ifOpen(address: number)`
+* `else()`
+* `endIf()`
+* `goto(label: string)`
+* `break(text: string = "")`
 ---
 #### 2025-03-19
 * blocks

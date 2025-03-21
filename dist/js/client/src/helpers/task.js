@@ -631,6 +631,34 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                     return (`<b>goto:</b> ${step.data.text}`);
                 case StepTypes.break:
                     return (`<b style="color: yellow">break:</b> ${step.data.text}`);
+                case StepTypes.setOutput:
+                    return (`setOutput: ${step.data.address} on: ${step.data.on}`);
+                case StepTypes.ifOutputIsOn:
+                    return (`ifOutputIsOn: ${step.data.address}`);
+                case StepTypes.ifOutputIsOff:
+                    return (`ifOutputIsOff: ${step.data.address}`);
+                case StepTypes.setAccessory:
+                    return (`setAccessory: ${step.data.address} on: ${step.data.on}`);
+                case StepTypes.ifAccessoryIsOn:
+                    return (`ifAccessoryIsOn: ${step.data.address}`);
+                case StepTypes.ifAccessoryIsOff:
+                    return (`ifAccessoryIsOff: ${step.data.address}`);
+                case StepTypes.setSignalGreen:
+                    return (`setSignalGreen: ${step.data.address}`);
+                case StepTypes.ifSignalIsGreen:
+                    return (`ifSignalIsGreen: ${step.data.address}`);
+                case StepTypes.setSignalRed:
+                    return (`setSignalRed: ${step.data.address}`);
+                case StepTypes.ifSignalIsRed:
+                    return (`ifSignalIsRed: ${step.data.address}`);
+                case StepTypes.setSignalYellow:
+                    return (`setSignalYellow: ${step.data.address}`);
+                case StepTypes.ifSignalIsYellow:
+                    return (`ifSignalIsYellow: ${step.data.address}`);
+                case StepTypes.ifSensorIsOn:
+                    return (`ifSensorIsOn: ${step.data.address}`);
+                case StepTypes.ifSensorIsOff:
+                    return (`ifSensorIsOff: ${step.data.address}`);
             }
             return "Unknown";
         }
