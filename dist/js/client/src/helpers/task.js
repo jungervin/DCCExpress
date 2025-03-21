@@ -26,6 +26,22 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
         StepTypes["else"] = "else";
         StepTypes["endIf"] = "endIf";
         StepTypes["break"] = "break";
+        StepTypes["setOutput"] = "setOutput";
+        StepTypes["ifOutputIsOn"] = "ifOutputIsOn";
+        StepTypes["ifOutputIsOff"] = "ifOutputIsOff";
+        StepTypes["setAccessory"] = "setAccessory";
+        StepTypes["ifAccessoryIsOn"] = "ifAccessoryIsOn";
+        StepTypes["ifAccessoryIsOff"] = "ifAccessoryIsOff";
+        StepTypes["setSignalGreen"] = "setSignalGreen";
+        StepTypes["ifSignalIsGreen"] = "ifSignalIsGreen";
+        StepTypes["setSignalRed"] = "setSignalRed";
+        StepTypes["ifSignalIsRed"] = "ifSignalIsRed";
+        StepTypes["setSignalYellow"] = "setSignalYellow";
+        StepTypes["ifSignalIsYellow"] = "ifSignalIsYellow";
+        StepTypes["setSignalWhite"] = "setSignalWhite";
+        StepTypes["ifSignalIsWhite"] = "ifSignalIsWhite";
+        StepTypes["ifSensorIsOn"] = "ifSensorIsOn";
+        StepTypes["ifSensorIsOff"] = "ifSensorIsOff";
     })(StepTypes || (StepTypes = {}));
     var TaskStatus;
     (function (TaskStatus) {
@@ -249,6 +265,54 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
         break(text = "") {
             this.steps.push({ type: StepTypes.break, data: { text: text } });
         }
+        setOutput(address, on) {
+            this.steps.push({ type: StepTypes.setOutput, data: { address: address, on: on } });
+        }
+        ifOutputIsOn(address) {
+            this.steps.push({ type: StepTypes.ifOutputIsOn, data: { address: address } });
+        }
+        ifOutputIsOff(address) {
+            this.steps.push({ type: StepTypes.ifOutputIsOff, data: { address: address } });
+        }
+        setAccessory(address, on) {
+            this.steps.push({ type: StepTypes.setAccessory, data: { address: address, on: on } });
+        }
+        ifAccessoryIsOn(address) {
+            this.steps.push({ type: StepTypes.ifAccessoryIsOn, data: { address: address } });
+        }
+        ifAccessoryIsOff(address) {
+            this.steps.push({ type: StepTypes.ifAccessoryIsOff, data: { address: address } });
+        }
+        setSignalGreen(address) {
+            this.steps.push({ type: StepTypes.setSignalGreen, data: { address: address } });
+        }
+        ifSignalIsGreen(address) {
+            this.steps.push({ type: StepTypes.ifSignalIsGreen, data: { address: address } });
+        }
+        setSignalRed(address) {
+            this.steps.push({ type: StepTypes.setSignalRed, data: { address: address } });
+        }
+        ifSignalIsRed(address) {
+            this.steps.push({ type: StepTypes.ifSignalIsRed, data: { address: address } });
+        }
+        setSignalYellow(address) {
+            this.steps.push({ type: StepTypes.setSignalYellow, data: { address: address } });
+        }
+        ifSignalIsYellow(address) {
+            this.steps.push({ type: StepTypes.ifSignalIsYellow, data: { address: address } });
+        }
+        setSignalWhite(address) {
+            this.steps.push({ type: StepTypes.setSignalWhite, data: { address: address } });
+        }
+        ifSignalIsWhite(address) {
+            this.steps.push({ type: StepTypes.ifSignalIsWhite, data: { address: address } });
+        }
+        ifSensorIsOn(address) {
+            this.steps.push({ type: StepTypes.ifSensorIsOn, data: { address: address } });
+        }
+        ifSensorIsOff(address) {
+            this.steps.push({ type: StepTypes.ifSensorIsOff, data: { address: address } });
+        }
         gotoNextElse() {
             const i = this.steps.findIndex((step, i) => {
                 return (i > this.index && step.type == StepTypes.else);
@@ -327,7 +391,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                         break;
                     case StepTypes.waitForSensor:
                         const sensor = this.step.data;
-                        if (api_1.Api.getSensor(sensor.address) == sensor.on) {
+                        if (api_1.Api.getSensorValue(sensor.address) == sensor.on) {
                             this.index++;
                             console.log(`TASK: ${this.name} waitForSensor:${sensor.address} finished!`);
                         }
@@ -409,6 +473,116 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                         if (this.status != TaskStatus.stopped) {
                             this.status = TaskStatus.stopped;
                             toastManager_1.toastManager.showToast("Break", "warning");
+                        }
+                        break;
+                    case StepTypes.setOutput:
+                        const o = this.step.data;
+                        api_1.Api.setOutput(o.address, o.on);
+                        this.index++;
+                        break;
+                    case StepTypes.ifOutputIsOn:
+                        const oon = this.step.data;
+                        if (api_1.Api.getOutput(oon.address)) {
+                            this.index++;
+                        }
+                        else {
+                            this.gotoNextEndOrElse();
+                        }
+                        break;
+                    case StepTypes.ifOutputIsOff:
+                        const ooff = this.step.data;
+                        if (!api_1.Api.getOutput(ooff.address)) {
+                            this.index++;
+                        }
+                        else {
+                            this.gotoNextEndOrElse();
+                        }
+                        break;
+                    case StepTypes.setAccessory:
+                        const a = this.step.data;
+                        api_1.Api.setAccessory(a.address, a.on);
+                        this.index++;
+                        break;
+                    case StepTypes.ifAccessoryIsOn:
+                        const aon = this.step.data;
+                        if (api_1.Api.getAccessory(aon.address)) {
+                            this.index++;
+                        }
+                        else {
+                            this.gotoNextEndOrElse();
+                        }
+                        break;
+                    case StepTypes.ifAccessoryIsOff:
+                        const aoff = this.step.data;
+                        if (!api_1.Api.getAccessory(aoff.address)) {
+                            this.index++;
+                        }
+                        else {
+                            this.gotoNextEndOrElse();
+                        }
+                        break;
+                    case StepTypes.setSignalGreen:
+                        api_1.Api.setSignalGreen(this.step.data.address);
+                        this.index++;
+                        break;
+                    case StepTypes.ifSignalIsGreen:
+                        if (api_1.Api.getSignalIsGreen(this.step.data.address)) {
+                            this.index++;
+                        }
+                        else {
+                            this.gotoNextEndOrElse();
+                        }
+                        break;
+                    case StepTypes.setSignalRed:
+                        api_1.Api.setSignalRed(this.step.data.address);
+                        this.index++;
+                        break;
+                    case StepTypes.ifSignalIsRed:
+                        if (api_1.Api.getSignalIsRed(this.step.data.address)) {
+                            this.index++;
+                        }
+                        else {
+                            this.gotoNextEndOrElse();
+                        }
+                        break;
+                    case StepTypes.setSignalYellow:
+                        api_1.Api.setSignalYellow(this.step.data.address);
+                        this.index++;
+                        break;
+                    case StepTypes.ifSignalIsYellow:
+                        if (api_1.Api.getSignalIsYellow(this.step.data.address)) {
+                            this.index++;
+                        }
+                        else {
+                            this.gotoNextEndOrElse();
+                        }
+                        break;
+                    case StepTypes.setSignalWhite:
+                        api_1.Api.setSignalWhite(this.step.data.address);
+                        this.index++;
+                        break;
+                    case StepTypes.ifSignalIsWhite:
+                        if (api_1.Api.getSignalIsWhite(this.step.data.address)) {
+                            this.index++;
+                        }
+                        else {
+                            this.gotoNextEndOrElse();
+                        }
+                        break;
+                    case StepTypes.ifSensorIsOn:
+                        if (api_1.Api.getSensorValue(this.step.data.address)) {
+                            this.index++;
+                        }
+                        else {
+                            this.gotoNextEndOrElse();
+                        }
+                        break;
+                    case StepTypes.ifSensorIsOff:
+                        if (!api_1.Api.getSensorValue(this.step.data.address)) {
+                            this.index++;
+                        }
+                        else {
+                            this.gotoNextEndOrElse();
                         }
                         break;
                 }

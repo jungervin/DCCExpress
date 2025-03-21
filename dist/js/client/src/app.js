@@ -32,6 +32,7 @@ define(["require", "exports", "./editor/editor", "./editor/toolbar", "./editor/t
             //locos: Locos | undefined;
             this.locos = [];
             this.sensors = {};
+            this.outputs = {};
             this.decoders = {};
             this.turnouts = {};
             this.powerInfo = {
@@ -152,9 +153,11 @@ define(["require", "exports", "./editor/editor", "./editor/toolbar", "./editor/t
                         break;
                     case dcc_1.ApiCommands.outputInfo:
                         const output = msg.data;
+                        this.outputs[output.address] = output.value;
                         this.editor.views.getButtonElements().forEach((b) => {
                             if (b.address == output.address) {
                                 b.on = output.value == b.valueOn;
+                                this.outputs[output.address] = b.on;
                                 this.editor.draw();
                                 dispatcher_1.Dispatcher.exec();
                             }
@@ -380,11 +383,13 @@ define(["require", "exports", "./editor/editor", "./editor/toolbar", "./editor/t
                     if (td.address == data.address) {
                         td.t1Closed = data.isClosed == td.t1ClosedValue; // : td.t1OpenValue
                         this.turnouts[data.address] = td.t1Closed;
+                        this.decoders[data.address] = td.t1Closed;
                         redraw = true;
                     }
                     if (td.address2 == data.address) {
                         td.t2Closed = data.isClosed == td.t2ClosedValue; // : td.t2OpenValue
                         this.turnouts[data.address] = td.t2Closed;
+                        this.decoders[data.address] = td.t2Closed;
                         redraw = true;
                     }
                 }
@@ -393,6 +398,7 @@ define(["require", "exports", "./editor/editor", "./editor/toolbar", "./editor/t
                     if (la.address == data.address) {
                         la.t1Closed = data.isClosed == la.t1ClosedValue;
                         this.turnouts[data.address] = la.t1Closed;
+                        this.decoders[data.address] = la.t1Closed;
                         redraw = true;
                     }
                 }
@@ -401,6 +407,7 @@ define(["require", "exports", "./editor/editor", "./editor/toolbar", "./editor/t
             accessories.forEach((elem) => {
                 if (elem.address == data.address) {
                     elem.on = data.isClosed ? elem.valueOn : elem.valueOff;
+                    this.decoders[elem.address] = elem.on;
                     redraw = true;
                 }
             });
@@ -461,6 +468,7 @@ define(["require", "exports", "./editor/editor", "./editor/toolbar", "./editor/t
             this.editor.views.getSensorElements().forEach(elem => {
                 if (elem.address == sensor.address) {
                     elem.on = sensor.on == elem.valueOn;
+                    this.sensors[sensor.address] = elem.on;
                 }
             });
             this.editor.draw();

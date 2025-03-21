@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turnout", "../editor/audioButton", "../../../common/src/logicCircuits"], function (require, exports, dcc_1, ws_1, turnout_1, audioButton_1, logicCircuits_1) {
+define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turnout", "../editor/audioButton", "../../../common/src/logicCircuits", "../controls/toastManager"], function (require, exports, dcc_1, ws_1, turnout_1, audioButton_1, logicCircuits_1, toastManager_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Api = void 0;
@@ -26,13 +26,20 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
             ws_1.wsClient.send({ type: dcc_1.ApiCommands.getBlocks, data: "" });
         }
         static getSensor(address) {
+            const s = Api.app.editor.views.getSensor(address);
+            if (s) {
+                return s;
+            }
+            return undefined;
+        }
+        static getSensorValue(address) {
             return Api.app.sensors[address];
         }
         static getSensorDuration(address, state) {
             logicCircuits_1.PulseDetector.getSensor(address, state);
         }
         static detectRisingEdge(address) {
-            const currentState = Api.getSensor(address);
+            const currentState = Api.getSensorValue(address);
             if (!(address in Api.edges)) {
                 Api.edges[address] = currentState;
                 return false;
@@ -42,7 +49,7 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
             return rising;
         }
         static detectFallingEdge(address) {
-            const currentState = Api.getSensor(address);
+            const currentState = Api.getSensorValue(address);
             if (!(address in Api.edges)) {
                 Api.edges[address] = currentState;
                 return false;
@@ -163,6 +170,106 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
         }
         static getElement(name) {
             return Api.app.editor.views.getElement(name);
+        }
+        static setOutput(address, on) {
+            const aa = Api.app.editor.views.getAccessoryElements().find((a) => {
+                return a.address == address;
+            });
+            if (aa) {
+                const data = { address: address, value: on };
+                ws_1.wsClient.send({ type: dcc_1.ApiCommands.setOutput, data: data });
+            }
+            else {
+                const data = { address: address, value: on };
+                ws_1.wsClient.send({ type: dcc_1.ApiCommands.setOutput, data: data });
+            }
+        }
+        static getOutput(address) {
+            return Api.app.outputs[address];
+        }
+        static setAccessory(address, on) {
+            const aa = Api.app.editor.views.getAccessoryElements().find((a) => {
+                return a.address == address;
+            });
+            if (aa) {
+                const data = { address: address, value: on };
+                ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBasicAccessory, data: data });
+            }
+            else {
+                const data = { address: address, value: on };
+                ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBasicAccessory, data: data });
+            }
+        }
+        static getAccessory(address) {
+            return Api.app.decoders[address];
+        }
+        static setSignalGreen(address) {
+            const sig = Api.getSignal(address);
+            if (sig) {
+                sig.sendGreenIfNotGreen();
+            }
+            else {
+                toastManager_1.toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error');
+            }
+        }
+        static getSignalIsGreen(address) {
+            const sig = Api.getSignal(address);
+            if (sig) {
+                return sig.isGreen;
+            }
+            toastManager_1.toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error');
+            return false;
+        }
+        static setSignalRed(address) {
+            const sig = Api.getSignal(address);
+            if (sig) {
+                sig.sendRedIfNotRed();
+            }
+            else {
+                toastManager_1.toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error');
+            }
+        }
+        static getSignalIsRed(address) {
+            const sig = Api.getSignal(address);
+            if (sig) {
+                return sig.isRed;
+            }
+            toastManager_1.toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error');
+            return false;
+        }
+        static setSignalYellow(address) {
+            const sig = Api.getSignal(address);
+            if (sig) {
+                sig.sendYellowIfNotYellow();
+            }
+            else {
+                toastManager_1.toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error');
+            }
+        }
+        static getSignalIsYellow(address) {
+            const sig = Api.getSignal(address);
+            if (sig) {
+                return sig.isYellow;
+            }
+            toastManager_1.toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error');
+            return false;
+        }
+        static setSignalWhite(address) {
+            const sig = Api.getSignal(address);
+            if (sig) {
+                sig.sendWhiteIfNotWhite();
+            }
+            else {
+                toastManager_1.toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error');
+            }
+        }
+        static getSignalIsWhite(address) {
+            const sig = Api.getSignal(address);
+            if (sig) {
+                return sig.isWhite;
+            }
+            toastManager_1.toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error');
+            return false;
         }
         static get tasks() {
             return Api.app.tasks;

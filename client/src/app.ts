@@ -31,6 +31,7 @@ export class App {
     //locos: Locos | undefined;
     locos: iLocomotive[] = []
     sensors: { [key: number]: boolean } = {}
+    outputs: { [key: number]: boolean } = {}
     decoders: { [key: number]: boolean } = {}
     turnouts: { [key: number]: boolean } = {}
     locoControlPanel: LocoControlPanel;
@@ -45,8 +46,7 @@ export class App {
 
     currentTask: Task | undefined;
     tasks: Tasks;
-
-
+    
     saveCanvasState() {
         const state = {
             originX: this.editor.originX,
@@ -215,9 +215,11 @@ export class App {
 
                 case ApiCommands.outputInfo:
                     const output = msg.data as iOutputInfo
+                    this.outputs[output.address] = output.value
                     this.editor.views.getButtonElements().forEach((b) => {
                         if (b.address == output.address) {
                             b.on = output.value == b.valueOn
+                            this.outputs[output.address] = b.on
                             this.editor.draw()
                             Dispatcher.exec()
                         }
@@ -487,11 +489,13 @@ export class App {
                 if (td.address == data.address) {
                     td.t1Closed = data.isClosed == td.t1ClosedValue; // : td.t1OpenValue
                     this.turnouts[data.address] = td.t1Closed
+                    this.decoders[data.address] = td.t1Closed
                     redraw = true
                 }
                 if (td.address2 == data.address) {
                     td.t2Closed = data.isClosed == td.t2ClosedValue; // : td.t2OpenValue
                     this.turnouts[data.address] = td.t2Closed
+                    this.decoders[data.address] = td.t2Closed
                     redraw = true
                 }
             }
@@ -500,6 +504,7 @@ export class App {
                 if (la.address == data.address) {
                     la.t1Closed = data.isClosed == la.t1ClosedValue;
                     this.turnouts[data.address] = la.t1Closed
+                    this.decoders[data.address] = la.t1Closed
                     redraw = true
                 }
             }
@@ -509,6 +514,7 @@ export class App {
         accessories.forEach((elem: AccessoryAddressElement) => {
             if (elem.address == data.address) {
                 elem.on = data.isClosed ? elem.valueOn : elem.valueOff
+                this.decoders[elem.address] = elem.on
                 redraw = true
             }
         })
@@ -575,7 +581,7 @@ export class App {
         this.editor.views.getSensorElements().forEach(elem => {
             if (elem.address == sensor.address) {
                 elem.on = sensor.on == elem.valueOn
-
+                this.sensors[sensor.address] = elem.on
             }
         });
         this.editor.draw()

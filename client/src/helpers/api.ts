@@ -1,5 +1,5 @@
 import { App } from "../app";
-import { iSetLocoFunction, iLocomotive, Z21Directions, iData, ApiCommands, iLoco, iSetTurnout, iSetBlock } from "../../../common/src/dcc";
+import { iSetLocoFunction, iLocomotive, Z21Directions, iData, ApiCommands, iLoco, iSetTurnout, iSetBlock, iSetOutput, iSetBasicAccessory } from "../../../common/src/dcc";
 import { wsClient } from "./ws";
 import { TurnoutDoubleElement, TurnoutElement } from "../editor/turnout";
 import { RouteSwitchElement } from "../editor/route";
@@ -7,6 +7,8 @@ import { FastClock } from "../editor/clock";
 import { Tasks } from "./task";
 import { audioManager } from "../editor/audioButton";
 import { PulseDetector } from "../../../common/src/logicCircuits"
+import { toastManager } from "../controls/toastManager";
+import { SensorShapeElement } from "../editor/sensor";
 
 export class Api {
 
@@ -31,7 +33,15 @@ export class Api {
     }
 
 
-    static getSensor(address: number): boolean {
+    static getSensor(address: number): SensorShapeElement | undefined{
+        const s = Api.app.editor.views.getSensor(address)
+        if(s) {
+            return s       
+        }
+        return undefined
+    }
+
+    static getSensorValue(address: number) : boolean {
         return Api.app.sensors[address]
     }
 
@@ -40,7 +50,7 @@ export class Api {
     }
 
     static detectRisingEdge(address: number): boolean {
-        const currentState = Api.getSensor(address);
+        const currentState = Api.getSensorValue(address);
         if (!(address in Api.edges)) {
             Api.edges[address] = currentState;
             return false;
@@ -52,7 +62,7 @@ export class Api {
     }
 
     static detectFallingEdge(address: number): boolean {
-        const currentState = Api.getSensor(address);
+        const currentState = Api.getSensorValue(address);
         if (!(address in Api.edges)) {
             Api.edges[address] = currentState;
             return false;
@@ -138,7 +148,7 @@ export class Api {
         }
         return undefined
     }
-    
+
     static getTurnoutState(address: number) {
         for (let t of Api.app.editor.views.getTurnoutElements()) {
             if (t.address === address) {
@@ -153,16 +163,16 @@ export class Api {
         }
         return undefined
     }
-    
+
     static getTaskButton(taskName: string) {
         return Api.app.editor.views.getSchedulerButtonByTaskName(taskName)
     }
-
 
     static getSignal(address: number) {
         return Api.app.editor.views.getSignal(address)
     }
 
+    
 
     static getRoute(name: string): RouteSwitchElement | undefined {
         return Api.app.editor.views.getRouteSwitchElements().find(r => r.name === name)
@@ -189,6 +199,115 @@ export class Api {
 
     static getElement(name: string) {
         return Api.app.editor.views.getElement(name)
+    }
+
+    static setOutput(address: number, on: boolean) {
+        const aa = Api.app.editor.views.getAccessoryElements().find((a) => {
+            return a.address == address
+        })
+
+        if (aa) {
+            const data: iSetOutput = { address: address, value: on } as iSetBasicAccessory
+            wsClient.send({ type: ApiCommands.setOutput, data: data } as iData)
+        } else {
+
+            const data: iSetOutput = { address: address, value: on } as iSetBasicAccessory
+            wsClient.send({ type: ApiCommands.setOutput, data: data } as iData)
+        }
+    }
+
+    static getOutput(address: number) {
+        return Api.app.outputs[address]
+    }
+
+    static setAccessory(address: number, on: boolean) {
+        const aa = Api.app.editor.views.getAccessoryElements().find((a) => {
+            return a.address == address
+        })
+
+        if (aa) {
+            const data: iSetBasicAccessory = { address: address, value: on } as iSetBasicAccessory
+            wsClient.send({ type: ApiCommands.setBasicAccessory, data: data } as iData)
+        } else {
+            const data: iSetBasicAccessory = { address: address, value: on } as iSetBasicAccessory
+            wsClient.send({ type: ApiCommands.setBasicAccessory, data: data } as iData)
+        }
+    }
+
+    static getAccessory(address: number) {
+        return Api.app.decoders[address]
+    }
+
+    static setSignalGreen(address: number) {
+        const sig = Api.getSignal(address)
+        if(sig) {
+            sig.sendGreenIfNotGreen()
+        } else {
+            toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error')
+        }
+    }
+
+    static getSignalIsGreen(address: number): boolean {
+        const sig = Api.getSignal(address)
+        if(sig) {
+           return sig.isGreen
+        } 
+        toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error')
+        return false
+    }
+
+    static setSignalRed(address: number) {
+        const sig = Api.getSignal(address)
+        if(sig) {
+            sig.sendRedIfNotRed()
+        } else {
+            toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error')
+        }
+    }
+
+    static getSignalIsRed(address: number): boolean {
+        const sig = Api.getSignal(address)
+        if(sig) {
+           return sig.isRed
+        } 
+        toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error')
+        return false
+    }
+
+    static setSignalYellow(address: number) {
+        const sig = Api.getSignal(address)
+        if(sig) {
+            sig.sendYellowIfNotYellow()
+        } else {
+            toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error')
+        }
+    }
+
+    static getSignalIsYellow(address: number): boolean {
+        const sig = Api.getSignal(address)
+        if(sig) {
+           return sig.isYellow
+        } 
+        toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error')
+        return false
+    }
+
+    static setSignalWhite(address: number) {
+        const sig = Api.getSignal(address)
+        if(sig) {
+            sig.sendWhiteIfNotWhite()
+        } else {
+            toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error')
+        }
+    }
+
+    static getSignalIsWhite(address: number): boolean {
+        const sig = Api.getSignal(address)
+        if(sig) {
+           return sig.isWhite
+        } 
+        toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error')
+        return false
     }
 
 
