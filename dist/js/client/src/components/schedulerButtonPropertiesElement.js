@@ -126,7 +126,40 @@ define(["require", "exports", "../helpers/task", "../helpers/api"], function (re
                         row.appendChild(col1);
                         col1.style.color = fg;
                         col1.style.backgroundColor = bg;
-                        col1.innerHTML = isActive ? ">>" : "";
+                        if (isActive) {
+                            col1.innerHTML = ">>";
+                        }
+                        switch (s.type) {
+                            case task_1.StepTypes.setLoco:
+                                col1.innerHTML = "🚂";
+                                break;
+                            case task_1.StepTypes.startAtMinutes:
+                                col1.innerHTML = "🕔";
+                                break;
+                            case task_1.StepTypes.setFunction:
+                            case task_1.StepTypes.playSound:
+                                col1.innerHTML = "🔊";
+                                break;
+                            case task_1.StepTypes.setRoute:
+                            case task_1.StepTypes.setTurnout:
+                                col1.innerHTML = "🔀";
+                                break;
+                            case task_1.StepTypes.setSignalGreen:
+                            case task_1.StepTypes.setSignalRed:
+                            case task_1.StepTypes.setSignalYellow:
+                            case task_1.StepTypes.setSignalWhite:
+                                col1.innerHTML = "🚦";
+                                break;
+                            case task_1.StepTypes.break:
+                                col1.innerHTML = "🔴";
+                                break;
+                            case task_1.StepTypes.goto:
+                                col1.innerHTML = "🔵";
+                                break;
+                            case task_1.StepTypes.label:
+                                col1.innerHTML = "🟣";
+                                break;
+                        }
                         const col2 = document.createElement("td");
                         row.appendChild(col2);
                         col2.style.color = fg;

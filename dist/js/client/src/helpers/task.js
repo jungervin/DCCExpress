@@ -1,7 +1,7 @@
-define(["require", "exports", "../controls/toastManager", "../../../common/src/dcc", "./api", "./globals"], function (require, exports, toastManager_1, dcc_1, api_1, globals_1) {
+define(["require", "exports", "../controls/toastManager", "../../../common/src/dcc", "./api", "./globals", "./utility"], function (require, exports, toastManager_1, dcc_1, api_1, globals_1, utility_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Task = exports.Tasks = exports.TaskStatus = exports.tasksCompleteEvent = void 0;
+    exports.Task = exports.Tasks = exports.TaskStatus = exports.StepTypes = exports.tasksCompleteEvent = void 0;
     exports.tasksCompleteEvent = new Event("tasksCompleteEvent");
     var StepTypes;
     (function (StepTypes) {
@@ -42,7 +42,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
         StepTypes["ifSignalIsWhite"] = "ifSignalIsWhite";
         StepTypes["ifSensorIsOn"] = "ifSensorIsOn";
         StepTypes["ifSensorIsOff"] = "ifSensorIsOff";
-    })(StepTypes || (StepTypes = {}));
+    })(StepTypes || (exports.StepTypes = StepTypes = {}));
     var TaskStatus;
     (function (TaskStatus) {
         TaskStatus["running"] = "\uD83D\uDE82 RUNNING";
@@ -183,6 +183,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
             this.num = 0;
             this.delayEnd = 0;
             this.autoStart = false;
+            this.ident = 0;
             //    stopOnComplete: boolean = true;
             this.prevSpeed = 0;
             this._stopOnComplete = false;
@@ -192,26 +193,26 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
         }
         setLoco(address) {
             this.locoAddress = address;
-            this.steps.push({ type: StepTypes.setLoco, data: { address: address } });
+            this.steps.push({ type: StepTypes.setLoco, data: { address: address }, ident: this.ident });
         }
         setTurnout(address, closed) {
-            this.steps.push({ type: StepTypes.setTurnout, data: { address: address, closed: closed } });
+            this.steps.push({ type: StepTypes.setTurnout, data: { address: address, closed: closed }, ident: this.ident });
         }
         setTurnoutMs(address, closed, wait) {
             this.setTurnout(address, closed);
             this.delay(wait);
         }
         forward(speed) {
-            this.steps.push({ type: StepTypes.forward, data: { speed: speed } });
+            this.steps.push({ type: StepTypes.forward, data: { speed: speed }, ident: this.ident });
         }
         reverse(speed) {
-            this.steps.push({ type: StepTypes.reverse, data: { speed: speed } });
+            this.steps.push({ type: StepTypes.reverse, data: { speed: speed }, ident: this.ident });
         }
         stopLoco() {
-            this.steps.push({ type: StepTypes.stopLoco, data: { speed: 0 } });
+            this.steps.push({ type: StepTypes.stopLoco, data: { speed: 0 }, ident: this.ident });
         }
         setFunction(fn, on) {
-            this.steps.push({ type: StepTypes.setFunction, data: { fn: fn, on: on } });
+            this.steps.push({ type: StepTypes.setFunction, data: { fn: fn, on: on }, ident: this.ident });
         }
         setFunctionMs(fn, on, duration) {
             this.setFunction(fn, on);
@@ -219,7 +220,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
             this.setFunction(fn, !on);
         }
         delay(ms) {
-            this.steps.push({ type: StepTypes.delay, data: { ms: ms } });
+            this.steps.push({ type: StepTypes.delay, data: { ms: ms }, ident: this.ident });
         }
         waitMs(min, max) {
             const ms = Math.floor(Math.random() * (max - min + 1) + min);
@@ -230,88 +231,89 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
             this.delay(ms);
         }
         waitForSensor(address, on) {
-            this.steps.push({ type: StepTypes.waitForSensor, data: { address: address, on: on } });
+            this.steps.push({ type: StepTypes.waitForSensor, data: { address: address, on: on }, ident: this.ident });
         }
         setRoute(routeName) {
-            this.steps.push({ type: StepTypes.setRoute, data: { routeName: routeName } });
+            this.steps.push({ type: StepTypes.setRoute, data: { routeName: routeName }, ident: this.ident });
         }
         waitForMinutes(minute) {
-            this.steps.push({ type: StepTypes.waitForMinutes, data: { minute: minute } });
+            this.steps.push({ type: StepTypes.waitForMinutes, data: { minute: minute }, ident: this.ident });
         }
         startAtMinutes(minutes) {
-            this.steps.push({ type: StepTypes.startAtMinutes, data: { minutes: minutes } });
+            this.steps.push({ type: StepTypes.startAtMinutes, data: { minutes: minutes }, ident: this.ident });
         }
         playSound(fname) {
-            this.steps.push({ type: StepTypes.playSound, data: { fname: fname } });
+            this.steps.push({ type: StepTypes.playSound, data: { fname: fname }, ident: this.ident });
         }
         label(text) {
-            this.steps.push({ type: StepTypes.label, data: { text: text } });
+            this.steps.push({ type: StepTypes.label, data: { text: text }, ident: this.ident });
         }
         ifClosed(address) {
-            this.steps.push({ type: StepTypes.ifClosed, data: { address } });
+            this.steps.push({ type: StepTypes.ifClosed, data: { address }, ident: this.ident++ });
         }
         ifOpen(address) {
-            this.steps.push({ type: StepTypes.ifOpen, data: { address } });
+            this.steps.push({ type: StepTypes.ifOpen, data: { address }, ident: this.ident });
         }
         endIf() {
-            this.steps.push({ type: StepTypes.endIf, data: {} });
+            this.steps.push({ type: StepTypes.endIf, data: {}, ident: this.ident - 1 });
+            this.ident--;
         }
         else() {
-            this.steps.push({ type: StepTypes.else, data: {} });
+            this.steps.push({ type: StepTypes.else, data: {}, ident: this.ident - 1 });
         }
         goto(label) {
-            this.steps.push({ type: StepTypes.goto, data: { text: label } });
+            this.steps.push({ type: StepTypes.goto, data: { text: label }, ident: this.ident });
         }
         break(text = "") {
-            this.steps.push({ type: StepTypes.break, data: { text: text } });
+            this.steps.push({ type: StepTypes.break, data: { text: text }, ident: this.ident });
         }
         setOutput(address, on) {
-            this.steps.push({ type: StepTypes.setOutput, data: { address: address, on: on } });
+            this.steps.push({ type: StepTypes.setOutput, data: { address: address, on: on }, ident: this.ident });
         }
         ifOutputIsOn(address) {
-            this.steps.push({ type: StepTypes.ifOutputIsOn, data: { address: address } });
+            this.steps.push({ type: StepTypes.ifOutputIsOn, data: { address: address }, ident: this.ident++ });
         }
         ifOutputIsOff(address) {
-            this.steps.push({ type: StepTypes.ifOutputIsOff, data: { address: address } });
+            this.steps.push({ type: StepTypes.ifOutputIsOff, data: { address: address }, ident: this.ident++ });
         }
         setAccessory(address, on) {
-            this.steps.push({ type: StepTypes.setAccessory, data: { address: address, on: on } });
+            this.steps.push({ type: StepTypes.setAccessory, data: { address: address, on: on }, ident: this.ident });
         }
         ifAccessoryIsOn(address) {
-            this.steps.push({ type: StepTypes.ifAccessoryIsOn, data: { address: address } });
+            this.steps.push({ type: StepTypes.ifAccessoryIsOn, data: { address: address }, ident: this.ident++ });
         }
         ifAccessoryIsOff(address) {
-            this.steps.push({ type: StepTypes.ifAccessoryIsOff, data: { address: address } });
+            this.steps.push({ type: StepTypes.ifAccessoryIsOff, data: { address: address }, ident: this.ident++ });
         }
         setSignalGreen(address) {
-            this.steps.push({ type: StepTypes.setSignalGreen, data: { address: address } });
+            this.steps.push({ type: StepTypes.setSignalGreen, data: { address: address }, ident: this.ident });
         }
         ifSignalIsGreen(address) {
-            this.steps.push({ type: StepTypes.ifSignalIsGreen, data: { address: address } });
+            this.steps.push({ type: StepTypes.ifSignalIsGreen, data: { address: address }, ident: this.ident++ });
         }
         setSignalRed(address) {
-            this.steps.push({ type: StepTypes.setSignalRed, data: { address: address } });
+            this.steps.push({ type: StepTypes.setSignalRed, data: { address: address }, ident: this.ident });
         }
         ifSignalIsRed(address) {
-            this.steps.push({ type: StepTypes.ifSignalIsRed, data: { address: address } });
+            this.steps.push({ type: StepTypes.ifSignalIsRed, data: { address: address }, ident: this.ident++ });
         }
         setSignalYellow(address) {
-            this.steps.push({ type: StepTypes.setSignalYellow, data: { address: address } });
+            this.steps.push({ type: StepTypes.setSignalYellow, data: { address: address }, ident: this.ident });
         }
         ifSignalIsYellow(address) {
-            this.steps.push({ type: StepTypes.ifSignalIsYellow, data: { address: address } });
+            this.steps.push({ type: StepTypes.ifSignalIsYellow, data: { address: address }, ident: this.ident++ });
         }
         setSignalWhite(address) {
-            this.steps.push({ type: StepTypes.setSignalWhite, data: { address: address } });
+            this.steps.push({ type: StepTypes.setSignalWhite, data: { address: address }, ident: this.ident });
         }
         ifSignalIsWhite(address) {
-            this.steps.push({ type: StepTypes.ifSignalIsWhite, data: { address: address } });
+            this.steps.push({ type: StepTypes.ifSignalIsWhite, data: { address: address }, ident: this.ident++ });
         }
         ifSensorIsOn(address) {
-            this.steps.push({ type: StepTypes.ifSensorIsOn, data: { address: address } });
+            this.steps.push({ type: StepTypes.ifSensorIsOn, data: { address: address }, ident: this.ident++ });
         }
         ifSensorIsOff(address) {
-            this.steps.push({ type: StepTypes.ifSensorIsOff, data: { address: address } });
+            this.steps.push({ type: StepTypes.ifSensorIsOff, data: { address: address }, ident: this.ident++ });
         }
         gotoNextElse() {
             const i = this.steps.findIndex((step, i) => {
@@ -595,74 +597,74 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
         logStep(step) {
             switch (step.type) {
                 case StepTypes.setLoco:
-                    return (`setLoco: ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`setLoco: ${step.data.address}`);
                 case StepTypes.setTurnout:
-                    return (`setTurnout: ${step.data.address} closed: ${step.data.closed}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`setTurnout: ${step.data.address} closed: ${step.data.closed}`);
                 case StepTypes.forward:
-                    return (`forward: ${step.data.speed}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`forward: ${step.data.speed}`);
                 case StepTypes.reverse:
-                    return (`reverse: ${step.data.speed}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`reverse: ${step.data.speed}`);
                 case StepTypes.stopLoco:
-                    return (`stopLoco`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`stopLoco`);
                 case StepTypes.delay:
-                    return (`delay: ${step.data.ms}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`delay: ${step.data.ms}`);
                 case StepTypes.waitForSensor:
-                    return (`waitForSensor: ${step.data.address} on: ${step.data.on}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`waitForSensor: ${step.data.address} on: ${step.data.on}`);
                 case StepTypes.setFunction:
-                    return (`setFunction: ${step.data.fn} on: ${step.data.on}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`setFunction: ${step.data.fn} on: ${step.data.on}`);
                     break;
                 case StepTypes.restart:
-                    return (`<b style="color: yellow">restart</b>`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">restart</b>`);
                 case StepTypes.playSound:
-                    return (`playSound: ${step.data.fname}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`playSound: ${step.data.fname}`);
                 case StepTypes.setRoute:
-                    return (`setRoute: ${step.data.routeName}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`setRoute: ${step.data.routeName}`);
                 case StepTypes.startAtMinutes:
-                    return (`startAtMinutes: ${step.data.minutes}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`startAtMinutes: ${step.data.minutes}`);
                 case StepTypes.waitForMinutes:
-                    return (`waitForMinute: ${step.data.minute}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`waitForMinute: ${step.data.minute}`);
                 case StepTypes.label:
-                    return (`label: ${step.data.text}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b>label</b>: ${step.data.text}`);
                 case StepTypes.ifClosed:
-                    return (`<b>ifClosed</b>: ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifClosed</b>: ${step.data.address}`);
                 case StepTypes.ifOpen:
-                    return (`<b>ifOpen:</b> ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifOpen:</b> ${step.data.address}`);
                 case StepTypes.else:
-                    return (`<b>else</b>`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">else:</b>`);
                 case StepTypes.endIf:
-                    return (`<b>endIf</b>`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">endIf</b>`);
                 case StepTypes.goto:
-                    return (`<b>goto:</b> ${step.data.text}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b>goto:</b> ${step.data.text}`);
                 case StepTypes.break:
-                    return (`<b style="color: yellow">break:</b> ${step.data.text}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b>break:</b> ${step.data.text}`);
                 case StepTypes.setOutput:
-                    return (`setOutput: ${step.data.address} on: ${step.data.on}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`setOutput: ${step.data.address} on: ${step.data.on}`);
                 case StepTypes.ifOutputIsOn:
-                    return (`ifOutputIsOn: ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifOutputIsOn:</b> ${step.data.address}`);
                 case StepTypes.ifOutputIsOff:
-                    return (`ifOutputIsOff: ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifOutputIsOff:</b> ${step.data.address}`);
                 case StepTypes.setAccessory:
-                    return (`setAccessory: ${step.data.address} on: ${step.data.on}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`setAccessory: ${step.data.address} on: ${step.data.on}`);
                 case StepTypes.ifAccessoryIsOn:
-                    return (`ifAccessoryIsOn: ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifAccessoryIsOn:</b> ${step.data.address}`);
                 case StepTypes.ifAccessoryIsOff:
-                    return (`ifAccessoryIsOff: ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifAccessoryIsOff:</b> ${step.data.address}`);
                 case StepTypes.setSignalGreen:
-                    return (`setSignalGreen: ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`setSignalGreen: ${step.data.address}`);
                 case StepTypes.ifSignalIsGreen:
-                    return (`ifSignalIsGreen: ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifSignalIsGreen:</b> ${step.data.address}`);
                 case StepTypes.setSignalRed:
-                    return (`setSignalRed: ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`setSignalRed: ${step.data.address}`);
                 case StepTypes.ifSignalIsRed:
-                    return (`ifSignalIsRed: ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifSignalIsRed:</b> ${step.data.address}`);
                 case StepTypes.setSignalYellow:
-                    return (`setSignalYellow: ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`setSignalYellow: ${step.data.address}`);
                 case StepTypes.ifSignalIsYellow:
-                    return (`ifSignalIsYellow: ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifSignalIsYellow:</b> ${step.data.address}`);
                 case StepTypes.ifSensorIsOn:
-                    return (`ifSensorIsOn: ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifSensorIsOn:</b> ${step.data.address}`);
                 case StepTypes.ifSensorIsOff:
-                    return (`ifSensorIsOff: ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifSensorIsOff:</b> ${step.data.address}`);
             }
             return "Unknown";
         }
@@ -711,10 +713,10 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
             api_1.Api.setLocoSpeed(this.locoAddress, 0);
         }
         resumeTask() {
-            var _a;
-            if (((_a = this.step) === null || _a === void 0 ? void 0 : _a.type) == StepTypes.break && this.index < this.steps.length - 1) {
-                this.index++;
-            }
+            // if (this.step?.type == StepTypes.break && this.index < this.steps.length - 1) {
+            //     this.index++
+            // }
+            this.index++;
             this.status = TaskStatus.running;
             this.delayEnd = 0;
             if (this.prevSpeed > 0) {

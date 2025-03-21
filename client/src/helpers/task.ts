@@ -3,11 +3,12 @@ import { Z21Directions } from "../../../common/src/dcc";
 import { Api } from "./api";
 import { Globals } from "./globals";
 import { text } from "stream/consumers";
+import { htmlSpaces } from "./utility";
 
 
 export const tasksCompleteEvent = new Event("tasksCompleteEvent");
 
-enum StepTypes {
+export enum StepTypes {
     setLoco = "setLoco",
     setTurnout = "setTurnout",
     forward = "forward",
@@ -49,7 +50,8 @@ enum StepTypes {
 }
 export interface iStep {
     type: StepTypes,
-    data: object
+    data: object,
+    ident: number
 }
 
 interface iLocoStep {
@@ -347,7 +349,7 @@ export class Task {
     step: iStep | undefined;
     delayEnd: number = 0;
     autoStart = false
-
+    ident: number = 0;
     //    stopOnComplete: boolean = true;
     prevSpeed: number = 0;
     constructor(name: string) {
@@ -356,11 +358,11 @@ export class Task {
 
     setLoco(address: number) {
         this.locoAddress = address
-        this.steps.push({ type: StepTypes.setLoco, data: { address: address } as iLocoStep } as iStep)
+        this.steps.push({ type: StepTypes.setLoco, data: { address: address } as iLocoStep, ident: this.ident } as iStep)
     }
 
     setTurnout(address: number, closed: boolean) {
-        this.steps.push({ type: StepTypes.setTurnout, data: { address: address, closed: closed } as iSetTurnoutStep } as iStep)
+        this.steps.push({ type: StepTypes.setTurnout, data: { address: address, closed: closed } as iSetTurnoutStep, ident: this.ident } as iStep)
     }
 
     setTurnoutMs(address: number, closed: boolean, wait: number) {
@@ -369,17 +371,17 @@ export class Task {
     }
 
     forward(speed: number) {
-        this.steps.push({ type: StepTypes.forward, data: { speed: speed } as iForwardStep } as iStep)
+        this.steps.push({ type: StepTypes.forward, data: { speed: speed } as iForwardStep, ident: this.ident } as iStep)
     }
     reverse(speed: number) {
-        this.steps.push({ type: StepTypes.reverse, data: { speed: speed } as iForwardStep } as iStep)
+        this.steps.push({ type: StepTypes.reverse, data: { speed: speed } as iForwardStep, ident: this.ident } as iStep)
     }
     stopLoco() {
-        this.steps.push({ type: StepTypes.stopLoco, data: { speed: 0 } } as iStep)
+        this.steps.push({ type: StepTypes.stopLoco, data: { speed: 0 }, ident: this.ident } as iStep)
     }
 
     setFunction(fn: number, on: boolean): void {
-        this.steps.push({ type: StepTypes.setFunction, data: { fn: fn, on: on } as iFunctionStep } as iStep)
+        this.steps.push({ type: StepTypes.setFunction, data: { fn: fn, on: on } as iFunctionStep, ident: this.ident } as iStep)
     }
 
     setFunctionMs(fn: number, on: boolean, duration: number): void {
@@ -389,7 +391,7 @@ export class Task {
     }
 
     delay(ms: number) {
-        this.steps.push({ type: StepTypes.delay, data: { ms: ms } as iDelayStep } as iStep)
+        this.steps.push({ type: StepTypes.delay, data: { ms: ms } as iDelayStep, ident: this.ident } as iStep)
     }
 
     waitMs(min: number, max: number) {
@@ -403,110 +405,111 @@ export class Task {
     }
 
     waitForSensor(address: number, on: boolean) {
-        this.steps.push({ type: StepTypes.waitForSensor, data: { address: address, on: on } as iWaitForSensor } as iStep)
+        this.steps.push({ type: StepTypes.waitForSensor, data: { address: address, on: on } as iWaitForSensor, ident: this.ident } as iStep)
     }
 
     setRoute(routeName: string) {
-        this.steps.push({ type: StepTypes.setRoute, data: { routeName: routeName } as iRouteStep } as iStep)
+        this.steps.push({ type: StepTypes.setRoute, data: { routeName: routeName } as iRouteStep, ident: this.ident } as iStep)
     }
 
     waitForMinutes(minute: number) {
-        this.steps.push({ type: StepTypes.waitForMinutes, data: { minute: minute } as iWaitForMinute } as iStep)
+        this.steps.push({ type: StepTypes.waitForMinutes, data: { minute: minute } as iWaitForMinute, ident: this.ident } as iStep)
     }
 
     startAtMinutes(minutes: number[]) {
-        this.steps.push({ type: StepTypes.startAtMinutes, data: { minutes: minutes } })
+        this.steps.push({ type: StepTypes.startAtMinutes, data: { minutes: minutes }, ident: this.ident })
     }
 
     playSound(fname: string) {
-        this.steps.push({ type: StepTypes.playSound, data: { fname: fname } as iPlaySound } as iStep)
+        this.steps.push({ type: StepTypes.playSound, data: { fname: fname } as iPlaySound, ident: this.ident } as iStep)
     }
 
     label(text: string) {
-        this.steps.push({ type: StepTypes.label, data: { text: text } as iLabel } as iStep)
+        this.steps.push({ type: StepTypes.label, data: { text: text } as iLabel, ident: this.ident } as iStep)
     }
 
     ifClosed(address: number) {
-        this.steps.push({ type: StepTypes.ifClosed, data: { address } as iIfClosed } as iStep)
+        this.steps.push({ type: StepTypes.ifClosed, data: { address } as iIfClosed, ident: this.ident++ } as iStep)
     }
 
     ifOpen(address: number) {
-        this.steps.push({ type: StepTypes.ifOpen, data: { address } as iIfOpen } as iStep)
+        this.steps.push({ type: StepTypes.ifOpen, data: { address } as iIfOpen, ident: this.ident } as iStep)
     }
 
     endIf() {
-        this.steps.push({ type: StepTypes.endIf, data: {} } as iStep)
+        this.steps.push({ type: StepTypes.endIf, data: {}, ident: this.ident - 1 } as iStep)
+        this.ident-- 
     }
 
     else() {
-        this.steps.push({ type: StepTypes.else, data: {} } as iStep)
+        this.steps.push({ type: StepTypes.else, data: {}, ident: this.ident - 1 } as iStep)
     }
 
     goto(label: string) {
-        this.steps.push({ type: StepTypes.goto, data: { text: label } as iGoto } as iStep)
+        this.steps.push({ type: StepTypes.goto, data: { text: label } as iGoto, ident: this.ident } as iStep)
     }
 
     break(text: string = "") {
-        this.steps.push({ type: StepTypes.break, data: { text: text } as iBreak } as iStep)
+        this.steps.push({ type: StepTypes.break, data: { text: text } as iBreak, ident: this.ident } as iStep)
     }
 
     setOutput(address: number, on: boolean) {
-        this.steps.push({ type: StepTypes.setOutput, data: { address: address, on: on } as iSetOutput } as iStep)
+        this.steps.push({ type: StepTypes.setOutput, data: { address: address, on: on } as iSetOutput, ident: this.ident } as iStep)
     }
 
     ifOutputIsOn(address: number) {
-        this.steps.push({ type: StepTypes.ifOutputIsOn, data: { address: address } as iIfOutputIsOn } as iStep)
+        this.steps.push({ type: StepTypes.ifOutputIsOn, data: { address: address } as iIfOutputIsOn, ident: this.ident++ } as iStep)
     }
 
     ifOutputIsOff(address: number) {
-        this.steps.push({ type: StepTypes.ifOutputIsOff, data: { address: address } as iIfOutputIsOff } as iStep)
+        this.steps.push({ type: StepTypes.ifOutputIsOff, data: { address: address } as iIfOutputIsOff, ident: this.ident++ } as iStep)
     }
 
     setAccessory(address: number, on: boolean) {
-        this.steps.push({ type: StepTypes.setAccessory, data: { address: address, on: on } as iSetAccessory } as iStep)
+        this.steps.push({ type: StepTypes.setAccessory, data: { address: address, on: on } as iSetAccessory, ident: this.ident } as iStep)
     }
 
     ifAccessoryIsOn(address: number) {
-        this.steps.push({ type: StepTypes.ifAccessoryIsOn, data: { address: address } as iIfAccessoryIsOn } as iStep)
+        this.steps.push({ type: StepTypes.ifAccessoryIsOn, data: { address: address } as iIfAccessoryIsOn, ident: this.ident++ } as iStep)
     }
 
     ifAccessoryIsOff(address: number) {
-        this.steps.push({ type: StepTypes.ifAccessoryIsOff, data: { address: address } as iIfAccessoryIsOff } as iStep)
+        this.steps.push({ type: StepTypes.ifAccessoryIsOff, data: { address: address } as iIfAccessoryIsOff, ident: this.ident++ } as iStep)
     }
 
     setSignalGreen(address: number) {
-        this.steps.push({ type: StepTypes.setSignalGreen, data: { address: address } as iSetSignalGreen } as iStep)
+        this.steps.push({ type: StepTypes.setSignalGreen, data: { address: address } as iSetSignalGreen, ident: this.ident } as iStep)
     }
     ifSignalIsGreen(address: number) {
-        this.steps.push({ type: StepTypes.ifSignalIsGreen, data: { address: address } as iIfSignalIsGreen } as iStep)
+        this.steps.push({ type: StepTypes.ifSignalIsGreen, data: { address: address } as iIfSignalIsGreen, ident: this.ident++ } as iStep)
     }
 
     setSignalRed(address: number) {
-        this.steps.push({ type: StepTypes.setSignalRed, data: { address: address } as iSetSignalRed } as iStep)
+        this.steps.push({ type: StepTypes.setSignalRed, data: { address: address } as iSetSignalRed, ident: this.ident } as iStep)
     }
     ifSignalIsRed(address: number) {
-        this.steps.push({ type: StepTypes.ifSignalIsRed, data: { address: address } as iIfSignalIsRed } as iStep)
+        this.steps.push({ type: StepTypes.ifSignalIsRed, data: { address: address } as iIfSignalIsRed, ident: this.ident++ } as iStep)
     }
 
     setSignalYellow(address: number) {
-        this.steps.push({ type: StepTypes.setSignalYellow, data: { address: address } as iSetSignalYellow } as iStep)
+        this.steps.push({ type: StepTypes.setSignalYellow, data: { address: address } as iSetSignalYellow, ident: this.ident } as iStep)
     }
     ifSignalIsYellow(address: number) {
-        this.steps.push({ type: StepTypes.ifSignalIsYellow, data: { address: address } as iIfSignalIsYellow } as iStep)
+        this.steps.push({ type: StepTypes.ifSignalIsYellow, data: { address: address } as iIfSignalIsYellow, ident: this.ident++ } as iStep)
     }
 
     setSignalWhite(address: number) {
-        this.steps.push({ type: StepTypes.setSignalWhite, data: { address: address } as iSetSignalWhite } as iStep)
+        this.steps.push({ type: StepTypes.setSignalWhite, data: { address: address } as iSetSignalWhite, ident: this.ident } as iStep)
     }
     ifSignalIsWhite(address: number) {
-        this.steps.push({ type: StepTypes.ifSignalIsWhite, data: { address: address } as iIfSignalIsWhite } as iStep)
+        this.steps.push({ type: StepTypes.ifSignalIsWhite, data: { address: address } as iIfSignalIsWhite, ident: this.ident++ } as iStep)
     }
 
     ifSensorIsOn(address: number) {
-        this.steps.push({ type: StepTypes.ifSensorIsOn, data: { address: address } as iIfSensorIsOn } as iStep)
+        this.steps.push({ type: StepTypes.ifSensorIsOn, data: { address: address } as iIfSensorIsOn, ident: this.ident++ } as iStep)
     }
     ifSensorIsOff(address: number) {
-        this.steps.push({ type: StepTypes.ifSensorIsOff, data: { address: address } as iIfSensorIsOff } as iStep)
+        this.steps.push({ type: StepTypes.ifSensorIsOff, data: { address: address } as iIfSensorIsOff, ident: this.ident++ } as iStep)
     }
 
     gotoNextElse() {
@@ -527,7 +530,7 @@ export class Task {
         if (i >= 0) {
             const step = this.steps[i] as iStep
             this.index = i
-            if(step.type == StepTypes.else) {
+            if (step.type == StepTypes.else) {
                 this.index++;
             }
 
@@ -790,80 +793,80 @@ export class Task {
     logStep(step: iStep): string {
         switch (step.type) {
             case StepTypes.setLoco:
-                return (`setLoco: ${(step.data as iLocoStep).address}`)
+                return htmlSpaces(step.ident) + (`setLoco: ${(step.data as iLocoStep).address}`)
             case StepTypes.setTurnout:
-                return (`setTurnout: ${(step.data as iSetTurnoutStep).address} closed: ${(step.data as iSetTurnoutStep).closed}`)
+                return htmlSpaces(step.ident) + (`setTurnout: ${(step.data as iSetTurnoutStep).address} closed: ${(step.data as iSetTurnoutStep).closed}`)
             case StepTypes.forward:
-                return (`forward: ${(step.data as iForwardStep).speed}`)
+                return htmlSpaces(step.ident) + (`forward: ${(step.data as iForwardStep).speed}`)
             case StepTypes.reverse:
-                return (`reverse: ${(step.data as iForwardStep).speed}`)
+                return htmlSpaces(step.ident) + (`reverse: ${(step.data as iForwardStep).speed}`)
             case StepTypes.stopLoco:
-                return (`stopLoco`)
+                return htmlSpaces(step.ident) + (`stopLoco`)
             case StepTypes.delay:
-                return (`delay: ${(step.data as iDelayStep).ms}`)
+                return htmlSpaces(step.ident) + (`delay: ${(step.data as iDelayStep).ms}`)
             case StepTypes.waitForSensor:
-                return (`waitForSensor: ${(step.data as iWaitForSensor).address} on: ${(step.data as iWaitForSensor).on}`)
+                return htmlSpaces(step.ident) + (`waitForSensor: ${(step.data as iWaitForSensor).address} on: ${(step.data as iWaitForSensor).on}`)
             case StepTypes.setFunction:
-                return (`setFunction: ${(step.data as iFunctionStep).fn} on: ${(step.data as iFunctionStep).on}`)
+                return htmlSpaces(step.ident) + (`setFunction: ${(step.data as iFunctionStep).fn} on: ${(step.data as iFunctionStep).on}`)
                 break;
             case StepTypes.restart:
-                return (`<b style="color: yellow">restart</b>`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">restart</b>`)
             case StepTypes.playSound:
-                return (`playSound: ${(step.data as iPlaySound).fname}`)
+                return htmlSpaces(step.ident) + (`playSound: ${(step.data as iPlaySound).fname}`)
             case StepTypes.setRoute:
-                return (`setRoute: ${(step.data as iRouteStep).routeName}`)
+                return htmlSpaces(step.ident) + (`setRoute: ${(step.data as iRouteStep).routeName}`)
             case StepTypes.startAtMinutes:
-                return (`startAtMinutes: ${(step.data as iStartAtMinutes).minutes}`)
+                return htmlSpaces(step.ident) + (`startAtMinutes: ${(step.data as iStartAtMinutes).minutes}`)
             case StepTypes.waitForMinutes:
-                return (`waitForMinute: ${(step.data as iWaitForMinute).minute}`)
+                return htmlSpaces(step.ident) + (`waitForMinute: ${(step.data as iWaitForMinute).minute}`)
             case StepTypes.label:
-                return (`label: ${(step.data as iLabel).text}`)
+                return htmlSpaces(step.ident) + (`<b>label</b>: ${(step.data as iLabel).text}`)
             case StepTypes.ifClosed:
-                return (`<b>ifClosed</b>: ${(step.data as iIfClosed).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifClosed</b>: ${(step.data as iIfClosed).address}`)
             case StepTypes.ifOpen:
-                return (`<b>ifOpen:</b> ${(step.data as iIfOpen).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifOpen:</b> ${(step.data as iIfOpen).address}`)
             case StepTypes.else:
-                return (`<b>else</b>`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">else:</b>`)
             case StepTypes.endIf:
-                return (`<b>endIf</b>`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">endIf</b>`)
             case StepTypes.goto:
-                return (`<b>goto:</b> ${(step.data as iGoto).text}`)
+                return htmlSpaces(step.ident) + (`<b>goto:</b> ${(step.data as iGoto).text}`)
             case StepTypes.break:
-                return (`<b style="color: yellow">break:</b> ${(step.data as iBreak).text}`)
+                return htmlSpaces(step.ident) + (`<b>break:</b> ${(step.data as iBreak).text}`)
 
             case StepTypes.setOutput:
-                return (`setOutput: ${(step.data as iSetOutput).address} on: ${(step.data as iSetOutput).on}`)
+                return htmlSpaces(step.ident) + (`setOutput: ${(step.data as iSetOutput).address} on: ${(step.data as iSetOutput).on}`)
             case StepTypes.ifOutputIsOn:
-                return (`ifOutputIsOn: ${(step.data as iIfOutputIsOn).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifOutputIsOn:</b> ${(step.data as iIfOutputIsOn).address}`)
             case StepTypes.ifOutputIsOff:
-                return (`ifOutputIsOff: ${(step.data as iIfOutputIsOff).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifOutputIsOff:</b> ${(step.data as iIfOutputIsOff).address}`)
 
             case StepTypes.setAccessory:
-                return (`setAccessory: ${(step.data as iSetAccessory).address} on: ${(step.data as iSetAccessory).on}`)
+                return htmlSpaces(step.ident) + (`setAccessory: ${(step.data as iSetAccessory).address} on: ${(step.data as iSetAccessory).on}`)
             case StepTypes.ifAccessoryIsOn:
-                return (`ifAccessoryIsOn: ${(step.data as iIfAccessoryIsOn).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifAccessoryIsOn:</b> ${(step.data as iIfAccessoryIsOn).address}`)
             case StepTypes.ifAccessoryIsOff:
-                return (`ifAccessoryIsOff: ${(step.data as iIfAccessoryIsOff).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifAccessoryIsOff:</b> ${(step.data as iIfAccessoryIsOff).address}`)
 
             case StepTypes.setSignalGreen:
-                return (`setSignalGreen: ${(step.data as iSetSignalGreen).address}`)
+                return htmlSpaces(step.ident) + (`setSignalGreen: ${(step.data as iSetSignalGreen).address}`)
             case StepTypes.ifSignalIsGreen:
-                return (`ifSignalIsGreen: ${(step.data as iIfSignalIsGreen).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifSignalIsGreen:</b> ${(step.data as iIfSignalIsGreen).address}`)
 
             case StepTypes.setSignalRed:
-                return (`setSignalRed: ${(step.data as iSetSignalRed).address}`)
+                return htmlSpaces(step.ident) + (`setSignalRed: ${(step.data as iSetSignalRed).address}`)
             case StepTypes.ifSignalIsRed:
-                return (`ifSignalIsRed: ${(step.data as iIfSignalIsRed).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifSignalIsRed:</b> ${(step.data as iIfSignalIsRed).address}`)
 
             case StepTypes.setSignalYellow:
-                return (`setSignalYellow: ${(step.data as iSetSignalYellow).address}`)
+                return htmlSpaces(step.ident) + (`setSignalYellow: ${(step.data as iSetSignalYellow).address}`)
             case StepTypes.ifSignalIsYellow:
-                return (`ifSignalIsYellow: ${(step.data as iIfSignalIsYellow).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifSignalIsYellow:</b> ${(step.data as iIfSignalIsYellow).address}`)
 
             case StepTypes.ifSensorIsOn:
-                return (`ifSensorIsOn: ${(step.data as iIfSensorIsOn).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifSensorIsOn:</b> ${(step.data as iIfSensorIsOn).address}`)
             case StepTypes.ifSensorIsOff:
-                return (`ifSensorIsOff: ${(step.data as iIfSensorIsOff).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifSensorIsOff:</b> ${(step.data as iIfSensorIsOff).address}`)
 
         }
         return "Unknown"
@@ -920,10 +923,11 @@ export class Task {
     }
 
     resumeTask() {
-        if (this.step?.type == StepTypes.break && this.index < this.steps.length - 1) {
-            this.index++
-        }
+        // if (this.step?.type == StepTypes.break && this.index < this.steps.length - 1) {
+        //     this.index++
+        // }
 
+        this.index++
         this.status = TaskStatus.running
         this.delayEnd = 0;
         if (this.prevSpeed > 0) {
@@ -969,7 +973,7 @@ export class Task {
     }
     public set index(v: number) {
         this._index = v;
-        if(v >= this.steps.length) {
+        if (v >= this.steps.length) {
             this._index = this.steps.length - 1
         }
 

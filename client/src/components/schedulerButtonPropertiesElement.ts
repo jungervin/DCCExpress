@@ -1,4 +1,4 @@
-import { iStep, Task, TaskStatus } from "../helpers/task";
+import { iStep, StepTypes, Task, TaskStatus } from "../helpers/task";
 import { SchedulerButtonShapeElement } from "../editor/schedulerButton";
 import { Api } from "../helpers/api";
 
@@ -153,7 +153,41 @@ export class SchedulerButtonPropertiesElement extends HTMLElement {
                     row.appendChild(col1);
                     col1.style.color = fg;
                     col1.style.backgroundColor = bg;
-                    col1.innerHTML = isActive ? ">>" : "";
+                    if (isActive) {
+                        col1.innerHTML = ">>";
+                    }
+                    switch (s.type) {
+                        case StepTypes.setLoco:
+                            col1.innerHTML = "🚂"
+                            break;
+                        case StepTypes.startAtMinutes:
+                            col1.innerHTML = "🕔"
+                            break;
+                        case StepTypes.setFunction:
+                        case StepTypes.playSound:
+                            col1.innerHTML = "🔊"
+                            break;
+                        case StepTypes.setRoute:
+                        case StepTypes.setTurnout:
+                            col1.innerHTML = "🔀"
+                            break;
+                        case StepTypes.setSignalGreen:
+                        case StepTypes.setSignalRed:
+                        case StepTypes.setSignalYellow:
+                        case StepTypes.setSignalWhite:
+                            col1.innerHTML = "🚦"
+                            break;
+                        case StepTypes.break:
+                            col1.innerHTML = "🔴"
+                            break;
+                        case StepTypes.goto:
+                            col1.innerHTML = "🔵"
+                            break;
+                        case StepTypes.label:
+                            col1.innerHTML = "🟣"
+                            break;
+
+                    }
 
                     const col2 = document.createElement("td");
                     row.appendChild(col2);

@@ -30,7 +30,7 @@ export function toDecimal(v: string) {
 }
 
 export function moveUp(arr: any[], index: number) {
-    if (index <= 0) return; 
+    if (index <= 0) return;
 
     const temp = arr[index - 1];
     arr[index - 1] = arr[index];
@@ -38,17 +38,17 @@ export function moveUp(arr: any[], index: number) {
 }
 
 export function moveDown(arr: any[], index: number) {
-    if (index >= arr.length - 1) return; 
-    
+    if (index >= arr.length - 1) return;
+
     const temp = arr[index + 1];
     arr[index + 1] = arr[index];
     arr[index] = temp;
 }
 
 export function moveToStart(arr: any[], index: number) {
-    if (index <= 0) return; 
+    if (index <= 0) return;
     const [item] = arr.splice(index, 1);
-    
+
     arr.unshift(item);
 }
 
@@ -60,4 +60,8 @@ export function moveToEnd(arr: any[], index: number) {
 
 export function isTouchDevice(): boolean {
     return navigator.maxTouchPoints > 0 || "ontouchstart" in window || window.matchMedia("(pointer: coarse)").matches;
+}
+
+export function htmlSpaces(x: number): string {
+    return "&nbsp;".repeat(x * 4);
 }
