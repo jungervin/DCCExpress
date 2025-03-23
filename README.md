@@ -81,7 +81,7 @@ GPL-3.0 license
 
 ## 📸 Screenshots
 Last 2025-03-19 Scheduler/TaskList
-![TaskLits](web/DCCExpreesImages/DCCExpressTaskList.png)
+![TaskLits](web/DCCExpreesImages/TaskMan.png)
 
 ![Main](web/DCCExpreesImages/programmingDialog.png)
 
