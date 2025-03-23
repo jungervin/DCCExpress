@@ -48,7 +48,7 @@ export class BlockPropertiesElement extends HTMLElement {
         this.locos = shadow.getElementById("locos") as HTMLElement
         this.btnRemove = shadow.getElementById("btnRemove") as HTMLButtonElement
         this.btnRemove.onclick = (e) => {
-            Api.setBlock(this.block!.name, 0)
+            Api.setBlockLocoAddress(this.block!.name, 0)
         }
     }
 
@@ -100,7 +100,7 @@ export class BlockPropertiesElement extends HTMLElement {
                 const targetRow = (event.target as HTMLElement).closest("tr");
                 if (targetRow && targetRow.dataset.index) {
                     const addr = parseInt(targetRow.dataset.index, 10);
-                    Api.setBlock(this.block!.name, addr)
+                    Api.setBlockLocoAddress(this.block!.name, addr)
                     //this.renderLocos()
                 }
             });

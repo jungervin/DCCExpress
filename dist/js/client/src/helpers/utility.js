@@ -63,7 +63,7 @@ define(["require", "exports"], function (require, exports) {
     function isTouchDevice() {
         return navigator.maxTouchPoints > 0 || "ontouchstart" in window || window.matchMedia("(pointer: coarse)").matches;
     }
-    function htmlSpaces(x) {
-        return "&nbsp;".repeat(x * 4);
+    function htmlSpaces(x, ident = 5) {
+        return "&nbsp;".repeat(x * ident);
     }
 });

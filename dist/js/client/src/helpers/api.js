@@ -18,12 +18,36 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
         static playSound(filename) {
             audioButton_1.audioManager.play(filename);
         }
-        static setBlock(blockName, locoAddress) {
+        static setBlockLocoAddress(blockName, locoAddress) {
+            Api.app.editor.views.getBlockElements().forEach((b) => {
+                if (b.locoAddress == locoAddress) {
+                    b.setLoco(0);
+                }
+                // else if(b.name == blockName){
+                //     b.setLoco(locoAddress)
+                // }
+            });
+            const block = Api.app.editor.views.getBlockElements().find((b) => {
+                return b.name == blockName;
+            });
+            if (block) {
+                block.setLoco(locoAddress);
+            }
             const b = { blockName: blockName, locoAddress: locoAddress };
             ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBlock, data: b });
         }
         static getBlocks() {
             ws_1.wsClient.send({ type: dcc_1.ApiCommands.getBlocks, data: "" });
+        }
+        static getLocoAddressFromBlock(blockName) {
+            const b = Api.app.editor.views.getBlockElements().find((b) => {
+                return b.name == blockName;
+            });
+            if (b) {
+                return b.locoAddress;
+            }
+            // Legyen foglat!
+            return Number.MAX_VALUE;
         }
         static getSensor(address) {
             const s = Api.app.editor.views.getSensor(address);

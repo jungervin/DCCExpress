@@ -13,7 +13,7 @@ export enum StepTypes {
     setTurnout = "setTurnout",
     forward = "forward",
     reverse = "reverse",
-    stopLoco = "stop",
+    stopLoco = "stopLoco",
     delay = "delay",
     waitForSensor = "waitForSensor",
     setFunction = "setFunction",
@@ -22,6 +22,10 @@ export enum StepTypes {
     waitForMinutes = "waitForMinutes",
     startAtMinutes = "startAtMinutes",
     playSound = "playSound",
+
+    //playSoundRandom egy tömb elemeit játsza le de ez lehet a dispatcherbe kell
+
+
     label = "label",
     ifFree = "ifFree",
     goto = "goto",
@@ -46,7 +50,20 @@ export enum StepTypes {
     setSignalWhite = "setSignalWhite",
     ifSignalIsWhite = "ifSignalIsWhite",
     ifSensorIsOn = "ifSensorIsOn",
-    ifSensorIsOff = "ifSensorIsOff"
+    ifSensorIsOff = "ifSensorIsOff",
+    setBlockLocoAddress = "setBlockLocoAddress",
+    ifBlockIsFree = "ifBlockIsFree",
+    ifBlockIsNotFree = "ifBlockIsNotFree",
+    setLocoAddressFromBlock = "setLocoAddressFromBlock",
+    waitForMinute = "waitForMinute",
+    ifMoving = "ifMoving",
+    ifStopped = "ifStopped",
+    ifForward = "ifForward",
+    ifReverse = "ifReverse",
+    waitForStop = "waitForStop",
+    waitForStart = "waitForStart",
+    ifSpeedGreaterThan = "ifSpeedGreaterThan",
+    ifSpeedLessThan = "ifSpeedLessThan"
 }
 export interface iStep {
     type: StepTypes,
@@ -187,6 +204,51 @@ interface iIfSensorIsOff {
     address: number
 }
 
+interface iSetBlock {
+    blockName: string
+}
+interface iSetBlockLocoAddress {
+    blockName: string
+    locoAddress: number
+}
+
+interface iSetLocoAddressFromBlock {
+    blockName: string
+}
+
+interface iIfBlockIsFree {
+    blockName: string
+}
+
+interface iIfBlockIsNotFree {
+    blockName: string
+}
+
+interface iIfSpeedGreaterThan {
+    speed: number
+}
+
+interface iIfSpeedLessThan {
+    speed: number
+}
+// interface iIfMoving {
+//     locoAddress: number
+// }
+
+// interface iIfStopped {
+//     locoAddress: number
+// }
+
+// interface iIfForward {
+//     locoAddress: number
+// }
+
+// interface iIfReverse {
+//     locoAddress: number
+// }
+
+
+
 export enum TaskStatus {
     running = "🚂 RUNNING",
     paused = "paused",
@@ -203,21 +265,6 @@ export class Tasks {
     prevRuning: boolean = false;
     //private worker: Worker;
     constructor() {
-        // this.timer = setInterval(() => {
-        //     var running = false;
-        //     this.tasks.forEach(t => {
-        //         t.proc()
-        //         this.running ||= t.status == TaskStatus.running
-        //     })
-
-        //     if (!this.running != running) {
-        //         this.running = running
-        //         window.dispatchEvent(tasksCompleteEvent)
-        //     }
-
-        // }, 50)
-
-
     }
 
     exec() {
@@ -302,36 +349,75 @@ export class Tasks {
     //     }
     // }   
 
-    stopAllTask() {
-        console.log('stopAllTask()')
+    startAutoStart() {
+        console.log('startAutoStartTask()')
         this.tasks.forEach(t => {
-            t.taskStop()
-        })
-    }
-    stopOnCompletion() {
-        console.log('stopAllTask()')
-        this.tasks.forEach(t => {
-            t.finishOnComplete = true;
+            if (t.autoStart) {
+                t.taskStart()
+            }
         })
     }
 
     startAllTask() {
         console.log('startAllTask()')
         this.tasks.forEach(t => {
-            if (t.autoStart) {
-                t.taskStart()
-            } else {
-                t.status = TaskStatus.stopped
-            }
+            t.taskStart()
         })
     }
 
-    restartAllTask() {
-        console.log('restartAllTask()')
+    stopAllTask() {
+        console.log('stopAllTask()')
         this.tasks.forEach(t => {
-            t.restart()
+            t.taskStop()
         })
     }
+
+    resumeAllTask() {
+        console.log('resumeAllTask()')
+        this.tasks.forEach(t => {
+            t.resumeTask()
+        })
+    }
+
+    finishAllTask(finish: boolean) {
+        console.log('finishAllTask()')
+        this.tasks.forEach(t => {
+            t.finishOnComplete = finish;
+            //t.taskFinish()
+        })
+    }
+
+    get allRuning(): number {
+        if (this.tasks.length > 0) {
+            var i = 0
+            this.tasks.forEach((t) => {
+                if (t.status == TaskStatus.running) {
+                    i++
+                }
+            })
+            return i / this.tasks.length
+        }
+        else {
+            return 0;
+        }
+    }
+
+    get allFinish(): number {
+        if (this.tasks.length > 0) {
+            var i = 0
+            
+            this.tasks.forEach((t) => {
+                if (t.finishOnComplete) {
+                    i++
+                }
+            })
+            return i / this.tasks.length
+        }
+        else {
+            return 0;
+        }
+    }
+
     save() {
         Globals.saveJson("tasks.json", this.tasks)
     }
@@ -350,7 +436,8 @@ export class Task {
     delayEnd: number = 0;
     autoStart = false
     stepByStep = false
-    ident: number = 0;
+
+    skipBreak = false;
     //    stopOnComplete: boolean = true;
     prevSpeed: number = 0;
     constructor(name: string) {
@@ -439,7 +526,7 @@ export class Task {
 
     endIf() {
         this.steps.push({ type: StepTypes.endIf, data: {}, ident: this.ident - 1 } as iStep)
-        this.ident-- 
+        this.ident--
     }
 
     else() {
@@ -513,31 +600,100 @@ export class Task {
         this.steps.push({ type: StepTypes.ifSensorIsOff, data: { address: address } as iIfSensorIsOff, ident: this.ident++ } as iStep)
     }
 
-    gotoNextElse() {
-        const i = this.steps.findIndex((step, i) => {
-            return (i > this.index && step.type == StepTypes.else)
-        })
-        if (i >= 0) {
-            this.index = i
-        } else {
+    setBlockLocoAddress(blockName: string, locoAddress: number) {
+        this.steps.push({ type: StepTypes.setBlockLocoAddress, data: { blockName, locoAddress } as iSetBlockLocoAddress, ident: this.ident } as iStep)
+    }
+
+    getLocoFromBlock(blockName: string) {
+        this.steps.push({ type: StepTypes.setLocoAddressFromBlock, data: { blockName } as iSetLocoAddressFromBlock, ident: this.ident } as iStep)
+    }
+
+    ifBlockIsFree(blockName: string) {
+        this.steps.push({ type: StepTypes.ifBlockIsFree, data: { blockName } as iIfBlockIsFree, ident: this.ident++ } as iStep)
+    }
+
+    ifBlockIsNotFree(blockName: string) {
+        this.steps.push({ type: StepTypes.ifBlockIsNotFree, data: { blockName } as iIfBlockIsNotFree, ident: this.ident++ } as iStep)
+    }
+
+    ifMoving() {
+        this.steps.push({ type: StepTypes.ifMoving, data: {}, ident: this.ident++ } as iStep)
+    }
+
+    ifStopped() {
+        this.steps.push({ type: StepTypes.ifStopped, data: {}, ident: this.ident++ } as iStep)
+    }
+
+    ifForward() {
+        this.steps.push({ type: StepTypes.ifForward, data: {}, ident: this.ident++ } as iStep)
+    }
+
+    ifReverse() {
+        this.steps.push({ type: StepTypes.ifReverse, data: {}, ident: this.ident++ } as iStep)
+    }
+
+    waitForStop() {
+        this.steps.push({ type: StepTypes.waitForStop, data: {}, ident: this.ident } as iStep)
+    }
+
+    waitForStart() {
+        this.steps.push({ type: StepTypes.waitForStart, data: {}, ident: this.ident } as iStep)
+    }
+
+    ifSpeedGreaterThan(speed: number) {
+        this.steps.push({ type: StepTypes.ifSpeedGreaterThan, data: {}, ident: this.ident++ } as iStep)
+    }
+
+    ifSpeedLessThan(speed: number) {
+        this.steps.push({ type: StepTypes.ifSpeedLessThan, data: {}, ident: this.ident++ } as iStep)
+    }
+
+
+    gotoElse2() {
+    }
+    gotoEnd() {
+        let depth = 0;
+
+        while (++this.index < this.steps.length) {
+            const step: iStep = this.steps[this.index]
+            if (step.type.startsWith("if")) {
+                depth++
+            }
+            else if (step.type == StepTypes.endIf) {
+                if (depth == 0) {
+                    break;
+                }
+                depth--;
+            }
+        }
+
+        if (depth > 0) {
             this.status = TaskStatus.stopped
-            toastManager.showToast("Could not find any endIf! STOPPED")
+            toastManager.showToast("Could not find any endIf()! STOPPED")
         }
     }
-    gotoNextEndOrElse() {
-        const i = this.steps.findIndex((step, i) => {
-            return (i >= this.index && (step.type == StepTypes.endIf || step.type == StepTypes.else))
-        })
-        if (i >= 0) {
-            const step = this.steps[i] as iStep
-            this.index = i
-            if (step.type == StepTypes.else) {
-                this.index++;
-            }
 
-        } else {
+    gotoNextEndOrElse() {
+        let depth = 0;
+
+        while (++this.index < this.steps.length) {
+            const step: iStep = this.steps[this.index]
+            if (step.type.startsWith("if")) {
+                depth++
+            }
+            else if (step.type == StepTypes.endIf) {
+                if (depth == 0) {
+                    break;
+                }
+                depth--;
+            } else if (step.type == StepTypes.else && depth == 0) {
+                this.break;
+            }
+        }
+
+        if (depth > 0) {
             this.status = TaskStatus.stopped
-            toastManager.showToast("Could not find any else or endIf! STOPPED", "error")
+            toastManager.showToast("Could not find any else! STOPPED")
         }
     }
 
@@ -560,6 +716,110 @@ export class Task {
                     this.locoAddress = (this.step.data as iLocoStep).address
                     //console.log(`TASK: ${this.name} loco: ${this.locoAddress} added!`)
                     this.index++
+                    break;
+
+                case StepTypes.ifMoving:
+                    const l4 = Api.getLoco(this.locoAddress)
+                    if (l4) {
+                        if (l4.speed > 0) {
+                            this.index++
+                        } else {
+                            this.gotoNextEndOrElse()
+                        }
+                    } else {
+                        this.status = TaskStatus.stopped
+                        toastManager.showToast(`Could not find loco by address: ${this.locoAddress}`)
+                    }
+                    break;
+
+                case StepTypes.ifStopped:
+                    const l5 = Api.getLoco(this.locoAddress)
+                    if (l5) {
+                        if (l5.speed == 0) {
+                            this.index++
+                        } else {
+                            this.gotoNextEndOrElse()
+                        }
+                    } else {
+                        this.status = TaskStatus.stopped
+                        toastManager.showToast(`Could not find loco by address: ${this.locoAddress}`)
+                    }
+                    break;
+
+                case StepTypes.ifForward:
+                    const l6 = Api.getLoco(this.locoAddress)
+                    if (l6) {
+                        if (l6.direction == Z21Directions.forward) {
+                            this.index++
+                        } else {
+                            this.gotoNextEndOrElse()
+                        }
+                    } else {
+                        this.status = TaskStatus.stopped
+                        toastManager.showToast(`Could not find loco by address: ${this.locoAddress}`)
+                    }
+                    break;
+
+                case StepTypes.ifReverse:
+                    const l7 = Api.getLoco(this.locoAddress)
+                    if (l7) {
+                        if (l7.direction == Z21Directions.reverse) {
+                            this.index++
+                        } else {
+                            this.gotoNextEndOrElse()
+                        }
+                    } else {
+                        this.status = TaskStatus.stopped
+                        toastManager.showToast(`Could not find loco by address: ${this.locoAddress}`)
+                    }
+                    break;
+
+                case StepTypes.waitForStart:
+                    const l8 = Api.getLoco(this.locoAddress)
+                    if (l8) {
+                        if (l8.speed > 0) {
+                            this.index++
+                        }
+                    } else {
+                        this.status = TaskStatus.stopped
+                        toastManager.showToast(`Could not find loco by address: ${this.locoAddress}`)
+                    }
+                    break;
+
+                case StepTypes.waitForStop:
+                    const l9 = Api.getLoco(this.locoAddress)
+                    if (l9) {
+                        if (l9.speed == 0) {
+                            this.index++
+                        }
+                    } else {
+                        this.status = TaskStatus.stopped
+                        toastManager.showToast(`Could not find loco by address: ${this.locoAddress}`)
+                    }
+                    break;
+
+                case StepTypes.ifSpeedGreaterThan:
+                    const l10 = Api.getLoco(this.locoAddress)
+                    if (l10) {
+                        if (l10.speed > (this.step.data as iIfSpeedGreaterThan).speed) {
+                            this.index++
+                        }
+                    } else {
+                        this.status = TaskStatus.stopped
+                        toastManager.showToast(`Could not find loco by address: ${this.locoAddress}`)
+                    }
+                    break;
+
+                case StepTypes.ifSpeedLessThan:
+                    const l11 = Api.getLoco(this.locoAddress)
+                    if (l11) {
+                        if (l11.speed > (this.step.data as iIfSpeedLessThan).speed) {
+                            this.index++
+                        }
+                    } else {
+                        this.status = TaskStatus.stopped
+                        toastManager.showToast(`Could not find loco by address: ${this.locoAddress}`)
+                    }
                     break;
 
                 case StepTypes.setTurnout:
@@ -587,6 +847,7 @@ export class Task {
                     Api.setLocoSpeed(this.locoAddress, 0)
                     this.index++;
                     break;
+
                 case StepTypes.delay:
                     const ms = (this.step.data as iDelayStep).ms
                     if (this.delayEnd <= 0) {
@@ -604,16 +865,19 @@ export class Task {
                         console.log(`TASK: ${this.name} waitForSensor:${sensor.address} finished!`)
                     }
                     break;
+
                 case StepTypes.setFunction:
                     const f = (this.step.data as iFunctionStep)
                     Api.setLocoFunction(this.locoAddress, f.fn, f.on)
                     this.index++;
                     break;
+
                 case StepTypes.setRoute:
                     const route = (this.step.data as iRouteStep)
                     Api.setRoute(route.routeName)
                     this.index++;
                     break;
+
                 case StepTypes.restart:
                     if (!this.finishOnComplete) {
                         this.index = 0;
@@ -622,6 +886,7 @@ export class Task {
                         this.status = TaskStatus.stopped
                     }
                     break;
+
                 case StepTypes.waitForMinutes:
                     const minute = (this.step.data as iWaitForMinute).minute
                     const clock = Api.getClock()
@@ -630,6 +895,7 @@ export class Task {
                         console.log(`TASK: ${this.name} waitForMinute:${minute} finished!`)
                     }
                     break;
+
                 case StepTypes.startAtMinutes:
                     const minutes = (this.step.data as iStartAtMinutes).minutes
                     const clocka = Api.getClock()
@@ -641,14 +907,17 @@ export class Task {
                         }
                     }
                     break;
+
                 case StepTypes.playSound:
                     const fname = (this.step.data as iPlaySound).fname
                     Api.playSound(fname)
                     this.index++;
                     break;
                 case StepTypes.label:
+
                     this.index++;
                     break;
+
                 case StepTypes.ifClosed:
                     var t = Api.getTurnoutState((this.step.data as iIfClosed).address)
                     if (t) {
@@ -657,6 +926,7 @@ export class Task {
                         this.gotoNextEndOrElse();
                     }
                     break;
+
                 case StepTypes.ifOpen:
                     var t = Api.getTurnoutState((this.step.data as iIfClosed).address)
                     if (!t) {
@@ -665,26 +935,35 @@ export class Task {
                         this.gotoNextEndOrElse();
                     }
                     break;
+
                 case StepTypes.else:
-                    this.gotoNextEndOrElse();
+                    this.gotoEnd()
                     break;
+
                 case StepTypes.endIf:
                     this.index++
                     break;
+
                 case StepTypes.goto:
                     this.gotoLabel((this.step.data as iGoto).text)
                     break;
+
                 case StepTypes.break:
-                    if (this.status != TaskStatus.stopped) {
+                    if (this.skipBreak) {
+                        this.index++
+                    }
+                    else if (this.status != TaskStatus.stopped) {
                         this.status = TaskStatus.stopped
                         //toastManager.showToast("Break", "warning")
                     }
                     break;
+
                 case StepTypes.setOutput:
                     const o = this.step.data as iSetOutput
                     Api.setOutput(o.address, o.on)
                     this.index++;
                     break;
+
                 case StepTypes.ifOutputIsOn:
                     const oon = this.step.data as iIfOutputIsOn
                     if (Api.getOutput(oon.address)) {
@@ -693,6 +972,7 @@ export class Task {
                         this.gotoNextEndOrElse()
                     }
                     break;
+
                 case StepTypes.ifOutputIsOff:
                     const ooff = this.step.data as iIfOutputIsOff
                     if (!Api.getOutput(ooff.address)) {
@@ -707,6 +987,7 @@ export class Task {
                     Api.setAccessory(a.address, a.on)
                     this.index++;
                     break;
+
                 case StepTypes.ifAccessoryIsOn:
                     const aon = this.step.data as iIfAccessoryIsOn
                     if (Api.getAccessory(aon.address)) {
@@ -715,6 +996,7 @@ export class Task {
                         this.gotoNextEndOrElse()
                     }
                     break;
+
                 case StepTypes.ifAccessoryIsOff:
                     const aoff = this.step.data as iIfAccessoryIsOff
                     if (!Api.getAccessory(aoff.address)) {
@@ -728,6 +1010,7 @@ export class Task {
                     Api.setSignalGreen((this.step.data as iSetSignalGreen).address)
                     this.index++
                     break;
+
                 case StepTypes.ifSignalIsGreen:
                     if (Api.getSignalIsGreen((this.step.data as iIfSignalIsGreen).address)) {
                         this.index++;
@@ -740,6 +1023,7 @@ export class Task {
                     Api.setSignalRed((this.step.data as iSetSignalRed).address)
                     this.index++
                     break;
+
                 case StepTypes.ifSignalIsRed:
                     if (Api.getSignalIsRed((this.step.data as iIfSignalIsRed).address)) {
                         this.index++;
@@ -752,6 +1036,7 @@ export class Task {
                     Api.setSignalYellow((this.step.data as iSetSignalYellow).address)
                     this.index++
                     break;
+
                 case StepTypes.ifSignalIsYellow:
                     if (Api.getSignalIsYellow((this.step.data as iIfSignalIsYellow).address)) {
                         this.index++;
@@ -764,6 +1049,7 @@ export class Task {
                     Api.setSignalWhite((this.step.data as iSetSignalWhite).address)
                     this.index++
                     break;
+
                 case StepTypes.ifSignalIsWhite:
                     if (Api.getSignalIsWhite((this.step.data as iIfSignalIsWhite).address)) {
                         this.index++;
@@ -771,6 +1057,7 @@ export class Task {
                         this.gotoNextEndOrElse()
                     }
                     break;
+
                 case StepTypes.ifSensorIsOn:
                     if (Api.getSensorValue((this.step.data as iIfSignalIsWhite).address)) {
                         this.index++;
@@ -778,6 +1065,7 @@ export class Task {
                         this.gotoNextEndOrElse()
                     }
                     break;
+
                 case StepTypes.ifSensorIsOff:
                     if (!Api.getSensorValue((this.step.data as iIfSignalIsWhite).address)) {
                         this.index++;
@@ -786,6 +1074,40 @@ export class Task {
                     }
                     break;
 
+                case StepTypes.setBlockLocoAddress:
+                    const b = this.step.data as iSetBlockLocoAddress
+                    Api.setBlockLocoAddress(b.blockName, this.locoAddress)
+                    this.index++
+                    break;
+
+                case StepTypes.ifBlockIsFree:
+                    const l1 = Api.getLocoAddressFromBlock((this.step.data as iIfBlockIsFree).blockName)
+                    if (l1 === 0) {
+                        this.index++
+                    } else {
+                        this.gotoNextEndOrElse()
+                    }
+                    break;
+
+                case StepTypes.ifBlockIsNotFree:
+                    const l2 = Api.getLocoAddressFromBlock((this.step.data as iIfBlockIsFree).blockName)
+                    if (l2 > 0) {
+                        this.index++
+                    } else {
+                        this.gotoNextEndOrElse()
+                    }
+                    break;
+
+                case StepTypes.setLocoAddressFromBlock:
+                    const l3 = Api.getLocoAddressFromBlock((this.step.data as iSetLocoAddressFromBlock).blockName)
+                    if (l3 > 0) {
+                        this.locoAddress = l3
+                        this.index++
+                    } else {
+                        this.status = TaskStatus.stopped
+                        toastManager.showToast("Could not find loco! STOPPED", "error")
+                    }
+                    break;
 
             }
         }
@@ -794,80 +1116,108 @@ export class Task {
     logStep(step: iStep): string {
         switch (step.type) {
             case StepTypes.setLoco:
-                return htmlSpaces(step.ident) + (`setLoco: ${(step.data as iLocoStep).address}`)
+                return htmlSpaces(step.ident) + `${StepTypes.setLoco}: ${(step.data as iLocoStep).address}`
             case StepTypes.setTurnout:
-                return htmlSpaces(step.ident) + (`setTurnout: ${(step.data as iSetTurnoutStep).address} closed: ${(step.data as iSetTurnoutStep).closed}`)
+                return htmlSpaces(step.ident) + `${StepTypes.setTurnout}: ${(step.data as iSetTurnoutStep).address} closed: ${(step.data as iSetTurnoutStep).closed}`
             case StepTypes.forward:
-                return htmlSpaces(step.ident) + (`forward: ${(step.data as iForwardStep).speed}`)
+                return htmlSpaces(step.ident) + `${StepTypes.forward}: ${(step.data as iForwardStep).speed}`
             case StepTypes.reverse:
-                return htmlSpaces(step.ident) + (`reverse: ${(step.data as iForwardStep).speed}`)
+                return htmlSpaces(step.ident) + `${StepTypes.reverse}: ${(step.data as iForwardStep).speed}`
             case StepTypes.stopLoco:
-                return htmlSpaces(step.ident) + (`stopLoco`)
+                return htmlSpaces(step.ident) + `${StepTypes.stopLoco}`
             case StepTypes.delay:
-                return htmlSpaces(step.ident) + (`delay: ${(step.data as iDelayStep).ms}`)
+                return htmlSpaces(step.ident) + `${StepTypes.delay}: ${(step.data as iDelayStep).ms}`
             case StepTypes.waitForSensor:
-                return htmlSpaces(step.ident) + (`waitForSensor: ${(step.data as iWaitForSensor).address} on: ${(step.data as iWaitForSensor).on}`)
+                return htmlSpaces(step.ident) + `${StepTypes.waitForSensor}: ${(step.data as iWaitForSensor).address} on: ${(step.data as iWaitForSensor).on}`
             case StepTypes.setFunction:
-                return htmlSpaces(step.ident) + (`setFunction: ${(step.data as iFunctionStep).fn} on: ${(step.data as iFunctionStep).on}`)
+                return htmlSpaces(step.ident) + `${StepTypes.setFunction}: ${(step.data as iFunctionStep).fn} on: ${(step.data as iFunctionStep).on}`
                 break;
             case StepTypes.restart:
-                return htmlSpaces(step.ident) + (`<b style="color: yellow">restart</b>`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.restart}</b>`)
             case StepTypes.playSound:
-                return htmlSpaces(step.ident) + (`playSound: ${(step.data as iPlaySound).fname}`)
+                return htmlSpaces(step.ident) + StepTypes.playSound + `: ${(step.data as iPlaySound).fname}`
             case StepTypes.setRoute:
-                return htmlSpaces(step.ident) + (`setRoute: ${(step.data as iRouteStep).routeName}`)
+                return htmlSpaces(step.ident) + StepTypes.setRoute + `: ${(step.data as iRouteStep).routeName}`
             case StepTypes.startAtMinutes:
-                return htmlSpaces(step.ident) + (`startAtMinutes: ${(step.data as iStartAtMinutes).minutes}`)
+                return htmlSpaces(step.ident) + StepTypes.startAtMinutes + `: ${(step.data as iStartAtMinutes).minutes}`
             case StepTypes.waitForMinutes:
-                return htmlSpaces(step.ident) + (`waitForMinute: ${(step.data as iWaitForMinute).minute}`)
+                return htmlSpaces(step.ident) + StepTypes.waitForMinute + `: ${(step.data as iWaitForMinute).minute}`
             case StepTypes.label:
-                return htmlSpaces(step.ident) + (`<b>label</b>: ${(step.data as iLabel).text}`)
+                return htmlSpaces(step.ident) + (`<b>${StepTypes.label}</b>: ${(step.data as iLabel).text}`)
             case StepTypes.ifClosed:
-                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifClosed</b>: ${(step.data as iIfClosed).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.ifClosed}</b>: ${(step.data as iIfClosed).address}`)
             case StepTypes.ifOpen:
-                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifOpen:</b> ${(step.data as iIfOpen).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.ifOpen}:</b> ${(step.data as iIfOpen).address}`)
             case StepTypes.else:
-                return htmlSpaces(step.ident) + (`<b style="color: yellow">else:</b>`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.else}:</b>`)
             case StepTypes.endIf:
-                return htmlSpaces(step.ident) + (`<b style="color: yellow">endIf</b>`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.endIf}</b>`)
             case StepTypes.goto:
-                return htmlSpaces(step.ident) + (`<b>goto:</b> ${(step.data as iGoto).text}`)
+                return htmlSpaces(step.ident) + (`<b>${StepTypes.goto}:</b> ${(step.data as iGoto).text}`)
             case StepTypes.break:
-                return htmlSpaces(step.ident) + (`<b>break:</b> ${(step.data as iBreak).text}`)
+                return htmlSpaces(step.ident) + (`<b>${StepTypes.break}</b> ${(step.data as iBreak).text}`)
 
             case StepTypes.setOutput:
-                return htmlSpaces(step.ident) + (`setOutput: ${(step.data as iSetOutput).address} on: ${(step.data as iSetOutput).on}`)
+                return htmlSpaces(step.ident) + (`${StepTypes.setOutput}: ${(step.data as iSetOutput).address} on: ${(step.data as iSetOutput).on}`)
             case StepTypes.ifOutputIsOn:
-                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifOutputIsOn:</b> ${(step.data as iIfOutputIsOn).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.ifOutputIsOn}:</b> ${(step.data as iIfOutputIsOn).address}`)
             case StepTypes.ifOutputIsOff:
-                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifOutputIsOff:</b> ${(step.data as iIfOutputIsOff).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.ifOutputIsOff}:</b> ${(step.data as iIfOutputIsOff).address}`)
 
             case StepTypes.setAccessory:
-                return htmlSpaces(step.ident) + (`setAccessory: ${(step.data as iSetAccessory).address} on: ${(step.data as iSetAccessory).on}`)
+                return htmlSpaces(step.ident) + (`${StepTypes.setAccessory}: ${(step.data as iSetAccessory).address} on: ${(step.data as iSetAccessory).on}`)
             case StepTypes.ifAccessoryIsOn:
-                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifAccessoryIsOn:</b> ${(step.data as iIfAccessoryIsOn).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.ifAccessoryIsOn}:</b> ${(step.data as iIfAccessoryIsOn).address}`)
             case StepTypes.ifAccessoryIsOff:
-                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifAccessoryIsOff:</b> ${(step.data as iIfAccessoryIsOff).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.ifAccessoryIsOff}:</b> ${(step.data as iIfAccessoryIsOff).address}`)
 
             case StepTypes.setSignalGreen:
-                return htmlSpaces(step.ident) + (`setSignalGreen: ${(step.data as iSetSignalGreen).address}`)
+                return htmlSpaces(step.ident) + (`${StepTypes.setSignalGreen}: ${(step.data as iSetSignalGreen).address}`)
             case StepTypes.ifSignalIsGreen:
-                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifSignalIsGreen:</b> ${(step.data as iIfSignalIsGreen).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.ifSignalIsGreen}:</b> ${(step.data as iIfSignalIsGreen).address}`)
 
             case StepTypes.setSignalRed:
-                return htmlSpaces(step.ident) + (`setSignalRed: ${(step.data as iSetSignalRed).address}`)
+                return htmlSpaces(step.ident) + (`${StepTypes.setSignalRed}: ${(step.data as iSetSignalRed).address}`)
             case StepTypes.ifSignalIsRed:
-                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifSignalIsRed:</b> ${(step.data as iIfSignalIsRed).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.ifSignalIsRed}:</b> ${(step.data as iIfSignalIsRed).address}`)
 
             case StepTypes.setSignalYellow:
-                return htmlSpaces(step.ident) + (`setSignalYellow: ${(step.data as iSetSignalYellow).address}`)
+                return htmlSpaces(step.ident) + (`${StepTypes.setSignalYellow}: ${(step.data as iSetSignalYellow).address}`)
             case StepTypes.ifSignalIsYellow:
-                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifSignalIsYellow:</b> ${(step.data as iIfSignalIsYellow).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.ifSignalIsYellow}:</b> ${(step.data as iIfSignalIsYellow).address}`)
 
             case StepTypes.ifSensorIsOn:
-                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifSensorIsOn:</b> ${(step.data as iIfSensorIsOn).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.ifSensorIsOn}:</b> ${(step.data as iIfSensorIsOn).address}`)
             case StepTypes.ifSensorIsOff:
-                return htmlSpaces(step.ident) + (`<b style="color: yellow">ifSensorIsOff:</b> ${(step.data as iIfSensorIsOff).address}`)
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.ifSensorIsOff}:</b> ${(step.data as iIfSensorIsOff).address}`)
+
+            case StepTypes.setBlockLocoAddress:
+                return htmlSpaces(step.ident) + (`${StepTypes.setBlockLocoAddress}: ${(step.data as iSetBlockLocoAddress).blockName} loco: ${this.locoAddress}`)
+            case StepTypes.setLocoAddressFromBlock:
+                return htmlSpaces(step.ident) + (`${StepTypes.setLocoAddressFromBlock} ${(step.data as iSetBlock).blockName}`)
+            case StepTypes.ifBlockIsFree:
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.ifBlockIsFree}:</b> ${(step.data as iIfBlockIsFree).blockName}`)
+            case StepTypes.ifBlockIsNotFree:
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.ifBlockIsNotFree}:</b> ${(step.data as iIfBlockIsNotFree).blockName}`)
+
+            case StepTypes.ifMoving:
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.ifMoving}:</b>`)
+            case StepTypes.ifStopped:
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.ifStopped}:</b>`)
+            case StepTypes.ifForward:
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.ifForward}:</b>`)
+            case StepTypes.ifReverse:
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.ifReverse}:</b>`)
+
+            case StepTypes.waitForStart:
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.waitForStart}:</b>`)
+            case StepTypes.waitForStop:
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.waitForStop}:</b>`)
+            case StepTypes.ifSpeedGreaterThan:
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.ifSpeedGreaterThan}: ${(step.data as iIfSpeedGreaterThan).speed}</b>`)
+            case StepTypes.waitForStop:
+                return htmlSpaces(step.ident) + (`<b style="color: yellow">${StepTypes.ifSpeedLessThan}: ${(step.data as iIfSpeedLessThan).speed}</b>`)
+
 
         }
         return "Unknown"
@@ -881,7 +1231,7 @@ export class Task {
                     // }
                     this.prevIndex = this.index;
                     this.step = this.steps[this.index]
-            
+
                     //this.logStep(this.step!)
                     //console.log(`TASK: ${this.name} index: ${this.index} step: ${this.step!.type}`)
                 }
@@ -928,25 +1278,27 @@ export class Task {
     }
 
     resumeTask() {
-        // if (this.step?.type == StepTypes.break && this.index < this.steps.length - 1) {
-        //     this.index++
-        // }
-
-        this.index++
         this.status = TaskStatus.running
         this.delayEnd = 0;
+        if (this.step?.type == StepTypes.break) {
+            this.index++
+        }
+        //this.proc()
+        //this.index++
+
+
         if (this.prevSpeed > 0) {
             Api.setLocoSpeed(this.locoAddress, this.prevSpeed)
         }
     }
 
 
-    private _stopOnComplete: boolean = false;
+    private _finishOnComplete: boolean = false;
     public get finishOnComplete(): boolean {
-        return this._stopOnComplete;
+        return this._finishOnComplete;
     }
     public set finishOnComplete(v: boolean) {
-        this._stopOnComplete = v;
+        this._finishOnComplete = v;
         window.dispatchEvent(
             new CustomEvent("taskChangedEvent", {
                 detail: this,
@@ -992,5 +1344,15 @@ export class Task {
             })
         );
     }
+
+
+    private _ident: number = 0;
+    public get ident(): number {
+        return this._ident;
+    }
+    public set ident(v: number) {
+        this._ident = Math.max(0, v);
+    }
+
 
 }

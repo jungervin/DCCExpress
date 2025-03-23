@@ -3,6 +3,7 @@ define(["require", "exports", "../helpers/globals", "../../../common/src/dcc", "
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.BlockElement = void 0;
     class BlockElement extends view_1.View {
+        //loco: iLocomotive | undefined;
         constructor(uuid, x, y, name) {
             super(uuid, x, y, name);
             this.text = 'HELLO';
@@ -16,20 +17,33 @@ define(["require", "exports", "../helpers/globals", "../../../common/src/dcc", "
             return 'block';
         }
         draw(ctx) {
-            var _a, _b;
             let bg = "#eee"; // A színe lehet más is
             let fg = "black";
             ctx.save();
-            let text = "";
-            if (this.loco) {
-                const loco = api_1.Api.getLoco((_a = this.loco) === null || _a === void 0 ? void 0 : _a.address);
+            // let text = ""
+            // if (this.loco) {
+            //     const loco = Api.getLoco(this.loco?.address)
+            //     if (loco) {
+            //         text = `#${loco.address} ${loco.name}`
+            //         bg = "lime";  // A színe lehet más is
+            //         fg = "black";
+            //     }
+            // } else {
+            // }     
+            var text = "";
+            if (this.locoAddress > 0) {
+                text = `${this.locoAddress}`;
+                const loco = api_1.Api.getLoco(this.locoAddress);
                 if (loco) {
-                    text = `#${loco.address} ${loco.name}`;
-                    bg = "lime"; // A színe lehet más is
+                    text += ` ${loco.name}`;
+                    bg = "lime";
                     fg = "black";
                 }
-            }
-            else {
+                else {
+                    text += " undef";
+                    bg = "red";
+                    fg = "yellow";
+                }
             }
             var w = globals_1.Globals.GridSizeX / 2.0;
             var h = globals_1.Globals.GridSizeY / 6.0;
@@ -57,12 +71,6 @@ define(["require", "exports", "../helpers/globals", "../../../common/src/dcc", "
             }
             ctx.closePath();
             ctx.fill();
-            if (this.loco) {
-                const loco = api_1.Api.getLoco((_b = this.loco) === null || _b === void 0 ? void 0 : _b.address);
-                if (loco) {
-                    text = `${loco.address} ${loco.name}`;
-                }
-            }
             // if (this.text) 
             {
                 if (this.angle == 180) {
@@ -118,11 +126,13 @@ define(["require", "exports", "../helpers/globals", "../../../common/src/dcc", "
             // return new Point(d.x * 2, d.y * 2)
         }
         setLoco(address) {
-            this.loco = api_1.Api.getLoco(address);
+            this.locoAddress = address;
+            //this.loco = Api.getLoco(address)
             window.invalidate();
         }
         getLoco() {
-            return this.loco;
+            return api_1.Api.getLoco(this.locoAddress);
+            //return this.loco
         }
     }
     exports.BlockElement = BlockElement;

@@ -36,7 +36,7 @@ define(["require", "exports", "../helpers/api"], function (require, exports, api
             this.locos = shadow.getElementById("locos");
             this.btnRemove = shadow.getElementById("btnRemove");
             this.btnRemove.onclick = (e) => {
-                api_1.Api.setBlock(this.block.name, 0);
+                api_1.Api.setBlockLocoAddress(this.block.name, 0);
             };
         }
         setBlock(block) {
@@ -78,7 +78,7 @@ define(["require", "exports", "../helpers/api"], function (require, exports, api
                     const targetRow = event.target.closest("tr");
                     if (targetRow && targetRow.dataset.index) {
                         const addr = parseInt(targetRow.dataset.index, 10);
-                        api_1.Api.setBlock(this.block.name, addr);
+                        api_1.Api.setBlockLocoAddress(this.block.name, addr);
                         //this.renderLocos()
                     }
                 });

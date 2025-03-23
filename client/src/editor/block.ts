@@ -8,7 +8,7 @@ export class BlockElement extends View {
     text: string = 'HELLO';
     textColor: string = 'black';
     locoAddress: number = 0;
-    loco: iLocomotive | undefined;
+    //loco: iLocomotive | undefined;
 
     constructor(uuid: string, x: number, y: number, name: string) {
         super(uuid, x, y, name)
@@ -29,17 +29,33 @@ export class BlockElement extends View {
 
         ctx.save()
 
-        let text = ""
-        if(this.loco) {
-            const loco = Api.getLoco(this.loco?.address)
-            if(loco) {
-                text = `#${loco.address} ${loco.name}`
-                bg = "lime";  // A színe lehet más is
-                fg = "black";
-                }
+        // let text = ""
+        // if (this.loco) {
+        //     const loco = Api.getLoco(this.loco?.address)
+        //     if (loco) {
+        //         text = `#${loco.address} ${loco.name}`
+        //         bg = "lime";  // A színe lehet más is
+        //         fg = "black";
+        //     }
 
-        } else {
-    
+        // } else {
+
+        // }     
+        
+        var text = ""
+        if (this.locoAddress > 0) {
+            text = `${this.locoAddress}`
+            const loco = Api.getLoco(this.locoAddress)
+            if (loco) {
+                text += ` ${loco.name}`
+                bg = "lime";  
+                fg = "black";
+
+            } else {
+                text += " undef"
+                bg = "red";  
+                fg = "yellow";
+            }
         }
 
 
@@ -75,20 +91,13 @@ export class BlockElement extends View {
         ctx.closePath();
         ctx.fill();
 
-        
-        if(this.loco) {
-            const loco = Api.getLoco(this.loco?.address)
-            if(loco) {
-                text = `${loco.address} ${loco.name}`
-            }
 
-        }
         // if (this.text) 
         {
             if (this.angle == 180) {
                 ctx.restore()
             }
-            
+
 
             ctx.fillStyle = fg;
             ctx.font = "8px Arial";
@@ -97,7 +106,7 @@ export class BlockElement extends View {
             ctx.fillText(text, this.centerX, this.centerY + 1);
         }
 
-        
+
         super.draw(ctx)
         ctx.restore()
     }
@@ -148,11 +157,13 @@ export class BlockElement extends View {
     }
 
     setLoco(address: number) {
-        this.loco = Api.getLoco(address)
+        this.locoAddress = address
+        //this.loco = Api.getLoco(address)
         window.invalidate()
     }
 
     getLoco(): iLocomotive | undefined {
-        return this.loco
+        return Api.getLoco(this.locoAddress)
+        //return this.loco
     }
 }

@@ -1,125 +1,112 @@
+//=====================================
+// TASK 1 P3 <<<<< P3
+//=====================================
+const task1 = Api.tasks.addTask("Task1")
 
-const test = Api.tasks.addTask("Task2")
-
-test.setLoco(11)
-test.break();
-test.ifSensorIsOn(6)
+task1.delay(1000)
+task1.ifBlockIsNotFree("block198")
 {
-    test.playSound("mav_szignal.mp3")   
+    task1.getLocoFromBlock("block198")
+
+    task1.waitForStop()
+    task1.waitMs(5000, 10000)
+   
+    task1.reverse(0)
+    task1.setFunctionMs(3, true, 500)
+
+    task1.setRoute("routeSwitch112")
+    task1.delay(3000)
+
+    task1.label("Wait for block203")
+    task1.ifBlockIsFree("block203")
+    {
+        task1.reverse(40)
+        task1.waitForSensor(14, true)
+        task1.setBlockLocoAddress("block203")
+    }
+    task1.else()
+    {
+        task1.stopLoco()
+        task1.goto("Wait for block203")
+    }
+    task1.endIf()
+
+    task1.label("Wait for block199")
+    task1.ifBlockIsFree("block199")
+    {
+        task1.reverse(40)
+        task1.waitForSensor(13, true)
+        task1.setBlockLocoAddress("block202")
+        task1.reverse(20)
+        task1.waitForSensor(16, true)
+        task1.setBlockLocoAddress("block199")
+        task1.reverse(10)
+        task1.delay(10000)
+        task1.stopLoco()
+    }
+    task1.else()
+    {
+        task1.stopLoco()
+        task1.goto("Wait for block199")
+    }
+    task1.endIf()
 }
-test.else()
+task1.endIf()
+task1.restart()
+
+//=====================================
+// TASK 2 P3 >>>>> P3
+//=====================================
+const task2 = Api.tasks.addTask("Task2")
+
+task2.delay(1000)
+task2.ifBlockIsNotFree("block199")
 {
-    test.playSound("mav_szignal.mp3")
-    test.break()
-}
-test.endIf()
-test.break()
-test.label("END")
-test.restart()
 
+    task2.getLocoFromBlock("block199")
+    task2.waitForStop()
+    task2.waitMs(5000, 10000)
 
+    task2.forward(0)
+    task2.setFunctionMs(3, true, 500)
 
+    task2.setRoute("routeSwitch113")
+    task2.delay(3000)
 
-if (!Api.tasks.getTask("Task1")) {
+    task2.label("Wait for block202 forward")
+    task2.ifBlockIsFree("block202")
+    {
+        task2.forward(40)
+        task2.waitForSensor(13, true)
+        task2.setBlockLocoAddress("block202")
+    }
+    task2.else()
+    {
+        task2.stopLoco()
+        task2.goto("Wait for block202 forward")
+    }
+    task2.endIf()
 
-    const task = Api.tasks.addTask("Task1")
-
-    task.autoStart = false
-    task.finishOnComplete = true
-    task.setLoco(10)
-
-    // task.waitForSensor(6, true)
-    // task.playSound("mav_szignal.mp3")
-
-    // ==========================================
-    //  Szfvár P3 <=== P2 <== Szabadbattyán P3
-    // ==========================================
-    //task.waitForMinute(5)
-    task.label("◀️◀️ Fehérvárra")
-    task.startAtMinutes([5, 15, 25, 35, 45, 55])
-    task.setRoute("routeSwitch112")
-    task.playSound("mav_szignal.mp3")
-    task.waitMs(3000, 5000)
-    task.ifClosed(21)
-    task.setSignalGreen(50)
-    task.break()
-    task.setSignalRed(50)
-    task.break()
-    task.setAccessory(10, true)
-    task.break()
-    task.setAccessory(10, false)
-    task.break()
-    task.delay(3000)
-    task.goto("21 Closed")
-    task.else()
-    task.break()
-    task.delay(3000)
-    task.goto("21 Open")
-    task.endIf()
-
-
-    task.label("21 Closed")
-    task.break()
-    task.playSound("mav_szignal.mp3")
-    task.delay(3000)
-    task.goto("resume")
-
-    task.label("21 Open")
-    task.break()
-    task.playSound("mav_szignal.mp3")
-    task.delay(3000)
-
-    task.label("resume")
-    // Whistle
-    task.setFunctionMs(17, true, 500)
-    task.waitMs(3000, 5000)
-
-    // Reverse & Horn
-    task.reverse(0)
-    task.setFunctionMs(3, true, 500)
-    task.waitMs(3000, 5000)
-    task.reverse(30)
-
-    task.waitForSensor(16, true)
-
-    task.setFunctionMs(3, true, 500)
-    task.delay(2500)
-    task.stopLoco()
-
-
-
-    //task.waitMs(10000, 20000)
-
-    // ==========================================
-    //  Szfvár P3 ==> P1 ==> Szabadbattyán P3
-    // ==========================================
-    //task.waitForMinute(5)
-    task.label("▶️▶️ Battyánba")
-    task.startAtMinutes([0, 10, 20, 30, 40, 50])
-    task.setRoute("routeSwitch113")
-    task.playSound("mav_szignal.mp3")
-    task.waitMs(3000, 5000)
-
-    // Whistle
-    task.setFunctionMs(17, true, 500)
-
-    task.waitMs(3000, 5000)
-
-    // Forward & Horn
-    task.forward(0)
-    task.setFunctionMs(3, true, 500)
-    task.waitMs(3000, 5000)
-    task.forward(30)
-
-    task.waitForSensor(24, true)
-
-    task.setFunctionMs(3, true, 500)
-
-    task.delay(5000)
-    task.stopLoco()
-
-    task.waitMs(10000, 20000)
-
-    task.restart()
+    task2.label("Wait for block 198 forward")
+    task2.ifBlockIsFree("block198")
+    {
+        task2.forward(40)
+        task2.waitForSensor(12, true)
+        task2.forward(20)
+        task2.waitForSensor(24, true)
+        task2.setBlockLocoAddress("block198")
+        task2.forward(10)
+        task2.delay(20000)
+        task2.stopLoco()
+    }
+    task2.else()
+    {
+        task2.stopLoco()
+        task2.goto("Wait for block 198 forward")
+    }
+    task2.endIf()
 
 }
+task2.endIf()
+task2.restart()
+

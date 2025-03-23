@@ -44,7 +44,7 @@ export class Toolbar extends HTMLElement {
     btnTaskStopAll: any;
     btnTaskResumeAll: any;
     btnTaskFinishAll: any;
-    btnTaskProperties: any;
+    //btnTaskProperties: any;
 
 
     constructor() {
@@ -155,7 +155,9 @@ export class Toolbar extends HTMLElement {
                     <svg id="btnTaskStopAll" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Stop All Task</title><path d="M15.73,3H8.27L3,8.27V15.73L8.27,21H15.73L21,15.73V8.27" /></svg>
                     <svg id="btnTaskResumeAll" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Resume All Task</title><path d="M13.5,5.5C14.59,5.5 15.5,4.58 15.5,3.5C15.5,2.38 14.59,1.5 13.5,1.5C12.39,1.5 11.5,2.38 11.5,3.5C11.5,4.58 12.39,5.5 13.5,5.5M9.89,19.38L10.89,15L13,17V23H15V15.5L12.89,13.5L13.5,10.5C14.79,12 16.79,13 19,13V11C17.09,11 15.5,10 14.69,8.58L13.69,7C13.29,6.38 12.69,6 12,6C11.69,6 11.5,6.08 11.19,6.08L6,8.28V13H8V9.58L9.79,8.88L8.19,17L3.29,16L2.89,18L9.89,19.38Z" /></svg>                    
                     <svg id="btnTaskFinishAll" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Finish All Task</title><path d="M14.4,6H20V16H13L12.6,14H7V21H5V4H14L14.4,6M14,14H16V12H18V10H16V8H14V10L13,8V6H11V8H9V6H7V8H9V10H7V12H9V10H11V12H13V10L14,12V14M11,10V8H13V10H11M14,10H16V12H14V10Z" /></svg>
+                    <!--
                     <svg id="btnTaskProperties" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Task Properties</title><path d="M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10M10,22C9.75,22 9.54,21.82 9.5,21.58L9.13,18.93C8.5,18.68 7.96,18.34 7.44,17.94L4.95,18.95C4.73,19.03 4.46,18.95 4.34,18.73L2.34,15.27C2.21,15.05 2.27,14.78 2.46,14.63L4.57,12.97L4.5,12L4.57,11L2.46,9.37C2.27,9.22 2.21,8.95 2.34,8.73L4.34,5.27C4.46,5.05 4.73,4.96 4.95,5.05L7.44,6.05C7.96,5.66 8.5,5.32 9.13,5.07L9.5,2.42C9.54,2.18 9.75,2 10,2H14C14.25,2 14.46,2.18 14.5,2.42L14.87,5.07C15.5,5.32 16.04,5.66 16.56,6.05L19.05,5.05C19.27,4.96 19.54,5.05 19.66,5.27L21.66,8.73C21.79,8.95 21.73,9.22 21.54,9.37L19.43,11L19.5,12L19.43,13L21.54,14.63C21.73,14.78 21.79,15.05 21.66,15.27L19.66,18.73C19.54,18.95 19.27,19.04 19.05,18.95L16.56,17.95C16.04,18.34 15.5,18.68 14.87,18.93L14.5,21.58C14.46,21.82 14.25,22 14,22H10M11.25,4L10.88,6.61C9.68,6.86 8.62,7.5 7.85,8.39L5.44,7.35L4.69,8.65L6.8,10.2C6.4,11.37 6.4,12.64 6.8,13.8L4.68,15.36L5.43,16.66L7.86,15.62C8.63,16.5 9.68,17.14 10.87,17.38L11.24,20H12.76L13.13,17.39C14.32,17.14 15.37,16.5 16.14,15.62L18.57,16.66L19.32,15.36L17.2,13.81C17.6,12.64 17.6,11.37 17.2,10.2L19.31,8.65L18.56,7.35L16.15,8.39C15.38,7.5 14.32,6.86 13.12,6.62L12.75,4H11.25Z" /></svg>                    
+                    -->
 
                 </div>
                 <svg id="btnEmergencyStop" class="toolbarButton" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Emergency Stop</title><path d="M13 13H11V7H13M11 15H13V17H11M15.73 3H8.27L3 8.27V15.73L8.27 21H15.73L21 15.73V8.27L15.73 3Z" /></svg>                    
@@ -211,7 +213,7 @@ export class Toolbar extends HTMLElement {
         this.btnTaskStopAll = this.shadowRoot!.getElementById("btnTaskStopAll") as any
         this.btnTaskResumeAll = this.shadowRoot!.getElementById("btnTaskResumeAll") as any
         this.btnTaskFinishAll = this.shadowRoot!.getElementById("btnTaskFinishAll") as any
-        this.btnTaskProperties = this.shadowRoot!.getElementById("btnTaskProperties") as any
+        //this.btnTaskProperties = this.shadowRoot!.getElementById("btnTaskProperties") as any
 
         this.btnPower = this.shadowRoot!.getElementById("btnPower")
         this.btnEmergencyStop = this.shadowRoot!.getElementById("btnEmergencyStop")
@@ -325,14 +327,14 @@ export class Toolbar extends HTMLElement {
             this.btnTaskStopAll.classList.remove("disabled")
             this.btnTaskResumeAll.classList.remove("disabled")
             this.btnTaskFinishAll.classList.remove("disabled")
-            this.btnTaskProperties.classList.remove("disabled")
+            //this.btnTaskProperties.classList.remove("disabled")
         }
         else {
             this.btnTaskStartAll.classList.add("disabled")
             this.btnTaskStopAll.classList.add("disabled")
             this.btnTaskResumeAll.classList.add("disabled")
             this.btnTaskFinishAll.classList.add("disabled")
-            this.btnTaskProperties.classList.add("disabled")
+            //this.btnTaskProperties.classList.add("disabled")
         }
     }
 

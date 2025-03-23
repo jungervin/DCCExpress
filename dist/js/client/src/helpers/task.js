@@ -9,7 +9,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
         StepTypes["setTurnout"] = "setTurnout";
         StepTypes["forward"] = "forward";
         StepTypes["reverse"] = "reverse";
-        StepTypes["stopLoco"] = "stop";
+        StepTypes["stopLoco"] = "stopLoco";
         StepTypes["delay"] = "delay";
         StepTypes["waitForSensor"] = "waitForSensor";
         StepTypes["setFunction"] = "setFunction";
@@ -18,6 +18,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
         StepTypes["waitForMinutes"] = "waitForMinutes";
         StepTypes["startAtMinutes"] = "startAtMinutes";
         StepTypes["playSound"] = "playSound";
+        //playSoundRandom egy tömb elemeit játsza le de ez lehet a dispatcherbe kell
         StepTypes["label"] = "label";
         StepTypes["ifFree"] = "ifFree";
         StepTypes["goto"] = "goto";
@@ -42,7 +43,32 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
         StepTypes["ifSignalIsWhite"] = "ifSignalIsWhite";
         StepTypes["ifSensorIsOn"] = "ifSensorIsOn";
         StepTypes["ifSensorIsOff"] = "ifSensorIsOff";
+        StepTypes["setBlockLocoAddress"] = "setBlockLocoAddress";
+        StepTypes["ifBlockIsFree"] = "ifBlockIsFree";
+        StepTypes["ifBlockIsNotFree"] = "ifBlockIsNotFree";
+        StepTypes["setLocoAddressFromBlock"] = "setLocoAddressFromBlock";
+        StepTypes["waitForMinute"] = "waitForMinute";
+        StepTypes["ifMoving"] = "ifMoving";
+        StepTypes["ifStopped"] = "ifStopped";
+        StepTypes["ifForward"] = "ifForward";
+        StepTypes["ifReverse"] = "ifReverse";
+        StepTypes["waitForStop"] = "waitForStop";
+        StepTypes["waitForStart"] = "waitForStart";
+        StepTypes["ifSpeedGreaterThan"] = "ifSpeedGreaterThan";
+        StepTypes["ifSpeedLessThan"] = "ifSpeedLessThan";
     })(StepTypes || (exports.StepTypes = StepTypes = {}));
+    // interface iIfMoving {
+    //     locoAddress: number
+    // }
+    // interface iIfStopped {
+    //     locoAddress: number
+    // }
+    // interface iIfForward {
+    //     locoAddress: number
+    // }
+    // interface iIfReverse {
+    //     locoAddress: number
+    // }
     var TaskStatus;
     (function (TaskStatus) {
         TaskStatus["running"] = "\uD83D\uDE82 RUNNING";
@@ -53,21 +79,10 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
     class Tasks {
         //private worker: Worker;
         constructor() {
-            // this.timer = setInterval(() => {
-            //     var running = false;
-            //     this.tasks.forEach(t => {
-            //         t.proc()
-            //         this.running ||= t.status == TaskStatus.running
-            //     })
             this.tasks = [];
             //timer: NodeJS.Timeout;
             this.running = false;
             this.prevRuning = false;
-            //     if (!this.running != running) {
-            //         this.running = running
-            //         window.dispatchEvent(tasksCompleteEvent)
-            //     }
-            // }, 50)
         }
         exec() {
             var running = false;
@@ -138,34 +153,66 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
         //         this.tasks.splice(index, 1)
         //     }
         // }   
+        startAutoStart() {
+            console.log('startAutoStartTask()');
+            this.tasks.forEach(t => {
+                if (t.autoStart) {
+                    t.taskStart();
+                }
+            });
+        }
+        startAllTask() {
+            console.log('startAllTask()');
+            this.tasks.forEach(t => {
+                t.taskStart();
+            });
+        }
         stopAllTask() {
             console.log('stopAllTask()');
             this.tasks.forEach(t => {
                 t.taskStop();
             });
         }
-        stopOnCompletion() {
-            console.log('stopAllTask()');
+        resumeAllTask() {
+            console.log('resumeAllTask()');
             this.tasks.forEach(t => {
-                t.finishOnComplete = true;
+                t.resumeTask();
             });
         }
-        startAllTask() {
-            console.log('startAllTask()');
+        finishAllTask(finish) {
+            console.log('finishAllTask()');
             this.tasks.forEach(t => {
-                if (t.autoStart) {
-                    t.taskStart();
-                }
-                else {
-                    t.status = TaskStatus.stopped;
-                }
+                t.finishOnComplete = finish;
+                //t.taskFinish()
             });
         }
-        restartAllTask() {
-            console.log('restartAllTask()');
-            this.tasks.forEach(t => {
-                t.restart();
-            });
+        get allRuning() {
+            if (this.tasks.length > 0) {
+                var i = 0;
+                this.tasks.forEach((t) => {
+                    if (t.status == TaskStatus.running) {
+                        i++;
+                    }
+                });
+                return i / this.tasks.length;
+            }
+            else {
+                return 0;
+            }
+        }
+        get allFinish() {
+            if (this.tasks.length > 0) {
+                var i = 0;
+                this.tasks.forEach((t) => {
+                    if (t.finishOnComplete) {
+                        i++;
+                    }
+                });
+                return i / this.tasks.length;
+            }
+            else {
+                return 0;
+            }
         }
         save() {
             globals_1.Globals.saveJson("tasks.json", this.tasks);
@@ -184,12 +231,13 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
             this.delayEnd = 0;
             this.autoStart = false;
             this.stepByStep = false;
-            this.ident = 0;
+            this.skipBreak = false;
             //    stopOnComplete: boolean = true;
             this.prevSpeed = 0;
-            this._stopOnComplete = false;
+            this._finishOnComplete = false;
             this._status = TaskStatus.stopped;
             this._index = 0;
+            this._ident = 0;
             this.name = name;
         }
         setLoco(address) {
@@ -316,32 +364,83 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
         ifSensorIsOff(address) {
             this.steps.push({ type: StepTypes.ifSensorIsOff, data: { address: address }, ident: this.ident++ });
         }
-        gotoNextElse() {
-            const i = this.steps.findIndex((step, i) => {
-                return (i > this.index && step.type == StepTypes.else);
-            });
-            if (i >= 0) {
-                this.index = i;
+        setBlockLocoAddress(blockName, locoAddress) {
+            this.steps.push({ type: StepTypes.setBlockLocoAddress, data: { blockName, locoAddress }, ident: this.ident });
+        }
+        getLocoFromBlock(blockName) {
+            this.steps.push({ type: StepTypes.setLocoAddressFromBlock, data: { blockName }, ident: this.ident });
+        }
+        ifBlockIsFree(blockName) {
+            this.steps.push({ type: StepTypes.ifBlockIsFree, data: { blockName }, ident: this.ident++ });
+        }
+        ifBlockIsNotFree(blockName) {
+            this.steps.push({ type: StepTypes.ifBlockIsNotFree, data: { blockName }, ident: this.ident++ });
+        }
+        ifMoving() {
+            this.steps.push({ type: StepTypes.ifMoving, data: {}, ident: this.ident++ });
+        }
+        ifStopped() {
+            this.steps.push({ type: StepTypes.ifStopped, data: {}, ident: this.ident++ });
+        }
+        ifForward() {
+            this.steps.push({ type: StepTypes.ifForward, data: {}, ident: this.ident++ });
+        }
+        ifReverse() {
+            this.steps.push({ type: StepTypes.ifReverse, data: {}, ident: this.ident++ });
+        }
+        waitForStop() {
+            this.steps.push({ type: StepTypes.waitForStop, data: {}, ident: this.ident });
+        }
+        waitForStart() {
+            this.steps.push({ type: StepTypes.waitForStart, data: {}, ident: this.ident });
+        }
+        ifSpeedGreaterThan(speed) {
+            this.steps.push({ type: StepTypes.ifSpeedGreaterThan, data: {}, ident: this.ident++ });
+        }
+        ifSpeedLessThan(speed) {
+            this.steps.push({ type: StepTypes.ifSpeedLessThan, data: {}, ident: this.ident++ });
+        }
+        gotoElse2() {
+        }
+        gotoEnd() {
+            let depth = 0;
+            while (++this.index < this.steps.length) {
+                const step = this.steps[this.index];
+                if (step.type.startsWith("if")) {
+                    depth++;
+                }
+                else if (step.type == StepTypes.endIf) {
+                    if (depth == 0) {
+                        break;
+                    }
+                    depth--;
+                }
             }
-            else {
+            if (depth > 0) {
                 this.status = TaskStatus.stopped;
-                toastManager_1.toastManager.showToast("Could not find any endIf! STOPPED");
+                toastManager_1.toastManager.showToast("Could not find any endIf()! STOPPED");
             }
         }
         gotoNextEndOrElse() {
-            const i = this.steps.findIndex((step, i) => {
-                return (i >= this.index && (step.type == StepTypes.endIf || step.type == StepTypes.else));
-            });
-            if (i >= 0) {
-                const step = this.steps[i];
-                this.index = i;
-                if (step.type == StepTypes.else) {
-                    this.index++;
+            let depth = 0;
+            while (++this.index < this.steps.length) {
+                const step = this.steps[this.index];
+                if (step.type.startsWith("if")) {
+                    depth++;
+                }
+                else if (step.type == StepTypes.endIf) {
+                    if (depth == 0) {
+                        break;
+                    }
+                    depth--;
+                }
+                else if (step.type == StepTypes.else && depth == 0) {
+                    this.break;
                 }
             }
-            else {
+            if (depth > 0) {
                 this.status = TaskStatus.stopped;
-                toastManager_1.toastManager.showToast("Could not find any else or endIf! STOPPED", "error");
+                toastManager_1.toastManager.showToast("Could not find any else! STOPPED");
             }
         }
         gotoLabel(label) {
@@ -363,6 +462,114 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                         this.locoAddress = this.step.data.address;
                         //console.log(`TASK: ${this.name} loco: ${this.locoAddress} added!`)
                         this.index++;
+                        break;
+                    case StepTypes.ifMoving:
+                        const l4 = api_1.Api.getLoco(this.locoAddress);
+                        if (l4) {
+                            if (l4.speed > 0) {
+                                this.index++;
+                            }
+                            else {
+                                this.gotoNextEndOrElse();
+                            }
+                        }
+                        else {
+                            this.status = TaskStatus.stopped;
+                            toastManager_1.toastManager.showToast(`Could not find loco by address: ${this.locoAddress}`);
+                        }
+                        break;
+                    case StepTypes.ifStopped:
+                        const l5 = api_1.Api.getLoco(this.locoAddress);
+                        if (l5) {
+                            if (l5.speed == 0) {
+                                this.index++;
+                            }
+                            else {
+                                this.gotoNextEndOrElse();
+                            }
+                        }
+                        else {
+                            this.status = TaskStatus.stopped;
+                            toastManager_1.toastManager.showToast(`Could not find loco by address: ${this.locoAddress}`);
+                        }
+                        break;
+                    case StepTypes.ifForward:
+                        const l6 = api_1.Api.getLoco(this.locoAddress);
+                        if (l6) {
+                            if (l6.direction == dcc_1.Z21Directions.forward) {
+                                this.index++;
+                            }
+                            else {
+                                this.gotoNextEndOrElse();
+                            }
+                        }
+                        else {
+                            this.status = TaskStatus.stopped;
+                            toastManager_1.toastManager.showToast(`Could not find loco by address: ${this.locoAddress}`);
+                        }
+                        break;
+                    case StepTypes.ifReverse:
+                        const l7 = api_1.Api.getLoco(this.locoAddress);
+                        if (l7) {
+                            if (l7.direction == dcc_1.Z21Directions.reverse) {
+                                this.index++;
+                            }
+                            else {
+                                this.gotoNextEndOrElse();
+                            }
+                        }
+                        else {
+                            this.status = TaskStatus.stopped;
+                            toastManager_1.toastManager.showToast(`Could not find loco by address: ${this.locoAddress}`);
+                        }
+                        break;
+                    case StepTypes.waitForStart:
+                        const l8 = api_1.Api.getLoco(this.locoAddress);
+                        if (l8) {
+                            if (l8.speed > 0) {
+                                this.index++;
+                            }
+                        }
+                        else {
+                            this.status = TaskStatus.stopped;
+                            toastManager_1.toastManager.showToast(`Could not find loco by address: ${this.locoAddress}`);
+                        }
+                        break;
+                    case StepTypes.waitForStop:
+                        const l9 = api_1.Api.getLoco(this.locoAddress);
+                        if (l9) {
+                            if (l9.speed == 0) {
+                                this.index++;
+                            }
+                        }
+                        else {
+                            this.status = TaskStatus.stopped;
+                            toastManager_1.toastManager.showToast(`Could not find loco by address: ${this.locoAddress}`);
+                        }
+                        break;
+                    case StepTypes.ifSpeedGreaterThan:
+                        const l10 = api_1.Api.getLoco(this.locoAddress);
+                        if (l10) {
+                            if (l10.speed > this.step.data.speed) {
+                                this.index++;
+                            }
+                        }
+                        else {
+                            this.status = TaskStatus.stopped;
+                            toastManager_1.toastManager.showToast(`Could not find loco by address: ${this.locoAddress}`);
+                        }
+                        break;
+                    case StepTypes.ifSpeedLessThan:
+                        const l11 = api_1.Api.getLoco(this.locoAddress);
+                        if (l11) {
+                            if (l11.speed > this.step.data.speed) {
+                                this.index++;
+                            }
+                        }
+                        else {
+                            this.status = TaskStatus.stopped;
+                            toastManager_1.toastManager.showToast(`Could not find loco by address: ${this.locoAddress}`);
+                        }
                         break;
                     case StepTypes.setTurnout:
                         const turnout = this.step.data;
@@ -468,7 +675,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                         }
                         break;
                     case StepTypes.else:
-                        this.gotoNextEndOrElse();
+                        this.gotoEnd();
                         break;
                     case StepTypes.endIf:
                         this.index++;
@@ -477,7 +684,10 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                         this.gotoLabel(this.step.data.text);
                         break;
                     case StepTypes.break:
-                        if (this.status != TaskStatus.stopped) {
+                        if (this.skipBreak) {
+                            this.index++;
+                        }
+                        else if (this.status != TaskStatus.stopped) {
                             this.status = TaskStatus.stopped;
                             //toastManager.showToast("Break", "warning")
                         }
@@ -592,80 +802,138 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                             this.gotoNextEndOrElse();
                         }
                         break;
+                    case StepTypes.setBlockLocoAddress:
+                        const b = this.step.data;
+                        api_1.Api.setBlockLocoAddress(b.blockName, this.locoAddress);
+                        this.index++;
+                        break;
+                    case StepTypes.ifBlockIsFree:
+                        const l1 = api_1.Api.getLocoAddressFromBlock(this.step.data.blockName);
+                        if (l1 === 0) {
+                            this.index++;
+                        }
+                        else {
+                            this.gotoNextEndOrElse();
+                        }
+                        break;
+                    case StepTypes.ifBlockIsNotFree:
+                        const l2 = api_1.Api.getLocoAddressFromBlock(this.step.data.blockName);
+                        if (l2 > 0) {
+                            this.index++;
+                        }
+                        else {
+                            this.gotoNextEndOrElse();
+                        }
+                        break;
+                    case StepTypes.setLocoAddressFromBlock:
+                        const l3 = api_1.Api.getLocoAddressFromBlock(this.step.data.blockName);
+                        if (l3 > 0) {
+                            this.locoAddress = l3;
+                            this.index++;
+                        }
+                        else {
+                            this.status = TaskStatus.stopped;
+                            toastManager_1.toastManager.showToast("Could not find loco! STOPPED", "error");
+                        }
+                        break;
                 }
             }
         }
         logStep(step) {
             switch (step.type) {
                 case StepTypes.setLoco:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`setLoco: ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + `${StepTypes.setLoco}: ${step.data.address}`;
                 case StepTypes.setTurnout:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`setTurnout: ${step.data.address} closed: ${step.data.closed}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + `${StepTypes.setTurnout}: ${step.data.address} closed: ${step.data.closed}`;
                 case StepTypes.forward:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`forward: ${step.data.speed}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + `${StepTypes.forward}: ${step.data.speed}`;
                 case StepTypes.reverse:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`reverse: ${step.data.speed}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + `${StepTypes.reverse}: ${step.data.speed}`;
                 case StepTypes.stopLoco:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`stopLoco`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + `${StepTypes.stopLoco}`;
                 case StepTypes.delay:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`delay: ${step.data.ms}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + `${StepTypes.delay}: ${step.data.ms}`;
                 case StepTypes.waitForSensor:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`waitForSensor: ${step.data.address} on: ${step.data.on}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + `${StepTypes.waitForSensor}: ${step.data.address} on: ${step.data.on}`;
                 case StepTypes.setFunction:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`setFunction: ${step.data.fn} on: ${step.data.on}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + `${StepTypes.setFunction}: ${step.data.fn} on: ${step.data.on}`;
                     break;
                 case StepTypes.restart:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">restart</b>`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.restart}</b>`);
                 case StepTypes.playSound:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`playSound: ${step.data.fname}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + StepTypes.playSound + `: ${step.data.fname}`;
                 case StepTypes.setRoute:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`setRoute: ${step.data.routeName}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + StepTypes.setRoute + `: ${step.data.routeName}`;
                 case StepTypes.startAtMinutes:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`startAtMinutes: ${step.data.minutes}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + StepTypes.startAtMinutes + `: ${step.data.minutes}`;
                 case StepTypes.waitForMinutes:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`waitForMinute: ${step.data.minute}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + StepTypes.waitForMinute + `: ${step.data.minute}`;
                 case StepTypes.label:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b>label</b>: ${step.data.text}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b>${StepTypes.label}</b>: ${step.data.text}`);
                 case StepTypes.ifClosed:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifClosed</b>: ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.ifClosed}</b>: ${step.data.address}`);
                 case StepTypes.ifOpen:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifOpen:</b> ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.ifOpen}:</b> ${step.data.address}`);
                 case StepTypes.else:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">else:</b>`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.else}:</b>`);
                 case StepTypes.endIf:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">endIf</b>`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.endIf}</b>`);
                 case StepTypes.goto:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b>goto:</b> ${step.data.text}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b>${StepTypes.goto}:</b> ${step.data.text}`);
                 case StepTypes.break:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b>break:</b> ${step.data.text}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b>${StepTypes.break}</b> ${step.data.text}`);
                 case StepTypes.setOutput:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`setOutput: ${step.data.address} on: ${step.data.on}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`${StepTypes.setOutput}: ${step.data.address} on: ${step.data.on}`);
                 case StepTypes.ifOutputIsOn:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifOutputIsOn:</b> ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.ifOutputIsOn}:</b> ${step.data.address}`);
                 case StepTypes.ifOutputIsOff:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifOutputIsOff:</b> ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.ifOutputIsOff}:</b> ${step.data.address}`);
                 case StepTypes.setAccessory:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`setAccessory: ${step.data.address} on: ${step.data.on}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`${StepTypes.setAccessory}: ${step.data.address} on: ${step.data.on}`);
                 case StepTypes.ifAccessoryIsOn:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifAccessoryIsOn:</b> ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.ifAccessoryIsOn}:</b> ${step.data.address}`);
                 case StepTypes.ifAccessoryIsOff:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifAccessoryIsOff:</b> ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.ifAccessoryIsOff}:</b> ${step.data.address}`);
                 case StepTypes.setSignalGreen:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`setSignalGreen: ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`${StepTypes.setSignalGreen}: ${step.data.address}`);
                 case StepTypes.ifSignalIsGreen:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifSignalIsGreen:</b> ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.ifSignalIsGreen}:</b> ${step.data.address}`);
                 case StepTypes.setSignalRed:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`setSignalRed: ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`${StepTypes.setSignalRed}: ${step.data.address}`);
                 case StepTypes.ifSignalIsRed:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifSignalIsRed:</b> ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.ifSignalIsRed}:</b> ${step.data.address}`);
                 case StepTypes.setSignalYellow:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`setSignalYellow: ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`${StepTypes.setSignalYellow}: ${step.data.address}`);
                 case StepTypes.ifSignalIsYellow:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifSignalIsYellow:</b> ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.ifSignalIsYellow}:</b> ${step.data.address}`);
                 case StepTypes.ifSensorIsOn:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifSensorIsOn:</b> ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.ifSensorIsOn}:</b> ${step.data.address}`);
                 case StepTypes.ifSensorIsOff:
-                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">ifSensorIsOff:</b> ${step.data.address}`);
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.ifSensorIsOff}:</b> ${step.data.address}`);
+                case StepTypes.setBlockLocoAddress:
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`${StepTypes.setBlockLocoAddress}: ${step.data.blockName} loco: ${this.locoAddress}`);
+                case StepTypes.setLocoAddressFromBlock:
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`${StepTypes.setLocoAddressFromBlock} ${step.data.blockName}`);
+                case StepTypes.ifBlockIsFree:
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.ifBlockIsFree}:</b> ${step.data.blockName}`);
+                case StepTypes.ifBlockIsNotFree:
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.ifBlockIsNotFree}:</b> ${step.data.blockName}`);
+                case StepTypes.ifMoving:
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.ifMoving}:</b>`);
+                case StepTypes.ifStopped:
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.ifStopped}:</b>`);
+                case StepTypes.ifForward:
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.ifForward}:</b>`);
+                case StepTypes.ifReverse:
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.ifReverse}:</b>`);
+                case StepTypes.waitForStart:
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.waitForStart}:</b>`);
+                case StepTypes.waitForStop:
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.waitForStop}:</b>`);
+                case StepTypes.ifSpeedGreaterThan:
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.ifSpeedGreaterThan}: ${step.data.speed}</b>`);
+                case StepTypes.waitForStop:
+                    return (0, utility_1.htmlSpaces)(step.ident) + (`<b style="color: yellow">${StepTypes.ifSpeedLessThan}: ${step.data.speed}</b>`);
             }
             return "Unknown";
         }
@@ -717,21 +985,23 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
             api_1.Api.setLocoSpeed(this.locoAddress, 0);
         }
         resumeTask() {
-            // if (this.step?.type == StepTypes.break && this.index < this.steps.length - 1) {
-            //     this.index++
-            // }
-            this.index++;
+            var _a;
             this.status = TaskStatus.running;
             this.delayEnd = 0;
+            if (((_a = this.step) === null || _a === void 0 ? void 0 : _a.type) == StepTypes.break) {
+                this.index++;
+            }
+            //this.proc()
+            //this.index++
             if (this.prevSpeed > 0) {
                 api_1.Api.setLocoSpeed(this.locoAddress, this.prevSpeed);
             }
         }
         get finishOnComplete() {
-            return this._stopOnComplete;
+            return this._finishOnComplete;
         }
         set finishOnComplete(v) {
-            this._stopOnComplete = v;
+            this._finishOnComplete = v;
             window.dispatchEvent(new CustomEvent("taskChangedEvent", {
                 detail: this,
                 bubbles: true,
@@ -763,6 +1033,12 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                 bubbles: true,
                 composed: true,
             }));
+        }
+        get ident() {
+            return this._ident;
+        }
+        set ident(v) {
+            this._ident = Math.max(0, v);
         }
     }
     exports.Task = Task;

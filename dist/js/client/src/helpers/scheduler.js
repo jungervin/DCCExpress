@@ -14,22 +14,20 @@ define(["require", "exports", "../helpers/api"], function (require, exports, api
     class Scheduler {
         static start(filePath) {
             return __awaiter(this, void 0, void 0, function* () {
-                // if (this.isLoaded) {
-                //     console.warn("⚠️ Scheduler: already loaded.");
-                //     return;
-                // }
                 try {
                     const response = yield fetch(filePath);
                     if (!response.ok) {
                         throw new Error(`Scheduler: could not load: ${filePath}`);
-                        //Hiba a script betöltése közben:
                     }
                     this.scriptContent = yield response.text();
-                    console.log(`📥Scheduler: loaded file: ${filePath}`);
+                    console.log(`Scheduler: loaded file: ${filePath}`);
                     this.currentScriptFunction = new Function("App", "Api", "with (App, Api) { " + this.scriptContent + " }");
                     this.currentScriptFunction(api_1.Api.app, api_1.Api);
                     this.isLoaded = true;
                     console.log("✅Scheduler: started!");
+                    if (Scheduler.onchange) {
+                        Scheduler.onchange();
+                    }
                 }
                 catch (error) {
                     console.error("❌Scheduler: Error while loading the script:", error);

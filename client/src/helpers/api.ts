@@ -23,25 +23,49 @@ export class Api {
         audioManager.play(filename)
     }
 
-    static setBlock(blockName: string, locoAddress: number) {
+    static setBlockLocoAddress(blockName: string, locoAddress: number) {
+        Api.app.editor.views.getBlockElements().forEach((b) => {
+            if(b.locoAddress == locoAddress) {
+                b.setLoco(0)
+            }
+            // else if(b.name == blockName){
+            //     b.setLoco(locoAddress)
+            // }
+        }) 
+        const block = Api.app.editor.views.getBlockElements().find((b) => {
+            return b.name == blockName
+        })
+        if(block) {
+            block.setLoco(locoAddress)
+        }
+
         const b: iSetBlock = { blockName: blockName, locoAddress: locoAddress }
         wsClient.send({ type: ApiCommands.setBlock, data: b } as iData)
     }
     static getBlocks() {
-
         wsClient.send({ type: ApiCommands.getBlocks, data: "" } as iData)
     }
 
+    static getLocoAddressFromBlock(blockName: string): number {
+        const b = Api.app.editor.views.getBlockElements().find((b) => {
+            return b.name == blockName
+        })
+        if(b) {
+            return b.locoAddress
+        }
+        // Legyen foglat!
+        return Number.MAX_VALUE
+    }
 
-    static getSensor(address: number): SensorShapeElement | undefined{
+    static getSensor(address: number): SensorShapeElement | undefined {
         const s = Api.app.editor.views.getSensor(address)
-        if(s) {
-            return s       
+        if (s) {
+            return s
         }
         return undefined
     }
 
-    static getSensorValue(address: number) : boolean {
+    static getSensorValue(address: number): boolean {
         return Api.app.sensors[address]
     }
 
@@ -172,7 +196,7 @@ export class Api {
         return Api.app.editor.views.getSignal(address)
     }
 
-    
+
 
     static getRoute(name: string): RouteSwitchElement | undefined {
         return Api.app.editor.views.getRouteSwitchElements().find(r => r.name === name)
@@ -240,7 +264,7 @@ export class Api {
 
     static setSignalGreen(address: number) {
         const sig = Api.getSignal(address)
-        if(sig) {
+        if (sig) {
             sig.sendGreenIfNotGreen()
         } else {
             toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error')
@@ -249,16 +273,16 @@ export class Api {
 
     static getSignalIsGreen(address: number): boolean {
         const sig = Api.getSignal(address)
-        if(sig) {
-           return sig.isGreen
-        } 
+        if (sig) {
+            return sig.isGreen
+        }
         toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error')
         return false
     }
 
     static setSignalRed(address: number) {
         const sig = Api.getSignal(address)
-        if(sig) {
+        if (sig) {
             sig.sendRedIfNotRed()
         } else {
             toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error')
@@ -267,16 +291,16 @@ export class Api {
 
     static getSignalIsRed(address: number): boolean {
         const sig = Api.getSignal(address)
-        if(sig) {
-           return sig.isRed
-        } 
+        if (sig) {
+            return sig.isRed
+        }
         toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error')
         return false
     }
 
     static setSignalYellow(address: number) {
         const sig = Api.getSignal(address)
-        if(sig) {
+        if (sig) {
             sig.sendYellowIfNotYellow()
         } else {
             toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error')
@@ -285,16 +309,16 @@ export class Api {
 
     static getSignalIsYellow(address: number): boolean {
         const sig = Api.getSignal(address)
-        if(sig) {
-           return sig.isYellow
-        } 
+        if (sig) {
+            return sig.isYellow
+        }
         toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error')
         return false
     }
 
     static setSignalWhite(address: number) {
         const sig = Api.getSignal(address)
-        if(sig) {
+        if (sig) {
             sig.sendWhiteIfNotWhite()
         } else {
             toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error')
@@ -303,9 +327,9 @@ export class Api {
 
     static getSignalIsWhite(address: number): boolean {
         const sig = Api.getSignal(address)
-        if(sig) {
-           return sig.isWhite
-        } 
+        if (sig) {
+            return sig.isWhite
+        }
         toastManager.showToast(`Could not find Signal By Address: ${address}`, 'error')
         return false
     }

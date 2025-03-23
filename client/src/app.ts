@@ -46,7 +46,7 @@ export class App {
 
     currentTask: Task | undefined;
     tasks: Tasks;
-    
+
     saveCanvasState() {
         const state = {
             originX: this.editor.originX,
@@ -113,8 +113,8 @@ export class App {
 
         this.editor.init()
 
-        
-        
+
+
 
         Globals.fetchJsonData("/settings.json").then((data: any) => {
             const s = data as iSettings
@@ -130,23 +130,23 @@ export class App {
             toastManager.showToast("Settings Loaded", "success")
             Globals.fetchJsonData('/config.json').then((conf: any) => {
                 this.configLoaded(conf)
-                
+
                 wsClient.send({ type: ApiCommands.getRBusInfo, data: "" })
-                
-                
+
+
                 toastManager.showToast("Config Loaded", "success")
 
 
             }).catch((reason) => {
-            
+
             }).finally(() => {
                 wsClient.connect()
             })
 
         }).catch((reason: any) => {
-            
+
         }).finally(() => {
-            
+
         })
 
         wsClient.onConnected = () => {
@@ -158,7 +158,7 @@ export class App {
                 Api.getBlocks()
             })
 
-            
+
 
         }
         wsClient.onError = () => {
@@ -263,7 +263,7 @@ export class App {
 
         // A settings betöltése után??
         // Api.loadLocomotives().then((locos) => {
-            
+
         // })
 
         this.locoControlPanel = document.getElementById("locoControlPanel") as LocoControlPanel
@@ -280,7 +280,7 @@ export class App {
                 this.tasks.stopAllTask()
                 this.tasks.tasks.length = 0
                 Scheduler.start("scheduler.js").then(() => {
-                    this.tasks.startAllTask()
+                    this.tasks.startAutoStart()
                 })
                 //this.task1()
                 //this.tasks.startAllTask()
@@ -304,6 +304,29 @@ export class App {
             }
         }
 
+
+        this.toolbar.btnTaskStartAll.onclick = (e: MouseEvent) => {
+            this.tasks.startAllTask()
+        }
+        this.toolbar.btnTaskStopAll.onclick = (e: MouseEvent) => {
+            this.tasks.stopAllTask()
+        }
+        this.toolbar.btnTaskResumeAll.onclick = (e: MouseEvent) => {
+            this.tasks.resumeAllTask()
+        }
+        this.toolbar.btnTaskFinishAll.onclick = (e: MouseEvent) => {
+            this.tasks.finishAllTask(!(this.tasks.allFinish > 0))
+        }
+
+        Scheduler.onchange = () => {
+            this.toolbar.taskButtonsEnabled = Scheduler.isLoaded
+            this.updateTasks()
+        }
+
+        window.addEventListener('taskChangedEvent', (e: Event) => {
+            this.updateTasks()
+        })
+
         const worker = new Worker("js/worker.js");
         worker.postMessage("msg")
         worker.onmessage = function (e) {
@@ -312,73 +335,41 @@ export class App {
             worker.postMessage("p")
         };
     }
-    task1() {
+  
 
-        if (!this.tasks.getTask("Task1")) {
-
-            const task = this.tasks.addTask("Task1")
-
-            task.setLoco(3)
-
-            // ==========================================
-            //  Szfvár P3 <=== P2 <== Szabadbattyán P3
-            // ==========================================
-
-            //task.waitForMinute(5)
-            task.startAtMinutes([5, 15, 25, 35, 45, 55])
-            task.setRoute("routeSwitch112")
-            task.waitMs(3000, 5000)
-
-            // Kalauz síp
-            task.setFunctionMs(17, true, 500)
-            task.waitMs(3000, 5000)
-
-            // Hátra és Kürt
-            task.reverse(0)
-            task.setFunctionMs(3, true, 500)
-            task.waitMs(3000, 5000)
-            task.reverse(30)
-
-            task.waitForSensor(16, true)
-
-            task.setFunctionMs(3, true, 500)
-            task.delay(3000)
-            task.stopLoco()
-
-            task.waitMs(10000, 20000)
-
-            // ==========================================
-            //  Szfvár P3 ==> P1 ==> Szabadbattyán P3
-            // ==========================================
-
-            //task.waitForMinute(5)
-            task.startAtMinutes([0, 10, 20, 30, 40, 50])
-            task.setRoute("routeSwitch113")
-            task.waitMs(3000, 5000)
-
-            // Kalauz síp
-            task.setFunctionMs(17, true, 500)
-
-            task.waitMs(3000, 5000)
-
-            // Előre és Kürt
-            task.forward(0)
-            task.setFunctionMs(3, true, 500)
-            task.waitMs(3000, 5000)
-            task.forward(30)
-
-            task.waitForSensor(24, true)
-
-            task.setFunctionMs(3, true, 500)
-
-            task.delay(3000)
-            task.stopLoco()
-
-            task.waitMs(10000, 20000)
-
-            task.restart()
-
+    updateTasks() {
+        var running = this.tasks.allRuning
+        switch (running) {
+            case 1: this.toolbar.btnTaskStartAll.style.backgroundColor = "lime"
+                break;
+            case 0: this.toolbar.btnTaskStartAll.style.backgroundColor = "white"
+                break;
+            default: this.toolbar.btnTaskStartAll.style.backgroundColor = "orange"
+                break;
         }
+
+        var finish = this.tasks.allFinish
+        switch (finish) {
+            case 1: this.toolbar.btnTaskFinishAll.style.backgroundColor = "lime"
+                break;
+            case 0: this.toolbar.btnTaskFinishAll.style.backgroundColor = "white"
+                break;
+            default: this.toolbar.btnTaskFinishAll.style.backgroundColor = "orange"
+                break;
+        }
+
+        this.tasks.tasks.forEach((task) => {
+            const btn = Api.getTaskButton(task.name)
+            if (btn) {
+                if (btn.status != task.status) {
+                    btn.status = task.status
+                }
+
+                btn.finishOnComplete = task.finishOnComplete
+                this.editor.draw();
+
+            }            
+        })
     }
 
     systemInfo(ss: iSystemStatus) {

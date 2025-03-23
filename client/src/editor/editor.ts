@@ -157,15 +157,16 @@ export class CustomCanvas extends HTMLElement {
         }
 
         window.addEventListener('taskChangedEvent', (e: Event) => {
-            var task = (e as CustomEvent).detail
-            const btn = Api.getTaskButton(task.name)
-            if (btn) {
-                if (btn.status != task.status) {
-                    btn.status = task.status
-                    this.draw();
-                }
-            }
+            // var task = (e as CustomEvent).detail
+            // const btn = Api.getTaskButton(task.name)
+            // if (btn) {
+            //     if (btn.status != task.status) {
+            //         btn.status = task.status
+            //         this.draw();
+            //     }
+            // }
         })
+
         // window.taskChanged = (task: Task) => {
         //     const t = Api.getTaskButton(task.name)    
         //     if(t) {

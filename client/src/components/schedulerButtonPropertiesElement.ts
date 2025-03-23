@@ -11,6 +11,7 @@ export class SchedulerButtonPropertiesElement extends HTMLElement {
     btnStop: HTMLButtonElement;
     btnResume: HTMLButtonElement;
     btnFinish: HTMLButtonElement;
+    statusElement: HTMLElement;
     // btnAbort: HTMLButtonElement;
 
     constructor() {
@@ -35,14 +36,14 @@ export class SchedulerButtonPropertiesElement extends HTMLElement {
                     </div>
                 </div>
 
-                <div class="igroup">
+                <div class="igroupi">
                  
                     <div style="margin-top: 8px">Steps</div>
                     
-                    <div style="height: 420px; overflow: auto; border-radius: 4px;" id="steps">
+                    <div style="height: 420px; overflow: auto; border-radius: 4px;background-color: black" id="steps">
                     </div>
                     <div id="buttons" style="margin: 10px 0">
-                    <div id="status" style="padding: 4px; border: solid 1px gray;border-radius: 4px; margin: 4px 0" >Status: </div>
+                    <div id="status" style="background-color: #202020; padding: 4px; border: solid 1px gray;border-radius: 4px; margin: 4px 0" >Status: </div>
                     <button id="btnStart" class="btn btn-secondary">START</button>
                     <button id="btnStop" class="btn btn-secondary">STOP</button>
                     <button id="btnResume" class="btn btn-secondary">RESUME</button>
@@ -51,7 +52,7 @@ export class SchedulerButtonPropertiesElement extends HTMLElement {
                 </div>
             </div>
         `
-        const statusElement = this.shadow.getElementById('status') as HTMLElement
+        this.statusElement = this.shadow.getElementById('status') as HTMLElement
         this.labelTextElement = this.shadow.getElementById('taskname') as HTMLInputElement
         this.taskDivElement = this.shadow.getElementById('steps') as HTMLElement
         this.btnStart = this.shadow.getElementById("btnStart") as HTMLButtonElement
@@ -74,29 +75,7 @@ export class SchedulerButtonPropertiesElement extends HTMLElement {
         }
 
         window.addEventListener('taskChangedEvent', (e: Event) => {
-            var task = (e as CustomEvent).detail as Task
-
-            statusElement.innerHTML = task.status + (task.finishOnComplete ? " 🏁FINISH" : "")
-
             this.renderTask()
-            if (task.status == TaskStatus.running) {
-                this.btnStart.classList.add("btn-primary")
-            } else {
-                this.btnStart.classList.remove("btn-primary")
-            }
-            if (task.status == TaskStatus.stopped) {
-                this.btnStop.classList.add("btn-primary")
-            } else {
-                this.btnStop.classList.remove("btn-primary")
-            }
-
-
-            // if (btn) {
-            //     if (btn.status != task.status) {
-            //         btn.status = task.status
-            //         this.draw();
-            //     }
-            // }
         })
 
     }
@@ -113,6 +92,28 @@ export class SchedulerButtonPropertiesElement extends HTMLElement {
     }
 
     renderTask() {
+        if(!this.button) {
+            return
+        }
+        const task = Api.tasks.getTask(this.button!.taskName)
+        if (task) {
+            this.statusElement.innerHTML = task.status + (task.finishOnComplete ? " 🏁FINISH" : "")
+
+            if (task.status == TaskStatus.running) {
+                this.btnStart.classList.add("btn-primary")
+            } else {
+                this.btnStart.classList.remove("btn-primary")
+            }
+            if (task.status == TaskStatus.stopped) {
+                this.btnStop.classList.add("btn-primary")
+            } else {
+                this.btnStop.classList.remove("btn-primary")
+            }
+
+        }
+
+
+
         this.taskDivElement.innerHTML = ""
         if (this.button) {
 
@@ -146,13 +147,11 @@ export class SchedulerButtonPropertiesElement extends HTMLElement {
                     // i++
 
                     const isActive = task.index === i;
-                    const bg = isActive ? "lime" : "gray";
-                    const fg = isActive ? "black" : "white";
+                    var bg = isActive ? "lime" : "#202020";
+                    var fg = isActive ? "black" : "white";
 
                     const col1 = document.createElement("td");
                     row.appendChild(col1);
-                    col1.style.color = fg;
-                    col1.style.backgroundColor = bg;
                     if (isActive) {
                         col1.innerHTML = ">>";
                     }
@@ -161,32 +160,37 @@ export class SchedulerButtonPropertiesElement extends HTMLElement {
                         case StepTypes.reverse:
                         case StepTypes.forward:
                         case StepTypes.stopLoco:
-
                             col1.innerHTML = "🚂"
                             break;
-                        case StepTypes.delay:
-                        case StepTypes.waitForSensor:
-                            col1.innerHTML = "⌛"
-                            break;
-                        case StepTypes.startAtMinutes:
-                            col1.innerHTML = "🕔"
-                            break;
-                        case StepTypes.setFunction:
-                        case StepTypes.playSound:
-                            col1.innerHTML = "🔊"
-                            break;
-                        case StepTypes.setRoute:
-                        case StepTypes.setTurnout:
-                            col1.innerHTML = "🔀"
-                            break;
-                        case StepTypes.setSignalGreen:
-                        case StepTypes.setSignalRed:
-                        case StepTypes.setSignalYellow:
-                        case StepTypes.setSignalWhite:
-                            col1.innerHTML = "🚦"
-                            break;
+                        // case StepTypes.delay:
+                        // case StepTypes.waitForSensor:
+                        //     col1.innerHTML = "⌛"
+                        //     break;
+                        // case StepTypes.startAtMinutes:
+                        //     col1.innerHTML = "🕔"
+                        //     break;
+                        // case StepTypes.setFunction:
+                        //     col1.innerHTML = "🎛️"
+                        //     break;
+                        // case StepTypes.playSound:
+                        //     col1.innerHTML = "🔊"
+                        //     break;
+                        // case StepTypes.setRoute:
+                        // case StepTypes.setTurnout:
+                        //     col1.innerHTML = "🔀"
+                        //     break;
+                        // case StepTypes.setSignalGreen:
+                        // case StepTypes.setSignalRed:
+                        // case StepTypes.setSignalYellow:
+                        // case StepTypes.setSignalWhite:
+                        //     col1.innerHTML = "🚦"
+                        //     break;
                         case StepTypes.break:
                             col1.innerHTML = "🔴"
+                            if (isActive) {
+                                bg = "red"
+                                fg = "yellow"
+                            }
                             break;
                         case StepTypes.goto:
                             col1.innerHTML = "⬅️"
@@ -194,12 +198,16 @@ export class SchedulerButtonPropertiesElement extends HTMLElement {
                         case StepTypes.label:
                             col1.innerHTML = "➡️"
                             break;
-                        case StepTypes.setAccessory:
-                        case StepTypes.setOutput:
-                            col1.innerHTML = "🟢"
-                            break;
+                        // case StepTypes.setAccessory:
+                        // case StepTypes.setOutput:
+                        //     col1.innerHTML = "🟢"
+                        //     break;
 
                     }
+
+                    col1.style.color = fg;
+                    col1.style.backgroundColor = bg;
+
 
                     const col2 = document.createElement("td");
                     row.appendChild(col2);
