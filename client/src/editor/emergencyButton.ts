@@ -42,9 +42,7 @@ export class EmergencyButtonShapeElement extends View {
         ctx.stroke();
 
         ctx.beginPath()
-
         ctx.fillStyle = "white";
-        //ctx.fillStyle = this.on ? "black" : "white";
         ctx.font = Globals.power.emergencyStop ? "7px Arial" : "8px Arial";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";

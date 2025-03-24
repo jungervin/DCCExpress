@@ -3,8 +3,6 @@ define(["require", "exports"], function (require, exports) {
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.FastClock = void 0;
     class FastClock {
-        // bufferCanvas: HTMLCanvasElement;
-        // bufferCtx: CanvasRenderingContext2D;
         constructor(ctx, scaleFactor = 1) {
             this.currentTime = new Date();
             this.visible = false;
@@ -22,7 +20,6 @@ define(["require", "exports"], function (require, exports) {
                 const ctx = this.ctx;
                 const width = 120;
                 const height = width;
-                //const centerX = width / 2;
                 const x = this.ctx.canvas.width / 2 - width / 2;
                 var y = 10;
                 const centerX = x + width / 2;
@@ -39,10 +36,6 @@ define(["require", "exports"], function (require, exports) {
                 ctx.fillRect(x, y, width + 3, height + 3);
                 ctx.strokeRect(x, y, width + 3, height + 3);
                 y += 4;
-                // ctx.beginPath();
-                // ctx.arc(centerX, centerY, radius+8, 0, Math.PI * 2);
-                // ctx.fillStyle = "white"
-                // ctx.fill()
                 // Árnyék beállítása
                 ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
                 ctx.shadowBlur = 5;
@@ -104,13 +97,8 @@ define(["require", "exports"], function (require, exports) {
             this.ctx.lineWidth = width;
             this.ctx.stroke();
         }
-        // public setScaleFactor(factor: number) {
-        //     this.scaleFactor = Math.min(factor, 10);
-        //     this.start();
-        // }
         setCurrentTime(timestamp) {
             this.currentTime = new Date(timestamp);
-            //this.lastUpdateTime = performance.now();
             this.update();
         }
     }

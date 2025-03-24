@@ -1,23 +1,18 @@
-define(["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Pages = exports.Page = void 0;
-    class Page {
-        constructor(name) {
-            this.elements = [];
-        }
-    }
-    exports.Page = Page;
-    class Pages {
-        constructor() {
-            this.pages = [];
-        }
-        get currentPage() {
-            return this._currentPage;
-        }
-        set currentPage(v) {
-            this._currentPage = v;
-        }
-    }
-    exports.Pages = Pages;
-});
+"use strict";
+// export class Page {
+//     elements: any[] = []
+//     constructor(name: string) {
+//     }
+// }
+// export class Pages {
+//     pages: Page[] = []
+//     constructor() {
+//     }
+//     private _currentPage : Page | undefined;
+//     public get currentPage() : Page | undefined {
+//         return this._currentPage;
+//     }
+//     public set currentPage(v : Page | undefined) {
+//         this._currentPage = v;
+//     }
+// }

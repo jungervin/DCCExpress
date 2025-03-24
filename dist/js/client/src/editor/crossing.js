@@ -59,9 +59,6 @@ define(["require", "exports", "../helpers/globals", "./view"], function (require
                 ctx.strokeStyle = this.stateColor;
                 ctx.lineWidth = globals_1.Globals.TrackWidth3;
                 var dx = this.width / 5;
-                // ctx.beginPath();
-                // ctx.strokeStyle = Colors.TrackPrimaryColor
-                // ctx.lineWidth = Globals.TrackWidth7;
                 if (this.angle == 0 || this.angle == 180) {
                     ctx.moveTo(this.posLeft + dx, this.centerY);
                     ctx.lineTo(this.posRight - dx, this.centerY);

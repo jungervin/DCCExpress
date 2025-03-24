@@ -35,7 +35,6 @@ define(["require", "exports", "../helpers/globals", "../helpers/api", "./view"],
             ctx.stroke();
             ctx.beginPath();
             ctx.fillStyle = "white";
-            //ctx.fillStyle = this.on ? "black" : "white";
             ctx.font = globals_1.Globals.power.emergencyStop ? "7px Arial" : "8px Arial";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";

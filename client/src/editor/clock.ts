@@ -5,14 +5,9 @@ export class FastClock {
     currentTime: Date = new Date();
     interval?: NodeJS.Timeout | null;
     visible: boolean = false;
-    
-    // bufferCanvas: HTMLCanvasElement;
-    // bufferCtx: CanvasRenderingContext2D;
-
 
     constructor(ctx: CanvasRenderingContext2D, scaleFactor: number = 1) {
         this.ctx = ctx
-
         this.scaleFactor = scaleFactor;
     }
 
@@ -24,12 +19,10 @@ export class FastClock {
 
     public draw() {
         if (this.visible) {
-
             this.ctx.save()
             const ctx = this.ctx;
             const width = 120;
             const height = width;
-            //const centerX = width / 2;
             const x = this.ctx.canvas.width / 2 - width / 2
             var y = 10
             const centerX = x + width / 2
@@ -41,8 +34,6 @@ export class FastClock {
             ctx.shadowOffsetX = 0;
             ctx.shadowOffsetY = 0;
 
-
-
             ctx.beginPath()
             ctx.lineWidth = 1;
             ctx.strokeStyle = "#ccc";
@@ -50,13 +41,7 @@ export class FastClock {
             ctx.fillRect(x, y, width + 3, height + 3);
             ctx.strokeRect(x, y, width + 3, height + 3);
 
-
             y += 4
-            // ctx.beginPath();
-            // ctx.arc(centerX, centerY, radius+8, 0, Math.PI * 2);
-            // ctx.fillStyle = "white"
-            // ctx.fill()
-
 
             // Árnyék beállítása
             ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
@@ -98,7 +83,6 @@ export class FastClock {
             const minuteAngle = ((minutes + seconds / 60) * 6 - 90) * (Math.PI / 180);
             const secondAngle = (seconds * 6 - 90) * (Math.PI / 180);
 
-
             // Óra középpont
             ctx.beginPath();
             ctx.arc(centerX, centerY, 5, 0, Math.PI * 2);
@@ -121,8 +105,7 @@ export class FastClock {
             ctx.fill();
 
             this.ctx.restore()
-        }
-        
+        }       
     }
 
     private drawHand(x: number, y: number, angle: number, length: number, width: number, color: string) {
@@ -134,14 +117,8 @@ export class FastClock {
         this.ctx.stroke();
     }
 
-    // public setScaleFactor(factor: number) {
-    //     this.scaleFactor = Math.min(factor, 10);
-    //     this.start();
-    // }
-
     setCurrentTime(timestamp: number) {
         this.currentTime = new Date(timestamp)
-        //this.lastUpdateTime = performance.now();
         this.update()
     }
 }

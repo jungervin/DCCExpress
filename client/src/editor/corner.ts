@@ -10,6 +10,7 @@ export class TrackCornerElement extends RailView {
         this.angleStep = 90
         this.cursor = "default"
     }
+
     get type(): string {
         return 'corner'
     }
@@ -62,17 +63,7 @@ export class TrackCornerElement extends RailView {
             ctx.stroke();
         }
 
-
         ctx.lineWidth = 3;
-
-        // var color = Colors.TrackLightColor
-        // switch(this.state) {
-        //     case RailStates.selected : color = Colors.TrackSelectedColor
-        //     break;
-        //     case RailStates.occupied: color = Colors.TrackDangerColor
-        //     break;
-        // }
-
         ctx.strokeStyle = this.stateColor
 
         if (this.angle == 0) {
@@ -100,9 +91,6 @@ export class TrackCornerElement extends RailView {
             ctx.stroke();
         }
 
-
-
-
         ctx.restore()
         super.draw(ctx)
     }
@@ -114,6 +102,4 @@ export class TrackCornerElement extends RailView {
     getPrevItemXy(): Point {
         return getDirectionXy(this.pos, this.angle + 180)
     }
-
-
 }

@@ -35,14 +35,9 @@ define(["require", "exports", "./view", "./../helpers/graphics", "./turnout", ".
             ctx.lineTo(this.centerX, this.centerY);
             ctx.lineTo(p2.x, p2.y);
             ctx.stroke();
-            // drawPolarLine(this.ctx, this.centerX, this.centerY, r - 6, 315, "orange", 5)
-            // drawPolarLine(this.ctx, this.centerX, this.centerY, r - 6, 90, "orange", 5)
             ctx.restore();
             super.draw(ctx);
         }
-        // mouseDown(e: MouseEvent): void {
-        //     //this.setRoute(0)
-        // }
         setRoute(index, turnouts) {
             if (index < this.turnouts.length) {
                 this.overlayElement.classList.remove('hidden');

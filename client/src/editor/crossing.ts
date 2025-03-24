@@ -63,16 +63,10 @@ export class TrackCrossingShapeElement extends RailView {
         }
 
         {
-
-
             ctx.beginPath();
             ctx.strokeStyle = this.stateColor
             ctx.lineWidth = Globals.TrackWidth3;
             var dx = this.width / 5
-
-            // ctx.beginPath();
-            // ctx.strokeStyle = Colors.TrackPrimaryColor
-            // ctx.lineWidth = Globals.TrackWidth7;
 
             if (this.angle == 0 || this.angle == 180) {
                 ctx.moveTo(this.posLeft + dx, this.centerY)
@@ -99,9 +93,6 @@ export class TrackCrossingShapeElement extends RailView {
                 ctx.lineTo(this.posLeft+dx, this.posBottom-dx)
             }
             ctx.stroke()
-
-
         }
-
     }
 }

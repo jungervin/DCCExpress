@@ -80,13 +80,6 @@ define(["require", "exports", "../helpers/globals", "../helpers/math", "./view",
                 ctx.stroke();
             }
             ctx.lineWidth = globals_1.Globals.TrackWidth3;
-            // var color = Colors.TrackLightColor
-            // switch(this.state) {
-            //     case RailStates.selected : color = Colors.TrackSelectedColor
-            //     break;
-            //     case RailStates.occupied: color = Colors.TrackDangerColor
-            //     break;
-            // }
             ctx.strokeStyle = this.stateColor;
             var w2 = globals_1.Globals.GridSizeX / 3;
             ctx.lineDashOffset = -w2 / 3; //w3 / 2.0

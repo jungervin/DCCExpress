@@ -56,13 +56,6 @@ define(["require", "exports", "../helpers/globals", "../helpers/math", "./view",
                 ctx.stroke();
             }
             ctx.lineWidth = 3;
-            // var color = Colors.TrackLightColor
-            // switch(this.state) {
-            //     case RailStates.selected : color = Colors.TrackSelectedColor
-            //     break;
-            //     case RailStates.occupied: color = Colors.TrackDangerColor
-            //     break;
-            // }
             ctx.strokeStyle = this.stateColor;
             if (this.angle == 0) {
                 ctx.beginPath();

@@ -9,13 +9,12 @@ define(["require", "exports", "../helpers/globals", "./view"], function (require
         get type() {
             return 'rectangle';
         }
-        // A téglalap kirajzolása
         draw(ctx) {
             var w2 = globals_1.Globals.GridSizeX / 2.0;
             var h2 = globals_1.Globals.GridSizeY / 2.0;
             ctx.beginPath();
             ctx.rect(this.x * globals_1.Globals.GridSizeX, this.y * globals_1.Globals.GridSizeY, globals_1.Globals.GridSizeX, globals_1.Globals.GridSizeY);
-            ctx.fillStyle = "blue"; // A színe lehet más is
+            ctx.fillStyle = "blue";
             ctx.fill();
             ctx.strokeStyle = "black";
             ctx.stroke();

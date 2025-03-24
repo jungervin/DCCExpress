@@ -33,7 +33,6 @@ export class RouteSwitchElement extends RailView {
         ctx.fill();
         ctx.stroke();
 
-
         drawPolarLine(ctx, this.centerX, this.centerY, r - 6, 225, "white", 5)
 
         ctx.beginPath()
@@ -45,17 +44,10 @@ export class RouteSwitchElement extends RailView {
         ctx.lineTo(this.centerX, this.centerY)
         ctx.lineTo(p2.x, p2.y)
         ctx.stroke()
-        // drawPolarLine(this.ctx, this.centerX, this.centerY, r - 6, 315, "orange", 5)
-        // drawPolarLine(this.ctx, this.centerX, this.centerY, r - 6, 90, "orange", 5)
 
         ctx.restore()
         super.draw(ctx)
     }
-
-    // mouseDown(e: MouseEvent): void {
-    //     //this.setRoute(0)
-
-    // }
 
     setRoute(index: number, turnouts: TurnoutElement[]) {
         if (index < this.turnouts.length) {
@@ -116,7 +108,6 @@ export class RouteSwitchElement extends RailView {
                     // Kellene egy figyelmeztetés is
                     return false;
                 }
-
             })
             return test
         }

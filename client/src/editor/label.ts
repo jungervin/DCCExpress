@@ -1,4 +1,3 @@
-import { drawTextWithRoundedBackground } from "../helpers/graphics";
 import { Globals } from "../helpers/globals";
 import { View } from "./view";
 
@@ -12,8 +11,7 @@ export class Label2Element extends View {
     textAlign: string = "left";
     textBaseline: string = "top";
 
-    locoAddress: number = 0;
-    
+    locoAddress: number = 0; 
 
     constructor(uuid: string, x: number, y: number, name: string) {
         super(uuid, x, y, name)
@@ -47,7 +45,6 @@ export class Label2Element extends View {
         // drawTextWithRoundedBackground(ctx, x, y,this.text,this.fgColor,"red",2, 4)
         ctx.restore()
         super.draw(ctx)
-        
     }
 
     public get canRotate(): boolean {
@@ -65,7 +62,6 @@ export class Label2Element extends View {
     get posRight(): number {
         return this.x * Globals.GridSizeX + 2 * Globals.GridSizeX
     }
-
     
     private _valign : string = "center";
     public get valign() : string {
@@ -73,6 +69,5 @@ export class Label2Element extends View {
     }
     public set valign(v : string) {
         this._valign = v;
-    }
-    
+    }   
 }

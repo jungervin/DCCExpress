@@ -1,6 +1,6 @@
 import { Dialog, Input, Button, InputNumber, DialogResult, TabControl, Combobox, Label, ThemeColors, TextArea, Panel } from "../controls/dialog";
 
-import { ApiCommands, CommandCenterTypes, FileNames, iCommandCenter, iData, iDccExDirectCommand, iDCCExSerial, iDCCExTcp, iZ21CommandCenter } from "../../../common/src/dcc";
+import { ApiCommands, CommandCenterTypes, iCommandCenter, iData, iDccExDirectCommand, iDCCExSerial, iDCCExTcp, iZ21CommandCenter } from "../../../common/src/dcc";
 import { Globals } from "../helpers/globals";
 import { wsClient } from "../helpers/ws";
 

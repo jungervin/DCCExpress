@@ -10,6 +10,7 @@ export class TrackCurveElement extends RailView {
         this.angleStep = 45
         this.cursor = "default"
     }
+
     get type() : string {
         return 'curve' 
     }
@@ -20,7 +21,6 @@ export class TrackCurveElement extends RailView {
     public get hasProperties(): boolean {
         return true
     }
-
 
     public draw(ctx: CanvasRenderingContext2D) {
         var w = Globals.GridSizeX / 2.0
@@ -87,22 +87,11 @@ export class TrackCurveElement extends RailView {
             ctx.stroke();
         }
 
-
         ctx.lineWidth = Globals.TrackWidth3;
-        // var color = Colors.TrackLightColor
-        // switch(this.state) {
-        //     case RailStates.selected : color = Colors.TrackSelectedColor
-        //     break;
-        //     case RailStates.occupied: color = Colors.TrackDangerColor
-        //     break;
-        // }
-
         ctx.strokeStyle = this.stateColor
-
         var w2 = Globals.GridSizeX / 3
         ctx.lineDashOffset = -w2 / 3 //w3 / 2.0
         ctx.setLineDash([w2, w2]);
-
 
         if (this.angle == 0) {
             ctx.beginPath();
@@ -161,8 +150,6 @@ export class TrackCurveElement extends RailView {
             ctx.stroke();
         }
 
-
-
         ctx.restore()
         super.draw(ctx)
     }
@@ -174,6 +161,4 @@ export class TrackCurveElement extends RailView {
     getPrevItemXy(): Point {
         return getDirectionXy(this.pos, this.angle + 225 )
     }
-
-
 }
