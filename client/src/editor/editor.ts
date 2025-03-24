@@ -9,11 +9,9 @@ import { TrackCurveElement } from "./curve";
 import { TrackCornerElement } from "./corner";
 import { Signal2Element, Signal3Element, Signal4Element } from "./signals";
 import { TrackEndElement } from "./trackend";
-// import { GridState, UndoRedoManager } from "./undoman";
 import { RouteSwitchElement } from "./route";
 import { DialogResult } from "../controls/dialog";
 import { ApiCommands, getUUID, iSetTimeSettings, OutputModes } from "../../../common/src/dcc";
-//import { IOConn } from "../helpers/iocon";
 import { PropertyPanel } from "../dialogs/propertiyPanel";
 import { BlockElement } from "./block";
 import { Globals } from "../helpers/globals";
@@ -24,19 +22,16 @@ import { wsClient } from "../helpers/ws";
 import { Label2Element } from "./label";
 import { moveToEnd, moveToStart } from "../helpers/utility";
 import { CodeEditor } from "../dialogs/codeEditor";
-import { Dispatcher } from "./dispatcher";
+import { Dispatcher } from "../helpers/dispatcher";
 import { LocoControlPanel } from "../components/controlPanel";
 import { ButtonShapeElement } from "./button";
 import { AudioButtonShapeElement } from "./audioButton";
-
 import { FastClock } from "./clock";
 import { EmergencyButtonShapeElement } from "./emergencyButton";
 import { TreeShapeElement } from "./tree";
 import { SensorShapeElement, SensorSources, SensorTypes } from "./sensor";
 import { TrackCrossingShapeElement } from "./crossing";
 import { SchedulerButtonShapeElement } from "./schedulerButton";
-import { Task, TaskStatus } from "../helpers/task";
-import { Api } from "../helpers/api";
 
 console.log(PropertyPanel)
 

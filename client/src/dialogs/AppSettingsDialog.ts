@@ -1,9 +1,4 @@
-import { SignalStates } from "../editor/signals";
-import { Signal2CanvasElement } from "../components/canvasElement";
-import { Checkbox, Dialog, Input, Button, InputNumber, DialogResult, TabControl, Combobox, Label, GroupBox, ThemeColors } from "../controls/dialog";
-import { Dispatcher } from "../editor/dispatcher";
-
-import { CommandCenterTypes } from "../../../common/src/dcc";
+import { Checkbox, Dialog, Button, InputNumber, DialogResult, TabControl, Label, GroupBox, ThemeColors } from "../controls/dialog";
 import { Globals } from "../helpers/globals";
 
 export class AppSettingsDialog extends Dialog {

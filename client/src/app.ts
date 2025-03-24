@@ -8,7 +8,7 @@ import { Globals } from "./helpers/globals";
 import { Dialog } from "./controls/dialog";
 import { wsClient } from "./helpers/ws";
 import { toastManager, ToastManager } from "./controls/toastManager";
-import { Dispatcher } from "./editor/dispatcher";
+import { Dispatcher } from "./helpers/dispatcher";
 import { LocoControlPanel } from "./components/controlPanel";
 import { AccessoryAddressElement } from "./editor/button";
 import { Api } from "./helpers/api";
@@ -16,7 +16,6 @@ import { Task, Tasks } from "./helpers/task";
 import { Scheduler } from "./helpers/scheduler";
 import { CommandCenterSettingsDialog } from "./dialogs/commandCenterSettingsDialog";
 import { ProgrammerDialog } from "./dialogs/programmerDialog";
-import { matchesGlob } from "path";
 
 console.log(Dispatcher)
 console.log(ApiCommands)

@@ -1,5 +1,4 @@
 
-import { Dispatcher } from "../editor/dispatcher";
 import { Button, Dialog, Label, TabControl, TextArea } from "../controls/dialog";
 import { Globals } from "../helpers/globals";
 
