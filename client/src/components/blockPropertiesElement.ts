@@ -1,7 +1,7 @@
 import { propertiesChangedEvent } from "../editor/view";
 import { BlockElement } from "../editor/block";
 import { TrackElement } from "../editor/track";
-import { Locomotive, LocomotiveComboBox } from "./locoComboboxElement";
+// import { Locomotive, LocomotiveComboBox } from "./locoComboboxElement";
 import { Api } from "../helpers/api";
 import { iLocomotive } from "../../../common/src/dcc";
 

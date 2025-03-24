@@ -507,8 +507,6 @@ export class Button extends UIComponent {
         });
     }
 
-
-
     private _foreground: string = Colors.black;
     public get foreground(): string {
         return this._foreground;

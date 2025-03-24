@@ -1,13 +1,5 @@
-// function getUUID() {
-//     return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
-//         (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
-//     );
-// }
-
-import { getUUID } from "../helpers/utility";
 import { ApiCommands, iLocoFunction, iLocomotive, iSetLocoFunction } from "../../../common/src/dcc";
 import { wsClient } from "../helpers/ws";
-
 
 class LocomotiveManager {
     private locomotives: iLocomotive[] = [];
@@ -96,7 +88,7 @@ class LocomotiveManager {
                 .map(
                     (locomotive) => `
                         <tr data-id="${locomotive.id}">
-                            <td><img src="${locomotive.imageUrl}" alt="${locomotive.name}" style=" height: 80px;"></td>
+                            <td><img src="${locomotive.imageUrl}" alt="${locomotive.name}" style=" height: 40px;"></td>
                             <td>${locomotive.name}</td>
                             <td>${locomotive.address}</td>
                             <td>${locomotive.speedMode}</td>

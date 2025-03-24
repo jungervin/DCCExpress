@@ -13,7 +13,7 @@ import { TrackCurveElement } from "../editor/curve";
 import { Signal2Element, Signal3Element, Signal4Element, } from "../editor/signals";
 import { BlockPropertiesElement } from "../components/blockPropertiesElement";
 import { BlockElement } from "../editor/block";
-import { LocomotiveComboBox } from "../components/locoComboboxElement";
+// import { LocomotiveComboBox } from "../components/locoComboboxElement";
 import { Signal2PropertiesElement, Signal3PropertiesElement, Signal4PropertiesElement, } from "../components/signal2PropertiesElement";
 import { TurnoutLeftCanvasElement } from "../components/canvasElement";
 import { LabelPropertiesElement } from "../components/labelPropertiesElement";
@@ -33,7 +33,7 @@ console.log(RouteListElementProperties)
 console.log(TrackPropertiesElement)
 console.log(BlockPropertiesElement)
 console.log(LabelPropertiesElement)
-console.log(LocomotiveComboBox)
+//console.log(LocomotiveComboBox)
 console.log(Signal2PropertiesElement)
 console.log(TurnoutLeftCanvasElement)
 console.log(ButtonPropertiesElement)

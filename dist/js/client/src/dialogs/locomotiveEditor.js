@@ -1,8 +1,3 @@
-// function getUUID() {
-//     return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
-//         (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
-//     );
-// }
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -97,7 +92,7 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/ws"], funct
                     ${this.locomotives
                 .map((locomotive) => `
                         <tr data-id="${locomotive.id}">
-                            <td><img src="${locomotive.imageUrl}" alt="${locomotive.name}" style=" height: 80px;"></td>
+                            <td><img src="${locomotive.imageUrl}" alt="${locomotive.name}" style=" height: 40px;"></td>
                             <td>${locomotive.name}</td>
                             <td>${locomotive.address}</td>
                             <td>${locomotive.speedMode}</td>
