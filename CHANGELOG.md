@@ -13,7 +13,10 @@ ifSpeedGreaterThan(speed: number)
 ifSpeedLessThan(speed: number)
 getLocoFromBlock(blockName: string)
 setBlockLocoAddress(blockName: string, locoAddress: number)
+~~setBlock(blockName: string, locoAddress: number) ~~
+
 ```
+
 
 ## 2025-03-22
 New task manager instructions added:
