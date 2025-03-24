@@ -3,7 +3,7 @@
     "id": "24cafcc7-0741-4ce7-9015-4b5794dc9662",
     "name": "M44 148 BOBÓ",
     "address": 18,
-    "imageUrl": "/uploads/1738397309175-11w5cd9LEynn8fsxdEZym-kDshveDzWB7mdmgutgP.png",
+    "imageUrl": "/uploads/bobo.png",
     "speedMode": "128",
     "functions": [
       {
@@ -150,7 +150,7 @@
     "id": "b1b81ea6-727a-42c6-8983-7451a0897d1f",
     "name": "M62 228",
     "address": 3,
-    "imageUrl": "/uploads/1740148242379-1DIG2t6sBDfT97QkF0eqwVGPA-3qWUeTeyHo494v5.png",
+    "imageUrl": "/uploads/szergej.png",
     "speedMode": "128",
     "functions": [
       {
@@ -303,7 +303,7 @@
     "id": "f1398049-4614-49fa-bfa9-84c49ce18e94",
     "name": "M41 2182",
     "address": 10,
-    "imageUrl": "/uploads/1738397370188-csorgo.png",
+    "imageUrl": "/uploads/csorgo.jpg",
     "speedMode": "128",
     "functions": [
       {
@@ -432,7 +432,7 @@
     "id": "4956a82a-cd72-4924-b7e7-8911ef040b10",
     "name": "M41 2169",
     "address": 11,
-    "imageUrl": "/uploads/1738397370188-csorgo.png",
+    "imageUrl": "/uploads/csorgo.jpg",
     "speedMode": "128",
     "functions": [
       {
@@ -561,7 +561,7 @@
     "id": "85b89b12-1e0d-4648-af56-d64e51fa5590",
     "name": "Traxx 480 023",
     "address": 22,
-    "imageUrl": "/uploads/1742733456807-traxx.png",
+    "imageUrl": "/uploads/traxx.png",
     "speedMode": "128",
     "functions": [
       {
