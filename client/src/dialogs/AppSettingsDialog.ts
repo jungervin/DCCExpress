@@ -11,7 +11,7 @@ export class AppSettingsDialog extends Dialog {
     showAddress: Checkbox;
     // signalRed: Signal2CanvasElement;
     // signalGreen: Signal2CanvasElement;
-    intervalElement: InputNumber;
+    // intervalElement: InputNumber;
     showGrid: Checkbox;
     showClock: Checkbox;
     fastClockFactor: InputNumber;
@@ -26,14 +26,14 @@ export class AppSettingsDialog extends Dialog {
 
         this.addBody(tabControl);
 
-        const label0 = new Label("Dispatcher Interval Time")
-        tab1.addComponent(label0)
+        // const label0 = new Label("Dispatcher Interval Time")
+        // tab1.addComponent(label0)
 
-        this.intervalElement = new InputNumber()
-        this.intervalElement.minValue = 100;
-        this.intervalElement.maxValue = 10000;
-        this.intervalElement.value = Globals.Settings.Dispacher.interval
-        tab1.addComponent(this.intervalElement)
+        // this.intervalElement = new InputNumber()
+        // this.intervalElement.minValue = 100;
+        // this.intervalElement.maxValue = 10000;
+        // this.intervalElement.value = Globals.Settings.Dispacher.interval
+        // tab1.addComponent(this.intervalElement)
 
         this.showGrid = new Checkbox("Show Grid")
         this.showGrid.checked = Globals.Settings.EditorSettings.ShowGrid

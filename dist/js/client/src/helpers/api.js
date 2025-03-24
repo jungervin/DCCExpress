@@ -49,6 +49,14 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
             // Legyen foglat!
             return Number.MAX_VALUE;
         }
+        static getBlockIsFree(blockName) {
+            const a = Api.getLocoAddressFromBlock(blockName);
+            return a == 0;
+        }
+        static getBlockIsNotFree(blockName) {
+            const a = Api.getLocoAddressFromBlock(blockName);
+            return a > 0;
+        }
         static getSensor(address) {
             const s = Api.app.editor.views.getSensor(address);
             if (s) {

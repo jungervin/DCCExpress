@@ -405,7 +405,7 @@ export class Tasks {
     get allFinish(): number {
         if (this.tasks.length > 0) {
             var i = 0
-            
+
             this.tasks.forEach((t) => {
                 if (t.finishOnComplete) {
                     i++
@@ -1081,8 +1081,7 @@ export class Task {
                     break;
 
                 case StepTypes.ifBlockIsFree:
-                    const l1 = Api.getLocoAddressFromBlock((this.step.data as iIfBlockIsFree).blockName)
-                    if (l1 === 0) {
+                    if (Api.getBlockIsFree((this.step.data as iIfBlockIsFree).blockName)) {
                         this.index++
                     } else {
                         this.gotoNextEndOrElse()
@@ -1090,8 +1089,7 @@ export class Task {
                     break;
 
                 case StepTypes.ifBlockIsNotFree:
-                    const l2 = Api.getLocoAddressFromBlock((this.step.data as iIfBlockIsFree).blockName)
-                    if (l2 > 0) {
+                    if (Api.getBlockIsNotFree((this.step.data as iIfBlockIsFree).blockName)) {
                         this.index++
                     } else {
                         this.gotoNextEndOrElse()

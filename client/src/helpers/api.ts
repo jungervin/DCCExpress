@@ -56,6 +56,14 @@ export class Api {
         // Legyen foglat!
         return Number.MAX_VALUE
     }
+    static getBlockIsFree(blockName: string) {
+        const a = Api.getLocoAddressFromBlock(blockName)
+        return a == 0
+    }
+    static getBlockIsNotFree(blockName: string) {
+        const a = Api.getLocoAddressFromBlock(blockName)
+        return a > 0
+    }
 
     static getSensor(address: number): SensorShapeElement | undefined {
         const s = Api.app.editor.views.getSensor(address)

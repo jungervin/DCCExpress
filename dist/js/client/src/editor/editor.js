@@ -614,7 +614,7 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                     if (d.dialogResult == dialog_1.DialogResult.ok) {
                         globals_1.Globals.Settings.EditorSettings.ShowGrid = d.showGrid.checked;
                         globals_1.Globals.Settings.EditorSettings.ShowAddress = d.showAddress.checked;
-                        globals_1.Globals.Settings.Dispacher.interval = d.intervalElement.value;
+                        //Globals.Settings.Dispacher.interval = d.intervalElement.value
                         globals_1.Globals.Settings.EditorSettings.ShowClock = d.showClock.checked;
                         globals_1.Globals.Settings.EditorSettings.DispalyAsSingleLamp = d.showSingleLamp.checked;
                         this.fastClock.visible = d.showClock.checked;

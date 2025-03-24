@@ -327,7 +327,7 @@ export interface iSettings {
     //     port: string,
     // }
     Dispacher: {
-        interval: number
+        //interval: number
     },
     EditorSettings: {
         DispalyAsSingleLamp: boolean;

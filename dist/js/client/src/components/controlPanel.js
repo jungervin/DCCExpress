@@ -305,9 +305,9 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
              <!-- Modal -->
             <div id="modal">
                 <div class="modal-content">
-                    <h3 style="padding: 0">Válassz mozdonyt</h3>
+                    <!-- <h3 style="padding: 0">Válassz mozdonyt</h3> -->
                     <div id="locoList"></div>
-                    <button id="closeModal">Bezárás</button>
+                    <button id="closeModal" style="border-radius: 8px">CLOSE</button>
                 </div>
             </div>
         `;
@@ -438,6 +438,10 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
                 btn.innerHTML = `F${i}`;
                 this.fnButtons.appendChild(btn);
             }
+            window.addEventListener('taskChangedEvent', (e) => {
+                // const task = (e as CustomEvent).detail as Task
+                // this.locoModeInfoElement.innerHTML = task.step!.type         
+            });
         }
         init() {
             this.fetchLocomotives();

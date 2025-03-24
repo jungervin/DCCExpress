@@ -556,5 +556,26 @@
         "isOn": false
       }
     ]
+  },
+  {
+    "id": "85b89b12-1e0d-4648-af56-d64e51fa5590",
+    "name": "Traxx 480 023",
+    "address": 22,
+    "imageUrl": "/uploads/1742733456807-traxx.png",
+    "speedMode": "128",
+    "functions": [
+      {
+        "id": 0,
+        "name": "Világítás",
+        "momentary": false,
+        "isOn": false
+      },
+      {
+        "id": 1,
+        "name": "Motor",
+        "momentary": false,
+        "isOn": false
+      }
+    ]
   }
 ]

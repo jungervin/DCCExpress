@@ -10,13 +10,13 @@ define(["require", "exports", "../controls/dialog", "../helpers/globals"], funct
             const tab1 = tabControl.addTab("App");
             tab1.getElement().innerHTML = "<h6>App settings<h6>";
             this.addBody(tabControl);
-            const label0 = new dialog_1.Label("Dispatcher Interval Time");
-            tab1.addComponent(label0);
-            this.intervalElement = new dialog_1.InputNumber();
-            this.intervalElement.minValue = 100;
-            this.intervalElement.maxValue = 10000;
-            this.intervalElement.value = globals_1.Globals.Settings.Dispacher.interval;
-            tab1.addComponent(this.intervalElement);
+            // const label0 = new Label("Dispatcher Interval Time")
+            // tab1.addComponent(label0)
+            // this.intervalElement = new InputNumber()
+            // this.intervalElement.minValue = 100;
+            // this.intervalElement.maxValue = 10000;
+            // this.intervalElement.value = Globals.Settings.Dispacher.interval
+            // tab1.addComponent(this.intervalElement)
             this.showGrid = new dialog_1.Checkbox("Show Grid");
             this.showGrid.checked = globals_1.Globals.Settings.EditorSettings.ShowGrid;
             tab1.addComponent(this.showGrid);

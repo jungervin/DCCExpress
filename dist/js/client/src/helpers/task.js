@@ -808,8 +808,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                         this.index++;
                         break;
                     case StepTypes.ifBlockIsFree:
-                        const l1 = api_1.Api.getLocoAddressFromBlock(this.step.data.blockName);
-                        if (l1 === 0) {
+                        if (api_1.Api.getBlockIsFree(this.step.data.blockName)) {
                             this.index++;
                         }
                         else {
@@ -817,8 +816,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                         }
                         break;
                     case StepTypes.ifBlockIsNotFree:
-                        const l2 = api_1.Api.getLocoAddressFromBlock(this.step.data.blockName);
-                        if (l2 > 0) {
+                        if (api_1.Api.getBlockIsNotFree(this.step.data.blockName)) {
                             this.index++;
                         }
                         else {

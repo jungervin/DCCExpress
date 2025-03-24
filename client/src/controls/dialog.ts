@@ -473,14 +473,24 @@ export class Button extends UIComponent {
         this.button.textContent = text;
         this.button.style.padding = "4px 10px";
         this.button.style.border = "none";
-        this.button.style.backgroundColor = "#007bff";
+        // this.button.style.backgroundColor = "#007bff";
         this.button.style.backgroundColor = ThemeColors.primary;
         this.button.style.color = "white";
         this.button.style.borderRadius = "4px";
         this.button.style.cursor = "pointer";
         this.button.style.marginRight = "8px";
         this.button.style.opacity = "0.85"
+        this.button.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.2)";
         this.button.addEventListener("click", () => {
+            this.button.style.transform = "scale(0.97)";
+            this.button.style.transition = "transform 0.1s, box-shadow 0.1s";
+            this.button.style.boxShadow = "none";
+
+            setTimeout(() => {
+                this.button.style.transform = "scale(1)";
+                this.button.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.2)";
+            }, 100);
+        
             if (this.onclick) {
                 this.onclick();
             }
@@ -493,7 +503,6 @@ export class Button extends UIComponent {
 
         this.button.addEventListener("mouseleave", () => {
             this.button.style.backgroundColor = this.originalBackground;
-            
             this.button.style.opacity = "0.85"
         });
     }

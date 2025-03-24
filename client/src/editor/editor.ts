@@ -746,7 +746,7 @@ export class CustomCanvas extends HTMLElement {
                 if (d.dialogResult == DialogResult.ok) {
                     Globals.Settings.EditorSettings.ShowGrid = d.showGrid.checked
                     Globals.Settings.EditorSettings.ShowAddress = d.showAddress.checked
-                    Globals.Settings.Dispacher.interval = d.intervalElement.value
+                    //Globals.Settings.Dispacher.interval = d.intervalElement.value
                     Globals.Settings.EditorSettings.ShowClock = d.showClock.checked
                     Globals.Settings.EditorSettings.DispalyAsSingleLamp = d.showSingleLamp.checked
                     this.fastClock!.visible = d.showClock.checked
