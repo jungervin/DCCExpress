@@ -303,7 +303,7 @@
     "id": "f1398049-4614-49fa-bfa9-84c49ce18e94",
     "name": "M41 2182",
     "address": 10,
-    "imageUrl": "/uploads/csorgo.jpg",
+    "imageUrl": "/uploads/csorgo.png",
     "speedMode": "128",
     "functions": [
       {
@@ -432,7 +432,7 @@
     "id": "4956a82a-cd72-4924-b7e7-8911ef040b10",
     "name": "M41 2169",
     "address": 11,
-    "imageUrl": "/uploads/csorgo.jpg",
+    "imageUrl": "/uploads/csorgo.png",
     "speedMode": "128",
     "functions": [
       {
