@@ -4,7 +4,7 @@
 
 DCCExpress is a **web-based model railway layout editor and control system**. It allows users to **design and manage railway tracks** interactively, including placing **turnouts, signals, and occupancy sensors** on a digital layout.
 
-Related project: [DCCExpress-Mini](https://github.com/jungervin/DCCExpress-Mini)
+Related project: **[DCCExpress-Mini](https://github.com/jungervin/DCCExpress-Mini)**
 
 ### 📖 Read the [Wiki](https://github.com/jungervin/DCCExpress/wiki) pages or [CHANGELOG](https://github.com/jungervin/DCCExpress/blob/main/CHANGELOG.md) for more details.
 
