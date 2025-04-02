@@ -175,7 +175,7 @@ exports.wsServer.on("connection", (ws, req) => {
                     (0, utility_1.log)("BROADCAST BLOCKS", dcc_1.blocks);
                     broadcastAll({ type: dcc_1.ApiCommands.blockInfo, data: { blocks: dcc_1.blocks } });
                     break;
-                case dcc_1.ApiCommands.getBlocks:
+                case dcc_1.ApiCommands.fetchBlocks:
                     broadcastAll({ type: dcc_1.ApiCommands.blockInfo, data: { blocks: dcc_1.blocks } });
                     break;
                 case dcc_1.ApiCommands.setTimeSettings:

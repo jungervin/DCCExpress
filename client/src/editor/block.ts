@@ -166,4 +166,20 @@ export class BlockElement extends View {
         return Api.getLoco(this.locoAddress)
         //return this.loco
     }
+
+    getEntryPoint() {
+
+    }
+
+    getExitPoint() {
+
+    }
+
+    isEntryPoint(p: Point): boolean {
+        return false;
+    }
+
+    isExitPoint(p: Point) : boolean {
+        return false;
+    }
 }

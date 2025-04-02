@@ -1,4 +1,4 @@
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", "../helpers/api", "../helpers/supervisor"], function (require, exports, api_1, supervisor_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Toolbar = void 0;
@@ -205,6 +205,13 @@ define(["require", "exports"], function (require, exports) {
             this.consoleButtonEnabled = false;
             this.programmerButtonEnabled = true;
             this.taskButtonsEnabled = false;
+            this.btnDebug.onclick = (e) => {
+                //supervisor.mkSegments()
+                if (api_1.Api.app.editor.selectedElement) {
+                    supervisor_1.supervisor.findRoute(api_1.Api.app.editor.selectedElement.x, api_1.Api.app.editor.selectedElement.y);
+                    api_1.Api.app.editor.draw();
+                }
+            };
         }
         save() {
             this.canvas.save();

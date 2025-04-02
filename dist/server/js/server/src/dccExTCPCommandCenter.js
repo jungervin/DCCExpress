@@ -18,7 +18,7 @@ class DCCExTCPCommandCenter extends dccExCommandCenter_1.DCCExCommandCenter {
         return "tcp://" + this.ip + ":" + this.port;
     }
     processBuffer() {
-        if (this.tcpClient) {
+        if (this.tcpClient && this.tcpClient.socket.readyState == "open") {
             if (this.buffer.length > 0) {
                 var data = "";
                 var i = 0;
@@ -37,6 +37,8 @@ class DCCExTCPCommandCenter extends dccExCommandCenter_1.DCCExCommandCenter {
                 });
                 this.lastSentTime = performance.now();
             }
+        }
+        else {
         }
     }
     error(err) {

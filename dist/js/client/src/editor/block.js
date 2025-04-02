@@ -134,6 +134,16 @@ define(["require", "exports", "../helpers/globals", "../../../common/src/dcc", "
             return api_1.Api.getLoco(this.locoAddress);
             //return this.loco
         }
+        getEntryPoint() {
+        }
+        getExitPoint() {
+        }
+        isEntryPoint(p) {
+            return false;
+        }
+        isExitPoint(p) {
+            return false;
+        }
     }
     exports.BlockElement = BlockElement;
 });

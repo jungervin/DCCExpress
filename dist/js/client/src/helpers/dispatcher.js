@@ -41,9 +41,10 @@ define(["require", "exports", "../controls/toastManager", "../helpers/api"], fun
                         }
                     }
                     catch (error) {
-                        console.error("❌Dispatcher: Hiba a script futtatása közben:", error);
+                        console.error("❌Dispatcher Error:", error);
+                        alert("❌Dispatcher Error:" + error);
                         if (Dispatcher.onerror) {
-                            Dispatcher.onerror('Dispatcher: Hiba a script futtatása közben:', error);
+                            Dispatcher.onerror('Dispatcher Error:', error);
                         }
                     }
                 }

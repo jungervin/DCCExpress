@@ -1,4 +1,4 @@
-define(["require", "exports", "./editor/editor", "./editor/toolbar", "./editor/turnout", "./editor/view", "../../common/src/dcc", "./helpers/globals", "./controls/dialog", "./helpers/ws", "./controls/toastManager", "./helpers/dispatcher", "./components/controlPanel", "./helpers/api", "./helpers/task", "./helpers/scheduler", "./dialogs/commandCenterSettingsDialog", "./dialogs/programmerDialog"], function (require, exports, editor_1, toolbar_1, turnout_1, view_1, dcc_1, globals_1, dialog_1, ws_1, toastManager_1, dispatcher_1, controlPanel_1, api_1, task_1, scheduler_1, commandCenterSettingsDialog_1, programmerDialog_1) {
+define(["require", "exports", "./editor/editor", "./editor/toolbar", "./editor/turnout", "./editor/view", "../../common/src/dcc", "./helpers/globals", "./controls/dialog", "./helpers/ws", "./controls/toastManager", "./helpers/dispatcher", "./components/controlPanel", "./helpers/api", "./helpers/task", "./helpers/scheduler", "./dialogs/commandCenterSettingsDialog", "./dialogs/programmerDialog", "./editor/schedulerButton"], function (require, exports, editor_1, toolbar_1, turnout_1, view_1, dcc_1, globals_1, dialog_1, ws_1, toastManager_1, dispatcher_1, controlPanel_1, api_1, task_1, scheduler_1, commandCenterSettingsDialog_1, programmerDialog_1, schedulerButton_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.App = void 0;
@@ -89,7 +89,6 @@ define(["require", "exports", "./editor/editor", "./editor/toolbar", "./editor/t
                 toastManager_1.toastManager.showToast("Settings Loaded", "success");
                 globals_1.Globals.fetchJsonData('/config.json').then((conf) => {
                     this.configLoaded(conf);
-                    ws_1.wsClient.send({ type: dcc_1.ApiCommands.getRBusInfo, data: "" });
                     toastManager_1.toastManager.showToast("Config Loaded", "success");
                 }).catch((reason) => {
                 }).finally(() => {
@@ -103,7 +102,14 @@ define(["require", "exports", "./editor/editor", "./editor/toolbar", "./editor/t
                 this.toolbar.wsStatus.classList.add("success");
                 //this.locoControlPanel.init()
                 this.locoControlPanel.fetchLocomotives().then(() => {
-                    api_1.Api.getBlocks();
+                    api_1.Api.fetchBlocks();
+                });
+                ws_1.wsClient.send({ type: dcc_1.ApiCommands.getRBusInfo, data: "" });
+                api_1.Api.app.editor.views.getTurnoutElements().forEach((t) => {
+                    ws_1.wsClient.send({ type: dcc_1.ApiCommands.getTurnout, data: { address: t.address } });
+                    if (t instanceof turnout_1.TurnoutDoubleElement) {
+                        ws_1.wsClient.send({ type: dcc_1.ApiCommands.getTurnout, data: { address: t.address2 } });
+                    }
                 });
             };
             ws_1.wsClient.onError = () => {
@@ -245,6 +251,10 @@ define(["require", "exports", "./editor/editor", "./editor/toolbar", "./editor/t
             };
             scheduler_1.Scheduler.onchange = () => {
                 this.toolbar.taskButtonsEnabled = scheduler_1.Scheduler.isLoaded;
+                if (this.editor.selectedElement instanceof schedulerButton_1.SchedulerButtonShapeElement) {
+                    this.editor.propertyPanel.selectedObject = undefined;
+                    this.editor.propertyPanel.selectedObject = this.editor.selectedElement;
+                }
                 this.updateTasks();
             };
             window.addEventListener('taskChangedEvent', (e) => {
@@ -284,7 +294,7 @@ define(["require", "exports", "./editor/editor", "./editor/toolbar", "./editor/t
                     break;
             }
             this.tasks.tasks.forEach((task) => {
-                const btn = api_1.Api.getTaskButton(task.name);
+                const btn = api_1.Api.getTaskButtonElement(task.name);
                 if (btn) {
                     if (btn.status != task.status) {
                         btn.status = task.status;
@@ -334,28 +344,28 @@ define(["require", "exports", "./editor/editor", "./editor/toolbar", "./editor/t
         configLoaded(config) {
             this.editor.load(config);
             //this.locos!.load(config)
-            var turnouts = this.editor.views.getTurnoutElements();
-            turnouts.forEach((t) => {
-                //IOConn.socket.emit(ApiCommands.getTurnout, t.address)
-                ws_1.wsClient.send({ type: dcc_1.ApiCommands.getTurnout, data: { address: t.address } });
-                if (Object.getPrototypeOf(t) == turnout_1.TurnoutDoubleElement.prototype) {
-                    const t2 = t;
-                    ws_1.wsClient.send({ type: dcc_1.ApiCommands.getTurnout, data: { address: t2.address2 } });
-                }
-            });
-            var signals = this.editor.views.getSignalElements();
-            signals.forEach((s) => {
-                for (var i = 0; i < s.addressLength; i++) {
-                    if (globals_1.Globals.CommandCenterSetting.type == dcc_1.CommandCenterTypes.Z21) {
-                        ws_1.wsClient.send({ type: dcc_1.ApiCommands.getTurnout, data: { address: s.address + i } });
-                        //wsClient.send(ApiCommands.getTurnout, s.address + i)
-                    }
-                }
-            });
-            var accessories = this.editor.views.getAccessoryElements();
-            accessories.forEach((s) => {
-                ws_1.wsClient.send({ type: dcc_1.ApiCommands.getTurnout, data: { address: s.address } });
-            });
+            // var turnouts = this.editor.views.getTurnoutElements()
+            // turnouts.forEach((t) => {
+            //     //IOConn.socket.emit(ApiCommands.getTurnout, t.address)
+            //     wsClient.send({ type: ApiCommands.getTurnout, data: { address: t.address } as iGetTurnout } as iData)
+            //     if (Object.getPrototypeOf(t) == TurnoutDoubleElement.prototype) {
+            //         const t2 = t as TurnoutDoubleElement
+            //         wsClient.send({ type: ApiCommands.getTurnout, data: { address: t2.address2 } as iGetTurnout } as iData)
+            //     }
+            // })
+            // var signals = this.editor.views.getSignalElements()
+            // signals.forEach((s) => {
+            //     for (var i = 0; i < s.addressLength; i++) {
+            //         if (Globals.CommandCenterSetting.type == CommandCenterTypes.Z21) {
+            //             wsClient.send({ type: ApiCommands.getTurnout, data: { address: s.address + i } as iGetTurnout } as iData)
+            //             //wsClient.send(ApiCommands.getTurnout, s.address + i)
+            //         }
+            //     }
+            // })
+            // var accessories = this.editor.views.getAccessoryElements()
+            // accessories.forEach((s) => {
+            //     wsClient.send({ type: ApiCommands.getTurnout, data: { address: s.address } as iGetTurnout } as iData)
+            // })
         }
         turnoutInfo(data) {
             //console.log("turnout", data)
@@ -547,4 +557,5 @@ define(["require", "exports", "./editor/editor", "./editor/toolbar", "./editor/t
         }
     }
     exports.App = App;
+    const Application = new App();
 });

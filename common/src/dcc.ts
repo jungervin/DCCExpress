@@ -39,7 +39,7 @@ export enum ApiCommands {
 
     setBlock = "setBlock",
     // getBlock = "getBlock",
-    getBlocks = "getBlocks",
+    fetchBlocks = "fetchBlocks",
     blockInfo = "blockInfo",
 
     getRBusInfo = "getRBusInfo",
@@ -66,10 +66,10 @@ export enum ApiCommands {
     outputInfo = "outputInfo",
     setProgPower = "setProgPower",
     writeDccExDirectCommand = "writeDirectCommand",
-    
+
     dccExDirectCommandResponse = "dccExDirectCommandResponse",
     wsSensorInfo = "wsSensorInfo",
-    
+
 }
 
 export interface iData {
@@ -395,7 +395,7 @@ export interface iDCCExTcp extends iDCCEx {
     port: number
 }
 
-export interface iDCCExSerial extends iDCCEx{
+export interface iDCCExSerial extends iDCCEx {
     port: string
 }
 

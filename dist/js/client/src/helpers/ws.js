@@ -21,7 +21,7 @@ define(["require", "exports", "../../../common/src/dcc"], function (require, exp
             this.socket.onopen = () => {
                 console.log("WebSocket connection established.");
                 if (this.onConnected) {
-                    this.onConnected();
+                    setTimeout(() => this.onConnected(), 100);
                 }
             };
             this.socket.onmessage = (event) => {

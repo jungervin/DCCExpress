@@ -9,6 +9,10 @@ import { audioManager } from "../editor/audioButton";
 import { PulseDetector } from "../../../common/src/logicCircuits"
 import { toastManager } from "../controls/toastManager";
 import { SensorShapeElement } from "../editor/sensor";
+import { SchedulerButtonShapeElement } from "../editor/schedulerButton";
+import { Signal1Element } from "../editor/signals";
+import { View } from "../editor/view";
+import { BlockElement } from "../editor/block";
 
 export class Api {
 
@@ -23,7 +27,7 @@ export class Api {
         audioManager.play(filename)
     }
 
-    static setBlockLocoAddress(blockName: string, locoAddress: number) {
+    static setBlockLocoAddress(blockName: string, locoAddress: number): void {
         Api.app.editor.views.getBlockElements().forEach((b) => {
             if(b.locoAddress == locoAddress) {
                 b.setLoco(0)
@@ -42,10 +46,16 @@ export class Api {
         const b: iSetBlock = { blockName: blockName, locoAddress: locoAddress }
         wsClient.send({ type: ApiCommands.setBlock, data: b } as iData)
     }
-    static getBlocks() {
-        wsClient.send({ type: ApiCommands.getBlocks, data: "" } as iData)
+    static fetchBlocks() {
+        wsClient.send({ type: ApiCommands.fetchBlocks, data: "" } as iData)
     }
 
+    static getBlockElement(blockName: string) : BlockElement | undefined
+    {
+        return Api.app.editor.views.getBlockElements().find((b) => {
+            return b.name == blockName
+        })
+    }
     static getLocoAddressFromBlock(blockName: string): number {
         const b = Api.app.editor.views.getBlockElements().find((b) => {
             return b.name == blockName
@@ -54,7 +64,7 @@ export class Api {
             return b.locoAddress
         }
         // Legyen foglat!
-        return Number.MAX_VALUE
+        return Number.NaN
     }
     static getBlockIsFree(blockName: string) {
         const a = Api.getLocoAddressFromBlock(blockName)
@@ -65,7 +75,7 @@ export class Api {
         return a > 0
     }
 
-    static getSensor(address: number): SensorShapeElement | undefined {
+    static getSensorElement(address: number): SensorShapeElement | undefined {
         const s = Api.app.editor.views.getSensor(address)
         if (s) {
             return s
@@ -75,6 +85,14 @@ export class Api {
 
     static getSensorValue(address: number): boolean {
         return Api.app.sensors[address]
+    }
+
+    static sensorIsOn(address: number) {
+        return Api.app.sensors[address] === true
+    }
+
+    static sensorIsOff(address: number) {
+        return Api.app.sensors[address] === true
     }
 
     static getSensorDuration(address: number, state: boolean) {
@@ -145,8 +163,8 @@ export class Api {
         }
     }
 
-    static setTurnout(address: number, isClosed: boolean) {
-        const turnout = Api.getTurnout(address)
+    static setTurnoutElement(address: number, isClosed: boolean) {
+        const turnout = Api.getTurnoutElement(address)
         if (turnout) {
             if (Object.getPrototypeOf(turnout) == TurnoutDoubleElement.prototype) {
                 const td = turnout as TurnoutDoubleElement
@@ -166,7 +184,7 @@ export class Api {
         }
     }
 
-    static getTurnout(address: number) {
+    static getTurnoutElement(address: number): TurnoutElement | undefined {
         for (let t of Api.app.editor.views.getTurnoutElements()) {
             if (t.address === address) {
                 return t
@@ -181,7 +199,7 @@ export class Api {
         return undefined
     }
 
-    static getTurnoutState(address: number) {
+    static getTurnoutState(address: number): boolean {
         for (let t of Api.app.editor.views.getTurnoutElements()) {
             if (t.address === address) {
                 return t.t1Closed
@@ -193,47 +211,45 @@ export class Api {
                 }
             }
         }
-        return undefined
+        return false
     }
 
-    static getTaskButton(taskName: string) {
+    static getTaskButtonElement(taskName: string): SchedulerButtonShapeElement | undefined {
         return Api.app.editor.views.getSchedulerButtonByTaskName(taskName)
     }
 
-    static getSignal(address: number) {
-        return Api.app.editor.views.getSignal(address)
+    static getSignalElement(address: number) : Signal1Element | undefined {
+        return Api.app.editor.views.getSignalElement(address)
     }
 
-
-
-    static getRoute(name: string): RouteSwitchElement | undefined {
+    static getRouteSwitchElement(name: string): RouteSwitchElement | undefined {
         return Api.app.editor.views.getRouteSwitchElements().find(r => r.name === name)
     }
 
-    static setRoute(name: string) {
-        const route = Api.getRoute(name)
+    static setRoute(name: string) : void {
+        const route = Api.getRouteSwitchElement(name)
         if (route) {
             route.setRoute(0, Api.app.editor.views.getTurnoutElements())
         }
     }
 
-    static getClock(): FastClock | undefined {
+    static getClockElement(): FastClock | undefined {
         return Api.app.editor.fastClock!
     }
 
     static getClockMinutes(): number {
-        const clock = Api.getClock()
+        const clock = Api.getClockElement()
         if (clock) {
             return clock.currentTime.getMinutes()
         }
         return -1
     }
 
-    static getElement(name: string) {
+    static getElement(name: string) : View | undefined {
         return Api.app.editor.views.getElement(name)
     }
 
-    static setOutput(address: number, on: boolean) {
+    static setOutputState(address: number, on: boolean): void {
         const aa = Api.app.editor.views.getAccessoryElements().find((a) => {
             return a.address == address
         })
@@ -248,11 +264,11 @@ export class Api {
         }
     }
 
-    static getOutput(address: number) {
+    static getOutputState(address: number) : boolean {
         return Api.app.outputs[address]
     }
 
-    static setAccessory(address: number, on: boolean) {
+    static setAccessoryState(address: number, on: boolean) {
         const aa = Api.app.editor.views.getAccessoryElements().find((a) => {
             return a.address == address
         })
@@ -266,12 +282,12 @@ export class Api {
         }
     }
 
-    static getAccessory(address: number) {
+    static getAccessoryState(address: number) {
         return Api.app.decoders[address]
     }
 
-    static setSignalGreen(address: number) {
-        const sig = Api.getSignal(address)
+    static setSignalGreen(address: number): void {
+        const sig = Api.getSignalElement(address)
         if (sig) {
             sig.sendGreenIfNotGreen()
         } else {
@@ -280,7 +296,7 @@ export class Api {
     }
 
     static getSignalIsGreen(address: number): boolean {
-        const sig = Api.getSignal(address)
+        const sig = Api.getSignalElement(address)
         if (sig) {
             return sig.isGreen
         }
@@ -288,8 +304,8 @@ export class Api {
         return false
     }
 
-    static setSignalRed(address: number) {
-        const sig = Api.getSignal(address)
+    static setSignalRed(address: number): void {
+        const sig = Api.getSignalElement(address)
         if (sig) {
             sig.sendRedIfNotRed()
         } else {
@@ -298,7 +314,7 @@ export class Api {
     }
 
     static getSignalIsRed(address: number): boolean {
-        const sig = Api.getSignal(address)
+        const sig = Api.getSignalElement(address)
         if (sig) {
             return sig.isRed
         }
@@ -306,8 +322,8 @@ export class Api {
         return false
     }
 
-    static setSignalYellow(address: number) {
-        const sig = Api.getSignal(address)
+    static setSignalYellow(address: number): void {
+        const sig = Api.getSignalElement(address)
         if (sig) {
             sig.sendYellowIfNotYellow()
         } else {
@@ -316,7 +332,7 @@ export class Api {
     }
 
     static getSignalIsYellow(address: number): boolean {
-        const sig = Api.getSignal(address)
+        const sig = Api.getSignalElement(address)
         if (sig) {
             return sig.isYellow
         }
@@ -324,8 +340,8 @@ export class Api {
         return false
     }
 
-    static setSignalWhite(address: number) {
-        const sig = Api.getSignal(address)
+    static setSignalWhite(address: number) : void {
+        const sig = Api.getSignalElement(address)
         if (sig) {
             sig.sendWhiteIfNotWhite()
         } else {
@@ -334,7 +350,7 @@ export class Api {
     }
 
     static getSignalIsWhite(address: number): boolean {
-        const sig = Api.getSignal(address)
+        const sig = Api.getSignalElement(address)
         if (sig) {
             return sig.isWhite
         }

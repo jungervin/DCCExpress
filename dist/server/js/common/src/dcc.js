@@ -54,7 +54,7 @@ var ApiCommands;
     ApiCommands["basicAccessoryInfo"] = "basicAccessoryInfo";
     ApiCommands["setBlock"] = "setBlock";
     // getBlock = "getBlock",
-    ApiCommands["getBlocks"] = "getBlocks";
+    ApiCommands["fetchBlocks"] = "fetchBlocks";
     ApiCommands["blockInfo"] = "blockInfo";
     ApiCommands["getRBusInfo"] = "getRBusInfo";
     ApiCommands["rbusInfo"] = "rbusInfo";

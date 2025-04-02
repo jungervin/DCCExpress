@@ -1014,6 +1014,10 @@ export class CustomCanvas extends HTMLElement {
                 elem.draw(this.ctx!)
             });
 
+            // for(const elem of this.views.elements) {
+            //     elem.draw(this.ctx!)
+            // }
+
             if (this.cursorElement) {
                 this.cursorElement.draw(this.ctx!)
             }
@@ -1276,11 +1280,13 @@ export class CustomCanvas extends HTMLElement {
                     this.add(s4)
                     break
                 case drawModes.block:
-                    this.removeIfExists(x, y)
+                    //this.removeIfExists(x, y)
                     this.unselectAll()
                     var b = new BlockElement(getUUID(), x, y, "block" + num);
                     b.angle = this.cursorElement!.angle
-                    this.add(b)
+                    //this.add(b)
+                    this.views.elements.unshift(b)
+                    //moveToStart()
                     break;
                 case drawModes.button:
                     this.removeIfExists(x, y)

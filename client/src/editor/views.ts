@@ -19,6 +19,7 @@ export class Views {
     add(view: object) {
         //this.elements.unshift(view as RailView)
         this.elements.push(view as RailView)
+        
     }
 
     unselectAll() {
@@ -71,7 +72,7 @@ export class Views {
         return items
     }
 
-    getSignal(addr: number) {
+    getSignalElement(addr: number) {
         return this.getSignalElements().find((s) => s.address == addr)
     }
 

@@ -271,8 +271,10 @@ export class Tasks {
 
         var running = false;
         this.tasks.forEach(t => {
-            t.proc()
-            this.running ||= t.status == TaskStatus.running
+            if (t.enabled) {
+                t.proc()
+                this.running ||= t.status == TaskStatus.running
+            }
         })
 
         if (!this.running != running) {
@@ -425,20 +427,17 @@ export class Tasks {
 
 export class Task {
     name: string;
-
     prevIndex: number = -1;
     steps: any[] = []
-    //delayTimer?: NodeJS.Timeout | undefined;
-    // timer?: NodeJS.Timeout | undefined;
     locoAddress: number = 0;
     num: number = 0;
     step: iStep | undefined;
     delayEnd: number = 0;
     autoStart = false
+    enabled = true
     stepByStep = false
 
     skipBreak = false;
-    //    stopOnComplete: boolean = true;
     prevSpeed: number = 0;
     constructor(name: string) {
         this.name = name
@@ -605,6 +604,8 @@ export class Task {
     }
 
     getLocoFromBlock(blockName: string) {
+        const block = Api.getBlockElement(blockName)
+
         this.steps.push({ type: StepTypes.setLocoAddressFromBlock, data: { blockName } as iSetLocoAddressFromBlock, ident: this.ident } as iStep)
     }
 
@@ -824,7 +825,7 @@ export class Task {
 
                 case StepTypes.setTurnout:
                     const turnout = (this.step.data as iSetTurnoutStep)
-                    Api.setTurnout(turnout.address, turnout.closed)
+                    Api.setTurnoutElement(turnout.address, turnout.closed)
                     this.index++;
                     break;
 
@@ -889,7 +890,7 @@ export class Task {
 
                 case StepTypes.waitForMinutes:
                     const minute = (this.step.data as iWaitForMinute).minute
-                    const clock = Api.getClock()
+                    const clock = Api.getClockElement()
                     if (clock && clock.currentTime.getMinutes() % minute == 0) {
                         this.index++;
                         console.log(`TASK: ${this.name} waitForMinute:${minute} finished!`)
@@ -898,7 +899,7 @@ export class Task {
 
                 case StepTypes.startAtMinutes:
                     const minutes = (this.step.data as iStartAtMinutes).minutes
-                    const clocka = Api.getClock()
+                    const clocka = Api.getClockElement()
                     if (clocka) {
                         const min = clocka.currentTime.getMinutes()
                         if (minutes.includes(min)) {
@@ -960,13 +961,13 @@ export class Task {
 
                 case StepTypes.setOutput:
                     const o = this.step.data as iSetOutput
-                    Api.setOutput(o.address, o.on)
+                    Api.setOutputState(o.address, o.on)
                     this.index++;
                     break;
 
                 case StepTypes.ifOutputIsOn:
                     const oon = this.step.data as iIfOutputIsOn
-                    if (Api.getOutput(oon.address)) {
+                    if (Api.getOutputState(oon.address)) {
                         this.index++;
                     } else {
                         this.gotoNextEndOrElse()
@@ -975,7 +976,7 @@ export class Task {
 
                 case StepTypes.ifOutputIsOff:
                     const ooff = this.step.data as iIfOutputIsOff
-                    if (!Api.getOutput(ooff.address)) {
+                    if (!Api.getOutputState(ooff.address)) {
                         this.index++;
                     } else {
                         this.gotoNextEndOrElse()
@@ -984,13 +985,13 @@ export class Task {
 
                 case StepTypes.setAccessory:
                     const a = this.step.data as iSetAccessory
-                    Api.setAccessory(a.address, a.on)
+                    Api.setAccessoryState(a.address, a.on)
                     this.index++;
                     break;
 
                 case StepTypes.ifAccessoryIsOn:
                     const aon = this.step.data as iIfAccessoryIsOn
-                    if (Api.getAccessory(aon.address)) {
+                    if (Api.getAccessoryState(aon.address)) {
                         this.index++;
                     } else {
                         this.gotoNextEndOrElse()
@@ -999,7 +1000,7 @@ export class Task {
 
                 case StepTypes.ifAccessoryIsOff:
                     const aoff = this.step.data as iIfAccessoryIsOff
-                    if (!Api.getAccessory(aoff.address)) {
+                    if (!Api.getAccessoryState(aoff.address)) {
                         this.index++;
                     } else {
                         this.gotoNextEndOrElse()
@@ -1249,44 +1250,49 @@ export class Task {
     }
 
     taskStart() {
-        console.log(`TASK: ${this.name} started!`)
-        this.index = 0;
-        this.prevIndex = -1;
-        this.prevSpeed = 0;
-        this.delayEnd = 0;
-        this.status = TaskStatus.running
-        //this.stopOnComplete = false;
-        toastManager.showToast(Tasks.icon + ` TASK: ${this.name} started!`, "success")
+        if (this.enabled) {
+            console.log(`TASK: ${this.name} started!`)
+            this.index = 0;
+            this.prevIndex = -1;
+            this.prevSpeed = 0;
+            this.delayEnd = 0;
+            this.status = TaskStatus.running
+            //this.stopOnComplete = false;
+            toastManager.showToast(Tasks.icon + ` TASK: ${this.name} started!`, "success")
+        } else {
+            toastManager.showToast(Tasks.icon + ` TASK: ${this.name} disable!`, "warning")
+        }
     }
 
     taskFinish() {
-        this.finishOnComplete = !this.finishOnComplete;
+        if (this.enabled) {
+            this.finishOnComplete = !this.finishOnComplete;
+        }
     }
 
 
     taskStop() {
-        if (this.status != TaskStatus.stopped) {
-            toastManager.showToast(Tasks.icon + ` TASK: ${this.name} stopped!`, "info")
+        if (this.enabled) {
+            if (this.status != TaskStatus.stopped) {
+                toastManager.showToast(Tasks.icon + ` TASK: ${this.name} stopped!`, "info")
+            }
+            this.status = TaskStatus.stopped
+            this.delayEnd = 0;
+
+            Api.setLocoSpeed(this.locoAddress, 0)
         }
-        this.status = TaskStatus.stopped
-        this.delayEnd = 0;
-
-        Api.setLocoSpeed(this.locoAddress, 0)
-
     }
 
     resumeTask() {
-        this.status = TaskStatus.running
-        this.delayEnd = 0;
-        if (this.step?.type == StepTypes.break) {
-            this.index++
-        }
-        //this.proc()
-        //this.index++
-
-
-        if (this.prevSpeed > 0) {
-            Api.setLocoSpeed(this.locoAddress, this.prevSpeed)
+        if (this.enabled) {
+            this.status = TaskStatus.running
+            this.delayEnd = 0;
+            if (this.step?.type == StepTypes.break) {
+                this.index++
+            }
+            if (this.prevSpeed > 0) {
+                Api.setLocoSpeed(this.locoAddress, this.prevSpeed)
+            }
         }
     }
 

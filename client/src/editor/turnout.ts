@@ -8,7 +8,7 @@ import { Globals } from "../helpers/globals";
 
 
 export abstract class TurnoutElement extends RailView {
-    t1Closed: boolean = true
+    t1Closed: boolean = true;
     t1ClosedValue: boolean = true;
     t1OpenValue: boolean = false;
     address: number = 10

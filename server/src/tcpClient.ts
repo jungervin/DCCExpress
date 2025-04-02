@@ -4,7 +4,8 @@ import { log, logError } from "./utility";
 export class TCPClient {
     socket: net.Socket | null = null;
     private isStopped: boolean = true;
-    reconnectTimer: NodeJS.Timeout | undefined;
+    private lastRecTime: number = 0;
+    private watchdog?: NodeJS.Timeout | undefined;
 
     constructor(
         private host: string,
@@ -13,7 +14,8 @@ export class TCPClient {
         private onConnected: () => void,
         private onData: (data: any) => void,
         private onError: (error: Error) => void
-    ) { }
+    ) {
+    }
 
     public start() {
         if (!this.isStopped) {
@@ -42,73 +44,70 @@ export class TCPClient {
         }
     }
 
-    private connectToServer() {
-        log("tcpClient.connectToServer()");
-        clearTimeout(this.reconnectTimer)
-        this.socket = new net.Socket();
-        this.socket.setKeepAlive(true, 10000)
-        this.socket.setTimeout(6000)
-        this.socket.connect(this.port, this.host, () => {
-            this.socket!.setTimeout(6000)
+    private stopWatchdog() {
+        if (this.watchdog) {
+            clearInterval(this.watchdog);
+            this.watchdog = undefined;
+        }
+    }
 
+    connectToServer() {
+        if(this.isStopped) {
+            log("Could not connect because is stopped!")
+            return;
+        }
+
+        log("tcpClient.connectToServer()");
+        this.socket = new net.Socket();
+
+        this.socket.connect(this.port, this.host, () => {
             log(`tcpClient Connected: ${this.host}:${this.port}`);
-            //this.startKeepAlive();
             if (this.onConnected) {
                 this.onConnected()
             }
         });
 
-        this.socket.on('timeout', () => {
-            log('socket timeout');
-            this.reconnect()
-            // if(this.socket) {
-            //     this.socket.end();
-            // }
-        });
-
-        this.socket.on('end', () => {
-            log('socket timeout');
-            this.reconnect()
-        });
+        // this.stopWatchdog()
+        // this.lastRecTime = performance.now()
+        // this.watchdog = setInterval(() => {
+        //     if((performance.now() - this.lastRecTime) > 6000) {
+        //         console.log("TCPClient Timeout")
+        //         if(this.socket) 
+        //         {
+        //             this.socket.removeAllListeners()
+        //             this.socket.destroy()
+        //             this.stopWatchdog()
+        //             this.connectToServer()
+        //         }
+        //     }
+        // }, 1000)
 
         this.socket.on("data", (data) => {
+            this.lastRecTime = performance.now()
             const message = data.toString().trim();
             this.onData(message);
         });
 
         this.socket.on("error", (err) => {
-            logError("tcpClient error:", err.message);
+            logError("tcpClient onerror:", err.message);
             this.onError(err);
-            this.reconnect();
+            this.socket!.destroy()
         });
 
         this.socket.on("close", () => {
-            log("tcpClient close");
-
-            this.reconnect();
+            log("tcpClient onclose");
+            setTimeout(() => this.connectToServer(), 3000)
         });
-    }
-
-    private reconnect() {
-        if (this.isStopped) {
-            return
-        }
-
-        if (!this.reconnectTimer) {
-            this.reconnectTimer = setTimeout(() => {
-                log("tcpClient.reconnect()");
-                this.socket!.removeAllListeners()
-                this.connectToServer();
-            }, this.reconnectDelay);
-        }
     }
 
     private cleanup() {
         log("tcpClient.cleanup()");
         if (this.socket) {
+            this.stopWatchdog()
+            this.socket.removeAllListeners()
             this.socket.destroy();
             this.socket = null;
-            log("tcpClient.destroy()");
+
         } else {
             log("tcpClient.cleanup() socket doesn't exists!");
         }

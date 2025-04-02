@@ -87,8 +87,10 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
         exec() {
             var running = false;
             this.tasks.forEach(t => {
-                t.proc();
-                this.running || (this.running = t.status == TaskStatus.running);
+                if (t.enabled) {
+                    t.proc();
+                    this.running || (this.running = t.status == TaskStatus.running);
+                }
             });
             if (!this.running != running) {
                 this.running = running;
@@ -224,15 +226,13 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
         constructor(name) {
             this.prevIndex = -1;
             this.steps = [];
-            //delayTimer?: NodeJS.Timeout | undefined;
-            // timer?: NodeJS.Timeout | undefined;
             this.locoAddress = 0;
             this.num = 0;
             this.delayEnd = 0;
             this.autoStart = false;
+            this.enabled = true;
             this.stepByStep = false;
             this.skipBreak = false;
-            //    stopOnComplete: boolean = true;
             this.prevSpeed = 0;
             this._finishOnComplete = false;
             this._status = TaskStatus.stopped;
@@ -368,6 +368,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
             this.steps.push({ type: StepTypes.setBlockLocoAddress, data: { blockName, locoAddress }, ident: this.ident });
         }
         getLocoFromBlock(blockName) {
+            const block = api_1.Api.getBlockElement(blockName);
             this.steps.push({ type: StepTypes.setLocoAddressFromBlock, data: { blockName }, ident: this.ident });
         }
         ifBlockIsFree(blockName) {
@@ -573,7 +574,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                         break;
                     case StepTypes.setTurnout:
                         const turnout = this.step.data;
-                        api_1.Api.setTurnout(turnout.address, turnout.closed);
+                        api_1.Api.setTurnoutElement(turnout.address, turnout.closed);
                         this.index++;
                         break;
                     case StepTypes.forward:
@@ -631,7 +632,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                         break;
                     case StepTypes.waitForMinutes:
                         const minute = this.step.data.minute;
-                        const clock = api_1.Api.getClock();
+                        const clock = api_1.Api.getClockElement();
                         if (clock && clock.currentTime.getMinutes() % minute == 0) {
                             this.index++;
                             console.log(`TASK: ${this.name} waitForMinute:${minute} finished!`);
@@ -639,7 +640,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                         break;
                     case StepTypes.startAtMinutes:
                         const minutes = this.step.data.minutes;
-                        const clocka = api_1.Api.getClock();
+                        const clocka = api_1.Api.getClockElement();
                         if (clocka) {
                             const min = clocka.currentTime.getMinutes();
                             if (minutes.includes(min)) {
@@ -694,12 +695,12 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                         break;
                     case StepTypes.setOutput:
                         const o = this.step.data;
-                        api_1.Api.setOutput(o.address, o.on);
+                        api_1.Api.setOutputState(o.address, o.on);
                         this.index++;
                         break;
                     case StepTypes.ifOutputIsOn:
                         const oon = this.step.data;
-                        if (api_1.Api.getOutput(oon.address)) {
+                        if (api_1.Api.getOutputState(oon.address)) {
                             this.index++;
                         }
                         else {
@@ -708,7 +709,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                         break;
                     case StepTypes.ifOutputIsOff:
                         const ooff = this.step.data;
-                        if (!api_1.Api.getOutput(ooff.address)) {
+                        if (!api_1.Api.getOutputState(ooff.address)) {
                             this.index++;
                         }
                         else {
@@ -717,12 +718,12 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                         break;
                     case StepTypes.setAccessory:
                         const a = this.step.data;
-                        api_1.Api.setAccessory(a.address, a.on);
+                        api_1.Api.setAccessoryState(a.address, a.on);
                         this.index++;
                         break;
                     case StepTypes.ifAccessoryIsOn:
                         const aon = this.step.data;
-                        if (api_1.Api.getAccessory(aon.address)) {
+                        if (api_1.Api.getAccessoryState(aon.address)) {
                             this.index++;
                         }
                         else {
@@ -731,7 +732,7 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
                         break;
                     case StepTypes.ifAccessoryIsOff:
                         const aoff = this.step.data;
-                        if (!api_1.Api.getAccessory(aoff.address)) {
+                        if (!api_1.Api.getAccessoryState(aoff.address)) {
                             this.index++;
                         }
                         else {
@@ -962,37 +963,46 @@ define(["require", "exports", "../controls/toastManager", "../../../common/src/d
             this.steps.push({ type: StepTypes.restart, data: {} });
         }
         taskStart() {
-            console.log(`TASK: ${this.name} started!`);
-            this.index = 0;
-            this.prevIndex = -1;
-            this.prevSpeed = 0;
-            this.delayEnd = 0;
-            this.status = TaskStatus.running;
-            //this.stopOnComplete = false;
-            toastManager_1.toastManager.showToast(Tasks.icon + ` TASK: ${this.name} started!`, "success");
+            if (this.enabled) {
+                console.log(`TASK: ${this.name} started!`);
+                this.index = 0;
+                this.prevIndex = -1;
+                this.prevSpeed = 0;
+                this.delayEnd = 0;
+                this.status = TaskStatus.running;
+                //this.stopOnComplete = false;
+                toastManager_1.toastManager.showToast(Tasks.icon + ` TASK: ${this.name} started!`, "success");
+            }
+            else {
+                toastManager_1.toastManager.showToast(Tasks.icon + ` TASK: ${this.name} disable!`, "warning");
+            }
         }
         taskFinish() {
-            this.finishOnComplete = !this.finishOnComplete;
+            if (this.enabled) {
+                this.finishOnComplete = !this.finishOnComplete;
+            }
         }
         taskStop() {
-            if (this.status != TaskStatus.stopped) {
-                toastManager_1.toastManager.showToast(Tasks.icon + ` TASK: ${this.name} stopped!`, "info");
+            if (this.enabled) {
+                if (this.status != TaskStatus.stopped) {
+                    toastManager_1.toastManager.showToast(Tasks.icon + ` TASK: ${this.name} stopped!`, "info");
+                }
+                this.status = TaskStatus.stopped;
+                this.delayEnd = 0;
+                api_1.Api.setLocoSpeed(this.locoAddress, 0);
             }
-            this.status = TaskStatus.stopped;
-            this.delayEnd = 0;
-            api_1.Api.setLocoSpeed(this.locoAddress, 0);
         }
         resumeTask() {
             var _a;
-            this.status = TaskStatus.running;
-            this.delayEnd = 0;
-            if (((_a = this.step) === null || _a === void 0 ? void 0 : _a.type) == StepTypes.break) {
-                this.index++;
-            }
-            //this.proc()
-            //this.index++
-            if (this.prevSpeed > 0) {
-                api_1.Api.setLocoSpeed(this.locoAddress, this.prevSpeed);
+            if (this.enabled) {
+                this.status = TaskStatus.running;
+                this.delayEnd = 0;
+                if (((_a = this.step) === null || _a === void 0 ? void 0 : _a.type) == StepTypes.break) {
+                    this.index++;
+                }
+                if (this.prevSpeed > 0) {
+                    api_1.Api.setLocoSpeed(this.locoAddress, this.prevSpeed);
+                }
             }
         }
         get finishOnComplete() {

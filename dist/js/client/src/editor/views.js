@@ -49,7 +49,7 @@ define(["require", "exports", "./turnout", "./view", "./route", "./signals", "./
             });
             return items;
         }
-        getSignal(addr) {
+        getSignalElement(addr) {
             return this.getSignalElements().find((s) => s.address == addr);
         }
         getAccessoryElements() {

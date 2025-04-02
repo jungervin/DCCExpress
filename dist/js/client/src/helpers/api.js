@@ -36,8 +36,13 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
             const b = { blockName: blockName, locoAddress: locoAddress };
             ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBlock, data: b });
         }
-        static getBlocks() {
-            ws_1.wsClient.send({ type: dcc_1.ApiCommands.getBlocks, data: "" });
+        static fetchBlocks() {
+            ws_1.wsClient.send({ type: dcc_1.ApiCommands.fetchBlocks, data: "" });
+        }
+        static getBlockElement(blockName) {
+            return Api.app.editor.views.getBlockElements().find((b) => {
+                return b.name == blockName;
+            });
         }
         static getLocoAddressFromBlock(blockName) {
             const b = Api.app.editor.views.getBlockElements().find((b) => {
@@ -47,7 +52,7 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
                 return b.locoAddress;
             }
             // Legyen foglat!
-            return Number.MAX_VALUE;
+            return Number.NaN;
         }
         static getBlockIsFree(blockName) {
             const a = Api.getLocoAddressFromBlock(blockName);
@@ -57,7 +62,7 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
             const a = Api.getLocoAddressFromBlock(blockName);
             return a > 0;
         }
-        static getSensor(address) {
+        static getSensorElement(address) {
             const s = Api.app.editor.views.getSensor(address);
             if (s) {
                 return s;
@@ -66,6 +71,12 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
         }
         static getSensorValue(address) {
             return Api.app.sensors[address];
+        }
+        static sensorIsOn(address) {
+            return Api.app.sensors[address] === true;
+        }
+        static sensorIsOff(address) {
+            return Api.app.sensors[address] === true;
         }
         static getSensorDuration(address, state) {
             logicCircuits_1.PulseDetector.getSensor(address, state);
@@ -126,8 +137,8 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
                 ws_1.wsClient.send({ type: dcc_1.ApiCommands.setLocoFunction, data: data });
             }
         }
-        static setTurnout(address, isClosed) {
-            const turnout = Api.getTurnout(address);
+        static setTurnoutElement(address, isClosed) {
+            const turnout = Api.getTurnoutElement(address);
             if (turnout) {
                 if (Object.getPrototypeOf(turnout) == turnout_1.TurnoutDoubleElement.prototype) {
                     const td = turnout;
@@ -147,7 +158,7 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
                 }
             }
         }
-        static getTurnout(address) {
+        static getTurnoutElement(address) {
             for (let t of Api.app.editor.views.getTurnoutElements()) {
                 if (t.address === address) {
                     return t;
@@ -173,28 +184,28 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
                     }
                 }
             }
-            return undefined;
+            return false;
         }
-        static getTaskButton(taskName) {
+        static getTaskButtonElement(taskName) {
             return Api.app.editor.views.getSchedulerButtonByTaskName(taskName);
         }
-        static getSignal(address) {
-            return Api.app.editor.views.getSignal(address);
+        static getSignalElement(address) {
+            return Api.app.editor.views.getSignalElement(address);
         }
-        static getRoute(name) {
+        static getRouteSwitchElement(name) {
             return Api.app.editor.views.getRouteSwitchElements().find(r => r.name === name);
         }
         static setRoute(name) {
-            const route = Api.getRoute(name);
+            const route = Api.getRouteSwitchElement(name);
             if (route) {
                 route.setRoute(0, Api.app.editor.views.getTurnoutElements());
             }
         }
-        static getClock() {
+        static getClockElement() {
             return Api.app.editor.fastClock;
         }
         static getClockMinutes() {
-            const clock = Api.getClock();
+            const clock = Api.getClockElement();
             if (clock) {
                 return clock.currentTime.getMinutes();
             }
@@ -203,7 +214,7 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
         static getElement(name) {
             return Api.app.editor.views.getElement(name);
         }
-        static setOutput(address, on) {
+        static setOutputState(address, on) {
             const aa = Api.app.editor.views.getAccessoryElements().find((a) => {
                 return a.address == address;
             });
@@ -216,10 +227,10 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
                 ws_1.wsClient.send({ type: dcc_1.ApiCommands.setOutput, data: data });
             }
         }
-        static getOutput(address) {
+        static getOutputState(address) {
             return Api.app.outputs[address];
         }
-        static setAccessory(address, on) {
+        static setAccessoryState(address, on) {
             const aa = Api.app.editor.views.getAccessoryElements().find((a) => {
                 return a.address == address;
             });
@@ -232,11 +243,11 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
                 ws_1.wsClient.send({ type: dcc_1.ApiCommands.setBasicAccessory, data: data });
             }
         }
-        static getAccessory(address) {
+        static getAccessoryState(address) {
             return Api.app.decoders[address];
         }
         static setSignalGreen(address) {
-            const sig = Api.getSignal(address);
+            const sig = Api.getSignalElement(address);
             if (sig) {
                 sig.sendGreenIfNotGreen();
             }
@@ -245,7 +256,7 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
             }
         }
         static getSignalIsGreen(address) {
-            const sig = Api.getSignal(address);
+            const sig = Api.getSignalElement(address);
             if (sig) {
                 return sig.isGreen;
             }
@@ -253,7 +264,7 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
             return false;
         }
         static setSignalRed(address) {
-            const sig = Api.getSignal(address);
+            const sig = Api.getSignalElement(address);
             if (sig) {
                 sig.sendRedIfNotRed();
             }
@@ -262,7 +273,7 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
             }
         }
         static getSignalIsRed(address) {
-            const sig = Api.getSignal(address);
+            const sig = Api.getSignalElement(address);
             if (sig) {
                 return sig.isRed;
             }
@@ -270,7 +281,7 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
             return false;
         }
         static setSignalYellow(address) {
-            const sig = Api.getSignal(address);
+            const sig = Api.getSignalElement(address);
             if (sig) {
                 sig.sendYellowIfNotYellow();
             }
@@ -279,7 +290,7 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
             }
         }
         static getSignalIsYellow(address) {
-            const sig = Api.getSignal(address);
+            const sig = Api.getSignalElement(address);
             if (sig) {
                 return sig.isYellow;
             }
@@ -287,7 +298,7 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
             return false;
         }
         static setSignalWhite(address) {
-            const sig = Api.getSignal(address);
+            const sig = Api.getSignalElement(address);
             if (sig) {
                 sig.sendWhiteIfNotWhite();
             }
@@ -296,7 +307,7 @@ define(["require", "exports", "../../../common/src/dcc", "./ws", "../editor/turn
             }
         }
         static getSignalIsWhite(address) {
-            const sig = Api.getSignal(address);
+            const sig = Api.getSignalElement(address);
             if (sig) {
                 return sig.isWhite;
             }

@@ -2,10 +2,6 @@ import { getUUID } from "../../../common/src/dcc";
 import { degreesToRadians, getDirectionXy, Point } from "../helpers/math";
 import { Globals } from "../helpers/globals";
 
-
-
-
-
 export class Colors {
     static TrackPrimaryColor = "black"
     static TrackLightColor = "#888"
@@ -122,12 +118,22 @@ export abstract class View {
                 ctx.rect(n.x * Globals.GridSizeX, n.y * Globals.GridSizeY, Globals.GridSizeX, Globals.GridSizeY);
                 ctx.stroke();
 
+                ctx.fillStyle = "lime";
+                ctx.font = "10px Arial";
+                ctx.textAlign = "left";
+                ctx.textBaseline = "top";
+                ctx.fillText("FWD", n.x * Globals.GridSizeX, n.y * Globals.GridSizeY);
+        
+
                 ctx.beginPath();
                 ctx.lineWidth = 1;
                 ctx.strokeStyle = "blue";
                 var p = this.getPrevItemXy()
                 ctx.rect(p.x * Globals.GridSizeX, p.y * Globals.GridSizeY, Globals.GridSizeX, Globals.GridSizeY);
                 ctx.stroke();
+                ctx.fillStyle = "blue";
+                ctx.fillText("REV", p.x * Globals.GridSizeX, p.y * Globals.GridSizeY);
+
             }
 
 

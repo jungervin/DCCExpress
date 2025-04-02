@@ -265,7 +265,7 @@ define(["require", "exports", "../helpers/ws", "../../../common/src/dcc"], funct
                 <div style="justify-content: center; width:100%; height: 100px; display: flex; border-bottom: 20px;">
                     <div id="infoLeft">INFO L</div>
                     <div id="locoImageDiv">
-                        <img id="locoImage" src="/uploads/1736337194644-csorgo.jpg">
+                        <img id="locoImage" src="">
                         <div id="locoName">#11 CSÖRGŐ</div>
                     </div>
                     <div id="infoRight">INFO R</div>

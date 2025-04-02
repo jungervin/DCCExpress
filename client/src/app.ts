@@ -16,6 +16,7 @@ import { Task, Tasks } from "./helpers/task";
 import { Scheduler } from "./helpers/scheduler";
 import { CommandCenterSettingsDialog } from "./dialogs/commandCenterSettingsDialog";
 import { ProgrammerDialog } from "./dialogs/programmerDialog";
+import { SchedulerButtonShapeElement } from "./editor/schedulerButton";
 
 console.log(Dispatcher)
 console.log(ApiCommands)
@@ -130,10 +131,9 @@ export class App {
             Globals.fetchJsonData('/config.json').then((conf: any) => {
                 this.configLoaded(conf)
 
-                wsClient.send({ type: ApiCommands.getRBusInfo, data: "" })
-
-
                 toastManager.showToast("Config Loaded", "success")
+
+
 
 
             }).catch((reason) => {
@@ -154,7 +154,16 @@ export class App {
 
             //this.locoControlPanel.init()
             this.locoControlPanel.fetchLocomotives().then(() => {
-                Api.getBlocks()
+                Api.fetchBlocks()
+            })
+
+            wsClient.send({ type: ApiCommands.getRBusInfo, data: "" })
+
+            Api.app.editor.views.getTurnoutElements().forEach((t) => {
+                wsClient.send({ type: ApiCommands.getTurnout, data: { address: t.address } as iGetTurnout } as iData)
+                if (t instanceof TurnoutDoubleElement) {
+                    wsClient.send({ type: ApiCommands.getTurnout, data: { address: t.address2 } as iGetTurnout } as iData)
+                }
             })
 
 
@@ -319,6 +328,10 @@ export class App {
 
         Scheduler.onchange = () => {
             this.toolbar.taskButtonsEnabled = Scheduler.isLoaded
+            if (this.editor.selectedElement instanceof SchedulerButtonShapeElement) {
+                this.editor.propertyPanel!.selectedObject = undefined
+                this.editor.propertyPanel!.selectedObject = this.editor.selectedElement
+            }
             this.updateTasks()
         }
 
@@ -334,7 +347,7 @@ export class App {
             worker.postMessage("p")
         };
     }
-  
+
 
     updateTasks() {
         var running = this.tasks.allRuning
@@ -358,7 +371,7 @@ export class App {
         }
 
         this.tasks.tasks.forEach((task) => {
-            const btn = Api.getTaskButton(task.name)
+            const btn = Api.getTaskButtonElement(task.name)
             if (btn) {
                 if (btn.status != task.status) {
                     btn.status = task.status
@@ -367,7 +380,7 @@ export class App {
                 btn.finishOnComplete = task.finishOnComplete
                 this.editor.draw();
 
-            }            
+            }
         })
     }
 
@@ -415,30 +428,30 @@ export class App {
         this.editor.load(config)
         //this.locos!.load(config)
 
-        var turnouts = this.editor.views.getTurnoutElements()
-        turnouts.forEach((t) => {
-            //IOConn.socket.emit(ApiCommands.getTurnout, t.address)
-            wsClient.send({ type: ApiCommands.getTurnout, data: { address: t.address } as iGetTurnout } as iData)
-            if (Object.getPrototypeOf(t) == TurnoutDoubleElement.prototype) {
-                const t2 = t as TurnoutDoubleElement
-                wsClient.send({ type: ApiCommands.getTurnout, data: { address: t2.address2 } as iGetTurnout } as iData)
-            }
-        })
+        // var turnouts = this.editor.views.getTurnoutElements()
+        // turnouts.forEach((t) => {
+        //     //IOConn.socket.emit(ApiCommands.getTurnout, t.address)
+        //     wsClient.send({ type: ApiCommands.getTurnout, data: { address: t.address } as iGetTurnout } as iData)
+        //     if (Object.getPrototypeOf(t) == TurnoutDoubleElement.prototype) {
+        //         const t2 = t as TurnoutDoubleElement
+        //         wsClient.send({ type: ApiCommands.getTurnout, data: { address: t2.address2 } as iGetTurnout } as iData)
+        //     }
+        // })
 
-        var signals = this.editor.views.getSignalElements()
-        signals.forEach((s) => {
-            for (var i = 0; i < s.addressLength; i++) {
-                if (Globals.CommandCenterSetting.type == CommandCenterTypes.Z21) {
-                    wsClient.send({ type: ApiCommands.getTurnout, data: { address: s.address + i } as iGetTurnout } as iData)
-                    //wsClient.send(ApiCommands.getTurnout, s.address + i)
-                }
-            }
-        })
+        // var signals = this.editor.views.getSignalElements()
+        // signals.forEach((s) => {
+        //     for (var i = 0; i < s.addressLength; i++) {
+        //         if (Globals.CommandCenterSetting.type == CommandCenterTypes.Z21) {
+        //             wsClient.send({ type: ApiCommands.getTurnout, data: { address: s.address + i } as iGetTurnout } as iData)
+        //             //wsClient.send(ApiCommands.getTurnout, s.address + i)
+        //         }
+        //     }
+        // })
 
-        var accessories = this.editor.views.getAccessoryElements()
-        accessories.forEach((s) => {
-            wsClient.send({ type: ApiCommands.getTurnout, data: { address: s.address } as iGetTurnout } as iData)
-        })
+        // var accessories = this.editor.views.getAccessoryElements()
+        // accessories.forEach((s) => {
+        //     wsClient.send({ type: ApiCommands.getTurnout, data: { address: s.address } as iGetTurnout } as iData)
+        // })
 
     }
     turnoutInfo(data: iSetTurnout) {
@@ -654,3 +667,5 @@ export class App {
         return undefined
     }
 }
+
+const Application = new App()

@@ -1,4 +1,7 @@
+import { Api } from "../helpers/api";
+import { supervisor } from "../helpers/supervisor";
 import { CustomCanvas, drawModes } from "./editor";
+import { TurnoutElement } from "./turnout";
 import { RailView } from "./view";
 
 // Toolbar.ts
@@ -254,6 +257,14 @@ export class Toolbar extends HTMLElement {
         this.programmerButtonEnabled = true
 
         this.taskButtonsEnabled = false;
+
+        this.btnDebug.onclick = (e) => {
+            //supervisor.mkSegments()
+            if (Api.app.editor.selectedElement) {
+                supervisor.findRoute(Api.app.editor.selectedElement.x, Api.app.editor.selectedElement.y)
+                Api.app.editor.draw()
+            }
+        }
     }
 
     save() {

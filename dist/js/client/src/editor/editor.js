@@ -839,6 +839,9 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                 this.views.elements.slice().reverse().forEach(elem => {
                     elem.draw(this.ctx);
                 });
+                // for(const elem of this.views.elements) {
+                //     elem.draw(this.ctx!)
+                // }
                 if (this.cursorElement) {
                     this.cursorElement.draw(this.ctx);
                 }
@@ -1088,11 +1091,13 @@ define(["require", "exports", "./track", "./rectangle", "./turnout", "./views", 
                         this.add(s4);
                         break;
                     case drawModes.block:
-                        this.removeIfExists(x, y);
+                        //this.removeIfExists(x, y)
                         this.unselectAll();
                         var b = new block_1.BlockElement((0, dcc_1.getUUID)(), x, y, "block" + num);
                         b.angle = this.cursorElement.angle;
-                        this.add(b);
+                        //this.add(b)
+                        this.views.elements.unshift(b);
+                        //moveToStart()
                         break;
                     case drawModes.button:
                         this.removeIfExists(x, y);

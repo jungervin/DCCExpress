@@ -167,7 +167,7 @@ wsServer.on("connection", (ws, req) => {
                     broadcastAll({ type: ApiCommands.blockInfo, data: { blocks } } as iData)
                     break;
 
-                case ApiCommands.getBlocks:
+                case ApiCommands.fetchBlocks:
                     broadcastAll({ type: ApiCommands.blockInfo, data: { blocks } } as iData)
                     break;
 

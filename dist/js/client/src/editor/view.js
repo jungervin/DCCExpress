@@ -87,12 +87,19 @@ define(["require", "exports", "../../../common/src/dcc", "../helpers/math", "../
                     var n = this.getNextItemXy();
                     ctx.rect(n.x * globals_1.Globals.GridSizeX, n.y * globals_1.Globals.GridSizeY, globals_1.Globals.GridSizeX, globals_1.Globals.GridSizeY);
                     ctx.stroke();
+                    ctx.fillStyle = "lime";
+                    ctx.font = "10px Arial";
+                    ctx.textAlign = "left";
+                    ctx.textBaseline = "top";
+                    ctx.fillText("FWD", n.x * globals_1.Globals.GridSizeX, n.y * globals_1.Globals.GridSizeY);
                     ctx.beginPath();
                     ctx.lineWidth = 1;
                     ctx.strokeStyle = "blue";
                     var p = this.getPrevItemXy();
                     ctx.rect(p.x * globals_1.Globals.GridSizeX, p.y * globals_1.Globals.GridSizeY, globals_1.Globals.GridSizeX, globals_1.Globals.GridSizeY);
                     ctx.stroke();
+                    ctx.fillStyle = "blue";
+                    ctx.fillText("REV", p.x * globals_1.Globals.GridSizeX, p.y * globals_1.Globals.GridSizeY);
                 }
             }
         }
