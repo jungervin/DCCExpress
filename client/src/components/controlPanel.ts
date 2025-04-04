@@ -166,6 +166,7 @@ export class LocoControlPanel extends HTMLElement {
                 /* Modal tartalom */
                 .modal-content {
                     width: 80%;
+                    height: 460px;
                     background: white;
                     padding: 10px;
                     border-radius: 10px;
@@ -213,7 +214,7 @@ export class LocoControlPanel extends HTMLElement {
                 }
 
                 #locoList {
-                    height: 70%;
+                    height: 100%;
                     overflow: auto;
                     border-radius: 5px;
                     border: 1px solid #ddd;
